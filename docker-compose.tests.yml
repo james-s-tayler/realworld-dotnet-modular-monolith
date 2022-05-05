@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+
+  conduit-api.tests:
+    container_name: conduit-api.tests
+    ports:
+     - "5100:80"
+    restart: unless-stopped
+    environment:
+     - ASPNETCORE_ENVIRONMENT=Docker
+     - OTEL_SERVICE_NAME=Conduit.API
+     - SEQ_URL=http://seq_logs:5341
+     - GIT_COMMIT_HASH=${GIT_COMMIT_HASH}
+    build:
+      context: App/BackEnd/
+      dockerfile: Conduit.API/Dockerfile
+      target: tests
+    command: /bin/sh -c "/app/run-tests.sh"
+    networks:
+     - conduit-api
+
+networks:
+  conduit-api:

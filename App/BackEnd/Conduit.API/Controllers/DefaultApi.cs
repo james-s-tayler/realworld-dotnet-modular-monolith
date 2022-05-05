@@ -55,7 +55,7 @@ namespace Conduit.API.Controllers
             ? JsonConvert.DeserializeObject<TagsResponse>(exampleJson)
             : default(TagsResponse);
             //TODO: Change the data returned
-            return Task.FromResult<IActionResult>(new ObjectResult(example));
+            return new ObjectResult(example);
         }
     }
 }

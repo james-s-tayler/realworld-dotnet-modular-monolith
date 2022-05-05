@@ -57,7 +57,7 @@ namespace Conduit.API.Controllers
             ? JsonConvert.DeserializeObject<UserResponse>(exampleJson)
             : default(UserResponse);
             //TODO: Change the data returned
-            return Task.FromResult<IActionResult>(new ObjectResult(example));
+            return new ObjectResult(example);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Conduit.API.Controllers
             ? JsonConvert.DeserializeObject<UserResponse>(exampleJson)
             : default(UserResponse);
             //TODO: Change the data returned
-            return Task.FromResult<IActionResult>(new ObjectResult(example));
+            return new ObjectResult(example);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Conduit.API.Controllers
             ? JsonConvert.DeserializeObject<UserResponse>(exampleJson)
             : default(UserResponse);
             //TODO: Change the data returned
-            return Task.FromResult<IActionResult>(new ObjectResult(example));
+            return new ObjectResult(example);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace Conduit.API.Controllers
             ? JsonConvert.DeserializeObject<UserResponse>(exampleJson)
             : default(UserResponse);
             //TODO: Change the data returned
-            return Task.FromResult<IActionResult>(new ObjectResult(example));
+            return new ObjectResult(example);
         }
     }
 }

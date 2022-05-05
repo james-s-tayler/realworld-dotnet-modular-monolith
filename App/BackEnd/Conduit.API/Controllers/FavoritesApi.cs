@@ -60,7 +60,7 @@ namespace Conduit.API.Controllers
             ? JsonConvert.DeserializeObject<SingleArticleResponse>(exampleJson)
             : default(SingleArticleResponse);
             //TODO: Change the data returned
-            return Task.FromResult<IActionResult>(new ObjectResult(example));
+            return new ObjectResult(example);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Conduit.API.Controllers
             ? JsonConvert.DeserializeObject<SingleArticleResponse>(exampleJson)
             : default(SingleArticleResponse);
             //TODO: Change the data returned
-            return Task.FromResult<IActionResult>(new ObjectResult(example));
+            return new ObjectResult(example);
         }
     }
 }

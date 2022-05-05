@@ -27,107 +27,103 @@ namespace Conduit.API.Controllers
     /// 
     /// </summary>
     [ApiController]
-    public class ProfileApiController : ControllerBase
+    public class CommentsApiController : ControllerBase
     { 
         /// <summary>
-        /// Follow a user
+        /// Create a comment for an article
         /// </summary>
-        /// <remarks>Follow a user by username</remarks>
-        /// <param name="username">Username of the profile you want to follow</param>
+        /// <remarks>Create a comment for an article. Auth is required</remarks>
+        /// <param name="slug">Slug of the article that you want to create a comment for</param>
+        /// <param name="comment">Comment you want to create</param>
         /// <response code="200">OK</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="422">Unexpected error</response>
         [HttpPost]
-        [Route("/api/profiles/{username}/follow")]
+        [Route("/api/articles/{slug}/comments")]
         [Authorize(Policy = "Token")]
+        [Consumes("application/json")]
         [ValidateModelState]
-        [SwaggerOperation("FollowUserByUsername")]
-        [SwaggerResponse(statusCode: 200, type: typeof(ProfileResponse), description: "OK")]
+        [SwaggerOperation("CreateArticleComment")]
+        [SwaggerResponse(statusCode: 200, type: typeof(SingleCommentResponse), description: "OK")]
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
-        public virtual async Task<IActionResult> FollowUserByUsername([FromRoute (Name = "username")][Required]string username)
+        public virtual async Task<IActionResult> CreateArticleComment([FromRoute (Name = "slug")][Required]string slug, [FromBody]NewCommentRequest comment)
         {
 
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(ProfileResponse));
+            // return StatusCode(200, default(SingleCommentResponse));
             //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(401);
             //TODO: Uncomment the next line to return response 422 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(422, default(GenericErrorModel));
             string exampleJson = null;
-            exampleJson = "{\n  \"profile\" : {\n    \"image\" : \"image\",\n    \"following\" : true,\n    \"bio\" : \"bio\",\n    \"username\" : \"username\"\n  }\n}";
+            exampleJson = "{\n  \"comment\" : {\n    \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"author\" : {\n      \"image\" : \"image\",\n      \"following\" : true,\n      \"bio\" : \"bio\",\n      \"username\" : \"username\"\n    },\n    \"id\" : 0,\n    \"body\" : \"body\",\n    \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\"\n  }\n}";
             
             var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<ProfileResponse>(exampleJson)
-            : default(ProfileResponse);
+            ? JsonConvert.DeserializeObject<SingleCommentResponse>(exampleJson)
+            : default(SingleCommentResponse);
             //TODO: Change the data returned
-            return Task.FromResult<IActionResult>(new ObjectResult(example));
+            return new ObjectResult(example);
         }
 
         /// <summary>
-        /// Get a profile
+        /// Delete a comment for an article
         /// </summary>
-        /// <remarks>Get a profile of a user of the system. Auth is optional</remarks>
-        /// <param name="username">Username of the profile to get</param>
-        /// <response code="200">OK</response>
-        /// <response code="401">Unauthorized</response>
-        /// <response code="422">Unexpected error</response>
-        [HttpGet]
-        [Route("/api/profiles/{username}")]
-        [ValidateModelState]
-        [SwaggerOperation("GetProfileByUsername")]
-        [SwaggerResponse(statusCode: 200, type: typeof(ProfileResponse), description: "OK")]
-        [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
-        public virtual async Task<IActionResult> GetProfileByUsername([FromRoute (Name = "username")][Required]string username)
-        {
-
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(ProfileResponse));
-            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401);
-            //TODO: Uncomment the next line to return response 422 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(422, default(GenericErrorModel));
-            string exampleJson = null;
-            exampleJson = "{\n  \"profile\" : {\n    \"image\" : \"image\",\n    \"following\" : true,\n    \"bio\" : \"bio\",\n    \"username\" : \"username\"\n  }\n}";
-            
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<ProfileResponse>(exampleJson)
-            : default(ProfileResponse);
-            //TODO: Change the data returned
-            return Task.FromResult<IActionResult>(new ObjectResult(example));
-        }
-
-        /// <summary>
-        /// Unfollow a user
-        /// </summary>
-        /// <remarks>Unfollow a user by username</remarks>
-        /// <param name="username">Username of the profile you want to unfollow</param>
+        /// <remarks>Delete a comment for an article. Auth is required</remarks>
+        /// <param name="slug">Slug of the article that you want to delete a comment for</param>
+        /// <param name="id">ID of the comment you want to delete</param>
         /// <response code="200">OK</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="422">Unexpected error</response>
         [HttpDelete]
-        [Route("/api/profiles/{username}/follow")]
+        [Route("/api/articles/{slug}/comments/{id}")]
         [Authorize(Policy = "Token")]
         [ValidateModelState]
-        [SwaggerOperation("UnfollowUserByUsername")]
-        [SwaggerResponse(statusCode: 200, type: typeof(ProfileResponse), description: "OK")]
+        [SwaggerOperation("DeleteArticleComment")]
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
-        public virtual async Task<IActionResult> UnfollowUserByUsername([FromRoute (Name = "username")][Required]string username)
+        public virtual async Task<IActionResult> DeleteArticleComment([FromRoute (Name = "slug")][Required]string slug, [FromRoute (Name = "id")][Required]int id)
         {
 
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(ProfileResponse));
+            // return StatusCode(200);
+            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(401);
+            //TODO: Uncomment the next line to return response 422 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(422, default(GenericErrorModel));
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Get comments for an article
+        /// </summary>
+        /// <remarks>Get the comments for an article. Auth is optional</remarks>
+        /// <param name="slug">Slug of the article that you want to get comments for</param>
+        /// <response code="200">OK</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="422">Unexpected error</response>
+        [HttpGet]
+        [Route("/api/articles/{slug}/comments")]
+        [ValidateModelState]
+        [SwaggerOperation("GetArticleComments")]
+        [SwaggerResponse(statusCode: 200, type: typeof(MultipleCommentsResponse), description: "OK")]
+        [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
+        public virtual async Task<IActionResult> GetArticleComments([FromRoute (Name = "slug")][Required]string slug)
+        {
+
+            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(200, default(MultipleCommentsResponse));
             //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(401);
             //TODO: Uncomment the next line to return response 422 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(422, default(GenericErrorModel));
             string exampleJson = null;
-            exampleJson = "{\n  \"profile\" : {\n    \"image\" : \"image\",\n    \"following\" : true,\n    \"bio\" : \"bio\",\n    \"username\" : \"username\"\n  }\n}";
+            exampleJson = "{\n  \"comments\" : [ {\n    \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"author\" : {\n      \"image\" : \"image\",\n      \"following\" : true,\n      \"bio\" : \"bio\",\n      \"username\" : \"username\"\n    },\n    \"id\" : 0,\n    \"body\" : \"body\",\n    \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\"\n  }, {\n    \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"author\" : {\n      \"image\" : \"image\",\n      \"following\" : true,\n      \"bio\" : \"bio\",\n      \"username\" : \"username\"\n    },\n    \"id\" : 0,\n    \"body\" : \"body\",\n    \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\"\n  } ]\n}";
             
             var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<ProfileResponse>(exampleJson)
-            : default(ProfileResponse);
+            ? JsonConvert.DeserializeObject<MultipleCommentsResponse>(exampleJson)
+            : default(MultipleCommentsResponse);
             //TODO: Change the data returned
-            return Task.FromResult<IActionResult>(new ObjectResult(example));
+            return new ObjectResult(example);
         }
     }
 }
