@@ -1,4 +1,4 @@
-namespace Conduit.Domain.Identity.Contracts.RegisterUser
+namespace Conduit.Identity.Domain.Contracts.RegisterUser
 {
     public class NewUserDTO
     {

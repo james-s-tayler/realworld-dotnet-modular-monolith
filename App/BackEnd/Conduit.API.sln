@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.API.Tests.Integrati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Identity.Domain", "Conduit.Identity.Domain\Conduit.Identity.Domain.csproj", "{5498CD4B-C15A-47F1-A85B-917C4BACB335}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Core", "Conduit.Core\Conduit.Core.csproj", "{E24A1228-AB6B-4C46-AD58-AFA732E9138D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Identity.Domain.Tests.Unit", "Conduit.Identity.Domain.Tests.Unit\Conduit.Identity.Domain.Tests.Unit.csproj", "{3BBBCD3C-A851-4117-9F13-FC2CA43BA9CB}"
+EndProject
 Global
 				GlobalSection(SolutionConfigurationPlatforms) = preSolution
 								Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 					{5498CD4B-C15A-47F1-A85B-917C4BACB335}.Debug|Any CPU.Build.0 = Debug|Any CPU
 					{5498CD4B-C15A-47F1-A85B-917C4BACB335}.Release|Any CPU.ActiveCfg = Release|Any CPU
 					{5498CD4B-C15A-47F1-A85B-917C4BACB335}.Release|Any CPU.Build.0 = Release|Any CPU
+					{E24A1228-AB6B-4C46-AD58-AFA732E9138D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+					{E24A1228-AB6B-4C46-AD58-AFA732E9138D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+					{E24A1228-AB6B-4C46-AD58-AFA732E9138D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+					{E24A1228-AB6B-4C46-AD58-AFA732E9138D}.Release|Any CPU.Build.0 = Release|Any CPU
+					{3BBBCD3C-A851-4117-9F13-FC2CA43BA9CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+					{3BBBCD3C-A851-4117-9F13-FC2CA43BA9CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+					{3BBBCD3C-A851-4117-9F13-FC2CA43BA9CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+					{3BBBCD3C-A851-4117-9F13-FC2CA43BA9CB}.Release|Any CPU.Build.0 = Release|Any CPU
 				EndGlobalSection
 				GlobalSection(SolutionProperties) = preSolution
 								HideSolutionNode = FALSE
