@@ -15,7 +15,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Conduit.Core\Conduit.Core.csproj" />
+      <ProjectReference Include="..\Conduit.Core.DataAccess\Conduit.Core.DataAccess.csproj" />
+      <ProjectReference Include="..\Conduit.Core.Validation\Conduit.Core.Validation.csproj" />
     </ItemGroup>
 
 </Project>

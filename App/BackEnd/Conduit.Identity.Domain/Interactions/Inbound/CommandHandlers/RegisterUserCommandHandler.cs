@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using Conduit.Core.Validation;
 using Conduit.Identity.Domain.Contracts.RegisterUser;
 using Conduit.Identity.Domain.Entities;
 using Conduit.Identity.Domain.Interactions.Outbound.Repositories;
@@ -7,7 +8,7 @@ using MediatR;
 
 namespace Conduit.Identity.Domain.Interactions.Inbound.CommandHandlers
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, RegisterUserResult>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, ValidateableResponse<RegisterUserResult>>
     {
         private readonly IUserRepository _userRepository;
 
@@ -16,7 +17,7 @@ namespace Conduit.Identity.Domain.Interactions.Inbound.CommandHandlers
             _userRepository = userRepository;
         }
 
-        public async Task<RegisterUserResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<ValidateableResponse<RegisterUserResult>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var newUser = new User
             {
@@ -27,10 +28,10 @@ namespace Conduit.Identity.Domain.Interactions.Inbound.CommandHandlers
             
             var userId = await _userRepository.Create(newUser);
             
-            return new RegisterUserResult
+            return new ValidateableResponse<RegisterUserResult>(new RegisterUserResult
             {
                 UserId = userId
-            };
+            });
         }
     }
 }

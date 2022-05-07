@@ -17,6 +17,16 @@ namespace Conduit.Identity.Domain.Interactions.Outbound.Repositories
         {
             throw new System.NotImplementedException();
         }
+        
+        public Task<bool> ExistsByUsername(string username)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<bool> ExistsByEmail(string email)
+        {
+            throw new System.NotImplementedException();
+        }
 
         public Task<User> GetById(int id)
         {
