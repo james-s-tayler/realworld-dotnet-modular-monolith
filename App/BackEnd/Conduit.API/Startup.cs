@@ -82,7 +82,7 @@ namespace Conduit.API
                     c.CustomSchemaIds(type => type.FriendlyId(true));
                     c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{Assembly.GetEntryAssembly().GetName().Name}.xml");
                     // Sets the basePath property in the OpenAPI document generated
-                    c.DocumentFilter<BasePathFilter>("/api");
+                    //c.DocumentFilter<BasePathFilter>("/api");
 
                     // Include DataAnnotation attributes on Controller Action parameters as OpenAPI validation rules (e.g required, pattern, ..)
                     // Use [ValidateModelState] on Actions to actually validate it in C# as well!
@@ -118,6 +118,8 @@ namespace Conduit.API
             app.UseStaticFiles();
             
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();

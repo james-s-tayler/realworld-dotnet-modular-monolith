@@ -32,8 +32,6 @@ namespace Conduit.API.Filters
         /// <param name="context">FilterContext</param>
         public void Apply(OpenApiDocument openapiDoc, DocumentFilterContext context)
         {
-            //openapiDoc.BasePath = BasePath;
-
             var pathsToModify = openapiDoc.Paths.Where(p => p.Key.StartsWith(BasePath)).ToList();
 
             foreach (var (key, value) in pathsToModify)
