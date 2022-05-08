@@ -6,7 +6,7 @@ using Conduit.Identity.Domain.Entities;
 using Conduit.Identity.Domain.Interactions.Outbound.Repositories;
 using MediatR;
 
-namespace Conduit.Identity.Domain.Interactions.Inbound.CommandHandlers
+namespace Conduit.Identity.Domain.Interactions.Inbound.CommandHandlers.RegisterUser
 {
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, ValidateableResponse<RegisterUserResult>>
     {

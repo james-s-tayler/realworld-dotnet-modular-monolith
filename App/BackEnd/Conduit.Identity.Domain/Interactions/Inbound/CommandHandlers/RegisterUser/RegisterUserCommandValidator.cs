@@ -1,9 +1,10 @@
 using System.Threading;
 using System.Threading.Tasks;
+using Conduit.Identity.Domain.Contracts.RegisterUser;
 using Conduit.Identity.Domain.Interactions.Outbound.Repositories;
 using FluentValidation;
 
-namespace Conduit.Identity.Domain.Contracts.RegisterUser
+namespace Conduit.Identity.Domain.Interactions.Inbound.CommandHandlers.RegisterUser
 {
     public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
     {
