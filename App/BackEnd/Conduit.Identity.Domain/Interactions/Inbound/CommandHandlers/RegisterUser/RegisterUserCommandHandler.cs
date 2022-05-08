@@ -5,16 +5,20 @@ using Conduit.Identity.Domain.Contracts.RegisterUser;
 using Conduit.Identity.Domain.Entities;
 using Conduit.Identity.Domain.Interactions.Outbound.Repositories;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 
 namespace Conduit.Identity.Domain.Interactions.Inbound.CommandHandlers.RegisterUser
 {
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, ValidateableResponse<RegisterUserResult>>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IPasswordHasher<User> _passwordHasher;
 
-        public RegisterUserCommandHandler(IUserRepository userRepository)
+        public RegisterUserCommandHandler(IUserRepository userRepository, 
+            IPasswordHasher<User> passwordHasher)
         {
             _userRepository = userRepository;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<ValidateableResponse<RegisterUserResult>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
@@ -22,9 +26,10 @@ namespace Conduit.Identity.Domain.Interactions.Inbound.CommandHandlers.RegisterU
             var newUser = new User
             {
                 Username = request.NewUser.Username,
-                Email = request.NewUser.Email,
-                Password = request.NewUser.Password
+                Email = request.NewUser.Email
             };
+
+            newUser.Password = _passwordHasher.HashPassword(newUser, request.NewUser.Password);
             
             var userId = await _userRepository.Create(newUser);
             
