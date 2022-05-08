@@ -7,14 +7,14 @@ using Conduit.Identity.Domain.Interactions.Outbound.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace Conduit.Identity.Domain.Interactions.Inbound.CommandHandlers.RegisterUser
+namespace Conduit.Identity.Domain.Interactions.Inbound.Commands.RegisterUser
 {
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, ValidateableResponse<RegisterUserResult>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher<User> _passwordHasher;
 
-        public RegisterUserCommandHandler(IUserRepository userRepository, 
+        public RegisterUserCommandHandler(IUserRepository userRepository,
             IPasswordHasher<User> passwordHasher)
         {
             _userRepository = userRepository;

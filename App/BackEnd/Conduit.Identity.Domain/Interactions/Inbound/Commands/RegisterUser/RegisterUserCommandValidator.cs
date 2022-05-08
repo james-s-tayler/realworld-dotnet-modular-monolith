@@ -4,7 +4,7 @@ using Conduit.Identity.Domain.Contracts.RegisterUser;
 using Conduit.Identity.Domain.Interactions.Outbound.Repositories;
 using FluentValidation;
 
-namespace Conduit.Identity.Domain.Interactions.Inbound.CommandHandlers.RegisterUser
+namespace Conduit.Identity.Domain.Interactions.Inbound.Commands.RegisterUser
 {
     public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
     {

@@ -9,7 +9,7 @@ namespace Conduit.Core.DataAccess
         Task<TEntity> GetById(TId id);
         Task<IEnumerable<TEntity>> GetAll();
         Task<TId> Create(TEntity entity);
-        Task<TEntity> Update(TEntity entity);
+        Task Update(TEntity entity);
         Task Delete(TId id);
     }
 }

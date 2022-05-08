@@ -4,6 +4,8 @@ using Conduit.Identity.Domain.Entities;
 
 namespace Conduit.Identity.Domain.Interactions.Outbound.Repositories
 {
+    //for integration testing turn synchronous_commit off in postgres to speed up integration tests
+    
     public class PostgresUserRepository : IUserRepository
     {
         /*private readonly IDbConnectionFactory _dbConnectionFactory;
@@ -58,7 +60,7 @@ namespace Conduit.Identity.Domain.Interactions.Outbound.Repositories
             return userId; */
         }
 
-        public Task<User> Update(User entity)
+        public Task Update(User entity)
         {
             throw new System.NotImplementedException();
         }

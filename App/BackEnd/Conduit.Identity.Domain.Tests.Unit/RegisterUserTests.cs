@@ -23,7 +23,7 @@ namespace Conduit.Identity.Domain.Tests.Unit
         //test password strength requirements are met
         
         [Fact]
-        public async Task GivenANewUser_WhenRegistered_ThenNewUserIdReturned()
+        public async Task GivenANewUser_WhenRegisterUser_ThenNewUserIdReturned()
         {
             //arrange
             var random = new Random();
@@ -71,7 +71,7 @@ namespace Conduit.Identity.Domain.Tests.Unit
         }
         
         [Fact]
-        public async Task GivenAPassword_WhenUserRegistered_ThenPasswordHashedWithBcrypt()
+        public async Task GivenAPassword_WhenRegisterUser_ThenPasswordHashedWithBcrypt()
         {
             //arrange
             var random = new Random();
@@ -119,7 +119,7 @@ namespace Conduit.Identity.Domain.Tests.Unit
         }
         
         [Fact]
-        public async Task GivenAUsernameAlreadyInUse_WhenRegistered_ThenFailsValidation()
+        public async Task GivenAUsernameAlreadyInUse_WhenRegisterUser_ThenFailsValidation()
         {
             //arrange
             var random = new Random();
@@ -161,7 +161,7 @@ namespace Conduit.Identity.Domain.Tests.Unit
         }
         
         [Fact]
-        public async Task GivenAnEmailAlreadyInUse_WhenRegistered_ThenFailsValidation()
+        public async Task GivenAnEmailAlreadyInUse_WhenRegisterUser_ThenFailsValidation()
         {
             //arrange
             var random = new Random();
