@@ -12,6 +12,7 @@ using Conduit.API.Authentication;
 using Conduit.API.Filters;
 using Conduit.API.OpenApi;
 using Conduit.API.Formatters;
+using MediatR;
 
 namespace Conduit.API
 {
@@ -57,6 +58,7 @@ namespace Conduit.API
                 {
                     options.InputFormatters.Insert(0, new InputFormatterStream());
                 });
+            services.AddMediatR(Assembly.GetExecutingAssembly());
 
             services
                 .AddSwaggerGen(c =>

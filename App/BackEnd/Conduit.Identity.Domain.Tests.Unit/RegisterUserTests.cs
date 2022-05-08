@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Conduit.Core.Validation;
+using Conduit.Identity.Domain.Contracts;
 using Conduit.Identity.Domain.Contracts.RegisterUser;
 using Conduit.Identity.Domain.Entities;
 using Conduit.Identity.Domain.Interactions.Outbound.Repositories;
