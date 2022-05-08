@@ -16,6 +16,7 @@ namespace Conduit.Identity.Domain.Tests.Unit
 {
     public class RegisterUserTests
     {
+        //should refactor these tests to make the arrange phase less noisy - use either a fixture or helper methods
 
         [Fact]
         public async Task GivenANewUser_WhenRegistered_ThenNewUserIdReturned()
@@ -23,9 +24,14 @@ namespace Conduit.Identity.Domain.Tests.Unit
             //arrange
             var random = new Random();
             var userId = random.Next(1, 1000);
+
+            User registeredUser = null; 
             
             var userRepo = new Mock<IUserRepository>();
-            userRepo.Setup(repository => repository.Create(It.IsAny<User>())).Returns(Task.FromResult(userId));
+            userRepo.Setup(repository => repository.Create(It.IsAny<User>()))
+                .Callback<User>(u => registeredUser = u)
+                .Returns(Task.FromResult(userId));
+            
 
             var services = new ServiceCollection();
             services.AddTransient(_ => userRepo.Object);
@@ -54,6 +60,10 @@ namespace Conduit.Identity.Domain.Tests.Unit
             //assert
             Assert.True(result.IsValidResponse);
             Assert.Equal(userId, result.Result.UserId);
+            Assert.NotNull(registeredUser);
+            Assert.Equal(registerUserCommand.NewUser.Email, registeredUser.Email);
+            Assert.Equal(registerUserCommand.NewUser.Username, registeredUser.Username);
+            Assert.Equal(registerUserCommand.NewUser.Password, registeredUser.Password);
         }
         
         [Fact]
