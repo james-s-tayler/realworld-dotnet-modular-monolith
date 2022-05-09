@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
@@ -14,7 +13,7 @@ namespace Conduit.Core.Validation
     //adapted from: https://medium.com/the-cloud-builders-guild/validation-without-exceptions-using-a-mediatr-pipeline-behavior-278f124836dc
     public class CommandValidationPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> 
         where TResponse : class
-        where TRequest : IRequest<TResponse>, IValidateable //apply to all Commands marked with IValidateable marker interface
+        where TRequest : IRequest<TResponse>
     {
         private readonly IEnumerable<IValidator<TRequest>> _commandValidators;
         private readonly ILogger<CommandValidationPipelineBehavior<TRequest, TResponse>> _logger;
@@ -41,7 +40,7 @@ namespace Conduit.Core.Validation
             _logger.LogError("Validation Error: " + validationResult.Errors.Select(s => s.ErrorMessage)
                         .Aggregate((acc, curr) => acc += string.Concat("_|_", curr)));
 
-            return CreateValidatableResponseWithErrors(validationResult);
+            return CreateValidationErrorOperationResponse(validationResult);
         }
 
         private async Task<ValidationResult> DoValidation(TRequest command, CancellationToken cancellationToken)
@@ -54,18 +53,19 @@ namespace Conduit.Core.Validation
 
         private bool IsValidatable()
         {
-            return _commandValidators.Any() ||       //obviously we can't validate anything with no validators
-                   !typeof(TResponse).IsGenericType; //and we can only handle ValidatableResponse<T>
+            var responseType = typeof(TResponse);
+            return (_commandValidators != null && _commandValidators.Any()) ||       //obviously we can't validate anything with no validators
+                   !responseType.IsGenericType ||
+                   !responseType.DeclaringType.Name.Contains("OperationResponse"); //and we can only handle OperationResponse<T>
         }
 
-        private TResponse CreateValidatableResponseWithErrors(ValidationResult validationResult)
+        private TResponse CreateValidationErrorOperationResponse(ValidationResult validationResult)
         {
             var resultType = typeof(TResponse).GetGenericArguments()[0];
-            var invalidResponseType = typeof(ValidateableResponse<>).MakeGenericType(resultType);
+            var operationResponseType = typeof(OperationResponse<>).MakeGenericType(resultType);
 
             var errorMessages = validationResult.Errors.Select(s => s.ErrorMessage).ToList();
-            var httpStatusCode = HttpStatusCode.BadRequest;
-            return Activator.CreateInstance(invalidResponseType, errorMessages, httpStatusCode) as TResponse;
+            return Activator.CreateInstance(operationResponseType, errorMessages, OperationResult.ValidationError) as TResponse;
         }
     }
 }

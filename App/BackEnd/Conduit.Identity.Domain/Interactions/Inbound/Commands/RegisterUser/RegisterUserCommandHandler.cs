@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Conduit.Identity.Domain.Interactions.Inbound.Commands.RegisterUser
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, ValidateableResponse<RegisterUserResult>>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, OperationResponse<RegisterUserResult>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher<User> _passwordHasher;
@@ -21,7 +21,7 @@ namespace Conduit.Identity.Domain.Interactions.Inbound.Commands.RegisterUser
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<ValidateableResponse<RegisterUserResult>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<OperationResponse<RegisterUserResult>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var newUser = new User
             {
@@ -33,7 +33,7 @@ namespace Conduit.Identity.Domain.Interactions.Inbound.Commands.RegisterUser
             
             var userId = await _userRepository.Create(newUser);
             
-            return new ValidateableResponse<RegisterUserResult>(new RegisterUserResult
+            return new OperationResponse<RegisterUserResult>(new RegisterUserResult
             {
                 UserId = userId
             });

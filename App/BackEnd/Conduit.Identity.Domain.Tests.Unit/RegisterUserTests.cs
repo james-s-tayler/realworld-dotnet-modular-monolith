@@ -64,8 +64,8 @@ namespace Conduit.Identity.Domain.Tests.Unit
             var result = await mediatR.Send(registerUserCommand);
             
             //assert
-            Assert.True(result.IsValidResponse);
-            Assert.Equal(userId, result.Result.UserId);
+            Assert.True(result.Result == OperationResult.Success);
+            Assert.Equal(userId, result.Response.UserId);
             Assert.NotNull(registeredUser);
             Assert.Equal(registerUserCommand.NewUser.Email, registeredUser.Email);
             Assert.Equal(registerUserCommand.NewUser.Username, registeredUser.Username);
@@ -157,7 +157,7 @@ namespace Conduit.Identity.Domain.Tests.Unit
             var result = await mediatR.Send(registerUserCommand);
             
             //assert
-            Assert.False(result.IsValidResponse);
+            Assert.True(result.Result == OperationResult.ValidationError);
             Assert.Equal("Username is already in use", result.ErrorMessage);
         }
         
@@ -199,7 +199,7 @@ namespace Conduit.Identity.Domain.Tests.Unit
             var result = await mediatR.Send(registerUserCommand);
             
             //assert
-            Assert.False(result.IsValidResponse);
+            Assert.True(result.Result == OperationResult.ValidationError);
             Assert.Equal("Email is already in use", result.ErrorMessage);
         }
     }
