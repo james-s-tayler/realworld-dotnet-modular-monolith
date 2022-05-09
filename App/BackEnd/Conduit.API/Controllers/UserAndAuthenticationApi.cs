@@ -16,6 +16,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using Newtonsoft.Json;
 using Conduit.API.Attributes;
 using Conduit.API.Models;
+using Conduit.Core.Validation;
 using Conduit.Identity.Domain.Contracts.RegisterUser;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -54,7 +55,7 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> CreateUser([FromBody]NewUserRequest body)
         {
-            var result = await _mediator.Send(new RegisterUserCommand
+            var operationResponse = await _mediator.Send(new RegisterUserCommand
             {
                 NewUser = new NewUserDTO
                 {
@@ -64,7 +65,18 @@ namespace Conduit.API.Controllers
                 }
             });
 
-            _logger.LogInformation($"Registered {body.User.Username} - UserId:{result.Response.UserId}");
+            if (operationResponse.Result == OperationResult.ValidationError)
+            {
+                return StatusCode((int) HttpStatusCode.UnprocessableEntity, new GenericErrorModel
+                {
+                    Errors = new GenericErrorModelErrors
+                    {
+                        Body = operationResponse.ErrorMessages
+                    }
+                });
+            }
+            
+            _logger.LogInformation($"Registered {body.User.Username} - UserId:{operationResponse.Response.UserId}");
 
             var newUser = new UserResponse
             {

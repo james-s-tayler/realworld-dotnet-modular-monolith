@@ -7,7 +7,7 @@ namespace Conduit.Core.Validation
     {
         public OperationResult Result { get; } = OperationResult.Success;
         
-        private readonly IList<string> _errorMessages = new List<string>();
+        public List<string> ErrorMessages { get; } = new ();
         
         public T Response { get; }
 
@@ -18,10 +18,10 @@ namespace Conduit.Core.Validation
         
         public OperationResponse(List<string> errorMessages, OperationResult result)
         {
-            _errorMessages = errorMessages;
+            ErrorMessages = errorMessages;
             Result = result;
         }
         
-        public string ErrorMessage => string.Join(",", _errorMessages);
+        public string ErrorMessage => string.Join(",", ErrorMessages);
     }
 }

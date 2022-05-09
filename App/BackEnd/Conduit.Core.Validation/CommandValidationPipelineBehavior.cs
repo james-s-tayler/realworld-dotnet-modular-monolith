@@ -61,6 +61,7 @@ namespace Conduit.Core.Validation
 
         private TResponse CreateValidationErrorOperationResponse(ValidationResult validationResult)
         {
+            //would be nice if this were encapsulated in an OperationResultFactory
             var resultType = typeof(TResponse).GetGenericArguments()[0];
             var operationResponseType = typeof(OperationResponse<>).MakeGenericType(resultType);
 
