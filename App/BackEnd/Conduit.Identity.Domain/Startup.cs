@@ -22,7 +22,7 @@ namespace Conduit.Identity.Domain
             
             builder.ConfigureServices(services =>
             {
-                services.AddScoped<IUserRepository, InMemoryUserRepository>();
+                services.AddSingleton<IUserRepository, InMemoryUserRepository>();
                 services.TryAddSingleton<IPasswordHasher<User>, BCryptPasswordHasher<User>>();
                 
                 services.AddMediatR(IdentityDomain.Assembly);

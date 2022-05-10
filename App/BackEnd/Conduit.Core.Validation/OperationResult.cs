@@ -4,6 +4,7 @@ namespace Conduit.Core.Validation
     {
         Success,
         ValidationError,
-        EntityNotFound
+        NotAuthenticated,
+        NotAuthorized
     }
 }

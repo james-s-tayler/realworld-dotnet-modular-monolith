@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,21 +49,7 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> CreateArticleComment([FromRoute (Name = "slug")][Required]string slug, [FromBody]NewCommentRequest comment)
         {
-
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(SingleCommentResponse));
-            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401);
-            //TODO: Uncomment the next line to return response 422 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(422, default(GenericErrorModel));
-            string exampleJson = null;
-            exampleJson = "{\n  \"comment\" : {\n    \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"author\" : {\n      \"image\" : \"image\",\n      \"following\" : true,\n      \"bio\" : \"bio\",\n      \"username\" : \"username\"\n    },\n    \"id\" : 0,\n    \"body\" : \"body\",\n    \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\"\n  }\n}";
-            
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<SingleCommentResponse>(exampleJson)
-            : default(SingleCommentResponse);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
+            return StatusCode((int)HttpStatusCode.NotImplemented);
         }
 
         /// <summary>
@@ -82,15 +69,7 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> DeleteArticleComment([FromRoute (Name = "slug")][Required]string slug, [FromRoute (Name = "id")][Required]int id)
         {
-
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
-            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401);
-            //TODO: Uncomment the next line to return response 422 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(422, default(GenericErrorModel));
-
-            throw new NotImplementedException();
+            return StatusCode((int)HttpStatusCode.NotImplemented);
         }
 
         /// <summary>
@@ -109,21 +88,7 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> GetArticleComments([FromRoute (Name = "slug")][Required]string slug)
         {
-
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(MultipleCommentsResponse));
-            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401);
-            //TODO: Uncomment the next line to return response 422 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(422, default(GenericErrorModel));
-            string exampleJson = null;
-            exampleJson = "{\n  \"comments\" : [ {\n    \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"author\" : {\n      \"image\" : \"image\",\n      \"following\" : true,\n      \"bio\" : \"bio\",\n      \"username\" : \"username\"\n    },\n    \"id\" : 0,\n    \"body\" : \"body\",\n    \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\"\n  }, {\n    \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"author\" : {\n      \"image\" : \"image\",\n      \"following\" : true,\n      \"bio\" : \"bio\",\n      \"username\" : \"username\"\n    },\n    \"id\" : 0,\n    \"body\" : \"body\",\n    \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\"\n  } ]\n}";
-            
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<MultipleCommentsResponse>(exampleJson)
-            : default(MultipleCommentsResponse);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
+            return StatusCode((int)HttpStatusCode.NotImplemented);
         }
     }
 }

@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,21 +47,7 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> CreateArticleFavorite([FromRoute (Name = "slug")][Required]string slug)
         {
-
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(SingleArticleResponse));
-            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401);
-            //TODO: Uncomment the next line to return response 422 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(422, default(GenericErrorModel));
-            string exampleJson = null;
-            exampleJson = "{\n  \"article\" : {\n    \"tagList\" : [ \"tagList\", \"tagList\" ],\n    \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"author\" : {\n      \"image\" : \"image\",\n      \"following\" : true,\n      \"bio\" : \"bio\",\n      \"username\" : \"username\"\n    },\n    \"description\" : \"description\",\n    \"title\" : \"title\",\n    \"body\" : \"body\",\n    \"favoritesCount\" : 0,\n    \"slug\" : \"slug\",\n    \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"favorited\" : true\n  }\n}";
-            
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<SingleArticleResponse>(exampleJson)
-            : default(SingleArticleResponse);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
+            return StatusCode((int)HttpStatusCode.NotImplemented);
         }
 
         /// <summary>
@@ -80,21 +67,7 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> DeleteArticleFavorite([FromRoute (Name = "slug")][Required]string slug)
         {
-
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(SingleArticleResponse));
-            //TODO: Uncomment the next line to return response 401 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(401);
-            //TODO: Uncomment the next line to return response 422 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(422, default(GenericErrorModel));
-            string exampleJson = null;
-            exampleJson = "{\n  \"article\" : {\n    \"tagList\" : [ \"tagList\", \"tagList\" ],\n    \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"author\" : {\n      \"image\" : \"image\",\n      \"following\" : true,\n      \"bio\" : \"bio\",\n      \"username\" : \"username\"\n    },\n    \"description\" : \"description\",\n    \"title\" : \"title\",\n    \"body\" : \"body\",\n    \"favoritesCount\" : 0,\n    \"slug\" : \"slug\",\n    \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"favorited\" : true\n  }\n}";
-            
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<SingleArticleResponse>(exampleJson)
-            : default(SingleArticleResponse);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
+            return StatusCode((int)HttpStatusCode.NotImplemented);
         }
     }
 }

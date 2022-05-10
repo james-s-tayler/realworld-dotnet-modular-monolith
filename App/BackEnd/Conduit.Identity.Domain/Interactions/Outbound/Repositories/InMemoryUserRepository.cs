@@ -16,6 +16,16 @@ namespace Conduit.Identity.Domain.Interactions.Outbound.Repositories
         {
             return Task.FromResult(_repo.ContainsKey(id));
         }
+        
+        public Task<bool> ExistsByUsername(string username)
+        {
+            return Task.FromResult(_repo.Values.Any(user => user.Username.Equals(username)));
+        }
+
+        public Task<bool> ExistsByEmail(string email)
+        {
+            return Task.FromResult(_repo.Values.Any(user => user.Email.Equals(email)));
+        }
 
         public async Task<User> GetById(int id)
         {
@@ -23,6 +33,11 @@ namespace Conduit.Identity.Domain.Interactions.Outbound.Repositories
                 return _repo[id];
             
             return default;
+        }
+        
+        public Task<User> GetByEmail(string email)
+        {
+            return Task.FromResult(_repo.Values.SingleOrDefault(user => user.Email.Equals(email)));
         }
 
         public Task<IEnumerable<User>> GetAll()
@@ -47,16 +62,6 @@ namespace Conduit.Identity.Domain.Interactions.Outbound.Repositories
         {
             _repo.Remove(id, out _);
             return Task.CompletedTask;
-        }
-
-        public Task<bool> ExistsByUsername(string username)
-        {
-            return Task.FromResult(_repo.Values.Any(user => user.Username.Equals(username)));
-        }
-
-        public Task<bool> ExistsByEmail(string email)
-        {
-            return Task.FromResult(_repo.Values.Any(user => user.Email.Equals(email)));
         }
     }
 }

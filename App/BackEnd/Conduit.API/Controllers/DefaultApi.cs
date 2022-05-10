@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -43,19 +44,7 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> TagsGet()
         {
-
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(TagsResponse));
-            //TODO: Uncomment the next line to return response 422 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(422, default(GenericErrorModel));
-            string exampleJson = null;
-            exampleJson = "{\n  \"tags\" : [ \"tags\", \"tags\" ]\n}";
-            
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<TagsResponse>(exampleJson)
-            : default(TagsResponse);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
+            return StatusCode((int)HttpStatusCode.NotImplemented);
         }
     }
 }
