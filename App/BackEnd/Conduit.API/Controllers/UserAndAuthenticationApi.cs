@@ -57,7 +57,7 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> CreateUser([FromBody]NewUserRequest request)
         {
-            var operationResponse = await _mediator.Send(new RegisterUserCommand
+            var registerUserResponse = await _mediator.Send(new RegisterUserCommand
             {
                 NewUser = new NewUserDTO
                 {
@@ -67,10 +67,10 @@ namespace Conduit.API.Controllers
                 }
             });
             
-            if (operationResponse.Result != OperationResult.Success)
-                return UnsuccessfulResponseResult(operationResponse);
+            if (registerUserResponse.Result != OperationResult.Success)
+                return UnsuccessfulResponseResult(registerUserResponse);
 
-            _logger.LogInformation($"Registered {request.User.Username} - UserId:{operationResponse.Response.UserId}");
+            _logger.LogInformation($"Registered {request.User.Username} - UserId:{registerUserResponse.Response.UserId}");
 
             var loginResponse = await _mediator.Send(new LoginUserCommand
             {
@@ -82,19 +82,20 @@ namespace Conduit.API.Controllers
             });
             
             if (loginResponse.Result != OperationResult.Success)
-                return UnsuccessfulResponseResult(operationResponse);
+                return UnsuccessfulResponseResult(registerUserResponse);
             if (!loginResponse.Response.IsAuthenticated)
                 throw new ApplicationException("Failed to authenticated newly created user.");
-            
+
+            var loggedInUser = loginResponse.Response.LoggedInUser;
             var newUser = new UserResponse
             {
                 User = new User
                 {
-                    Email = request.User.Email,
-                    Username = request.User.Username,
+                    Email = loggedInUser.Email,
+                    Username = loggedInUser.Username,
+                    Token = loggedInUser.Token,
                     Bio = "I work at statefarm",
-                    Image = null,
-                    Token = loginResponse.Response.Token
+                    Image = null
                 }
             };
             
@@ -164,7 +165,7 @@ namespace Conduit.API.Controllers
         {
             //this can purely be auth then once authed simply redirect to GetCurrentUser!
             
-            var operationResponse = await _mediator.Send(new LoginUserCommand
+            var loginResponse = await _mediator.Send(new LoginUserCommand
             {
                 UserCredentials = new UserCredentialsDTO
                 {
@@ -173,21 +174,22 @@ namespace Conduit.API.Controllers
                 }
             });
             
-            if (operationResponse.Result != OperationResult.Success)
-                return UnsuccessfulResponseResult(operationResponse);
-            if (!operationResponse.Response.IsAuthenticated)
+            if (loginResponse.Result != OperationResult.Success)
+                return UnsuccessfulResponseResult(loginResponse);
+            if (!loginResponse.Response.IsAuthenticated)
                 return Unauthorized();
             
             //need to either redirect to GetCurrentUser or implement that query and call it here
+            var loggedInUser = loginResponse.Response.LoggedInUser;
             var user = new UserResponse
             {
                 User = new User
                 {
-                    Email = request.User.Email,
-                    Username = "request.User.Username", //this needs fixing
+                    Email = loggedInUser.Email,
+                    Username = loggedInUser.Username,
+                    Token = loggedInUser.Token,
                     Bio = "I work at statefarm",
-                    Image = null,
-                    Token = operationResponse.Response.Token
+                    Image = null
                 }
             };
             return Ok(user);

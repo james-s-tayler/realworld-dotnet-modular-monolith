@@ -4,18 +4,25 @@ namespace Conduit.Identity.Domain.Contracts.LoginUser
 {
     public class LoginUserResult
     {
-        public string Token { get; } = "";
+        public LoggedInUserDTO LoggedInUser { get; }
 
-        public LoginUserResult() {}
+        private LoginUserResult() {}
 
-        public LoginUserResult(string token)
+        private LoginUserResult(LoggedInUserDTO loggedInUser)
         {
-            if (string.IsNullOrEmpty(token))
-                throw new ArgumentNullException(token);
-
-            Token = token;
+            LoggedInUser = loggedInUser ?? throw new ArgumentNullException(nameof(loggedInUser));
         }
 
-        public bool IsAuthenticated => !Token.Equals(string.Empty);
+        public bool IsAuthenticated => LoggedInUser != null;
+
+        public static LoginUserResult FailedLoginResult()
+        {
+            return new LoginUserResult();
+        }
+
+        public static LoginUserResult SuccessfulLoginResult(LoggedInUserDTO loggedInUserDto)
+        {
+            return new LoginUserResult(loggedInUserDto);
+        }
     }
 }

@@ -28,12 +28,17 @@ namespace Conduit.Identity.Domain.Interactions.Inbound.Commands.LoginUser
             var result = _passwordHasher.VerifyHashedPassword(user, user.Password, request.UserCredentials.Password);
 
             if (result == PasswordVerificationResult.Failed)
-                return new OperationResponse<LoginUserResult>(new LoginUserResult());
+                return new OperationResponse<LoginUserResult>(LoginUserResult.FailedLoginResult());
             
             //generate token
             var token = "jwt";
             
-            return new OperationResponse<LoginUserResult>(new LoginUserResult(token));
+            return new OperationResponse<LoginUserResult>(LoginUserResult.SuccessfulLoginResult(new LoggedInUserDTO
+            {
+                Email = user.Email,
+                Username = user.Username,
+                Token = token
+            }));
         }
     }
 }
