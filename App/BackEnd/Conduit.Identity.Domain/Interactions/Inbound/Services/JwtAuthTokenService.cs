@@ -4,24 +4,25 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Conduit.Identity.Domain.Configuration;
 using Conduit.Identity.Domain.Entities;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Conduit.Identity.Domain.Interactions.Inbound.Services
 {
     public class JwtAuthTokenService : IAuthTokenService
     {
-        private readonly IConfiguration _configuration;
+        private readonly JwtSettings _jwtSettings;
 
-        public JwtAuthTokenService(IConfiguration configuration)
+        public JwtAuthTokenService(IOptions<JwtSettings> jwtSettings)
         {
-            _configuration = configuration;
+            _jwtSettings = jwtSettings.Value;
         }
 
         public Task<string> GenerateAuthToken(User user)
         {
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
 
             var authClaims = new List<Claim>();
             authClaims.Add(new Claim("user_id", user.Id.ToString()));
@@ -29,8 +30,8 @@ namespace Conduit.Identity.Domain.Interactions.Inbound.Services
             authClaims.Add(new Claim("email", user.Email));
             
             var token = new JwtSecurityToken(
-                issuer: _configuration["JWT:ValidIssuer"],
-                audience: _configuration["JWT:ValidAudience"],
+                issuer: _jwtSettings.ValidIssuer,
+                audience: _jwtSettings.ValidAudience,
                 expires: DateTime.Now.AddHours(3),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)

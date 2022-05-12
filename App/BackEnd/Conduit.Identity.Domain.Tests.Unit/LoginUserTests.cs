@@ -1,11 +1,15 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Castle.Core.Configuration;
 using Conduit.Core.Validation;
+using Conduit.Identity.Domain.Configuration;
 using Conduit.Identity.Domain.Contracts.LoginUser;
 using Conduit.Identity.Domain.Entities;
 using Conduit.Identity.Domain.Interactions.Inbound.Services;
 using Conduit.Identity.Domain.Interactions.Outbound.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -35,16 +39,20 @@ namespace Conduit.Identity.Domain.Tests.Unit
             var userRepo = new Mock<IUserRepository>();
             userRepo.Setup(repository => repository.ExistsByEmail(It.Is<string>(s => s.Equals(_user.Email)))).Returns(Task.FromResult(true));
             userRepo.Setup(repository => repository.GetByEmail(It.Is<string>(s => s.Equals(_user.Email)))).Returns(Task.FromResult(_user));
-
-            var tokenService = new Mock<IAuthTokenService>();
-            tokenService.Setup(service => service.GenerateAuthToken(It.IsAny<User>())).Returns(Task.FromResult("jwt"));
             
             var identityModule = new ModuleStartup();
             var services = new ServiceCollection();
+            var configuration = new ConfigurationBuilder();
+            configuration.AddInMemoryCollection(new Dictionary<string, string>
+            {
+                {$"{nameof(JwtSettings)}:{nameof(JwtSettings.Secret)}", "secretsecretsecretsecretsecretsecret"},
+                {$"{nameof(JwtSettings)}:{nameof(JwtSettings.ValidIssuer)}", "issuer"},
+                {$"{nameof(JwtSettings)}:{nameof(JwtSettings.ValidAudience)}", "audience"},
+            });
+            
             services.AddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
-            identityModule.AddServices(services);
+            identityModule.AddServices(configuration.Build(), services);
             identityModule.ReplaceSingleton(userRepo.Object);
-            identityModule.ReplaceSingleton(tokenService.Object);
             identityModule.ReplaceSingleton<IPasswordHasher<User>, BCryptPasswordHasher<User>>(PasswordHasher);
             
             var provider = services.BuildServiceProvider();

@@ -29,7 +29,7 @@ namespace Conduit.API
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey,
-                        $"{IdentityDomain.AssemblyName}");
+                        $"{IdentityDomain.Assembly.GetName().Name}");
                    webBuilder.UseStartup<Startup>();
                 });
     }

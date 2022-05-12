@@ -4,6 +4,7 @@ using Conduit.Core.Validation;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -16,16 +17,29 @@ namespace Conduit.Core.Startup
         public void Configure(IWebHostBuilder builder)
         {
             Console.WriteLine($"Registering Module: {GetModuleAssembly().GetName().Name}");
-            builder.ConfigureServices(AddServices);
+            builder.ConfigureServices((context, services) =>
+            {
+                AddServices(context.Configuration, services);
+            });
         }
 
-        public void AddServices(IServiceCollection services)
+        public void AddServices(IConfiguration configuration, IServiceCollection services)
         {
             _services = services;
             AddModuleUseCases(_services);
-            AddModuleServices(_services);
+            AddModuleServices(configuration, _services);
         }
 
+        private void AddModuleUseCases(IServiceCollection services)
+        {
+            services.AddMediatR(GetModuleAssembly());
+            services.AddValidatorsFromAssembly(GetModuleAssembly());
+            services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(CommandValidationPipelineBehavior<,>));
+        }
+
+        protected abstract Assembly GetModuleAssembly();
+        protected abstract void AddModuleServices(IConfiguration configuration, IServiceCollection services);
+        
         public void ReplaceSingleton<TImplementation>(TImplementation implementation) where TImplementation : class
         {
             _services.Replace(ServiceDescriptor.Singleton(_ => implementation));
@@ -55,15 +69,5 @@ namespace Conduit.Core.Startup
         {
             _services.Replace(ServiceDescriptor.Transient<TInterface, TImplementation>(_ => implementation));
         }
-
-        private void AddModuleUseCases(IServiceCollection services)
-        {
-            services.AddMediatR(GetModuleAssembly());
-            services.AddValidatorsFromAssembly(GetModuleAssembly());
-            services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(CommandValidationPipelineBehavior<,>));
-        }
-
-        protected abstract Assembly GetModuleAssembly();
-        protected abstract void AddModuleServices(IServiceCollection services);
     }
 }

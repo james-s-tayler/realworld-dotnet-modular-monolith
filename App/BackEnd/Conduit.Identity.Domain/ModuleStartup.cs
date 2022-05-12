@@ -1,14 +1,13 @@
-using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Conduit.Core.Startup;
-using Conduit.Core.Validation;
+using Conduit.Identity.Domain.Configuration;
 using Conduit.Identity.Domain.Entities;
 using Conduit.Identity.Domain.Interactions.Inbound.Services;
 using Conduit.Identity.Domain.Interactions.Outbound.Repositories;
-using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using ScottBrady91.AspNetCore.Identity;
@@ -25,11 +24,12 @@ namespace Conduit.Identity.Domain
             return IdentityDomain.Assembly;
         }
 
-        protected override void AddModuleServices(IServiceCollection services)
+        protected override void AddModuleServices(IConfiguration configuration, IServiceCollection services)
         {
             services.TryAddSingleton<IPasswordHasher<User>, BCryptPasswordHasher<User>>();
             services.AddSingleton<IUserRepository, InMemoryUserRepository>();
             services.AddSingleton<IAuthTokenService, JwtAuthTokenService>();
+            services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
         }
     }
 }

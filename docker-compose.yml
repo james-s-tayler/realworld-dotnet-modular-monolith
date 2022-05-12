@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
     environment:
      - ASPNETCORE_ENVIRONMENT=Docker
-     - JWT__SECRET=secret
+     - JWTSETTINGS__SECRET=secretsecretsecretsecretsecretsecret
      - OTEL_SERVICE_NAME=Conduit.API
      - SEQ_URL=http://seq_logs:5341
      - GIT_COMMIT_HASH=${GIT_COMMIT_HASH}
