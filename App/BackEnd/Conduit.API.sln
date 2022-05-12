@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Core.DataAccess", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Identity.Domain.Contracts", "Conduit.Identity.Domain.Contracts\Conduit.Identity.Domain.Contracts.csproj", "{3B8A620A-56F2-422A-81CA-93A94426E7CA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Core.Startup", "Conduit.Core.Startup\Conduit.Core.Startup.csproj", "{466C0168-A72C-4344-958A-E7FC91D6EFFA}"
+EndProject
 Global
 				GlobalSection(SolutionConfigurationPlatforms) = preSolution
 								Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 					{3B8A620A-56F2-422A-81CA-93A94426E7CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 					{3B8A620A-56F2-422A-81CA-93A94426E7CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 					{3B8A620A-56F2-422A-81CA-93A94426E7CA}.Release|Any CPU.Build.0 = Release|Any CPU
+					{466C0168-A72C-4344-958A-E7FC91D6EFFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+					{466C0168-A72C-4344-958A-E7FC91D6EFFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+					{466C0168-A72C-4344-958A-E7FC91D6EFFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+					{466C0168-A72C-4344-958A-E7FC91D6EFFA}.Release|Any CPU.Build.0 = Release|Any CPU
 				EndGlobalSection
 				GlobalSection(SolutionProperties) = preSolution
 								HideSolutionNode = FALSE

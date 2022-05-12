@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +14,8 @@ using Conduit.API.Filters;
 using Conduit.API.OpenApi;
 using Conduit.API.Formatters;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Conduit.API
 {
@@ -41,15 +44,26 @@ namespace Conduit.API
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IAuthorizationHandler, ApiKeyRequirementHandler>();
-            services.AddAuthorization(authConfig =>
+            services.AddAuthentication(options =>
             {
-                authConfig.AddPolicy("Token", policyBuilder =>
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    policyBuilder
-                        .AddRequirements(new ApiKeyRequirement(new[] { "my-secret-key" },"Token"));
-                });
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = Configuration["JWT:ValidAudience"],
+                    ValidIssuer = Configuration["JWT:ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
+                };
             });
+            services.AddAuthorization();
 
             // Add framework services.
             services
@@ -124,7 +138,8 @@ namespace Conduit.API
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
                 {
-                    endpoints.MapControllers();
+                    endpoints.MapControllers()
+                        .RequireAuthorization();
                 });
         }
     }

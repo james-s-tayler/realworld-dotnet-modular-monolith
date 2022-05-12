@@ -173,6 +173,9 @@ namespace Conduit.Identity.Domain.Tests.Unit
             userRepo.Setup(repository => repository.ExistsByEmail(It.IsAny<string>())).Returns(Task.FromResult(true));
             userRepo.Setup(repository => repository.ExistsByUsername(It.IsAny<string>())).Returns(Task.FromResult(false));
 
+            /*var startup = new ModuleStartup();
+            var services = new ServiceCollection();
+            startup.AddServices(services);*/
             var services = new ServiceCollection();
             services.AddTransient(_ => userRepo.Object);
             services.AddSingleton(typeof(ILogger<>), typeof(NullLogger<>));

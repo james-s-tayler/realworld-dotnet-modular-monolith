@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using Newtonsoft.Json;
 using Conduit.API.Attributes;
 using Conduit.API.Models;
 using Conduit.Core.Validation;
@@ -29,6 +28,8 @@ namespace Conduit.API.Controllers
     /// 
     /// </summary>
     [ApiController]
+    [Produces("application/json")]
+    [Consumes("application/json")]
     public class UserAndAuthenticationApiController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -49,8 +50,8 @@ namespace Conduit.API.Controllers
         /// <response code="201">OK</response>
         /// <response code="422">Unexpected error</response>
         [HttpPost]
+        [AllowAnonymous]
         [Route("/api/users")]
-        [Consumes("application/json")]
         [ValidateModelState]
         [SwaggerOperation("CreateUser")]
         [SwaggerResponse(statusCode: 201, type: typeof(UserResponse), description: "OK")]
@@ -136,7 +137,6 @@ namespace Conduit.API.Controllers
         /// <response code="422">Unexpected error</response>
         [HttpGet]
         [Route("/api/user")]
-        [Authorize(Policy = "Token")]
         [ValidateModelState]
         [SwaggerOperation("GetCurrentUser")]
         [SwaggerResponse(statusCode: 200, type: typeof(UserResponse), description: "OK")]
@@ -155,6 +155,7 @@ namespace Conduit.API.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="422">Unexpected error</response>
         [HttpPost]
+        [AllowAnonymous]
         [Route("/api/users/login")]
         [Consumes("application/json")]
         [ValidateModelState]
@@ -205,7 +206,6 @@ namespace Conduit.API.Controllers
         /// <response code="422">Unexpected error</response>
         [HttpPut]
         [Route("/api/user")]
-        [Authorize(Policy = "Token")]
         [Consumes("application/json")]
         [ValidateModelState]
         [SwaggerOperation("UpdateCurrentUser")]

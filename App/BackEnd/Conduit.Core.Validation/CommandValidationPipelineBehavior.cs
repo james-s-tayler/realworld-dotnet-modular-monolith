@@ -27,7 +27,7 @@ namespace Conduit.Core.Validation
 
         public async Task<TResponse> Handle(TRequest command, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            if(!IsValidatable()) 
+            if(!IsValidatable())
                 return await next();
 
             var validationResult = await DoValidation(command, cancellationToken);

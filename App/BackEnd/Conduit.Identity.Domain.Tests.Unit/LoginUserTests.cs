@@ -1,11 +1,9 @@
-using System;
 using System.Threading.Tasks;
 using Conduit.Core.Validation;
 using Conduit.Identity.Domain.Contracts.LoginUser;
-using Conduit.Identity.Domain.Contracts.RegisterUser;
 using Conduit.Identity.Domain.Entities;
+using Conduit.Identity.Domain.Interactions.Inbound.Services;
 using Conduit.Identity.Domain.Interactions.Outbound.Repositories;
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,16 +35,18 @@ namespace Conduit.Identity.Domain.Tests.Unit
             var userRepo = new Mock<IUserRepository>();
             userRepo.Setup(repository => repository.ExistsByEmail(It.Is<string>(s => s.Equals(_user.Email)))).Returns(Task.FromResult(true));
             userRepo.Setup(repository => repository.GetByEmail(It.Is<string>(s => s.Equals(_user.Email)))).Returns(Task.FromResult(_user));
-            
-            var services = new ServiceCollection();
-            services.AddTransient(_ => userRepo.Object);
-            services.AddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
-            services.AddSingleton<IPasswordHasher<User>, BCryptPasswordHasher<User>>(_ => PasswordHasher);
-            
-            services.AddMediatR(IdentityDomain.Assembly);
-            services.AddValidatorsFromAssembly(IdentityDomain.Assembly);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandValidationPipelineBehavior<,>));
 
+            var tokenService = new Mock<IAuthTokenService>();
+            tokenService.Setup(service => service.GenerateAuthToken(It.IsAny<User>())).Returns(Task.FromResult("jwt"));
+            
+            var identityModule = new ModuleStartup();
+            var services = new ServiceCollection();
+            services.AddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
+            identityModule.AddServices(services);
+            identityModule.ReplaceSingleton(userRepo.Object);
+            identityModule.ReplaceSingleton(tokenService.Object);
+            identityModule.ReplaceSingleton<IPasswordHasher<User>, BCryptPasswordHasher<User>>(PasswordHasher);
+            
             var provider = services.BuildServiceProvider();
             _mediator = provider.GetRequiredService<IMediator>();
         }
