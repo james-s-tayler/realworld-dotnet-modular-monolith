@@ -17,8 +17,9 @@ using Swashbuckle.AspNetCore.Annotations;
 using Conduit.API.Attributes;
 using Conduit.API.Models;
 using Conduit.Core.Validation;
-using Conduit.Identity.Domain.Contracts.LoginUser;
-using Conduit.Identity.Domain.Contracts.RegisterUser;
+using Conduit.Identity.Domain.Contracts.Commands.LoginUser;
+using Conduit.Identity.Domain.Contracts.Commands.RegisterUser;
+using Conduit.Identity.Domain.Contracts.Queries.GetCurrentUser;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -143,7 +144,28 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> GetCurrentUser()
         {
-            return StatusCode((int)HttpStatusCode.NotImplemented);
+            var getCurrentUserResponse = await _mediator.Send(new GetCurrentUserQuery());
+            
+            if (getCurrentUserResponse.Result != OperationResult.Success)
+                return UnsuccessfulResponseResult(getCurrentUserResponse);
+            
+            var currentUser = getCurrentUserResponse.Response.CurrentUser;
+            
+            //get profile for currentUser.Id
+            
+            var user = new UserResponse
+            {
+                User = new User
+                {
+                    Email = currentUser.Email,
+                    Username = currentUser.Username,
+                    Token = currentUser.Token,
+                    Bio = "I work at statefarm", //need to load profile
+                    Image = null
+                }
+            };
+            
+            return Ok(user);
         }
 
         /// <summary>

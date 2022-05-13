@@ -54,9 +54,14 @@ namespace Conduit.Core.Validation
         private bool IsValidatable()
         {
             var responseType = typeof(TResponse);
-            return (_commandValidators != null && _commandValidators.Any()) ||       //obviously we can't validate anything with no validators
-                   !responseType.IsGenericType ||
-                   !responseType.DeclaringType.Name.Contains("OperationResponse"); //and we can only handle OperationResponse<T>
+            
+            if (_commandValidators == null || !_commandValidators.Any())
+                return false; //obviously we can't validate anything with no validators
+            
+            if(!responseType.IsGenericType || !responseType.Name.Contains("OperationResponse"))
+                return false; //and we can only handle OperationResponse<T>
+
+            return true;
         }
 
         private TResponse CreateValidationErrorOperationResponse(ValidationResult validationResult)

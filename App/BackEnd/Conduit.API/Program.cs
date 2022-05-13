@@ -1,5 +1,4 @@
 using Conduit.Identity.Domain;
-using Conduit.Identity.Domain.Contracts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
