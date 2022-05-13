@@ -40,7 +40,6 @@ namespace Conduit.API.Controllers
         /// <response code="422">Unexpected error</response>
         [HttpPost]
         [Route("/api/articles")]
-        [Authorize(Policy = "Token")]
         [Consumes("application/json")]
         [ValidateModelState]
         [SwaggerOperation("CreateArticle")]
@@ -61,7 +60,6 @@ namespace Conduit.API.Controllers
         /// <response code="422">Unexpected error</response>
         [HttpDelete]
         [Route("/api/articles/{slug}")]
-        [Authorize(Policy = "Token")]
         [ValidateModelState]
         [SwaggerOperation("DeleteArticle")]
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
@@ -78,6 +76,7 @@ namespace Conduit.API.Controllers
         /// <response code="200">OK</response>
         /// <response code="422">Unexpected error</response>
         [HttpGet]
+        [AllowAnonymous]
         [Route("/api/articles/{slug}")]
         [ValidateModelState]
         [SwaggerOperation("GetArticle")]
@@ -101,6 +100,7 @@ namespace Conduit.API.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="422">Unexpected error</response>
         [HttpGet]
+        [AllowAnonymous]
         [Route("/api/articles")]
         [ValidateModelState]
         [SwaggerOperation("GetArticles")]
@@ -122,7 +122,6 @@ namespace Conduit.API.Controllers
         /// <response code="422">Unexpected error</response>
         [HttpGet]
         [Route("/api/articles/feed")]
-        [Authorize(Policy = "Token")]
         [ValidateModelState]
         [SwaggerOperation("GetArticlesFeed")]
         [SwaggerResponse(statusCode: 200, type: typeof(MultipleArticlesResponse), description: "OK")]
@@ -143,7 +142,6 @@ namespace Conduit.API.Controllers
         /// <response code="422">Unexpected error</response>
         [HttpPut]
         [Route("/api/articles/{slug}")]
-        [Authorize(Policy = "Token")]
         [Consumes("application/json")]
         [ValidateModelState]
         [SwaggerOperation("UpdateArticle")]

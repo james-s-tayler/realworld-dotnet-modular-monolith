@@ -40,7 +40,6 @@ namespace Conduit.API.Controllers
         /// <response code="422">Unexpected error</response>
         [HttpPost]
         [Route("/api/articles/{slug}/favorite")]
-        [Authorize(Policy = "Token")]
         [ValidateModelState]
         [SwaggerOperation("CreateArticleFavorite")]
         [SwaggerResponse(statusCode: 200, type: typeof(SingleArticleResponse), description: "OK")]
@@ -60,7 +59,6 @@ namespace Conduit.API.Controllers
         /// <response code="422">Unexpected error</response>
         [HttpDelete]
         [Route("/api/articles/{slug}/favorite")]
-        [Authorize(Policy = "Token")]
         [ValidateModelState]
         [SwaggerOperation("DeleteArticleFavorite")]
         [SwaggerResponse(statusCode: 200, type: typeof(SingleArticleResponse), description: "OK")]

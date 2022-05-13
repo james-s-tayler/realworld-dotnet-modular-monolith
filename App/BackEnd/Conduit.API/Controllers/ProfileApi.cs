@@ -40,7 +40,6 @@ namespace Conduit.API.Controllers
         /// <response code="422">Unexpected error</response>
         [HttpPost]
         [Route("/api/profiles/{username}/follow")]
-        [Authorize(Policy = "Token")]
         [ValidateModelState]
         [SwaggerOperation("FollowUserByUsername")]
         [SwaggerResponse(statusCode: 200, type: typeof(ProfileResponse), description: "OK")]
@@ -59,6 +58,7 @@ namespace Conduit.API.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="422">Unexpected error</response>
         [HttpGet]
+        [AllowAnonymous]
         [Route("/api/profiles/{username}")]
         [ValidateModelState]
         [SwaggerOperation("GetProfileByUsername")]
@@ -79,7 +79,6 @@ namespace Conduit.API.Controllers
         /// <response code="422">Unexpected error</response>
         [HttpDelete]
         [Route("/api/profiles/{username}/follow")]
-        [Authorize(Policy = "Token")]
         [ValidateModelState]
         [SwaggerOperation("UnfollowUserByUsername")]
         [SwaggerResponse(statusCode: 200, type: typeof(ProfileResponse), description: "OK")]

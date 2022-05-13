@@ -2,14 +2,12 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Conduit.API.Authentication;
 using Conduit.API.Filters;
 using Conduit.API.OpenApi;
 using Conduit.API.Formatters;
@@ -58,7 +56,7 @@ namespace Conduit.API
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidAudience = Configuration[$"JwtSettings:ValidAudience"],
+                    ValidAudience = Configuration["JwtSettings:ValidAudience"],
                     ValidIssuer = Configuration["JwtSettings:ValidIssuer"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSettings:Secret"]))
                 };
@@ -137,10 +135,10 @@ namespace Conduit.API
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
-                {
-                    endpoints.MapControllers()
-                        .RequireAuthorization();
-                });
+            {
+                endpoints.MapControllers()
+                    .RequireAuthorization();
+            });
         }
     }
 }

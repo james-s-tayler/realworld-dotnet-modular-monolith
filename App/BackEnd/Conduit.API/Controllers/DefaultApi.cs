@@ -37,6 +37,7 @@ namespace Conduit.API.Controllers
         /// <response code="200">OK</response>
         /// <response code="422">Unexpected error</response>
         [HttpGet]
+        [AllowAnonymous]
         [Route("/api/tags")]
         [ValidateModelState]
         [SwaggerOperation("TagsGet")]

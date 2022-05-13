@@ -41,7 +41,6 @@ namespace Conduit.API.Controllers
         /// <response code="422">Unexpected error</response>
         [HttpPost]
         [Route("/api/articles/{slug}/comments")]
-        [Authorize(Policy = "Token")]
         [Consumes("application/json")]
         [ValidateModelState]
         [SwaggerOperation("CreateArticleComment")]
@@ -63,7 +62,6 @@ namespace Conduit.API.Controllers
         /// <response code="422">Unexpected error</response>
         [HttpDelete]
         [Route("/api/articles/{slug}/comments/{id}")]
-        [Authorize(Policy = "Token")]
         [ValidateModelState]
         [SwaggerOperation("DeleteArticleComment")]
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
@@ -81,6 +79,7 @@ namespace Conduit.API.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="422">Unexpected error</response>
         [HttpGet]
+        [AllowAnonymous]
         [Route("/api/articles/{slug}/comments")]
         [ValidateModelState]
         [SwaggerOperation("GetArticleComments")]
