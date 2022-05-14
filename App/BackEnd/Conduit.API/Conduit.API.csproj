@@ -24,7 +24,6 @@
     <PackageReference Include="JsonSubTypes" Version="1.8.0" />
   </ItemGroup>
   <ItemGroup><!--<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.0" />-->
-    <ProjectReference Include="..\Conduit.API.Domain\Conduit.API.Domain.csproj" />
     <ProjectReference Include="..\Conduit.Identity.Domain.Contracts\Conduit.Identity.Domain.Contracts.csproj" />
     <ProjectReference Include="..\Conduit.Identity.Domain\Conduit.Identity.Domain.csproj" />
   </ItemGroup>

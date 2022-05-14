@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.API", "Conduit.API\Conduit.API.csproj", "{CA11EFCF-AAD5-4907-A18E-A65465CE3AC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.API.Domain", "Conduit.API.Domain\Conduit.API.Domain.csproj", "{BF65EE6A-E640-445E-98D0-0D36C1FB0116}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.API.Tests.Integration", "Conduit.API.Tests.Integration\Conduit.API.Tests.Integration.csproj", "{41354E03-8F46-47D0-AB6E-628A67832FD8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Identity.Domain", "Conduit.Identity.Domain\Conduit.Identity.Domain.csproj", "{5498CD4B-C15A-47F1-A85B-917C4BACB335}"
@@ -16,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Core", "Conduit.Core\Conduit.Core.csproj", "{7DE296F6-F055-4B5D-A9D0-FF410A5A1AF8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Identity.Domain.Contracts", "Conduit.Identity.Domain.Contracts\Conduit.Identity.Domain.Contracts.csproj", "{3B8A620A-56F2-422A-81CA-93A94426E7CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Content.Domain", "Conduit.Content.Domain\Conduit.Content.Domain.csproj", "{2B904167-732C-429D-807D-630D1C219B6A}"
 EndProject
 Global
 				GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,10 +27,6 @@ Global
 								{CA11EFCF-AAD5-4907-A18E-A65465CE3AC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 								{CA11EFCF-AAD5-4907-A18E-A65465CE3AC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 								{CA11EFCF-AAD5-4907-A18E-A65465CE3AC3}.Release|Any CPU.Build.0 = Release|Any CPU
-					{BF65EE6A-E640-445E-98D0-0D36C1FB0116}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-					{BF65EE6A-E640-445E-98D0-0D36C1FB0116}.Debug|Any CPU.Build.0 = Debug|Any CPU
-					{BF65EE6A-E640-445E-98D0-0D36C1FB0116}.Release|Any CPU.ActiveCfg = Release|Any CPU
-					{BF65EE6A-E640-445E-98D0-0D36C1FB0116}.Release|Any CPU.Build.0 = Release|Any CPU
 					{41354E03-8F46-47D0-AB6E-628A67832FD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 					{41354E03-8F46-47D0-AB6E-628A67832FD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 					{41354E03-8F46-47D0-AB6E-628A67832FD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +47,10 @@ Global
 					{3B8A620A-56F2-422A-81CA-93A94426E7CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 					{3B8A620A-56F2-422A-81CA-93A94426E7CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 					{3B8A620A-56F2-422A-81CA-93A94426E7CA}.Release|Any CPU.Build.0 = Release|Any CPU
+					{2B904167-732C-429D-807D-630D1C219B6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+					{2B904167-732C-429D-807D-630D1C219B6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+					{2B904167-732C-429D-807D-630D1C219B6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+					{2B904167-732C-429D-807D-630D1C219B6A}.Release|Any CPU.Build.0 = Release|Any CPU
 				EndGlobalSection
 				GlobalSection(SolutionProperties) = preSolution
 								HideSolutionNode = FALSE

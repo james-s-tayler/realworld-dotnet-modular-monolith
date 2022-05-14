@@ -38,8 +38,8 @@ namespace Conduit.Core.Modules
             services.TryAddScoped<IUserContext, ApiContext>();
             services.AddMediatR(GetModuleAssembly());
             services.AddValidatorsFromAssembly(GetModuleAssembly());
-            //add authorizers
-            
+            services.AddAuthorizersFromAssembly(GetModuleAssembly());
+
             //add logging pipeline behavior
             //add telemetry pipeline behavior
             services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(AuthorizationPipelineBehavior<,>));
