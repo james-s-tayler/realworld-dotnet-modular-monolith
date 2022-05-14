@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Conduit.Core.Context;
 using Conduit.Core.PipelineBehaviors;
 using Conduit.Identity.Domain.Configuration;
 using Conduit.Identity.Domain.Contracts.Commands.LoginUser;
@@ -52,6 +53,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Commands
             identityModule.AddServices(configuration.Build(), services);
             identityModule.ReplaceSingleton(userRepo.Object);
             identityModule.ReplaceSingleton<IPasswordHasher<User>, BCryptPasswordHasher<User>>(PasswordHasher);
+            identityModule.ReplaceScoped<IUserContext>(new TestUserContext());
             
             var provider = services.BuildServiceProvider();
             _mediator = provider.GetRequiredService<IMediator>();

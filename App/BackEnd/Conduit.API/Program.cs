@@ -1,4 +1,3 @@
-using Conduit.Identity.Domain;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -27,8 +26,7 @@ namespace Conduit.API
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey,
-                        $"{IdentityDomain.Assembly.GetName().Name}");
+                   webBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, "Conduit.Identity.Domain");
                    webBuilder.UseStartup<Startup>();
                 });
     }

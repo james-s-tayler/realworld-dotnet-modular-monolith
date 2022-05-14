@@ -11,7 +11,6 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Conduit.API.Attributes;
@@ -21,6 +20,7 @@ using Conduit.Identity.Domain.Contracts.Commands.LoginUser;
 using Conduit.Identity.Domain.Contracts.Commands.RegisterUser;
 using Conduit.Identity.Domain.Contracts.Queries.GetCurrentUser;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
 namespace Conduit.API.Controllers
@@ -177,7 +177,7 @@ namespace Conduit.API.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="422">Unexpected error</response>
         [HttpPost]
-        [AllowAnonymous]
+        [Microsoft.AspNetCore.Authorization.AllowAnonymous]
         [Route("/api/users/login")]
         [Consumes("application/json")]
         [ValidateModelState]

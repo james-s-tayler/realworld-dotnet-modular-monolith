@@ -11,15 +11,15 @@ using Microsoft.Extensions.Logging;
 namespace Conduit.Core.PipelineBehaviors.Validation
 {
     //adapted from: https://medium.com/the-cloud-builders-guild/validation-without-exceptions-using-a-mediatr-pipeline-behavior-278f124836dc
-    public class CommandValidationPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> 
+    public class ValidationPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> 
         where TResponse : class
         where TRequest : IRequest<TResponse>
     {
         private readonly IEnumerable<IValidator<TRequest>> _commandValidators;
-        private readonly ILogger<CommandValidationPipelineBehavior<TRequest, TResponse>> _logger;
+        private readonly ILogger<ValidationPipelineBehavior<TRequest, TResponse>> _logger;
 
-        public CommandValidationPipelineBehavior(IEnumerable<IValidator<TRequest>> commandValidators,
-            ILogger<CommandValidationPipelineBehavior<TRequest, TResponse>> logger)
+        public ValidationPipelineBehavior(IEnumerable<IValidator<TRequest>> commandValidators,
+            ILogger<ValidationPipelineBehavior<TRequest, TResponse>> logger)
         {
             _commandValidators = commandValidators;
             _logger = logger;
@@ -27,6 +27,9 @@ namespace Conduit.Core.PipelineBehaviors.Validation
 
         public async Task<TResponse> Handle(TRequest command, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
+            if (!IsOperationResponse())
+                throw new InvalidOperationException("Domain operations must be of type OperationResponse<T>");
+            
             if(!IsValidatable())
                 return await next();
 
@@ -40,7 +43,7 @@ namespace Conduit.Core.PipelineBehaviors.Validation
             _logger.LogError("Validation Error: " + validationResult.Errors.Select(s => s.ErrorMessage)
                         .Aggregate((acc, curr) => acc += string.Concat("_|_", curr)));
 
-            return CreateValidationErrorOperationResponse(validationResult);
+            return OperationResponseFactory.ValidationError<TResponse>(validationResult);
         }
 
         private async Task<ValidationResult> DoValidation(TRequest command, CancellationToken cancellationToken)
@@ -64,14 +67,10 @@ namespace Conduit.Core.PipelineBehaviors.Validation
             return true;
         }
 
-        private TResponse CreateValidationErrorOperationResponse(ValidationResult validationResult)
+        private bool IsOperationResponse() //make this an extension method maybe?
         {
-            //would be nice if this were encapsulated in an OperationResultFactory
-            var resultType = typeof(TResponse).GetGenericArguments()[0];
-            var operationResponseType = typeof(OperationResponse<>).MakeGenericType(resultType);
-
-            var errorMessages = validationResult.Errors.Select(s => s.ErrorMessage).ToList();
-            return Activator.CreateInstance(operationResponseType, errorMessages, OperationResult.ValidationError) as TResponse;
+            var responseType = typeof(TResponse);
+            return responseType.IsGenericType && responseType.Name.Contains("OperationResponse");
         }
     }
 }

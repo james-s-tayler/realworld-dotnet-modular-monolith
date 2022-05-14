@@ -106,5 +106,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Queries
             Assert.True(result.Result == OperationResult.NotAuthenticated);
             Assert.Null(result.Response);
         }
+        
+        //add validator to check user exists
     }
 }

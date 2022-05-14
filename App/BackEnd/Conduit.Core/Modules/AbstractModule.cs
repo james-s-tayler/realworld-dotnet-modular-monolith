@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Conduit.Core.Context;
+using Conduit.Core.PipelineBehaviors.Authorization;
 using Conduit.Core.PipelineBehaviors.Validation;
 using FluentValidation;
 using MediatR;
@@ -33,10 +34,17 @@ namespace Conduit.Core.Modules
 
         private void AddModuleUseCases(IServiceCollection services)
         {
+            services.AddHttpContextAccessor(); //dubious about web specific assemblies leaking into here...
             services.TryAddScoped<IUserContext, ApiContext>();
             services.AddMediatR(GetModuleAssembly());
             services.AddValidatorsFromAssembly(GetModuleAssembly());
-            services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(CommandValidationPipelineBehavior<,>));
+            //add authorizers
+            
+            //add logging pipeline behavior
+            //add telemetry pipeline behavior
+            services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(AuthorizationPipelineBehavior<,>));
+            //add transaction pipeline behavior
+            services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
         }
 
         protected abstract Assembly GetModuleAssembly();

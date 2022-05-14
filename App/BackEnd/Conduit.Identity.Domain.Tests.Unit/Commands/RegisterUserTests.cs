@@ -45,7 +45,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Commands
             
             services.AddMediatR(IdentityDomain.Assembly);
             services.AddValidatorsFromAssembly(IdentityDomain.Assembly);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandValidationPipelineBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
 
             var provider = services.BuildServiceProvider();
             var mediatR = provider.GetRequiredService<IMediator>();
@@ -93,7 +93,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Commands
             
             services.AddMediatR(IdentityDomain.Assembly);
             services.AddValidatorsFromAssembly(IdentityDomain.Assembly);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandValidationPipelineBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
 
             var provider = services.BuildServiceProvider();
             var mediatR = provider.GetRequiredService<IMediator>();
@@ -138,7 +138,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Commands
             
             services.AddMediatR(IdentityDomain.Assembly);
             services.AddValidatorsFromAssembly(IdentityDomain.Assembly);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandValidationPipelineBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
 
             var provider = services.BuildServiceProvider();
             var mediatR = provider.GetRequiredService<IMediator>();
@@ -183,7 +183,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Commands
             
             services.AddMediatR(IdentityDomain.Assembly);
             services.AddValidatorsFromAssembly(IdentityDomain.Assembly);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandValidationPipelineBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
 
             var provider = services.BuildServiceProvider();
             var mediatR = provider.GetRequiredService<IMediator>();
