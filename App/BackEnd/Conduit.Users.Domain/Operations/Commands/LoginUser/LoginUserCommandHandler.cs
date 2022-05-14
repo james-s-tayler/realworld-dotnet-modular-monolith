@@ -5,6 +5,7 @@ using Conduit.Core.PipelineBehaviors;
 using Conduit.Identity.Domain.Contracts;
 using Conduit.Identity.Domain.Contracts.Commands.LoginUser;
 using Conduit.Identity.Domain.Entities;
+using Conduit.Identity.Domain.Infrastructure.Mappers;
 using Conduit.Identity.Domain.Infrastructure.Repositories;
 using Conduit.Identity.Domain.Infrastructure.Services;
 using MediatR;
@@ -41,13 +42,7 @@ namespace Conduit.Identity.Domain.Operations.Commands.LoginUser
             //could make this result just return the token, then login action can call GetCurrentUserQuery after
             var token = await _authTokenService.GenerateAuthToken(user);
             
-            return new OperationResponse<LoginUserResult>(LoginUserResult.SuccessfulLoginResult(new UserDTO
-            {
-                Id = user.Id,
-                Email = user.Email,
-                Username = user.Username,
-                Token = token
-            }));
+            return new OperationResponse<LoginUserResult>(LoginUserResult.SuccessfulLoginResult(user.ToUserDTO(token)));
         }
     }
 }

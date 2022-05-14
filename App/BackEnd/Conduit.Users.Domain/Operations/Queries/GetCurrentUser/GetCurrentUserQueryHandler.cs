@@ -5,6 +5,7 @@ using Conduit.Core.Context;
 using Conduit.Core.PipelineBehaviors;
 using Conduit.Identity.Domain.Contracts;
 using Conduit.Identity.Domain.Contracts.Queries.GetCurrentUser;
+using Conduit.Identity.Domain.Infrastructure.Mappers;
 using Conduit.Identity.Domain.Infrastructure.Repositories;
 using MediatR;
 
@@ -30,13 +31,7 @@ namespace Conduit.Identity.Domain.Operations.Queries.GetCurrentUser
             
             return new OperationResponse<GetCurrentUserQueryResult>(new GetCurrentUserQueryResult
             {
-                CurrentUser = new UserDTO
-                {
-                    Id = user.Id,
-                    Username = user.Username,
-                    Email = user.Email,
-                    Token = _userContext.Token
-                }
+                CurrentUser = user.ToUserDTO(_userContext.Token)
             });
         }
     }
