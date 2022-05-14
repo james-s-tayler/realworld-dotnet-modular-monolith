@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <IsPackable>false</IsPackable>
+        <RootNamespace>Conduit.Identity.Domain.Tests.Unit</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -24,7 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Conduit.Identity.Domain\Conduit.Identity.Domain.csproj" />
+      <ProjectReference Include="..\Conduit.Users.Domain\Conduit.Users.Domain.csproj" />
     </ItemGroup>
 
 </Project>

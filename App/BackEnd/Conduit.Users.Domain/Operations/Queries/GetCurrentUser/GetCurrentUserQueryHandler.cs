@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Conduit.Core.Context;
@@ -24,6 +25,8 @@ namespace Conduit.Identity.Domain.Operations.Queries.GetCurrentUser
         public async Task<OperationResponse<GetCurrentUserQueryResult>> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetById(_userContext.UserId);
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
             
             return new OperationResponse<GetCurrentUserQueryResult>(new GetCurrentUserQueryResult
             {

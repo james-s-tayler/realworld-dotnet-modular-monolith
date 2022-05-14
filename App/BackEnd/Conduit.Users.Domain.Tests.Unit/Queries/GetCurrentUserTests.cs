@@ -107,6 +107,20 @@ namespace Conduit.Identity.Domain.Tests.Unit.Queries
             Assert.Null(result.Response);
         }
         
-        //add validator to check user exists
+        [Fact]
+        public async Task GivenNonExistentUser_WhenGetCurrentUser_ThenFailsValidation()
+        {
+            //arrange
+            _userContext = new TestUserContext(2,"someuser","some@user.com","jwt");
+            BuildDIContainer();
+            var getCurrentUserQuery = new GetCurrentUserQuery();
+
+            //act
+            var result = await _mediator.Send(getCurrentUserQuery);
+            
+            //assert
+            Assert.True(result.Result == OperationResult.ValidationError);
+            Assert.Null(result.Response);
+        }
     }
 }

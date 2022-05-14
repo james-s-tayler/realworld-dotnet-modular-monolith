@@ -14,7 +14,7 @@ using ScottBrady91.AspNetCore.Identity;
 
 //would be epic to add this in via Fody!
 [assembly: HostingStartup(typeof(Conduit.Identity.Domain.IdentityModule))]
-[assembly: InternalsVisibleTo("Conduit.Identity.Domain.Tests.Unit")]
+[assembly: InternalsVisibleTo("Conduit.Users.Domain.Tests.Unit")]
 namespace Conduit.Identity.Domain
 {
     internal class IdentityModule : AbstractModule

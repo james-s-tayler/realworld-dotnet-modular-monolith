@@ -26,7 +26,7 @@ namespace Conduit.API
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                   webBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, "Conduit.Identity.Domain");
+                   webBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, "Conduit.Users.Domain");
                    webBuilder.UseStartup<Startup>();
                 });
     }
