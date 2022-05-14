@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Conduit.Core.Context;
-using Conduit.Core.Validation;
+using Conduit.Core.Validation.Context;
+using Conduit.Core.Validation.CrossCuttingConcerns.Validation;
 using Conduit.Identity.Domain.Contracts;
 using Conduit.Identity.Domain.Contracts.Queries.GetCurrentUser;
 using Conduit.Identity.Domain.Infrastructure.Repositories;

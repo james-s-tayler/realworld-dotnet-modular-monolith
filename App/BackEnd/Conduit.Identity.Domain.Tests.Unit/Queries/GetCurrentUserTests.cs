@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Conduit.Core.Context;
-using Conduit.Core.Validation;
+using Conduit.Core.Validation.Context;
+using Conduit.Core.Validation.CrossCuttingConcerns.Validation;
 using Conduit.Identity.Domain.Configuration;
 using Conduit.Identity.Domain.Contracts.Commands.LoginUser;
 using Conduit.Identity.Domain.Contracts.Queries.GetCurrentUser;
@@ -24,8 +24,13 @@ namespace Conduit.Identity.Domain.Tests.Unit.Queries
         private const string Token = "jwt";
         private const string PlainTextPassword = "soloyolo";
         private static readonly BCryptPasswordHasher<User> PasswordHasher = new ();
-        private readonly User _user;
-        private readonly IMediator _mediator;
+        private User _user;
+        private IMediator _mediator;
+        private readonly IdentityModule _identityModule;
+        private readonly IServiceCollection _services;
+        private readonly ConfigurationBuilder _configuration;
+        private IUserContext _userContext;
+        private readonly Mock<IUserRepository> _userRepo;
 
         public GetCurrentUserTests()
         {
@@ -37,33 +42,34 @@ namespace Conduit.Identity.Domain.Tests.Unit.Queries
                 Password = PasswordHasher.HashPassword(null, PlainTextPassword)
             };
             
-            var userRepo = new Mock<IUserRepository>();
-            userRepo.Setup(repository => repository.Exists(It.Is<int>(id => id == _user.Id))).Returns(Task.FromResult(true));
-            userRepo.Setup(repository => repository.GetById(It.Is<int>(id => id == _user.Id))).Returns(Task.FromResult(_user));
-            userRepo.Setup(repository => repository.ExistsByEmail(It.Is<string>(email => email.Equals(_user.Email)))).Returns(Task.FromResult(true));
-            userRepo.Setup(repository => repository.GetByEmail(It.Is<string>(email => email.Equals(_user.Email)))).Returns(Task.FromResult(_user));
+            _userRepo = new Mock<IUserRepository>();
+            _userRepo.Setup(repository => repository.Exists(It.Is<int>(id => id == _user.Id))).Returns(Task.FromResult(true));
+            _userRepo.Setup(repository => repository.GetById(It.Is<int>(id => id == _user.Id))).Returns(Task.FromResult(_user));
+            _userRepo.Setup(repository => repository.ExistsByEmail(It.Is<string>(email => email.Equals(_user.Email)))).Returns(Task.FromResult(true));
+            _userRepo.Setup(repository => repository.GetByEmail(It.Is<string>(email => email.Equals(_user.Email)))).Returns(Task.FromResult(_user));
             
-            var identityModule = new IdentityModule();
-            var services = new ServiceCollection();
-            var configuration = new ConfigurationBuilder();
-            configuration.AddInMemoryCollection(new Dictionary<string, string>
+            _identityModule = new IdentityModule();
+            _services = new ServiceCollection();
+            _configuration = new ConfigurationBuilder();
+            _configuration.AddInMemoryCollection(new Dictionary<string, string>
             {
                 {$"{nameof(JwtSettings)}:{nameof(JwtSettings.Secret)}", "secretsecretsecretsecretsecretsecret"},
                 {$"{nameof(JwtSettings)}:{nameof(JwtSettings.ValidIssuer)}", "issuer"},
                 {$"{nameof(JwtSettings)}:{nameof(JwtSettings.ValidAudience)}", "audience"},
             });
+
+            _userContext = new TestUserContext(_user.Id, _user.Username, _user.Email, Token);
+        }
+
+        private void BuildDIContainer()
+        {
+            _services.AddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
+            _identityModule.AddServices(_configuration.Build(), _services);
+            _identityModule.ReplaceSingleton(_userRepo.Object);
+            _identityModule.ReplaceSingleton<IPasswordHasher<User>, BCryptPasswordHasher<User>>(PasswordHasher);
+            _identityModule.ReplaceScoped<IUserContext>(_userContext);
             
-            services.AddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
-            identityModule.AddServices(configuration.Build(), services);
-            identityModule.ReplaceSingleton(userRepo.Object);
-            identityModule.ReplaceSingleton<IPasswordHasher<User>, BCryptPasswordHasher<User>>(PasswordHasher);
-            identityModule.ReplaceScoped<IUserContext>(new TestUserContext(
-                _user.Id, 
-                _user.Username,
-                _user.Email,
-                Token));
-            
-            var provider = services.BuildServiceProvider();
+            var provider = _services.BuildServiceProvider();
             _mediator = provider.GetRequiredService<IMediator>();
         }
         
@@ -71,6 +77,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Queries
         public async Task GivenAuthenticatedUser_WhenGetCurrentUser_ThenUserIsReturned()
         {
             //arrange
+            BuildDIContainer();
             var getCurrentUserQuery = new GetCurrentUserQuery();
 
             //act
@@ -86,21 +93,19 @@ namespace Conduit.Identity.Domain.Tests.Unit.Queries
         }
         
         [Fact]
-        public async Task GivenNonExistentUser_WhenGetCurrentUser_ThenFailsValidation()
+        public async Task GivenUnauthenticatedUser_WhenGetCurrentUser_ThenNotAuthenticated()
         {
             //arrange
+            _userContext = new TestUserContext();
+            BuildDIContainer();
             var getCurrentUserQuery = new GetCurrentUserQuery();
 
             //act
             var result = await _mediator.Send(getCurrentUserQuery);
             
             //assert
-            Assert.True(result.Result == OperationResult.Success);
-            var currentUser = result.Response.CurrentUser;
-            Assert.NotNull(currentUser);
-            Assert.Equal(_user.Email, currentUser.Email);
-            Assert.Equal(_user.Username, currentUser.Username);
-            Assert.NotEmpty(currentUser.Token);
+            Assert.True(result.Result == OperationResult.NotAuthenticated);
+            Assert.Null(result.Response);
         }
     }
 }

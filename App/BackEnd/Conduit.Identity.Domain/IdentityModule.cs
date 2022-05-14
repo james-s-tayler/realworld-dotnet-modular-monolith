@@ -1,6 +1,6 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Conduit.Core.Startup;
+using Conduit.Core.Validation.Modules;
 using Conduit.Identity.Domain.Configuration;
 using Conduit.Identity.Domain.Entities;
 using Conduit.Identity.Domain.Infrastructure.Repositories;

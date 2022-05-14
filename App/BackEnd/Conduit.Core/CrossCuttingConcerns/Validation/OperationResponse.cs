@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using System.Linq;
 
-namespace Conduit.Core.Validation
+namespace Conduit.Core.Validation.CrossCuttingConcerns.Validation
 {
     public class OperationResponse<T> where T : class
     {

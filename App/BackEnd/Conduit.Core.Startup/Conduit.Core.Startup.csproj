@@ -14,7 +14,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Conduit.Core.Context\Conduit.Core.Context.csproj" />
-      <ProjectReference Include="..\Conduit.Core.Validation\Conduit.Core.Validation.csproj" />
+      <ProjectReference Include="..\Conduit.Core\Conduit.Core.csproj" />
     </ItemGroup>
 
 </Project>

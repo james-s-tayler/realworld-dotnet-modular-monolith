@@ -1,4 +1,4 @@
-namespace Conduit.Core.Context
+namespace Conduit.Core.Validation.Context
 {
     public interface IUserContext
     {

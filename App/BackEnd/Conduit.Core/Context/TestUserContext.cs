@@ -1,12 +1,9 @@
-using System;
-
-namespace Conduit.Core.Context
+namespace Conduit.Core.Validation.Context
 {
     public class TestUserContext : IUserContext
     {
-        public TestUserContext(string token)
+        public TestUserContext()
         {
-            Token = token;
             IsAuthenticated = false;
         }
         

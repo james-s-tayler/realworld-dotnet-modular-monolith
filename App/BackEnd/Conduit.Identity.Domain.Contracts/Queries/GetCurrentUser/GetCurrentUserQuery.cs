@@ -1,4 +1,4 @@
-using Conduit.Core.Validation;
+using Conduit.Core.Validation.CrossCuttingConcerns.Validation;
 using MediatR;
 
 namespace Conduit.Identity.Domain.Contracts.Queries.GetCurrentUser

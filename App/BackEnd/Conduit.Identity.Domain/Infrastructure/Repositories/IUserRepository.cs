@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Conduit.Core.DataAccess;
+using Conduit.Core.Validation.DataAccess;
 using Conduit.Identity.Domain.Entities;
 
 namespace Conduit.Identity.Domain.Infrastructure.Repositories
