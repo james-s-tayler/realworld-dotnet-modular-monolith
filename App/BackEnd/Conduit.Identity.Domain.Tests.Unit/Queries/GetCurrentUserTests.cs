@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Conduit.Core.Validation.Context;
-using Conduit.Core.Validation.CrossCuttingConcerns.Validation;
+using Conduit.Core.Context;
+using Conduit.Core.PipelineBehaviors;
 using Conduit.Identity.Domain.Configuration;
-using Conduit.Identity.Domain.Contracts.Commands.LoginUser;
 using Conduit.Identity.Domain.Contracts.Queries.GetCurrentUser;
 using Conduit.Identity.Domain.Entities;
 using Conduit.Identity.Domain.Infrastructure.Repositories;

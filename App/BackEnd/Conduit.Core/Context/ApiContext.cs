@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace Conduit.Core.Validation.Context
+namespace Conduit.Core.Context
 {
     public class ApiContext : IUserContext
     {

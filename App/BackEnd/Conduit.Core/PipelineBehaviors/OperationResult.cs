@@ -1,4 +1,4 @@
-namespace Conduit.Core.Validation.CrossCuttingConcerns.Validation
+namespace Conduit.Core.PipelineBehaviors
 {
     public enum OperationResult
     {

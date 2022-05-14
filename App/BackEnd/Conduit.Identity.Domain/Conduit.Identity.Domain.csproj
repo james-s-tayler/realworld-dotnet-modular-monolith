@@ -16,9 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Conduit.Core.Context\Conduit.Core.Context.csproj" />
-      <ProjectReference Include="..\Conduit.Core.DataAccess\Conduit.Core.DataAccess.csproj" />
-      <ProjectReference Include="..\Conduit.Core.Startup\Conduit.Core.Startup.csproj" />
       <ProjectReference Include="..\Conduit.Core\Conduit.Core.csproj" />
       <ProjectReference Include="..\Conduit.Identity.Domain.Contracts\Conduit.Identity.Domain.Contracts.csproj" />
     </ItemGroup>

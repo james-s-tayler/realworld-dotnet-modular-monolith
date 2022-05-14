@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
-using Conduit.Core.Validation.Context;
-using Conduit.Core.Validation.CrossCuttingConcerns.Validation;
+using Conduit.Core.Context;
+using Conduit.Core.PipelineBehaviors.Validation;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Conduit.Core.Validation.Modules
+namespace Conduit.Core.Modules
 {
     public abstract class AbstractModule : IHostingStartup
     {

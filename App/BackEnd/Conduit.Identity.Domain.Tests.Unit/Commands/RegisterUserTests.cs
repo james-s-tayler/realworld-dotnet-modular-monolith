@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using Conduit.Core.Validation.CrossCuttingConcerns.Validation;
+using Conduit.Core.PipelineBehaviors;
+using Conduit.Core.PipelineBehaviors.Validation;
 using Conduit.Identity.Domain.Contracts.Commands.RegisterUser;
 using Conduit.Identity.Domain.Entities;
 using Conduit.Identity.Domain.Infrastructure.Repositories;

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Conduit.Core.Validation.DataAccess
+namespace Conduit.Core.DataAccess
 {
     public interface ICrudRepository<TEntity, TId>
     {

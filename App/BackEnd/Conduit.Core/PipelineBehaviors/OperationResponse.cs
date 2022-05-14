@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Conduit.Core.Validation.CrossCuttingConcerns.Validation
+namespace Conduit.Core.PipelineBehaviors
 {
     public class OperationResponse<T> where T : class
     {

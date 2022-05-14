@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Conduit.API.Attributes;
 using Conduit.API.Models;
-using Conduit.Core.Validation.CrossCuttingConcerns.Validation;
+using Conduit.Core.PipelineBehaviors;
 using Conduit.Identity.Domain.Contracts.Commands.LoginUser;
 using Conduit.Identity.Domain.Contracts.Commands.RegisterUser;
 using Conduit.Identity.Domain.Contracts.Queries.GetCurrentUser;
