@@ -94,7 +94,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Commands
                 UserCredentials = new UserCredentialsDTO
                 {
                     Email = _user.Email,
-                    Password = "incorrectPassword" 
+                    Password = "incorrectPassword"
                 }
             };
 

@@ -66,7 +66,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Queries
             _identityModule.AddServices(_configuration.Build(), _services);
             _identityModule.ReplaceSingleton(_userRepo.Object);
             _identityModule.ReplaceSingleton<IPasswordHasher<User>, BCryptPasswordHasher<User>>(PasswordHasher);
-            _identityModule.ReplaceScoped<IUserContext>(_userContext);
+            _identityModule.ReplaceScoped(_userContext);
             
             var provider = _services.BuildServiceProvider();
             _mediator = provider.GetRequiredService<IMediator>();

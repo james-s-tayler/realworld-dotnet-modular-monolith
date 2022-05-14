@@ -21,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="PipelineBehaviors\Idempotency" />
       <Folder Include="PipelineBehaviors\Logging" />
       <Folder Include="PipelineBehaviors\Telemetry" />
       <Folder Include="PipelineBehaviors\Transactions" />
