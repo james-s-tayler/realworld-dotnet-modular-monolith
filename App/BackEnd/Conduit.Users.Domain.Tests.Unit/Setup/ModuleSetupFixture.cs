@@ -20,8 +20,8 @@ namespace Conduit.Identity.Domain.Tests.Unit.Setup
     public class ModuleSetupFixture : IDisposable
     {
         public Fixture AutoFixture { get; } = new ();
-        public const string Token = "jwt";
-        public const string PlainTextPassword = "soloyolo";
+        public string Token { get; }= "jwt";
+        public string PlainTextPassword { get; } = "soloyolo";
         public static BCryptPasswordHasher<User> PasswordHasher = new ();
         public User User { get; set; }
         public IMediator Mediator { get; set; }
