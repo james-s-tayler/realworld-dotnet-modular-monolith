@@ -19,32 +19,33 @@ using Xunit;
 
 namespace Conduit.Identity.Domain.Tests.Unit.Queries
 {
-    public class GetCurrentUserTests : IClassFixture<ModuleSetupFixture>
+    [Collection(nameof(UsersModuleTestCollection))]
+    public class GetCurrentUserTests
     {
-        private readonly ModuleSetupFixture _module;
+        private readonly UsersModuleSetupFixture _usersModule;
         
-        public GetCurrentUserTests(ModuleSetupFixture module)
+        public GetCurrentUserTests(UsersModuleSetupFixture usersModule)
         {
-            _module = module;
+            _usersModule = usersModule;
         }
 
         [Fact]
         public async Task GivenAuthenticatedUser_WhenGetCurrentUser_ThenUserIsReturned()
         {
             //arrange
-            _module.WithDefaultUserContext();
+            _usersModule.WithDefaultUserContext();
             var getCurrentUserQuery = new GetCurrentUserQuery();
 
             //act
-            var result = await _module.Mediator.Send(getCurrentUserQuery);
+            var result = await _usersModule.Mediator.Send(getCurrentUserQuery);
             
             //assert
             Assert.True(result.Result == OperationResult.Success);
             var currentUser = result.Response.CurrentUser;
             Assert.NotNull(currentUser);
             //need to implement equality comparison between DTOs and Entities so we can just do Equals and have it update automatically without tests missing anything
-            Assert.Equal(_module.User.Email, currentUser.Email);
-            Assert.Equal(_module.User.Username, currentUser.Username);
+            Assert.Equal(_usersModule.ExistingUser.Email, currentUser.Email);
+            Assert.Equal(_usersModule.ExistingUser.Username, currentUser.Username);
             Assert.NotEmpty(currentUser.Token);
         }
         
@@ -52,11 +53,11 @@ namespace Conduit.Identity.Domain.Tests.Unit.Queries
         public async Task GivenUnauthenticatedUser_WhenGetCurrentUser_ThenNotAuthenticated()
         {
             //arrange
-            _module.WithUnauthenticatedUserContext();
+            _usersModule.WithUnauthenticatedUserContext();
             var getCurrentUserQuery = new GetCurrentUserQuery();
 
             //act
-            var result = await _module.Mediator.Send(getCurrentUserQuery);
+            var result = await _usersModule.Mediator.Send(getCurrentUserQuery);
             
             //assert
             Assert.True(result.Result == OperationResult.NotAuthenticated);
@@ -67,11 +68,11 @@ namespace Conduit.Identity.Domain.Tests.Unit.Queries
         public async Task GivenNonExistentUser_WhenGetCurrentUser_ThenFailsValidation()
         {
             //arrange
-            _module.WithRandomUserContext();
+            _usersModule.WithRandomUserContext();
             var getCurrentUserQuery = new GetCurrentUserQuery();
 
             //act
-            var result = await _module.Mediator.Send(getCurrentUserQuery);
+            var result = await _usersModule.Mediator.Send(getCurrentUserQuery);
             
             //assert
             Assert.True(result.Result == OperationResult.ValidationError);

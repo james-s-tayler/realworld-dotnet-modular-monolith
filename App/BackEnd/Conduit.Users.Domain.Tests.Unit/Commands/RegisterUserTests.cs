@@ -1,120 +1,79 @@
-using System;
 using System.Threading.Tasks;
+using AutoFixture;
 using Conduit.Core.PipelineBehaviors;
-using Conduit.Core.PipelineBehaviors.Validation;
 using Conduit.Identity.Domain.Contracts.Commands.RegisterUser;
 using Conduit.Identity.Domain.Entities;
-using Conduit.Identity.Domain.Infrastructure.Repositories;
-using FluentValidation;
-using MediatR;
+using Conduit.Identity.Domain.Tests.Unit.Setup;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
-using ScottBrady91.AspNetCore.Identity;
 using Xunit;
 
 namespace Conduit.Identity.Domain.Tests.Unit.Commands
 {
+    [Collection(nameof(UsersModuleTestCollection))]
     public class RegisterUserTests
     {
-        //should refactor these tests to make the arrange phase less noisy - use either a fixture or helper methods
+        private readonly UsersModuleSetupFixture _usersModule;
+        private User _registeredUser;
+        private readonly int _newUserId;
 
-        //test password strength requirements are met
+        public RegisterUserTests(UsersModuleSetupFixture usersModule)
+        {
+            _usersModule = usersModule;
+            _newUserId = _usersModule.AutoFixture.Create<int>();
+            _registeredUser = null;
+            _usersModule.UserRepo.Setup(repository => repository.Create(It.IsAny<User>()))
+                .Callback<User>(u => _registeredUser = u)
+                .Returns(Task.FromResult(_newUserId));
+        }
         
+        //TODO: test password strength requirements are met
+
         [Fact]
         public async Task GivenANewUser_WhenRegisterUser_ThenNewUserIdReturned()
         {
             //arrange
-            var random = new Random();
-            var userId = random.Next(1, 1000);
-
-            User registeredUser = null; 
-            
-            var userRepo = new Mock<IUserRepository>();
-            userRepo.Setup(repository => repository.Create(It.IsAny<User>()))
-                .Callback<User>(u => registeredUser = u)
-                .Returns(Task.FromResult(userId));
-            
-
-            var services = new ServiceCollection();
-            services.AddTransient(_ => userRepo.Object);
-            services.AddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
-            services.AddTransient<IPasswordHasher<User>, BCryptPasswordHasher<User>>();
-            
-            services.AddMediatR(IdentityDomain.Assembly);
-            services.AddValidatorsFromAssembly(IdentityDomain.Assembly);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
-
-            var provider = services.BuildServiceProvider();
-            var mediatR = provider.GetRequiredService<IMediator>();
-
             var registerUserCommand = new RegisterUserCommand
             {
                 NewUser = new NewUserDTO
                 {
-                    Email = "solo@yolo.com",
-                    Username = "soloyolo",
-                    Password = "soloyolo"
+                    Email = _usersModule.AutoFixture.Create<string>(),
+                    Username = _usersModule.AutoFixture.Create<string>(),
+                    Password = _usersModule.PlainTextPassword
                 }
             };
 
             //act
-            var result = await mediatR.Send(registerUserCommand);
+            var result = await _usersModule.Mediator.Send(registerUserCommand);
             
             //assert
             Assert.True(result.Result == OperationResult.Success);
-            Assert.Equal(userId, result.Response.UserId);
-            Assert.NotNull(registeredUser);
-            Assert.Equal(registerUserCommand.NewUser.Email, registeredUser.Email);
-            Assert.Equal(registerUserCommand.NewUser.Username, registeredUser.Username);
+            Assert.Equal(_newUserId, result.Response.UserId);
+            Assert.NotNull(_registeredUser);
+            Assert.Equal(registerUserCommand.NewUser.Email, _registeredUser.Email);
+            Assert.Equal(registerUserCommand.NewUser.Username, _registeredUser.Username);
         }
         
         [Fact]
         public async Task GivenAPassword_WhenRegisterUser_ThenPasswordHashedWithBcrypt()
         {
             //arrange
-            var random = new Random();
-            var userId = random.Next(1, 1000);
-
-            User registeredUser = null; 
-            
-            var userRepo = new Mock<IUserRepository>();
-            userRepo.Setup(repository => repository.Create(It.IsAny<User>()))
-                .Callback<User>(u => registeredUser = u)
-                .Returns(Task.FromResult(userId));
-            
-
-            var services = new ServiceCollection();
-            services.AddTransient(_ => userRepo.Object);
-            services.AddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
-            services.AddTransient<IPasswordHasher<User>, BCryptPasswordHasher<User>>();
-            
-            services.AddMediatR(IdentityDomain.Assembly);
-            services.AddValidatorsFromAssembly(IdentityDomain.Assembly);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
-
-            var provider = services.BuildServiceProvider();
-            var mediatR = provider.GetRequiredService<IMediator>();
-            var passwordHasher = provider.GetRequiredService<IPasswordHasher<User>>();
-
             var registerUserCommand = new RegisterUserCommand
             {
                 NewUser = new NewUserDTO
                 {
-                    Email = "solo@yolo.com",
-                    Username = "soloyolo",
-                    Password = "soloyolo"
+                    Email = _usersModule.AutoFixture.Create<string>(),
+                    Username = _usersModule.AutoFixture.Create<string>(),
+                    Password = _usersModule.PlainTextPassword
                 }
             };
 
             //act
-            _ = await mediatR.Send(registerUserCommand);
+            _ = await _usersModule.Mediator.Send(registerUserCommand);
 
             //assert
-            Assert.NotEqual(registerUserCommand.NewUser.Password, registeredUser.Password);
-            var result = passwordHasher.VerifyHashedPassword(registeredUser, registeredUser.Password, registerUserCommand.NewUser.Password);
+            Assert.NotEqual(registerUserCommand.NewUser.Password, _registeredUser.Password);
+            var result = _usersModule.PasswordHasher.VerifyHashedPassword(_registeredUser, _registeredUser.Password, registerUserCommand.NewUser.Password);
 
             Assert.Equal(PasswordVerificationResult.Success, result);
         }
@@ -123,38 +82,18 @@ namespace Conduit.Identity.Domain.Tests.Unit.Commands
         public async Task GivenAUsernameAlreadyInUse_WhenRegisterUser_ThenFailsValidation()
         {
             //arrange
-            var random = new Random();
-            var userId = random.Next(1, 1000);
-            
-            var userRepo = new Mock<IUserRepository>();
-            userRepo.Setup(repository => repository.Create(It.IsAny<User>())).Returns(Task.FromResult(userId));
-            userRepo.Setup(repository => repository.ExistsByEmail(It.IsAny<string>())).Returns(Task.FromResult(false));
-            userRepo.Setup(repository => repository.ExistsByUsername(It.IsAny<string>())).Returns(Task.FromResult(true));
-
-            var services = new ServiceCollection();
-            services.AddTransient(_ => userRepo.Object);
-            services.AddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
-            services.AddTransient<IPasswordHasher<User>, BCryptPasswordHasher<User>>();
-            
-            services.AddMediatR(IdentityDomain.Assembly);
-            services.AddValidatorsFromAssembly(IdentityDomain.Assembly);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
-
-            var provider = services.BuildServiceProvider();
-            var mediatR = provider.GetRequiredService<IMediator>();
-
             var registerUserCommand = new RegisterUserCommand
             {
                 NewUser = new NewUserDTO
                 {
-                    Email = "solo@yolo.com",
-                    Username = "soloyolo",
-                    Password = "soloyolo"
+                    Email = _usersModule.AutoFixture.Create<string>(),
+                    Username = _usersModule.ExistingUser.Username,
+                    Password = _usersModule.PlainTextPassword
                 }
             };
 
             //act
-            var result = await mediatR.Send(registerUserCommand);
+            var result = await _usersModule.Mediator.Send(registerUserCommand);
             
             //assert
             Assert.True(result.Result == OperationResult.ValidationError);
@@ -165,41 +104,18 @@ namespace Conduit.Identity.Domain.Tests.Unit.Commands
         public async Task GivenAnEmailAlreadyInUse_WhenRegisterUser_ThenFailsValidation()
         {
             //arrange
-            var random = new Random();
-            var userId = random.Next(1, 1000);
-            
-            var userRepo = new Mock<IUserRepository>();
-            userRepo.Setup(repository => repository.Create(It.IsAny<User>())).Returns(Task.FromResult(userId));
-            userRepo.Setup(repository => repository.ExistsByEmail(It.IsAny<string>())).Returns(Task.FromResult(true));
-            userRepo.Setup(repository => repository.ExistsByUsername(It.IsAny<string>())).Returns(Task.FromResult(false));
-
-            /*var startup = new ModuleStartup();
-            var services = new ServiceCollection();
-            startup.AddServices(services);*/
-            var services = new ServiceCollection();
-            services.AddTransient(_ => userRepo.Object);
-            services.AddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
-            services.AddTransient<IPasswordHasher<User>, BCryptPasswordHasher<User>>();
-            
-            services.AddMediatR(IdentityDomain.Assembly);
-            services.AddValidatorsFromAssembly(IdentityDomain.Assembly);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
-
-            var provider = services.BuildServiceProvider();
-            var mediatR = provider.GetRequiredService<IMediator>();
-
             var registerUserCommand = new RegisterUserCommand
             {
                 NewUser = new NewUserDTO
                 {
-                    Email = "solo@yolo.com",
-                    Username = "soloyolo",
-                    Password = "soloyolo"
+                    Email = _usersModule.ExistingUser.Email,
+                    Username = _usersModule.AutoFixture.Create<string>(),
+                    Password = _usersModule.PlainTextPassword
                 }
             };
 
             //act
-            var result = await mediatR.Send(registerUserCommand);
+            var result = await _usersModule.Mediator.Send(registerUserCommand);
             
             //assert
             Assert.True(result.Result == OperationResult.ValidationError);

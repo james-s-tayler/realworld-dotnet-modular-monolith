@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AutoFixture;
 using Conduit.Core.PipelineBehaviors;
 using Conduit.Identity.Domain.Contracts.Commands.LoginUser;
 using Conduit.Identity.Domain.Tests.Unit.Setup;
@@ -6,13 +7,15 @@ using Xunit;
 
 namespace Conduit.Identity.Domain.Tests.Unit.Commands
 {
-    public class LoginUserTests : IClassFixture<ModuleSetupFixture>
+    [Collection(nameof(UsersModuleTestCollection))]
+    public class LoginUserTests
     {
-        private readonly ModuleSetupFixture _module;
+        private readonly UsersModuleSetupFixture _usersModule;
         
-        public LoginUserTests(ModuleSetupFixture module)
+        public LoginUserTests(UsersModuleSetupFixture usersModule)
         {
-            _module = module;
+            _usersModule = usersModule;
+            _usersModule.WithUnauthenticatedUserContext();
         }
         
         [Fact]
@@ -23,21 +26,21 @@ namespace Conduit.Identity.Domain.Tests.Unit.Commands
             {
                 UserCredentials = new UserCredentialsDTO
                 {
-                    Email = _module.User.Email,
-                    Password = _module.PlainTextPassword
+                    Email = _usersModule.ExistingUser.Email,
+                    Password = _usersModule.PlainTextPassword
                 }
             };
 
             //act
-            var result = await _module.Mediator.Send(loginUserCommand);
+            var result = await _usersModule.Mediator.Send(loginUserCommand);
             
             //assert
             Assert.True(result.Result == OperationResult.Success);
             Assert.True(result.Response.IsAuthenticated);
             var loggedInUser = result.Response.LoggedInUser;
             Assert.NotNull(loggedInUser);
-            Assert.Equal(_module.User.Email, loggedInUser.Email);
-            Assert.Equal(_module.User.Username, loggedInUser.Username);
+            Assert.Equal(_usersModule.ExistingUser.Email, loggedInUser.Email);
+            Assert.Equal(_usersModule.ExistingUser.Username, loggedInUser.Username);
             Assert.NotEmpty(loggedInUser.Token);
         }
         
@@ -49,13 +52,13 @@ namespace Conduit.Identity.Domain.Tests.Unit.Commands
             {
                 UserCredentials = new UserCredentialsDTO
                 {
-                    Email = _module.User.Email,
-                    Password = "incorrectPassword"
+                    Email = _usersModule.ExistingUser.Email,
+                    Password = _usersModule.AutoFixture.Create<string>()
                 }
             };
 
             //act
-            var result = await _module.Mediator.Send(loginUserCommand);
+            var result = await _usersModule.Mediator.Send(loginUserCommand);
             
             //assert
             Assert.True(result.Result == OperationResult.Success);
@@ -72,13 +75,13 @@ namespace Conduit.Identity.Domain.Tests.Unit.Commands
             {
                 UserCredentials = new UserCredentialsDTO
                 {
-                    Email = "hello@example.com",
-                    Password = _module.PlainTextPassword
+                    Email = _usersModule.AutoFixture.Create<string>(),
+                    Password = _usersModule.PlainTextPassword
                 }
             };
 
             //act
-            var result = await _module.Mediator.Send(loginUserCommand);
+            var result = await _usersModule.Mediator.Send(loginUserCommand);
             
             //assert
             Assert.True(result.Result == OperationResult.ValidationError);

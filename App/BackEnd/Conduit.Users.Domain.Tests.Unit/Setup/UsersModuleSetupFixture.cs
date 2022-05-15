@@ -17,13 +17,13 @@ using ScottBrady91.AspNetCore.Identity;
 
 namespace Conduit.Identity.Domain.Tests.Unit.Setup
 {
-    public class ModuleSetupFixture : IDisposable
+    public class UsersModuleSetupFixture : IDisposable
     {
         public Fixture AutoFixture { get; } = new ();
-        public string Token { get; }= "jwt";
+        public string Token { get; } = "jwt";
         public string PlainTextPassword { get; } = "soloyolo";
-        public static BCryptPasswordHasher<User> PasswordHasher = new ();
-        public User User { get; set; }
+        public BCryptPasswordHasher<User> PasswordHasher = new ();
+        public User ExistingUser { get; set; }
         public IMediator Mediator { get; set; }
         internal IdentityModule Module { get; }
         public IServiceCollection Services { get; }
@@ -31,9 +31,10 @@ namespace Conduit.Identity.Domain.Tests.Unit.Setup
         public Mock<IUserContext> UserContext { get; } = new ();
         public Mock<IUserRepository> UserRepo { get; }
 
-        public ModuleSetupFixture()
+        public UsersModuleSetupFixture()
         {
-            User = new User
+            
+            ExistingUser = new User
             {
                 Id = 1,
                 Email = "solo@yolo.com",
@@ -42,11 +43,12 @@ namespace Conduit.Identity.Domain.Tests.Unit.Setup
             };
             
             UserRepo = new Mock<IUserRepository>();
-            UserRepo.Setup(repository => repository.Exists(It.Is<int>(id => id == User.Id))).Returns(Task.FromResult(true));
-            UserRepo.Setup(repository => repository.GetById(It.Is<int>(id => id == User.Id))).Returns(Task.FromResult(User));
-            UserRepo.Setup(repository => repository.ExistsByEmail(It.Is<string>(email => email.Equals(User.Email)))).Returns(Task.FromResult(true));
-            UserRepo.Setup(repository => repository.GetByEmail(It.Is<string>(email => email.Equals(User.Email)))).Returns(Task.FromResult(User));
-            
+            UserRepo.Setup(repository => repository.Exists(It.Is<int>(id => id == ExistingUser.Id))).Returns(Task.FromResult(true));
+            UserRepo.Setup(repository => repository.GetById(It.Is<int>(id => id == ExistingUser.Id))).Returns(Task.FromResult(ExistingUser));
+            UserRepo.Setup(repository => repository.ExistsByEmail(It.Is<string>(email => email.Equals(ExistingUser.Email)))).Returns(Task.FromResult(true));
+            UserRepo.Setup(repository => repository.GetByEmail(It.Is<string>(email => email.Equals(ExistingUser.Email)))).Returns(Task.FromResult(ExistingUser));
+            UserRepo.Setup(repository => repository.ExistsByUsername(It.Is<string>(username => username.Equals(ExistingUser.Username)))).Returns(Task.FromResult(true));
+
             Module = new IdentityModule();
             Services = new ServiceCollection();
             Configuration = new ConfigurationBuilder();
@@ -83,7 +85,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Setup
         
         public void WithDefaultUserContext()
         {
-            WithUserContextReturning(User, Token);
+            WithUserContextReturning(ExistingUser, Token);
         }
 
         public void WithRandomUserContext()

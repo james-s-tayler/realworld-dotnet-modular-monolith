@@ -15,6 +15,7 @@ namespace Conduit.Core.Tests.Unit
             //be nice to enforce modules follow correct visibility levels
             //be nice to enforce mappers are used correctly - i.e types in a Domain.Contracts folder are only newed up from inside a Mapper!
             //be nice to enforce domain contracts follow naming conventions
+            //be nice to enforce domain unit test project follows naming conventions
         }
     }
 }
