@@ -114,7 +114,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Commands
             
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
-            result.ErrorMessage.Should().Be("Username is already in use");
+            result.ErrorMessage.Should().Contain("Username is already in use");
         }
         
         [Fact]
@@ -128,7 +128,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Commands
             
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
-            result.ErrorMessage.Should().Be("Email is already in use");
+            result.ErrorMessage.Should().Contain("Email is already in use");
         }
         
         [Theory]
