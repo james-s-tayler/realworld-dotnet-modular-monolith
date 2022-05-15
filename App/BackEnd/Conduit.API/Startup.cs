@@ -14,6 +14,7 @@ using Conduit.API.Formatters;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using OpenTelemetry.Trace;
 
 namespace Conduit.API
 {
@@ -71,6 +72,57 @@ namespace Conduit.API
                     options.InputFormatters.Insert(0, new InputFormatterStream());
                 });
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            
+            //database schema management
+            /*services.AddSingleton<IConnectionStringReader, CustomConnectionStringReader>();
+            services.AddDbConnectionFactory(_ =>
+            {
+                var database = $"{_configuration["DatabaseConfig:DatabaseName"]}_{_hostEnvironment.EnvironmentName.ToLowerInvariant()}";
+                var server = _configuration["DatabaseConfig:Server"];
+                var port = _configuration["DatabaseConfig:Port"];
+                var userId = _configuration["DatabaseConfig:UserId"];
+                var password = _configuration["DatabaseConfig:Password"];
+
+                var connectionString = $"Server={server};Port={port};Database={database};User Id={userId};Password={password};";
+                return new NpgsqlConnection(connectionString);
+            });
+            services.AddScoped<DbCreator>();
+            services.AddLogging(c => c.AddFluentMigratorConsole());
+            services.AddFluentMigratorCore()
+                .ConfigureRunner(c => c.AddPostgres()
+                    .WithGlobalConnectionString("SqlConnection")
+                    .ScanIn(typeof(SchemaManager).Assembly).For.Migrations());*/
+            
+            //caching
+            /*var redisHost = _configuration["Redis:Host"] ?? throw new ArgumentNullException("Redis:Host");
+            var redisPort = _configuration["Redis:Port"] ?? throw new ArgumentNullException("Redis:Port");
+            var redisAdmin = _configuration["Redis:AllowAdmin"] ?? throw new ArgumentNullException("Redis:AllowAdmin");
+            
+            var redisConnectionString = $"{redisHost}:{redisPort},allowAdmin={redisAdmin}";
+            var redisClientConnection = ConnectionMultiplexer.Connect(redisConnectionString);
+            services.AddStackExchangeRedisCache(options =>
+            {
+                //providing our own instance of ConnectionMultiplexer allows us to instrument StackExchangeRedisCache via OpenTelemetry
+                options.ConnectionMultiplexerFactory = () => Task.FromResult((IConnectionMultiplexer)redisClientConnection);
+            });
+            services.AddSingleton<IConnectionMultiplexer>(redisClientConnection);
+            services.AddSingleton<IDatabaseAsync>(provider => //IDatabaseAsync provides raw access to Redis when we need it
+            {
+                var connectionMultiplexer = provider.GetService<IConnectionMultiplexer>();
+                return connectionMultiplexer.GetDatabase(0);
+            });
+            services.AddSingleton<IRedisCache, RedisCache>();*/
+            
+            //tracing
+            services.AddOpenTelemetryTracing(
+                builder =>
+                {
+                    builder
+                        .AddAspNetCoreInstrumentation()                     //trace inbound http requests
+                        .AddHttpClientInstrumentation()                     //trace outbound http requests
+                        .AddJaegerExporter(options =>                       //export traces to jaeger container
+                            options.AgentHost = "jaeger");
+                });
 
             services
                 .AddSwaggerGen(c =>
@@ -95,7 +147,8 @@ namespace Conduit.API
                     });
                     c.CustomSchemaIds(type => type.FriendlyId(true));
                     c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{Assembly.GetEntryAssembly().GetName().Name}.xml");
-
+                    c.EnableAnnotations();
+                    
                     var scheme = JwtBearerDefaults.AuthenticationScheme;
                     c.AddSecurityDefinition(scheme, new OpenApiSecurityScheme
                     {
@@ -141,6 +194,7 @@ namespace Conduit.API
             app.UseStaticFiles();
             
             app.UseRouting();
+            //app.UseSerilogRequestLogging();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
@@ -149,5 +203,16 @@ namespace Conduit.API
                     .RequireAuthorization();
             });
         }
+        
+        /*static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy(IConfiguration configuration)
+        {
+            var maxRetryAttempts = configuration.GetValue<int>("HttpClientConfig:MaxRetryAttempts");
+            
+            //retry with exponential backoff
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
+                .WaitAndRetryAsync(maxRetryAttempts, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2,retryAttempt)));
+        }*/
     }
 }
