@@ -43,7 +43,7 @@ namespace Conduit.Core.PipelineBehaviors.Validation
             _logger.LogError("Validation Error: " + validationResult.Errors.Select(s => s.ErrorMessage)
                         .Aggregate((acc, curr) => acc += string.Concat("_|_", curr)));
 
-            return OperationResponseFactory.ValidationError<TResponse>(validationResult);
+            return OperationResponseFactory.ValidationError<TRequest, TResponse>(validationResult);
         }
 
         private async Task<ValidationResult> DoValidation(TRequest command, CancellationToken cancellationToken)

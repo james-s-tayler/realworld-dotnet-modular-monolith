@@ -5,6 +5,7 @@ namespace Conduit.Core.PipelineBehaviors
         Success,
         ValidationError,
         NotAuthenticated,
-        NotAuthorized
+        NotAuthorized,
+        NotImplemented
     }
 }

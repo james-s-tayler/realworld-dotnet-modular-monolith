@@ -35,7 +35,7 @@ namespace Conduit.Core.PipelineBehaviors.Authorization
                 if (IsAllowUnauthenticated())
                     return await next();
                 
-                return OperationResponseFactory.NotAuthenticated<TResponse>();
+                return OperationResponseFactory.NotAuthenticated<TRequest, TResponse>();
             }
             
             foreach(var authorizer in _authorizers)
@@ -43,7 +43,7 @@ namespace Conduit.Core.PipelineBehaviors.Authorization
                 var result = await authorizer.AuthorizeAsync(request, cancellationToken);
                 if (!result.IsAuthorized)
                 {
-                    return OperationResponseFactory.NotAuthorized<TResponse>(result.FailureMessage);
+                    return OperationResponseFactory.NotAuthorized<TRequest, TResponse>(result.FailureMessage);
                 }
             }
 
