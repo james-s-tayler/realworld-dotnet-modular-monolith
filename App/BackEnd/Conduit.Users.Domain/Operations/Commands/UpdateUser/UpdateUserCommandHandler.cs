@@ -10,7 +10,7 @@ namespace Conduit.Identity.Domain.Operations.Commands.UpdateUser
     {
         public Task<OperationResponse<UpdateUserResult>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            return Task.FromResult(OperationResponseFactory.NotAuthorized<OperationResponse<UpdateUserResult>>("not implemented"));
         }
     }
 }

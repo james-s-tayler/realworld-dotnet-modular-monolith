@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Conduit.Core.Context;
@@ -15,8 +16,8 @@ namespace Conduit.Identity.Domain.Operations.Queries.GetCurrentUser
         public GetCurrentUserQueryValidator(IUserRepository userRepository, 
             IUserContext userContext)
         {
-            _userRepository = userRepository;
-            _userContext = userContext;
+            _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
 
             RuleFor(query => query).MustAsync(UserMustExist).WithMessage($"User {_userContext.UserId} was not found.");
         }

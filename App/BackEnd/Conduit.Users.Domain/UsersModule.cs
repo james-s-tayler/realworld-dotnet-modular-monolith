@@ -13,15 +13,15 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using ScottBrady91.AspNetCore.Identity;
 
 //would be epic to add this in via Fody!
-[assembly: HostingStartup(typeof(Conduit.Identity.Domain.IdentityModule))]
+[assembly: HostingStartup(typeof(Conduit.Identity.Domain.UsersModule))]
 [assembly: InternalsVisibleTo("Conduit.Users.Domain.Tests.Unit")]
 namespace Conduit.Identity.Domain
 {
-    internal class IdentityModule : AbstractModule
+    internal class UsersModule : AbstractModule
     {
         protected override Assembly GetModuleAssembly()
         {
-            return IdentityDomain.Assembly;
+            return UsersDomain.Assembly;
         }
 
         protected override void AddModuleServices(IConfiguration configuration, IServiceCollection services)

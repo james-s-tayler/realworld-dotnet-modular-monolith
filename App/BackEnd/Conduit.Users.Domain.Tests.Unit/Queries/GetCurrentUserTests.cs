@@ -1,20 +1,8 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Conduit.Core.Context;
 using Conduit.Core.PipelineBehaviors;
-using Conduit.Identity.Domain.Configuration;
 using Conduit.Identity.Domain.Contracts.Queries.GetCurrentUser;
-using Conduit.Identity.Domain.Entities;
-using Conduit.Identity.Domain.Infrastructure.Repositories;
 using Conduit.Identity.Domain.Tests.Unit.Setup;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
-using ScottBrady91.AspNetCore.Identity;
+using FluentAssertions;
 using Xunit;
 
 namespace Conduit.Identity.Domain.Tests.Unit.Queries
@@ -23,30 +11,34 @@ namespace Conduit.Identity.Domain.Tests.Unit.Queries
     public class GetCurrentUserTests
     {
         private readonly UsersModuleSetupFixture _usersModule;
+        private readonly GetCurrentUserQuery _getCurrentUserQuery;
         
         public GetCurrentUserTests(UsersModuleSetupFixture usersModule)
         {
             _usersModule = usersModule;
+            _getCurrentUserQuery = new GetCurrentUserQuery();
         }
 
         [Fact]
         public async Task GivenAuthenticatedUser_WhenGetCurrentUser_ThenUserIsReturned()
         {
             //arrange
-            _usersModule.WithDefaultUserContext();
-            var getCurrentUserQuery = new GetCurrentUserQuery();
+            _usersModule.WithAuthenticatedUserContext();
 
             //act
-            var result = await _usersModule.Mediator.Send(getCurrentUserQuery);
+            var result = await _usersModule.Mediator.Send(_getCurrentUserQuery);
             
             //assert
-            Assert.True(result.Result == OperationResult.Success);
+            result.Result.Should().Be(OperationResult.Success);
             var currentUser = result.Response.CurrentUser;
-            Assert.NotNull(currentUser);
+            currentUser.Should().NotBeNull();
+            
             //need to implement equality comparison between DTOs and Entities so we can just do Equals and have it update automatically without tests missing anything
-            Assert.Equal(_usersModule.ExistingUser.Email, currentUser.Email);
-            Assert.Equal(_usersModule.ExistingUser.Username, currentUser.Username);
-            Assert.NotEmpty(currentUser.Token);
+            currentUser.Email.Should().Be(_usersModule.ExistingUser.Email);
+            currentUser.Username.Should().Be(_usersModule.ExistingUser.Username);
+            currentUser.Image.Should().Be(_usersModule.ExistingUser.Image);
+            currentUser.Bio.Should().Be(_usersModule.ExistingUser.Bio);
+            currentUser.Token.Should().NotBeEmpty();
         }
         
         [Fact]
@@ -54,14 +46,13 @@ namespace Conduit.Identity.Domain.Tests.Unit.Queries
         {
             //arrange
             _usersModule.WithUnauthenticatedUserContext();
-            var getCurrentUserQuery = new GetCurrentUserQuery();
 
             //act
-            var result = await _usersModule.Mediator.Send(getCurrentUserQuery);
+            var result = await _usersModule.Mediator.Send(_getCurrentUserQuery);
             
             //assert
-            Assert.True(result.Result == OperationResult.NotAuthenticated);
-            Assert.Null(result.Response);
+            result.Result.Should().Be(OperationResult.NotAuthenticated);
+            result.Response.Should().BeNull();
         }
         
         [Fact]
@@ -69,14 +60,13 @@ namespace Conduit.Identity.Domain.Tests.Unit.Queries
         {
             //arrange
             _usersModule.WithRandomUserContext();
-            var getCurrentUserQuery = new GetCurrentUserQuery();
 
             //act
-            var result = await _usersModule.Mediator.Send(getCurrentUserQuery);
+            var result = await _usersModule.Mediator.Send(_getCurrentUserQuery);
             
             //assert
-            Assert.True(result.Result == OperationResult.ValidationError);
-            Assert.Null(result.Response);
+            result.Result.Should().Be(OperationResult.ValidationError);
+            result.Response.Should().BeNull();
         }
     }
 }

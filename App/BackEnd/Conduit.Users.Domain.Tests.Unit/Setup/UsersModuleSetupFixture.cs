@@ -23,9 +23,10 @@ namespace Conduit.Identity.Domain.Tests.Unit.Setup
         public string Token { get; } = "jwt";
         public string PlainTextPassword { get; } = "soloyolo";
         public BCryptPasswordHasher<User> PasswordHasher = new ();
-        public User ExistingUser { get; set; }
+        public User ExistingUser { get; }
+        public User ExistingUser2 { get; }
         public IMediator Mediator { get; set; }
-        internal IdentityModule Module { get; }
+        internal UsersModule Module { get; }
         public IServiceCollection Services { get; }
         public ConfigurationBuilder Configuration { get; }
         public Mock<IUserContext> UserContext { get; } = new ();
@@ -42,14 +43,18 @@ namespace Conduit.Identity.Domain.Tests.Unit.Setup
                 Password = PasswordHasher.HashPassword(null, PlainTextPassword)
             };
             
+            ExistingUser2 = new User
+            {
+                Id = 2,
+                Email = "solo2@yolo2.com",
+                Username = "soloyolo2",
+                Password = PasswordHasher.HashPassword(null, PlainTextPassword)
+            };
+            
             UserRepo = new Mock<IUserRepository>();
-            UserRepo.Setup(repository => repository.Exists(It.Is<int>(id => id == ExistingUser.Id))).Returns(Task.FromResult(true));
-            UserRepo.Setup(repository => repository.GetById(It.Is<int>(id => id == ExistingUser.Id))).Returns(Task.FromResult(ExistingUser));
-            UserRepo.Setup(repository => repository.ExistsByEmail(It.Is<string>(email => email.Equals(ExistingUser.Email)))).Returns(Task.FromResult(true));
-            UserRepo.Setup(repository => repository.GetByEmail(It.Is<string>(email => email.Equals(ExistingUser.Email)))).Returns(Task.FromResult(ExistingUser));
-            UserRepo.Setup(repository => repository.ExistsByUsername(It.Is<string>(username => username.Equals(ExistingUser.Username)))).Returns(Task.FromResult(true));
+            WithUserRepoContainingDefaultUsers();
 
-            Module = new IdentityModule();
+            Module = new UsersModule();
             Services = new ServiceCollection();
             Configuration = new ConfigurationBuilder();
             Configuration.AddInMemoryCollection(new Dictionary<string, string>
@@ -59,7 +64,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Setup
                 {$"{nameof(JwtSettings)}:{nameof(JwtSettings.ValidAudience)}", "audience"},
             });
             
-            WithDefaultUserContext();
+            WithAuthenticatedUserContext();
             
             Services.AddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
             Module.AddServices(Configuration.Build(), Services);
@@ -70,11 +75,23 @@ namespace Conduit.Identity.Domain.Tests.Unit.Setup
             var provider = Services.BuildServiceProvider();
             Mediator = provider.GetRequiredService<IMediator>();
         }
-        
-        // ReSharper disable once InconsistentNaming
-        public void BuildDIContainer()
+
+
+        public void WithUserRepoContainingDefaultUsers()
         {
-            
+            WithUserRepoContainingUsers(ExistingUser, ExistingUser2);
+        }
+        public void WithUserRepoContainingUsers(params User[] users)
+        {
+            UserRepo.Reset();
+            foreach (var user in users)
+            {
+                UserRepo.Setup(repository => repository.Exists(It.Is<int>(id => id == user.Id))).Returns(Task.FromResult(true));
+                UserRepo.Setup(repository => repository.GetById(It.Is<int>(id => id == user.Id))).Returns(Task.FromResult(user));
+                UserRepo.Setup(repository => repository.ExistsByEmail(It.Is<string>(email => email.Equals(user.Email)))).Returns(Task.FromResult(true));
+                UserRepo.Setup(repository => repository.GetByEmail(It.Is<string>(email => email.Equals(user.Email)))).Returns(Task.FromResult(user));
+                UserRepo.Setup(repository => repository.ExistsByUsername(It.Is<string>(username => username.Equals(user.Username)))).Returns(Task.FromResult(true));
+            }
         }
 
         public void WithUnauthenticatedUserContext()
@@ -83,7 +100,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Setup
             UserContext.SetupGet(context => context.IsAuthenticated).Returns(false);
         }
         
-        public void WithDefaultUserContext()
+        public void WithAuthenticatedUserContext()
         {
             WithUserContextReturning(ExistingUser, Token);
         }
