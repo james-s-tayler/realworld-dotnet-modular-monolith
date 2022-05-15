@@ -32,7 +32,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Queries
         public async Task GivenAuthenticatedUser_WhenGetCurrentUser_ThenUserIsReturned()
         {
             //arrange
-            _module.BuildDIContainer();
+            _module.WithDefaultUserContext();
             var getCurrentUserQuery = new GetCurrentUserQuery();
 
             //act
@@ -52,8 +52,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Queries
         public async Task GivenUnauthenticatedUser_WhenGetCurrentUser_ThenNotAuthenticated()
         {
             //arrange
-            _module.UserContext = new TestUserContext();
-            _module.BuildDIContainer();
+            _module.WithUnauthenticatedUserContext();
             var getCurrentUserQuery = new GetCurrentUserQuery();
 
             //act
@@ -68,8 +67,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Queries
         public async Task GivenNonExistentUser_WhenGetCurrentUser_ThenFailsValidation()
         {
             //arrange
-            _module.UserContext = new TestUserContext(2,"someuser","some@user.com","jwt");
-            _module.BuildDIContainer();
+            _module.WithRandomUserContext();
             var getCurrentUserQuery = new GetCurrentUserQuery();
 
             //act
