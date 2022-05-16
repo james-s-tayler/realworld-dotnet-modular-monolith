@@ -48,8 +48,9 @@ namespace Conduit.Identity.Domain.Infrastructure.Repositories
         public Task<int> Create(User entity)
         {
             var id = Random.Next(1, Int32.MaxValue);
-            _repo[id] = entity;
-            return Task.FromResult(id);
+            entity.Id = id;
+            _repo[entity.Id] = entity;
+            return Task.FromResult(entity.Id);
         }
 
         public Task Update(User entity)

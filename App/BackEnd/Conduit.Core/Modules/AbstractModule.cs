@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using Conduit.Core.Context;
 using Conduit.Core.PipelineBehaviors.Authorization;
+using Conduit.Core.PipelineBehaviors.Logging;
 using Conduit.Core.PipelineBehaviors.Validation;
 using FluentValidation;
 using MediatR;
@@ -39,8 +40,8 @@ namespace Conduit.Core.Modules
             services.AddMediatR(GetModuleAssembly());
             services.AddValidatorsFromAssembly(GetModuleAssembly());
             services.AddAuthorizersFromAssembly(GetModuleAssembly());
-
-            //add logging pipeline behavior
+            
+            services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(OperationLoggingPipelineBehavior<,>));
             //add telemetry pipeline behavior
             services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(AuthorizationPipelineBehavior<,>));
             //add transaction pipeline behavior

@@ -1,11 +1,9 @@
 using System;
 using System.Reflection;
+using Conduit.Core.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Serilog.Events;
-using Serilog.Exceptions;
-using Serilog.Formatting.Compact;
 
 namespace Conduit.API
 {
@@ -16,27 +14,7 @@ namespace Conduit.API
     {
         public static void Main(string[] args)
         {
-            var assembly = Assembly.GetExecutingAssembly().GetName();
-            var version = Environment.GetEnvironmentVariable("GIT_COMMIT_HASH") ?? assembly.Version!.ToString(); 
-            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
-
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Is(env.Equals("Development") || env.Equals("Docker") ? LogEventLevel.Debug : LogEventLevel.Information)
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                //add standard metadata to all log entries
-                .Enrich.FromLogContext()
-                .Enrich.WithProperty("Service.Name", $"{assembly.Name}")
-                .Enrich.WithProperty("Service.Version", version)
-                .Enrich.WithCorrelationId()
-                .Enrich.WithExceptionDetails()
-                //put safety limits on destructuring objects when using the @ destructuring operator
-                .Destructure.ToMaximumDepth(5)
-                .Destructure.ToMaximumCollectionCount(100)
-                .Destructure.ToMaximumStringLength(10000)
-                //output logs to console and Seq
-                .WriteTo.Console(new RenderedCompactJsonFormatter())
-                .WriteTo.Seq(Environment.GetEnvironmentVariable("SEQ_URL") ?? "http://localhost:5341")
-                .CreateLogger();
+            SerilogConfiguration.SetupSerilog();
             
             try
             {

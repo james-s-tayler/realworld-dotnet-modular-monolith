@@ -72,9 +72,7 @@ namespace Conduit.API.Controllers
             
             if (registerUserResponse.Result != OperationResult.Success)
                 return UnsuccessfulResponseResult(registerUserResponse);
-
-            _logger.LogInformation($"Registered {request.User.Username} - UserId:{registerUserResponse.Response.UserId}");
-
+            
             var loginResponse = await _mediator.Send(new LoginUserCommand
             {
                 UserCredentials = new UserCredentialsDTO
@@ -116,7 +114,7 @@ namespace Conduit.API.Controllers
             {
                 Errors = new GenericErrorModelErrors
                 {
-                    Body = operationResponse.ErrorMessages
+                    Body = operationResponse.Errors
                 }
             };
             switch (operationResponse.Result)
@@ -127,6 +125,7 @@ namespace Conduit.API.Controllers
                     return StatusCode((int)HttpStatusCode.Forbidden, errors);
                 case OperationResult.ValidationError:
                     return StatusCode((int)HttpStatusCode.UnprocessableEntity, errors);
+                case OperationResult.UnhandledException:
                 default:
                     return StatusCode((int)HttpStatusCode.InternalServerError, errors);
             }
@@ -187,8 +186,6 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> Login([FromBody]LoginUserRequest request)
         {
-            //this can purely be auth then once authed simply redirect to GetCurrentUser!
-            
             var loginResponse = await _mediator.Send(new LoginUserCommand
             {
                 UserCredentials = new UserCredentialsDTO
@@ -203,7 +200,6 @@ namespace Conduit.API.Controllers
             if (!loginResponse.Response.IsAuthenticated)
                 return Unauthorized();
             
-            //need to either redirect to GetCurrentUser or implement that query and call it here
             var loggedInUser = loginResponse.Response.LoggedInUser;
             var user = new UserResponse
             {

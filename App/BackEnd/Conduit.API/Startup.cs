@@ -11,7 +11,6 @@ using Microsoft.OpenApi.Models;
 using Conduit.API.Filters;
 using Conduit.API.OpenApi;
 using Conduit.API.Formatters;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using OpenTelemetry.Trace;
@@ -44,7 +43,7 @@ namespace Conduit.API
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            var authScheme = "Token"; //JwtBearerDefaults.AuthenticationScheme
+            var authScheme = "Token"; //JwtBearerDefaults.AuthenticationScheme is normally the default but Conduit uses "Token"
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = authScheme;

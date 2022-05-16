@@ -2,7 +2,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Conduit.Core.PipelineBehaviors;
-using Conduit.Identity.Domain.Contracts;
 using Conduit.Identity.Domain.Contracts.Commands.LoginUser;
 using Conduit.Identity.Domain.Entities;
 using Conduit.Identity.Domain.Infrastructure.Mappers;
@@ -39,7 +38,6 @@ namespace Conduit.Identity.Domain.Operations.Commands.LoginUser
             if (result == PasswordVerificationResult.Failed)
                 return new OperationResponse<LoginUserResult>(LoginUserResult.FailedLoginResult());
             
-            //could make this result just return the token, then login action can call GetCurrentUserQuery after
             var token = await _authTokenService.GenerateAuthToken(user);
             
             return new OperationResponse<LoginUserResult>(LoginUserResult.SuccessfulLoginResult(user.ToUserDTO(token)));

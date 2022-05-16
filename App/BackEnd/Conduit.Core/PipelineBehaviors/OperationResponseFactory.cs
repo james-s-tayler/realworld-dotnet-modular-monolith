@@ -10,25 +10,22 @@ namespace Conduit.Core.PipelineBehaviors
     {
         public static TResponse ValidationError<TRequest, TResponse>(ValidationResult validationResult) where TResponse : class where TRequest : IRequest<TResponse>
         {
-            var requestType = typeof(TRequest);
-            var errorMessages = new List<string> { $"Validation error(s) occurred while performing {requestType.Name}"};
+            var errorMessages = new List<string>();
             errorMessages.AddRange(validationResult.Errors.Select(s => s.ErrorMessage).ToList());
             return CreateResponse<TRequest, TResponse>(OperationResult.ValidationError, errorMessages);
         }
         
         public static TResponse NotAuthenticated<TRequest, TResponse>() where TResponse : class where TRequest : IRequest<TResponse>
         {
-            var requestType = typeof(TRequest);
-            var errorMessages = new List<string>{$"Must be authenticated to perform {requestType.Name}"};
+            var errorMessages = new List<string>{"Not authenticated"};
             return CreateResponse<TRequest, TResponse>(OperationResult.NotAuthenticated, errorMessages);
         }
         
         public static TResponse NotAuthorized<TRequest, TResponse>(string failureMessage) where TResponse : class where TRequest : IRequest<TResponse>
         {
-            var requestType = typeof(TRequest);
             var errorMessages = new List<string>
             {
-                $"Not authorized to perform {requestType.Name}",
+                "Not authorized",
                 failureMessage
             };
             return CreateResponse<TRequest, TResponse>(OperationResult.NotAuthorized, errorMessages);
@@ -36,9 +33,14 @@ namespace Conduit.Core.PipelineBehaviors
         
         public static TResponse NotImplemented<TRequest, TResponse>() where TResponse : class where TRequest : IRequest<TResponse>
         {
-            var requestType = typeof(TRequest);
-            var errorMessages = new List<string>{$"{requestType.Name} has not been implemented"};
+            var errorMessages = new List<string>{"Not implemented"};
             return CreateResponse<TRequest, TResponse>(OperationResult.NotImplemented, errorMessages);
+        }
+        
+        public static TResponse UnhandledException<TRequest, TResponse>(Exception e) where TResponse : class where TRequest : IRequest<TResponse>
+        {
+            var errorMessages = new List<string>{e.Message};
+            return CreateResponse<TRequest, TResponse>(OperationResult.UnhandledException, errorMessages);
         }
         
         private static TResponse CreateResponse<TRequest, TResponse>(OperationResult result, List<string> errorMessages) where TResponse : class where TRequest : IRequest<TResponse>
