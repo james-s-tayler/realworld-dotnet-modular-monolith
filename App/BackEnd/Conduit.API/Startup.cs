@@ -44,25 +44,26 @@ namespace Conduit.API
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            var authScheme = "Token"; //JwtBearerDefaults.AuthenticationScheme
             services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.SaveToken = true;
-                options.RequireHttpsMetadata = false;
-                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidAudience = Configuration["JwtSettings:ValidAudience"],
-                    ValidIssuer = Configuration["JwtSettings:ValidIssuer"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSettings:Secret"]))
-                };
-            });
+                    options.DefaultAuthenticateScheme = authScheme;
+                    options.DefaultChallengeScheme = authScheme;
+                    options.DefaultScheme = authScheme;
+                })
+                .AddScheme<JwtBearerOptions, JwtBearerHandler>(authScheme, options =>
+                {
+                    options.SaveToken = true;
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidAudience = Configuration["JwtSettings:ValidAudience"],
+                        ValidIssuer = Configuration["JwtSettings:ValidIssuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSettings:Secret"]))
+                    };
+                });
             services.AddAuthorization();
 
             // Add framework services.
@@ -150,15 +151,14 @@ namespace Conduit.API
                     c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{Assembly.GetEntryAssembly().GetName().Name}.xml");
                     c.EnableAnnotations();
                     
-                    var scheme = JwtBearerDefaults.AuthenticationScheme;
-                    c.AddSecurityDefinition(scheme, new OpenApiSecurityScheme
+                    c.AddSecurityDefinition(authScheme, new OpenApiSecurityScheme
                     {
-                        Description = $"JWT Authorization header using the {scheme} scheme.",
+                        Description = $"JWT Authorization header",
                         Name = "Authorization",
                         In = ParameterLocation.Header,
-                        Scheme = scheme,
+                        Scheme = authScheme,
                         Type = SecuritySchemeType.Http,
-                        BearerFormat = "Bearer {token}"
+                        BearerFormat = authScheme + " {token}"
                     });
                     c.OperationFilter<SecurityRequirementsOperationFilter>();
                     // Include DataAnnotation attributes on Controller Action parameters as OpenAPI validation rules (e.g required, pattern, ..)
