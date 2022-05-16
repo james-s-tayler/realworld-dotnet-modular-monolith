@@ -21,7 +21,7 @@ namespace Conduit.API
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
 
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Is(env.Equals("Development") ? LogEventLevel.Debug : LogEventLevel.Information)
+                .MinimumLevel.Is(env.Equals("Development") || env.Equals("Docker") ? LogEventLevel.Debug : LogEventLevel.Information)
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                 //add standard metadata to all log entries
                 .Enrich.FromLogContext()

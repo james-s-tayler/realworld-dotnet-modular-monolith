@@ -15,6 +15,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using OpenTelemetry.Trace;
+using Serilog;
 
 namespace Conduit.API
 {
@@ -71,7 +72,7 @@ namespace Conduit.API
                 {
                     options.InputFormatters.Insert(0, new InputFormatterStream());
                 });
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            /*services.AddMediatR(Assembly.GetExecutingAssembly());*/
             
             //database schema management
             /*services.AddSingleton<IConnectionStringReader, CustomConnectionStringReader>();
@@ -194,7 +195,7 @@ namespace Conduit.API
             app.UseStaticFiles();
             
             app.UseRouting();
-            //app.UseSerilogRequestLogging();
+            app.UseSerilogRequestLogging();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
