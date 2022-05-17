@@ -53,14 +53,9 @@ namespace Conduit.Core.PipelineBehaviors.Validation
 
         private bool IsValidatable()
         {
-            var responseType = typeof(TResponse);
-            
             if (_commandValidators == null || !_commandValidators.Any())
                 return false; //obviously we can't validate anything with no validators
             
-            if(!responseType.IsGenericType || !responseType.Name.Contains("OperationResponse"))
-                return false; //and we can only handle OperationResponse<T>
-
             return true;
         }
     }

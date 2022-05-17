@@ -1,7 +1,9 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using Destructurama;
+using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
@@ -18,8 +20,14 @@ namespace Conduit.Core.Logging
             var callerAssembly = new StackFrame(1).GetMethod().DeclaringType.Assembly.GetName();
             var version = Environment.GetEnvironmentVariable("GIT_COMMIT_HASH") ?? callerAssembly.Version!.ToString(); 
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
-            
+
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{env}.json", optional: true);
+
             Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(config.Build())
                 .MinimumLevel.Is(env.Equals("Development") || env.Equals("Docker") ? LogEventLevel.Debug : LogEventLevel.Information)
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                 //add standard metadata to all log entries
