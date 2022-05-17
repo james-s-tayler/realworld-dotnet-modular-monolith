@@ -42,4 +42,15 @@ namespace Conduit.Core.PipelineBehaviors
             return typeof(T);
         }
     }
+
+    public static class TypeExtensions
+    {
+        public static bool IsOperationResponse(this Type type)
+        {
+            if (!type.IsGenericType)
+                return false;
+            
+            return type.Name.StartsWith($"OperationResponse`{type.GenericTypeArguments.Length}");
+        }
+    }
 }

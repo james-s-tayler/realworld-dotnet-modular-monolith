@@ -25,7 +25,7 @@ namespace Conduit.Core.PipelineBehaviors.Logging
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            if (!IsOperationResponse())
+            if (!typeof(TResponse).IsOperationResponse())
                 throw new InvalidOperationException("Domain operations must be of type OperationResponse<T>");
 
             var requestTypeName = typeof(TRequest).Name;
@@ -46,6 +46,8 @@ namespace Conduit.Core.PipelineBehaviors.Logging
 
                 if (responseSummary!.Result == OperationResult.UnhandledException)
                 {
+                    //for better signal to noise ratio in logs treat only things that our application was not expecting to happen as errors
+                    //validation errors, failed auth etc are things our application knows about and expects to happen hence are information level logs
                     _logger.LogError(responseSummary!.Exception, "Operation {Operation} {Result}: {@Errors}", requestTypeName, responseSummary.Result, responseSummary.Errors);
                 }
                 else if(responseSummary!.Result == OperationResult.Success)
@@ -59,12 +61,6 @@ namespace Conduit.Core.PipelineBehaviors.Logging
             
                 return response;       
             }
-        }
-
-        private bool IsOperationResponse() //make this an extension method maybe?
-        {
-            var responseType = typeof(TResponse);
-            return responseType.IsGenericType && responseType.Name.Contains("OperationResponse");
         }
     }
 }

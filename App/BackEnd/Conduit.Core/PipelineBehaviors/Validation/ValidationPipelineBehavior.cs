@@ -27,7 +27,7 @@ namespace Conduit.Core.PipelineBehaviors.Validation
 
         public async Task<TResponse> Handle(TRequest command, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            if (!IsOperationResponse())
+            if (!typeof(TResponse).IsOperationResponse())
                 throw new InvalidOperationException("Domain operations must be of type OperationResponse<T>");
             
             if(!IsValidatable())
@@ -62,12 +62,6 @@ namespace Conduit.Core.PipelineBehaviors.Validation
                 return false; //and we can only handle OperationResponse<T>
 
             return true;
-        }
-
-        private bool IsOperationResponse() //make this an extension method maybe?
-        {
-            var responseType = typeof(TResponse);
-            return responseType.IsGenericType && responseType.Name.Contains("OperationResponse");
         }
     }
 }
