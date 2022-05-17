@@ -7,6 +7,7 @@ namespace Conduit.Core.PipelineBehaviors.Logging
     {
         OperationResult Result { get; }
         List<string> Errors { get; }
+        Exception Exception { get; }
         bool IsSuccess();
         Type GetResponseType();
     }

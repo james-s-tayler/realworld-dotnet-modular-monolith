@@ -39,8 +39,9 @@ namespace Conduit.Core.PipelineBehaviors
         
         public static TResponse UnhandledException<TRequest, TResponse>(Exception e) where TResponse : class where TRequest : IRequest<TResponse>
         {
-            var errorMessages = new List<string>{e.Message};
-            return CreateResponse<TRequest, TResponse>(OperationResult.UnhandledException, errorMessages);
+            var resultType = typeof(TResponse).GetGenericArguments()[0];
+            var operationResponseType = typeof(OperationResponse<>).MakeGenericType(resultType);
+            return Activator.CreateInstance(operationResponseType, e) as TResponse;
         }
         
         private static TResponse CreateResponse<TRequest, TResponse>(OperationResult result, List<string> errorMessages) where TResponse : class where TRequest : IRequest<TResponse>
