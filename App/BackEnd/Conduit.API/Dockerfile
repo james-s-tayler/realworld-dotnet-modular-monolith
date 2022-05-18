@@ -1,16 +1,23 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+ARG minified_image=true
+
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS base
 WORKDIR /app
 COPY . .
-RUN dotnet restore -nowarn:msb3202,nu1503
-RUN dotnet build --no-restore -c Release -o output
 
-FROM build AS tests
+FROM base AS tests
+RUN dotnet build -c Release -o output
 RUN echo '#!/bin/sh\ndotnet test --no-restore --no-build -c Release -o output' > run-tests.sh && chmod +x run-tests.sh 
 
-FROM build AS publish
-RUN dotnet publish --no-restore -c Release -o output
+FROM base AS publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS final
+RUN dotnet publish Conduit.API -c Release -o output \
+  --runtime linux-musl-x64 \
+  --self-contained true \
+  /p:PublishTrimmed=${minified_image} \
+  /p:PublishSingleFile=true
+  
+
+FROM mcr.microsoft.com/dotnet/runtime-deps:5.0-alpine AS final
 WORKDIR /app
 COPY --from=publish /app/output .
-ENTRYPOINT ["dotnet", "Conduit.API.dll"]
+ENTRYPOINT ["./Conduit.API"]

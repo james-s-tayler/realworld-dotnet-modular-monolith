@@ -16,6 +16,8 @@ services:
     build:
       context: App/BackEnd/
       dockerfile: Conduit.API/Dockerfile
+      args:
+        minified_image: false
     networks:
      - conduit-api
 
