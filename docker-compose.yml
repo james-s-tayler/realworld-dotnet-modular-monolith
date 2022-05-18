@@ -17,7 +17,7 @@ services:
       context: App/BackEnd/
       dockerfile: Conduit.API/Dockerfile
       args:
-        minified_image: false
+        ENABLE_TREESHAKING: false
     networks:
      - conduit-api
 
