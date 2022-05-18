@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Conduit.Core.Context;
+using Conduit.Core.Logging;
 using Conduit.Core.PipelineBehaviors.Authorization;
 using Conduit.Core.PipelineBehaviors.Logging;
 using Conduit.Core.PipelineBehaviors.Validation;
@@ -37,6 +38,7 @@ namespace Conduit.Core.Modules
         {
             services.AddHttpContextAccessor(); //dubious about web specific assemblies leaking into here...
             services.TryAddScoped<IUserContext, ApiContext>();
+            services.TryAddTransient<UserContextEnricher>();
             services.AddMediatR(GetModuleAssembly());
             services.AddValidatorsFromAssembly(GetModuleAssembly());
             services.AddAuthorizersFromAssembly(GetModuleAssembly());

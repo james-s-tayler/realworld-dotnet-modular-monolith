@@ -1,13 +1,11 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using Destructurama;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
-using Serilog.Formatting.Compact;
 
 namespace Conduit.Core.Logging
 {
@@ -41,8 +39,7 @@ namespace Conduit.Core.Logging
                 .Destructure.ToMaximumDepth(5)
                 .Destructure.ToMaximumCollectionCount(100)
                 .Destructure.ToMaximumStringLength(10000)
-                //output logs to console and Seq
-                .WriteTo.Console(new RenderedCompactJsonFormatter())
+                //output logs to Seq
                 .WriteTo.Seq(Environment.GetEnvironmentVariable("SEQ_URL") ?? "http://localhost:5341")
                 .CreateLogger();
         }
