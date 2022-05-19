@@ -18,6 +18,7 @@ services:
       dockerfile: Conduit.API/Dockerfile
       args:
         ENABLE_TREESHAKING: false
+        MODEOF_TREESHAKING: Link
     networks:
      - conduit-api
 

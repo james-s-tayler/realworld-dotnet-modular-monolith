@@ -28,7 +28,7 @@ RUN dotnet build Conduit.API -c Release -o output \
 RUN echo '#!/bin/sh\ndotnet test --no-restore --no-build -c Release -o output' > run-tests.sh && chmod +x run-tests.sh 
 
 FROM base AS publish
-#programmatically strip out the tests from the sln
+#programmatically strip out the tests from the sln before building
 RUN for test_project in `dotnet sln Conduit.API.sln list | grep ".csproj" | grep "Tests"`; do dotnet sln Conduit.API.sln remove ${test_project}; done;
 
 COPY . .
