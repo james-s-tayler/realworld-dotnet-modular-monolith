@@ -15,8 +15,6 @@ namespace Conduit.API
     {
         public static void Main(string[] args)
         {
-            SerilogConfiguration.SetupSerilog();
-            
             try
             {
                 CreateHostBuilder(args)
@@ -43,7 +41,7 @@ namespace Conduit.API
                 })
                 .UseSerilog((context, services, configuration) =>
                 {
-                    configuration.Enrich.With(services.GetService<UserContextEnricher>());
+                    configuration.SetupSerilog(services);
                 });
     }
 }

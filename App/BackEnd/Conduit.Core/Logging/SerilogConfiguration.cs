@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using Destructurama;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
@@ -11,7 +12,7 @@ namespace Conduit.Core.Logging
 {
     public static class SerilogConfiguration
     {
-        public static void SetupSerilog()
+        public static void SetupSerilog(this LoggerConfiguration configuration, IServiceProvider services)
         {
             //https://benfoster.io/blog/serilog-best-practices/
             
@@ -24,9 +25,11 @@ namespace Conduit.Core.Logging
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile($"appsettings.{env}.json", optional: true);
 
-            Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(config.Build())
-                .MinimumLevel.Is(env.Equals("Development") || env.Equals("Docker") ? LogEventLevel.Debug : LogEventLevel.Information)
+            //Log.Logger = new LoggerConfiguration()
+            configuration.ReadFrom.Configuration(config.Build())
+                .MinimumLevel.Is(env.Equals("Development") || env.Equals("Docker")
+                    ? LogEventLevel.Debug
+                    : LogEventLevel.Information)
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                 //add standard metadata to all log entries
                 .Enrich.FromLogContext()
@@ -34,14 +37,15 @@ namespace Conduit.Core.Logging
                 .Enrich.WithProperty("Service.Version", version)
                 .Enrich.WithCorrelationId()
                 .Enrich.WithExceptionDetails()
+                .Enrich.With(services.GetService<UserContextEnricher>())
                 //put safety limits on destructuring objects when using the @ destructuring operator
                 .Destructure.UsingAttributes() //allow [NotLogged]
                 .Destructure.ToMaximumDepth(5)
                 .Destructure.ToMaximumCollectionCount(100)
                 .Destructure.ToMaximumStringLength(10000)
                 //output logs to Seq
-                .WriteTo.Seq(Environment.GetEnvironmentVariable("SEQ_URL") ?? "http://localhost:5341")
-                .CreateLogger();
+                .WriteTo.Seq(Environment.GetEnvironmentVariable("SEQ_URL") ?? "http://localhost:5341");
+            //.CreateLogger();
         }
     }
 }
