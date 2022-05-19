@@ -24,7 +24,7 @@ namespace Conduit.Core.Tests.Unit
             //                                                          : https://developpaper.com/optimize-the-size-of-asp-net-core-docker-image/
             //                                                          : https://www.thorsten-hans.com/how-to-build-smaller-and-secure-docker-images-for-net5/
             //                                                          : https://michaeldimoudis.com/hardening-asp-net-core-3-1-docker-images-f0c2ede1667f
-            //be nice to globally distribute on fly.io
+            //be nice to globally distribute on fly.io - test
         }
     }
 }
