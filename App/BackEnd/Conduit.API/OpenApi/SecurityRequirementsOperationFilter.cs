@@ -23,8 +23,8 @@ namespace Conduit.API.OpenApi
                         {
                             new OpenApiSecurityScheme
                             {
-                                //Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-                                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Token" } //Conduit uses "Token" instead of Bearer because... iunno?
+                                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                                //Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Token" } //Conduit uses "Token" instead of Bearer because... iunno?
                             },
                             new List<string>()
                         }

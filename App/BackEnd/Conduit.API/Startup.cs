@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using Conduit.API.Filters;
 using Conduit.API.OpenApi;
 using Conduit.API.Formatters;
+using Conduit.Core.Logging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using OpenTelemetry.Trace;
@@ -52,8 +53,12 @@ namespace Conduit.API
                 })
                 .AddScheme<JwtBearerOptions, JwtBearerHandler>(authScheme, options =>
                 {
+                    options.Challenge = authScheme;
+                    options.Audience = Configuration["JwtSettings:ValidAudience"];
+                    options.Authority = Configuration["JwtSettings:ValidIssuer"];
                     options.SaveToken = true;
                     options.RequireHttpsMetadata = false;
+                    options.Events = new JwtBearerEventsLogger(new CustomSchemeJwtBearerEvents(authScheme));
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
@@ -152,10 +157,10 @@ namespace Conduit.API
                     
                     c.AddSecurityDefinition(authScheme, new OpenApiSecurityScheme
                     {
-                        Description = $"JWT Authorization header",
+                        Description = "JWT Authorization header",
                         Name = "Authorization",
                         In = ParameterLocation.Header,
-                        Scheme = authScheme,
+                        Scheme = "Bearer",
                         Type = SecuritySchemeType.Http,
                         BearerFormat = authScheme + " {token}"
                     });
