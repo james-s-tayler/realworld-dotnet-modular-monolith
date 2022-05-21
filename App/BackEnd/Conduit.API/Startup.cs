@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,9 +15,15 @@ using Microsoft.OpenApi.Models;
 using Conduit.API.Filters;
 using Conduit.API.OpenApi;
 using Conduit.API.Formatters;
+using Conduit.API.Models;
+using Conduit.Core.Exceptions;
 using Conduit.Core.Logging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 using OpenTelemetry.Trace;
 using Serilog;
 
@@ -158,10 +168,10 @@ namespace Conduit.API
                     c.AddSecurityDefinition(authScheme, new OpenApiSecurityScheme
                     {
                         Description = "JWT Authorization header",
-                        Name = "Authorization",
                         In = ParameterLocation.Header,
-                        Scheme = "Bearer",
-                        Type = SecuritySchemeType.Http,
+                        Name = HeaderNames.Authorization,
+                        Scheme = "bearer",
+                        Type = SecuritySchemeType.ApiKey, //normally we use SecuritySchemeType.Http but that hardcodes "Bearer" but Conduit needs "Token"
                         BearerFormat = authScheme + " {token}"
                     });
                     c.OperationFilter<SecurityRequirementsOperationFilter>();
@@ -202,6 +212,27 @@ namespace Conduit.API
             app.UseSerilogRequestLogging();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseExceptionHandler(appError =>
+            {
+                appError.Run(async context =>
+                {
+                    context.Response.ContentType = "application/json";
+                    var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    if(contextFeature != null)
+                    {
+                        
+                        var errors = new GenericErrorModel
+                        {
+                            Errors = new GenericErrorModelErrors
+                            {
+                                Body = contextFeature.Error.GetErrorMessages()
+                            }
+                        };
+
+                        await context.Response.WriteAsync(JsonSerializer.Serialize(errors));
+                    }
+                });
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers()

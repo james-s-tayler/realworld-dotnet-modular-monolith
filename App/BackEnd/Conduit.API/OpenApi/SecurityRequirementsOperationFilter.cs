@@ -8,6 +8,8 @@ namespace Conduit.API.OpenApi
 {
     public class SecurityRequirementsOperationFilter : IOperationFilter
     {
+        private readonly string _scheme = "Token";
+
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             if (!context
@@ -23,8 +25,12 @@ namespace Conduit.API.OpenApi
                         {
                             new OpenApiSecurityScheme
                             {
-                                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-                                //Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Token" } //Conduit uses "Token" instead of Bearer because... iunno?
+                                BearerFormat = _scheme,
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme, 
+                                    Id = _scheme
+                                }
                             },
                             new List<string>()
                         }
