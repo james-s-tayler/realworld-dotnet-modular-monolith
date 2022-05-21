@@ -4,9 +4,11 @@ using Conduit.Core.Context;
 using JetBrains.Annotations;
 using Serilog.Core;
 using Serilog.Events;
+using TracerAttributes;
 
 namespace Conduit.Core.Logging
 {
+    [NoTrace]
     public class UserContextEnricher : ILogEventEnricher
     {
         private readonly IUserContext _userContext;
@@ -15,7 +17,7 @@ namespace Conduit.Core.Logging
         {
             _userContext = userContext;
         }
-
+        
         public void Enrich([NotNull] LogEvent logEvent, [NotNull] ILogEventPropertyFactory propertyFactory)
         {
             if (_userContext.IsAuthenticated)

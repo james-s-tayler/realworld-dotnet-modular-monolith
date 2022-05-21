@@ -2,15 +2,24 @@
   <ItemGroup>
     <PackageReference Include="Fody" Version="6.6.2" PrivateAssets="all" />
     <PackageReference Include="NullGuard.Fody" Version="3.1.0" PrivateAssets="all" />
+    <PackageReference Include="Tracer.Fody" Version="3.3.1" />
+    <PackageReference Include="Tracer.Serilog.Fody" Version="3.3.1" />
     <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
   </ItemGroup>
   <PropertyGroup>
     <!-- the jetbrains annotations (which contain [NotNull]) are conditionally compiled into the code if the JETBRAINS_ANNOTATIONS symbol is defined
-         and the NullGuard Fody weaver requires them to be present in order to work, the can also be stripped out after by using JetBrainsAnnotations.Fody -->
+         and the NullGuard Fody weaver requires them to be present in order to work. They can also be stripped out after by using JetBrainsAnnotations.Fody -->
     <DefineConstants>JETBRAINS_ANNOTATIONS</DefineConstants>
     <WeaverConfiguration>
       <Weavers>
         <NullGuard IncludeDebugAssert="false" Mode="Explicit" />
+        <Tracer adapterAssembly="Tracer.Serilog"
+                logManager="Tracer.Serilog.Adapters.LogManagerAdapter"
+                logger="Tracer.Serilog.Adapters.LoggerAdapter"
+                staticLogger="Tracer.Serilog.Log"
+                traceProperties="false">
+          <TraceOn class="private" method="private" />
+        </Tracer>
       </Weavers>
     </WeaverConfiguration>
   </PropertyGroup>

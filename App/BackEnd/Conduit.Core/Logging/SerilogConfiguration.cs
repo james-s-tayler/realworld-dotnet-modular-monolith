@@ -27,7 +27,7 @@ namespace Conduit.Core.Logging
             
             configuration.ReadFrom.Configuration(config.Build())
                 .MinimumLevel.Is(env.Equals("Development") || env.Equals("Docker")
-                    ? LogEventLevel.Debug
+                    ? LogEventLevel.Verbose
                     : LogEventLevel.Information)
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                 //add standard metadata to all log entries

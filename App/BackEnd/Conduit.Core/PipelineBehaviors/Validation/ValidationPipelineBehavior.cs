@@ -16,13 +16,10 @@ namespace Conduit.Core.PipelineBehaviors.Validation
         where TRequest : IRequest<TResponse>
     {
         private readonly IEnumerable<IValidator<TRequest>> _commandValidators;
-        private readonly ILogger<ValidationPipelineBehavior<TRequest, TResponse>> _logger;
 
-        public ValidationPipelineBehavior(IEnumerable<IValidator<TRequest>> commandValidators,
-            ILogger<ValidationPipelineBehavior<TRequest, TResponse>> logger)
+        public ValidationPipelineBehavior(IEnumerable<IValidator<TRequest>> commandValidators)
         {
             _commandValidators = commandValidators;
-            _logger = logger;
         }
 
         public async Task<TResponse> Handle(TRequest command, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)

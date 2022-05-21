@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Http;
+using TracerAttributes;
 
 namespace Conduit.Core.Context
 {
+    [NoTrace]
     public class ApiContext : IUserContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
