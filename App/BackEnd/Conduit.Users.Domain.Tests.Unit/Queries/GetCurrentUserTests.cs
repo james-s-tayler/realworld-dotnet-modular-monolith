@@ -1,19 +1,21 @@
 using System.Threading.Tasks;
 using Conduit.Core.PipelineBehaviors;
+using Conduit.Core.Testing;
 using Conduit.Identity.Domain.Contracts.Queries.GetCurrentUser;
 using Conduit.Identity.Domain.Tests.Unit.Setup;
 using FluentAssertions;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Conduit.Identity.Domain.Tests.Unit.Queries
 {
     [Collection(nameof(UsersModuleTestCollection))]
-    public class GetCurrentUserTests
+    public class GetCurrentUserTests : TestBase
     {
         private readonly UsersModuleSetupFixture _usersModule;
         private readonly GetCurrentUserQuery _getCurrentUserQuery;
         
-        public GetCurrentUserTests(UsersModuleSetupFixture usersModule)
+        public GetCurrentUserTests(UsersModuleSetupFixture usersModule, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
             _usersModule = usersModule;
             _getCurrentUserQuery = new GetCurrentUserQuery();

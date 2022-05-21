@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using ScottBrady91.AspNetCore.Identity;
+using Serilog;
 
 namespace Conduit.Identity.Domain.Tests.Unit.Setup
 {
@@ -65,8 +66,11 @@ namespace Conduit.Identity.Domain.Tests.Unit.Setup
             });
             
             WithAuthenticatedUserContext();
-            
-            Services.AddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
+
+            Services.AddLogging(builder =>
+            {
+                builder.AddSerilog();
+            });
             Module.AddServices(Configuration.Build(), Services);
             Module.ReplaceSingleton(UserRepo.Object);
             Module.ReplaceScoped(UserContext.Object);
@@ -86,12 +90,19 @@ namespace Conduit.Identity.Domain.Tests.Unit.Setup
             UserRepo.Reset();
             foreach (var user in users)
             {
-                UserRepo.Setup(repository => repository.Exists(It.Is<int>(id => id == user.Id))).Returns(Task.FromResult(true));
-                UserRepo.Setup(repository => repository.GetById(It.Is<int>(id => id == user.Id))).Returns(Task.FromResult(user));
-                UserRepo.Setup(repository => repository.ExistsByEmail(It.Is<string>(email => email.Equals(user.Email)))).Returns(Task.FromResult(true));
-                UserRepo.Setup(repository => repository.GetByEmail(It.Is<string>(email => email.Equals(user.Email)))).Returns(Task.FromResult(user));
-                UserRepo.Setup(repository => repository.ExistsByUsername(It.Is<string>(username => username.Equals(user.Username)))).Returns(Task.FromResult(true));
+                AddUserToUserRepo(user);
             }
+        }
+
+        public void AddUserToUserRepo(User user)
+        {
+            if (user == null) throw new ArgumentNullException(nameof(user));
+            
+            UserRepo.Setup(repository => repository.Exists(It.Is<int>(id => id == user.Id))).Returns(Task.FromResult(true));
+            UserRepo.Setup(repository => repository.GetById(It.Is<int>(id => id == user.Id))).Returns(Task.FromResult(user));
+            UserRepo.Setup(repository => repository.ExistsByEmail(It.Is<string>(email => email.Equals(user.Email)))).Returns(Task.FromResult(true));
+            UserRepo.Setup(repository => repository.GetByEmail(It.Is<string>(email => email.Equals(user.Email)))).Returns(Task.FromResult(user));
+            UserRepo.Setup(repository => repository.ExistsByUsername(It.Is<string>(username => username.Equals(user.Username)))).Returns(Task.FromResult(true));
         }
 
         public void WithUnauthenticatedUserContext()

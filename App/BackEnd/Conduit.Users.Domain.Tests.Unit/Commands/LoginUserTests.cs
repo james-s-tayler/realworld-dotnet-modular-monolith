@@ -1,20 +1,22 @@
 using System.Threading.Tasks;
 using AutoFixture;
 using Conduit.Core.PipelineBehaviors;
+using Conduit.Core.Testing;
 using Conduit.Identity.Domain.Contracts.Commands.LoginUser;
 using Conduit.Identity.Domain.Tests.Unit.Setup;
 using FluentAssertions;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Conduit.Identity.Domain.Tests.Unit.Commands
 {
     [Collection(nameof(UsersModuleTestCollection))]
-    public class LoginUserTests
+    public class LoginUserTests : TestBase
     {
         private readonly UsersModuleSetupFixture _usersModule;
         private readonly LoginUserCommand _loginUserCommand;
         
-        public LoginUserTests(UsersModuleSetupFixture usersModule)
+        public LoginUserTests(UsersModuleSetupFixture usersModule, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
             _usersModule = usersModule;
             _usersModule.WithUnauthenticatedUserContext();

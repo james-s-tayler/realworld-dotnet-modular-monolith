@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using AutoFixture;
 using Conduit.Core.PipelineBehaviors;
+using Conduit.Core.Testing;
 using Conduit.Identity.Domain.Contracts.Commands.RegisterUser;
 using Conduit.Identity.Domain.Entities;
 using Conduit.Identity.Domain.Tests.Unit.Setup;
@@ -8,18 +9,19 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Conduit.Identity.Domain.Tests.Unit.Commands
 {
     [Collection(nameof(UsersModuleTestCollection))]
-    public class RegisterUserTests
+    public class RegisterUserTests : TestBase
     {
         private readonly UsersModuleSetupFixture _usersModule;
         private User _registeredUser;
         private readonly int _newUserId;
         private readonly RegisterUserCommand _registerUserCommand;
 
-        public RegisterUserTests(UsersModuleSetupFixture usersModule)
+        public RegisterUserTests(UsersModuleSetupFixture usersModule, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
             _usersModule = usersModule;
             _registerUserCommand = new RegisterUserCommand
@@ -34,24 +36,32 @@ namespace Conduit.Identity.Domain.Tests.Unit.Commands
             _newUserId = _usersModule.AutoFixture.Create<int>();
             _registeredUser = null;
             _usersModule.UserRepo.Setup(repository => repository.Create(It.IsAny<User>()))
-                .Callback<User>(u => _registeredUser = u)
+                .Callback<User>(registeredUser =>
+                {
+                    registeredUser.Id = _newUserId;
+                    _usersModule.AddUserToUserRepo(registeredUser);
+                    _registeredUser = registeredUser;
+                })
                 .Returns(Task.FromResult(_newUserId));
         }
         
         [Fact]
-        public async Task GivenANewUser_WhenRegisterUser_ThenNewUserIdReturned()
+        public async Task GivenANewUser_WhenRegisterUser_ThenNewUserReturned()
         {
             //arrange
-
+            
             //act
             var result = await _usersModule.Mediator.Send(_registerUserCommand);
             
             //assert
             result.Result.Should().Be(OperationResult.Success);
-            result.Response.UserId.Should().Be(_newUserId);
-            _registeredUser.Should().NotBeNull();
-            _registeredUser.Email.Should().Be(_registerUserCommand.NewUser.Email);
-            _registeredUser.Username.Should().Be(_registerUserCommand.NewUser.Username);
+            result.Response.Should().NotBeNull();
+            result.Response.RegisteredUser.Should().NotBeNull();
+            var registeredUser = result.Response.RegisteredUser;
+            registeredUser.Id.Should().Be(_newUserId);
+            registeredUser.Email.Should().Be(_registerUserCommand.NewUser.Email);
+            registeredUser.Username.Should().Be(_registerUserCommand.NewUser.Username);
+            registeredUser.Token.Should().NotBeNull();
         }
         
         [Theory]

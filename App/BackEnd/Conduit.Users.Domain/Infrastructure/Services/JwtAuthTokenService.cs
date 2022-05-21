@@ -22,6 +22,8 @@ namespace Conduit.Identity.Domain.Infrastructure.Services
 
         public Task<string> GenerateAuthToken(User user)
         {
+            if (user == null) throw new ArgumentNullException(nameof(user));
+            
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
 
             var authClaims = new List<Claim>();

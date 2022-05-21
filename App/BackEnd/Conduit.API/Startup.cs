@@ -21,7 +21,6 @@ using Conduit.Core.Logging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using OpenTelemetry.Trace;
@@ -172,7 +171,7 @@ namespace Conduit.API
                         Name = HeaderNames.Authorization,
                         Scheme = "bearer",
                         Type = SecuritySchemeType.ApiKey, //normally we use SecuritySchemeType.Http but that hardcodes "Bearer" but Conduit needs "Token"
-                        BearerFormat = authScheme + " {token}"
+                        BearerFormat = authScheme + " {token}" //this doesn't affect anything, it's essentially just documentation
                     });
                     c.OperationFilter<SecurityRequirementsOperationFilter>();
                     // Include DataAnnotation attributes on Controller Action parameters as OpenAPI validation rules (e.g required, pattern, ..)

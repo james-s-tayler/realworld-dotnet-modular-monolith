@@ -1,20 +1,22 @@
 using System.Threading.Tasks;
 using AutoFixture;
 using Conduit.Core.PipelineBehaviors;
+using Conduit.Core.Testing;
 using Conduit.Identity.Domain.Contracts.Commands.UpdateUser;
 using Conduit.Identity.Domain.Tests.Unit.Setup;
 using Xunit;
 using FluentAssertions;
+using Xunit.Abstractions;
 
 namespace Conduit.Identity.Domain.Tests.Unit.Commands
 {
     [Collection(nameof(UsersModuleTestCollection))]
-    public class UpdateUserTests
+    public class UpdateUserTests : TestBase
     {
         private readonly UsersModuleSetupFixture _module;
         private readonly UpdateUserCommand _updateUserCommand;
 
-        public UpdateUserTests(UsersModuleSetupFixture module)
+        public UpdateUserTests(UsersModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
             _module = module;
             _module.WithAuthenticatedUserContext();

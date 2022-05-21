@@ -24,8 +24,7 @@ namespace Conduit.Core.Logging
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile($"appsettings.{env}.json", optional: true);
-
-            //Log.Logger = new LoggerConfiguration()
+            
             configuration.ReadFrom.Configuration(config.Build())
                 .MinimumLevel.Is(env.Equals("Development") || env.Equals("Docker")
                     ? LogEventLevel.Debug
@@ -45,7 +44,6 @@ namespace Conduit.Core.Logging
                 .Destructure.ToMaximumStringLength(10000)
                 //output logs to Seq
                 .WriteTo.Seq(Environment.GetEnvironmentVariable("SEQ_URL") ?? "http://localhost:5341");
-            //.CreateLogger();
         }
     }
 }
