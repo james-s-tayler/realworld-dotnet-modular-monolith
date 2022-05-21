@@ -70,6 +70,40 @@ namespace Conduit.Identity.Domain.Tests.Unit.Commands
         }
         
         [Fact]
+        public async Task GivenUpdateEmailWithExistingValue_WhenUpdateUser_ThenSucceeds()
+        {
+            //arrange
+            _updateUserCommand.UpdateUser = new UpdateUserDTO {Email = _module.ExistingUser.Email};
+
+            //act
+            var updateUserResult = await _module.Mediator.Send(_updateUserCommand);
+
+            //assert
+            updateUserResult.Result.Should().Be(OperationResult.Success);
+            updateUserResult.Response.Should().NotBeNull();
+            updateUserResult.Response.UpdatedUser.Id.Should().Be(_module.ExistingUser.Id);
+
+            updateUserResult.Response.UpdatedUser.Email.Should().Be(_module.ExistingUser.Email);
+        }
+       
+        [Fact]
+        public async Task GivenUpdateUsernameWithExistingValue_WhenUpdateUser_ThenSucceeds()
+        {
+            //arrange
+            _updateUserCommand.UpdateUser = new UpdateUserDTO {Email = _module.ExistingUser.Username};
+
+            //act
+            var updateUserResult = await _module.Mediator.Send(_updateUserCommand);
+
+            //assert
+            updateUserResult.Result.Should().Be(OperationResult.Success);
+            updateUserResult.Response.Should().NotBeNull();
+            updateUserResult.Response.UpdatedUser.Id.Should().Be(_module.ExistingUser.Id);
+
+            updateUserResult.Response.UpdatedUser.Username.Should().Be(_module.ExistingUser.Username);
+        }
+        
+        [Fact]
         public async Task GivenUpdateNothing_WhenUpdateUser_ThenFailsValidation()
         {
             //arrange

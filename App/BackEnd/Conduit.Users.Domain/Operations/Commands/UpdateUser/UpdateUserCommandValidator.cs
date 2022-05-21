@@ -27,11 +27,11 @@ namespace Conduit.Identity.Domain.Operations.Commands.UpdateUser
             RuleFor(command => command.UpdateUser.Username)
                 .MustAsync(UsernameNotAlreadyInUse)
                 .WithMessage(_ => "Username is already in use")
-                .When(command => command.UpdateUser.Username != null);
+                .WhenAsync(ShouldValidateUsername);
             RuleFor(command => command.UpdateUser.Email)
                 .MustAsync(EmailNotAlreadyInUse)
                 .WithMessage(_ => "Email is already in use")
-                .When(command => command.UpdateUser.Email != null);;
+                .WhenAsync(ShouldValidateEmail);
         }
         
         //this feels not very future proof?
@@ -41,6 +41,26 @@ namespace Conduit.Identity.Domain.Operations.Commands.UpdateUser
                    updateUser.Email != null ||
                    updateUser.Image != null ||
                    updateUser.Username != null;
+        }
+
+        private async Task<bool> ShouldValidateEmail(UpdateUserCommand command, CancellationToken cancellationToken)
+        {
+            var user = await _userRepository.GetById(_userContext.UserId);
+            
+            if (user != null && user.Email == command.UpdateUser.Email)
+                return false;
+            
+            return command.UpdateUser.Email != null;
+        }
+        
+        private async Task<bool> ShouldValidateUsername(UpdateUserCommand command, CancellationToken cancellationToken)
+        {
+            var user = await _userRepository.GetById(_userContext.UserId);
+            
+            if (user != null && user.Username == command.UpdateUser.Username)
+                return false;
+            
+            return command.UpdateUser.Username != null;
         }
         
         //copy pasta from RegisterUser - find way to re-use validators (some sort of ValidationRequirement class?)
