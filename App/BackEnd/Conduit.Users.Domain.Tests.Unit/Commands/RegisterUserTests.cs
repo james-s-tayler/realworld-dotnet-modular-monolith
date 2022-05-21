@@ -38,6 +38,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Commands
             _usersModule.UserRepo.Setup(repository => repository.Create(It.IsAny<User>()))
                 .Callback<User>(registeredUser =>
                 {
+                    //don't really love this - maybe better not to mock and just use the in memory repository or SQLite
                     registeredUser.Id = _newUserId;
                     _usersModule.AddUserToUserRepo(registeredUser);
                     _registeredUser = registeredUser;
