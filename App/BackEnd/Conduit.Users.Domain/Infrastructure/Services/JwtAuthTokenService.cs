@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Conduit.Identity.Domain.Configuration;
 using Conduit.Identity.Domain.Entities;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -20,10 +21,8 @@ namespace Conduit.Identity.Domain.Infrastructure.Services
             _jwtSettings = jwtSettings.Value;
         }
 
-        public Task<string> GenerateAuthToken(User user)
+        public Task<string> GenerateAuthToken([NotNull] User user)
         {
-            if (user == null) throw new ArgumentNullException(nameof(user));
-            
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
 
             var authClaims = new List<Claim>();

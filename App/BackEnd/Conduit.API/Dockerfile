@@ -8,6 +8,7 @@ WORKDIR /app
 #which is a more modern, portable solution, but not sure if it works when the host machine and docker image are building for different runtime identifiers
 #hence going with the more traditional approach 
 COPY Conduit.API.sln ./
+COPY Directory.Build.props ./
 COPY */*.csproj ./
 RUN dotnet sln list | \
       grep ".csproj" | \
