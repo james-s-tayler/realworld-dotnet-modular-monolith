@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Net.Http.Headers;
 
@@ -10,9 +11,9 @@ namespace Conduit.Core.Logging
     {
         private readonly string _scheme;
 
-        public CustomSchemeJwtBearerEvents(string scheme)
+        public CustomSchemeJwtBearerEvents([NotNull] string scheme)
         {
-            _scheme = scheme ?? throw new ArgumentNullException(nameof(scheme));
+            _scheme = scheme;
         }
 
         /// <summary>

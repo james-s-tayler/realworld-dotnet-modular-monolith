@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using Conduit.Core.Context;
+using JetBrains.Annotations;
 using Serilog.Core;
 using Serilog.Events;
 
@@ -15,14 +16,8 @@ namespace Conduit.Core.Logging
             _userContext = userContext;
         }
 
-        public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
+        public void Enrich([NotNull] LogEvent logEvent, [NotNull] ILogEventPropertyFactory propertyFactory)
         {
-            if (logEvent is null)
-                throw new ArgumentNullException(nameof(logEvent));
-
-            if (propertyFactory is null)
-                throw new ArgumentNullException(nameof(propertyFactory));
-
             if (_userContext.IsAuthenticated)
             {
                 LogEventProperty userId = propertyFactory.CreateProperty("UserId", _userContext.UserId);

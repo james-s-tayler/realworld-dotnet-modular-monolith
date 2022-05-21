@@ -6,6 +6,7 @@ using Conduit.Core.PipelineBehaviors;
 using Conduit.Identity.Domain.Contracts.Commands.UpdateUser;
 using Conduit.Identity.Domain.Infrastructure.Mappers;
 using Conduit.Identity.Domain.Infrastructure.Repositories;
+using JetBrains.Annotations;
 using MediatR;
 
 namespace Conduit.Identity.Domain.Operations.Commands.UpdateUser
@@ -15,11 +16,11 @@ namespace Conduit.Identity.Domain.Operations.Commands.UpdateUser
         private readonly IUserContext _userContext;
         private readonly IUserRepository _userRepository;
 
-        public UpdateUserCommandHandler(IUserContext userContext,
-            IUserRepository userRepository)
+        public UpdateUserCommandHandler([NotNull] IUserContext userContext,
+            [NotNull] IUserRepository userRepository)
         {
-            _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _userContext = userContext;
+            _userRepository = userRepository;
         }
 
         public async Task<OperationResponse<UpdateUserResult>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)

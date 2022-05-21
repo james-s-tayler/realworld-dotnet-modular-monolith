@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 
 namespace Conduit.Identity.Domain.Contracts.Commands.LoginUser
 {
@@ -8,9 +9,9 @@ namespace Conduit.Identity.Domain.Contracts.Commands.LoginUser
 
         private LoginUserResult() {}
 
-        private LoginUserResult(UserDTO user)
+        private LoginUserResult([NotNull] UserDTO user)
         {
-            LoggedInUser = user ?? throw new ArgumentNullException(nameof(user));
+            LoggedInUser = user;
         }
 
         public bool IsAuthenticated => LoggedInUser != null;

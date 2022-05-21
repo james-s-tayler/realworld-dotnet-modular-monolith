@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Conduit.Core.Exceptions;
 using Conduit.Core.PipelineBehaviors.Logging;
+using JetBrains.Annotations;
 
 namespace Conduit.Core.PipelineBehaviors
 {
@@ -23,9 +24,9 @@ namespace Conduit.Core.PipelineBehaviors
             Result = result;
         }
         
-        public OperationResponse(Exception e)
+        public OperationResponse([NotNull] Exception e)
         {
-            Exception = e ?? throw new ArgumentNullException(nameof(e));
+            Exception = e;
             Errors = e.GetErrorMessages();
             Result = OperationResult.UnhandledException;
         }

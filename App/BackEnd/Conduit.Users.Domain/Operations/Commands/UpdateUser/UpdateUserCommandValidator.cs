@@ -5,6 +5,7 @@ using Conduit.Core.Context;
 using Conduit.Identity.Domain.Contracts.Commands.UpdateUser;
 using Conduit.Identity.Domain.Infrastructure.Repositories;
 using FluentValidation;
+using JetBrains.Annotations;
 
 namespace Conduit.Identity.Domain.Operations.Commands.UpdateUser
 {
@@ -12,11 +13,11 @@ namespace Conduit.Identity.Domain.Operations.Commands.UpdateUser
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserContext _userContext;
-        public UpdateUserCommandValidator(IUserRepository userRepository,
-            IUserContext userContext)
+        public UpdateUserCommandValidator([NotNull] IUserRepository userRepository,
+            [NotNull] IUserContext userContext)
         {
-            _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _userContext = userContext;
+            _userRepository = userRepository;
 
             RuleFor(command => command.UpdateUser)
                 .Must(ContainUpdate)

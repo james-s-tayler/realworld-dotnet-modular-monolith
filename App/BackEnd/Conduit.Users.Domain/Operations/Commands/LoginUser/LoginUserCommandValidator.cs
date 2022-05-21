@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Conduit.Identity.Domain.Contracts.Commands.LoginUser;
 using Conduit.Identity.Domain.Infrastructure.Repositories;
 using FluentValidation;
+using JetBrains.Annotations;
 
 namespace Conduit.Identity.Domain.Operations.Commands.LoginUser
 {
@@ -11,9 +12,9 @@ namespace Conduit.Identity.Domain.Operations.Commands.LoginUser
     {
         private readonly IUserRepository _userRepository;
         
-        public LoginUserCommandValidator(IUserRepository userRepository)
+        public LoginUserCommandValidator([NotNull] IUserRepository userRepository)
         {
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _userRepository = userRepository;
 
             RuleFor(command => command.UserCredentials.Email)
                 .MustAsync(UserMustExist)

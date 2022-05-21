@@ -5,6 +5,8 @@
     <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
   </ItemGroup>
   <PropertyGroup>
+    <!-- the jetbrains annotations (which contain [NotNull]) are conditionally compiled into the code if the JETBRAINS_ANNOTATIONS symbol is defined
+         and the NullGuard Fody weaver requires them to be present in order to work, the can also be stripped out after by using JetBrainsAnnotations.Fody -->
     <DefineConstants>JETBRAINS_ANNOTATIONS</DefineConstants>
     <WeaverConfiguration>
       <Weavers>

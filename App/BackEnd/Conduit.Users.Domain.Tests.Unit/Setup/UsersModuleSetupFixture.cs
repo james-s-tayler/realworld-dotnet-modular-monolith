@@ -6,6 +6,7 @@ using Conduit.Core.Context;
 using Conduit.Identity.Domain.Configuration;
 using Conduit.Identity.Domain.Entities;
 using Conduit.Identity.Domain.Infrastructure.Repositories;
+using JetBrains.Annotations;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -94,10 +95,8 @@ namespace Conduit.Identity.Domain.Tests.Unit.Setup
             }
         }
 
-        public void AddUserToUserRepo(User user)
+        public void AddUserToUserRepo([NotNull] User user)
         {
-            if (user == null) throw new ArgumentNullException(nameof(user));
-            
             UserRepo.Setup(repository => repository.Exists(It.Is<int>(id => id == user.Id))).Returns(Task.FromResult(true));
             UserRepo.Setup(repository => repository.GetById(It.Is<int>(id => id == user.Id))).Returns(Task.FromResult(user));
             UserRepo.Setup(repository => repository.ExistsByEmail(It.Is<string>(email => email.Equals(user.Email)))).Returns(Task.FromResult(true));
