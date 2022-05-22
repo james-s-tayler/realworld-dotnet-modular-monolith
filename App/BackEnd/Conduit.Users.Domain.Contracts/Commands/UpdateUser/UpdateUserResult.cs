@@ -1,3 +1,5 @@
+using TracerAttributes;
+
 namespace Conduit.Identity.Domain.Contracts.Commands.UpdateUser
 {
     public class UpdateUserResult

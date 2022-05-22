@@ -1,4 +1,5 @@
 using Destructurama.Attributed;
+using TracerAttributes;
 
 namespace Conduit.Identity.Domain.Contracts.Commands.RegisterUser
 {

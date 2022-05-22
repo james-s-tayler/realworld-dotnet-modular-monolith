@@ -1,3 +1,5 @@
+using TracerAttributes;
+
 namespace Conduit.Identity.Domain.Contracts.Queries.GetCurrentUser
 {
     public class GetCurrentUserQueryResult

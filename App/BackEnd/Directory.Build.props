@@ -19,6 +19,8 @@
                 staticLogger="Tracer.Serilog.Log"
                 traceProperties="false">
           <TraceOn class="private" method="private" />
+          <NoTrace namespace="Conduit.API.Models+*"/>
+          <NoTrace namespace="Conduit.Users.Domain.Contracts+*"/>
         </Tracer>
       </Weavers>
     </WeaverConfiguration>

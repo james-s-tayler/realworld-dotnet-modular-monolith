@@ -1,5 +1,6 @@
 using System;
 using JetBrains.Annotations;
+using TracerAttributes;
 
 namespace Conduit.Identity.Domain.Contracts.Commands.LoginUser
 {
