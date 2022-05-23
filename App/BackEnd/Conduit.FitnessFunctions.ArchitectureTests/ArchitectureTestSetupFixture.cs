@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using ArchUnitNET.Domain;
 using ArchUnitNET.Loader;
-using JetBrains.Annotations;
+using MediatR;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
 
 namespace Conduit.FitnessFunctions.ArchitectureTests
@@ -12,13 +12,50 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
     public class ArchitectureTestSetupFixture : IDisposable
     {
         public Architecture Architecture { get; }
-        public IObjectProvider<Class> DomainContractClasses { get; } = Classes().That().ResideInAssembly(".*Domain.Contracts.*", true)
-                .And().AreNot(".*ProcessedByFody", true)
-                .As("Domain Contracts");
+        public IObjectProvider<Class> DomainContractClasses { get; private set; }
+        public IObjectProvider<Class> DomainOperations { get; private set; }
+        public IObjectProvider<Class> Commands { get; private set; }
+        public IObjectProvider<Class> Queries { get; private set; }
 
         public ArchitectureTestSetupFixture()
         {
             Architecture = new ArchLoader().LoadAssemblies(GetSolutionAssemblies()).Build();
+            SetupDomainContracts();
+        }
+
+        private void SetupDomainContracts()
+        {
+            SetupDomainContractClasses();
+            SetupOperations();
+            SetupCommands();
+            SetupQueries();
+        }
+        private void SetupDomainContractClasses()
+        {
+            DomainContractClasses = Classes().That().ResideInAssembly(".*Domain.Contracts.*", true)
+                .And().AreNot(".*ProcessedByFody", true)
+                .As("Domain Contracts");
+        }
+
+        private void SetupOperations()
+        {
+            DomainOperations = Classes().That().Are(DomainContractClasses)
+                .And().ImplementInterface(typeof(IRequest<>))
+                .As("Domain Operations");
+        }
+        
+        private void SetupCommands()
+        {
+            Commands = Classes().That().Are(DomainOperations)
+                .And().HaveNameEndingWith("Command")
+                .As("Commands");
+        }
+        
+        private void SetupQueries()
+        {
+            Queries = Classes().That().Are(DomainOperations)
+                .And().HaveNameEndingWith("Query")
+                .As("Queries");
         }
         
         private static System.Reflection.Assembly[] GetSolutionAssemblies()
