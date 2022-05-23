@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using Conduit.Identity.Domain.Entities;
+using Conduit.Users.Domain.Entities;
 
-namespace Conduit.Identity.Domain.Infrastructure.Services
+namespace Conduit.Users.Domain.Infrastructure.Services
 {
     public interface IAuthTokenService
     {

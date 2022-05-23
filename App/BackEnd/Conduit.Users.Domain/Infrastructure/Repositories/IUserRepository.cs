@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using Conduit.Core.DataAccess;
-using Conduit.Identity.Domain.Entities;
+using Conduit.Users.Domain.Entities;
 
-namespace Conduit.Identity.Domain.Infrastructure.Repositories
+namespace Conduit.Users.Domain.Infrastructure.Repositories
 {
     public interface IUserRepository : ICrudRepository<User, int>
     {

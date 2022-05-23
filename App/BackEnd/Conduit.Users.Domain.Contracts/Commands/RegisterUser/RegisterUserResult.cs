@@ -1,8 +1,8 @@
-using TracerAttributes;
+using Conduit.Core.DataAccess;
 
-namespace Conduit.Identity.Domain.Contracts.Commands.RegisterUser
+namespace Conduit.Users.Domain.Contracts.Commands.RegisterUser
 {
-    public class RegisterUserResult
+    public class RegisterUserResult : ContractModel
     {
         public UserDTO RegisteredUser { get; set; }
         public int UserId { get; set; }

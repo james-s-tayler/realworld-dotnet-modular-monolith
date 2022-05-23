@@ -6,7 +6,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="FluentAssertions" Version="6.7.0" />
+        <PackageReference Include="Microsoft.Build" Version="17.2.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+        <PackageReference Include="TngTech.ArchUnitNET.xUnit" Version="0.10.1" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -19,7 +22,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Conduit.Core.Testing\Conduit.Core.Testing.csproj" />
+      <ProjectReference Include="..\Conduit.API\Conduit.API.csproj" />
+      <ProjectReference Include="..\Conduit.Content.Domain\Conduit.Content.Domain.csproj" />
+      <ProjectReference Include="..\Conduit.Core\Conduit.Core.csproj" />
+      <ProjectReference Include="..\Conduit.Feed.Domain\Conduit.Feed.Domain.csproj" />
+      <ProjectReference Include="..\Conduit.Social.Domain\Conduit.Social.Domain.csproj" />
+      <ProjectReference Include="..\Conduit.Users.Domain.Contracts\Conduit.Users.Domain.Contracts.csproj" />
       <ProjectReference Include="..\Conduit.Users.Domain\Conduit.Users.Domain.csproj" />
     </ItemGroup>
 

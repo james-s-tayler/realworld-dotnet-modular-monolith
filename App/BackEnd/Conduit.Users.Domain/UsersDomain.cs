@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Conduit.Identity.Domain
+namespace Conduit.Users.Domain
 {
     public class UsersDomain
     {

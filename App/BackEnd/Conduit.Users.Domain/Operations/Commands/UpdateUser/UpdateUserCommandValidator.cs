@@ -1,13 +1,12 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Conduit.Core.Context;
-using Conduit.Identity.Domain.Contracts.Commands.UpdateUser;
-using Conduit.Identity.Domain.Infrastructure.Repositories;
+using Conduit.Users.Domain.Contracts.Commands.UpdateUser;
+using Conduit.Users.Domain.Infrastructure.Repositories;
 using FluentValidation;
 using JetBrains.Annotations;
 
-namespace Conduit.Identity.Domain.Operations.Commands.UpdateUser
+namespace Conduit.Users.Domain.Operations.Commands.UpdateUser
 {
     public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
     {

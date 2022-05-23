@@ -1,4 +1,4 @@
-namespace Conduit.Identity.Domain.Configuration
+namespace Conduit.Users.Domain.Configuration
 {
     public class JwtSettings
     {

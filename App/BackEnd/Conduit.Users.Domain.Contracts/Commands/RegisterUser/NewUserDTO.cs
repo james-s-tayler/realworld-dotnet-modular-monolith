@@ -1,9 +1,9 @@
+using Conduit.Core.DataAccess;
 using Destructurama.Attributed;
-using TracerAttributes;
 
-namespace Conduit.Identity.Domain.Contracts.Commands.RegisterUser
+namespace Conduit.Users.Domain.Contracts.Commands.RegisterUser
 {
-    public class NewUserDTO
+    public class NewUserDTO : ContractModel
     {
         public string Username { get; set; }
         public string Email { get; set; }

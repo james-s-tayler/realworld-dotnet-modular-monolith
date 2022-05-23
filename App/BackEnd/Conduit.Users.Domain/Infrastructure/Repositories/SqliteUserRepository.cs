@@ -1,4 +1,4 @@
-namespace Conduit.Identity.Domain.Infrastructure.Repositories
+namespace Conduit.Users.Domain.Infrastructure.Repositories
 {
     public class SqliteUserRepository
     {

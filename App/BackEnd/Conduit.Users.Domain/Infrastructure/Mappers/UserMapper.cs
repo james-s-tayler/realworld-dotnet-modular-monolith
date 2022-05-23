@@ -1,7 +1,7 @@
-using Conduit.Identity.Domain.Contracts;
-using Conduit.Identity.Domain.Entities;
+using Conduit.Users.Domain.Contracts;
+using Conduit.Users.Domain.Entities;
 
-namespace Conduit.Identity.Domain.Infrastructure.Mappers
+namespace Conduit.Users.Domain.Infrastructure.Mappers
 {
     internal static class UserMapper
     {

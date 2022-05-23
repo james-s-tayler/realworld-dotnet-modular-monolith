@@ -1,10 +1,10 @@
+using Conduit.Core.DataAccess;
 using Conduit.Core.PipelineBehaviors;
 using MediatR;
-using TracerAttributes;
 
-namespace Conduit.Identity.Domain.Contracts.Commands.UpdateUser
+namespace Conduit.Users.Domain.Contracts.Commands.UpdateUser
 {
-    public class UpdateUserCommand : IRequest<OperationResponse<UpdateUserResult>>
+    public class UpdateUserCommand : ContractModel, IRequest<OperationResponse<UpdateUserResult>>
     {
         public UpdateUserDTO UpdateUser { get; set; }
     }

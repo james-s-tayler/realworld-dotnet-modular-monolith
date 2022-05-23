@@ -1,8 +1,8 @@
-using TracerAttributes;
+using Conduit.Core.DataAccess;
 
-namespace Conduit.Identity.Domain.Contracts.Commands.UpdateUser
+namespace Conduit.Users.Domain.Contracts.Commands.UpdateUser
 {
-    public class UpdateUserDTO
+    public class UpdateUserDTO : ContractModel
     {
         public string Email { get; set; }
         public string Username { get; set; }

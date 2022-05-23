@@ -1,9 +1,9 @@
+using Conduit.Core.DataAccess;
 using Destructurama.Attributed;
-using TracerAttributes;
 
-namespace Conduit.Identity.Domain.Contracts.Commands.LoginUser
+namespace Conduit.Users.Domain.Contracts.Commands.LoginUser
 {
-    public class UserCredentialsDTO
+    public class UserCredentialsDTO : ContractModel
     {
         public string Email { get; set; }
         

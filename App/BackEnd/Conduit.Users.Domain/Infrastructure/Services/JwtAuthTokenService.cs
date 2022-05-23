@@ -4,13 +4,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Conduit.Identity.Domain.Configuration;
-using Conduit.Identity.Domain.Entities;
+using Conduit.Users.Domain.Configuration;
+using Conduit.Users.Domain.Entities;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Conduit.Identity.Domain.Infrastructure.Services
+namespace Conduit.Users.Domain.Infrastructure.Services
 {
     public class JwtAuthTokenService : IAuthTokenService
     {

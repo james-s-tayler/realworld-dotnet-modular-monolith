@@ -2,13 +2,13 @@ using System.Threading.Tasks;
 using AutoFixture;
 using Conduit.Core.PipelineBehaviors;
 using Conduit.Core.Testing;
-using Conduit.Identity.Domain.Contracts.Commands.LoginUser;
-using Conduit.Identity.Domain.Tests.Unit.Setup;
+using Conduit.Users.Domain.Contracts.Commands.LoginUser;
+using Conduit.Users.Domain.Tests.Unit.Setup;
 using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Conduit.Identity.Domain.Tests.Unit.Commands
+namespace Conduit.Users.Domain.Tests.Unit.Commands
 {
     [Collection(nameof(UsersModuleTestCollection))]
     public class LoginUserTests : TestBase

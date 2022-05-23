@@ -1,4 +1,4 @@
-namespace Conduit.Identity.Domain.Entities
+namespace Conduit.Users.Domain.Entities
 {
     public class User
     {

@@ -1,15 +1,15 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Conduit.Core.PipelineBehaviors;
-using Conduit.Identity.Domain.Contracts.Commands.RegisterUser;
-using Conduit.Identity.Domain.Entities;
-using Conduit.Identity.Domain.Infrastructure.Mappers;
-using Conduit.Identity.Domain.Infrastructure.Repositories;
-using Conduit.Identity.Domain.Infrastructure.Services;
+using Conduit.Users.Domain.Contracts.Commands.RegisterUser;
+using Conduit.Users.Domain.Entities;
+using Conduit.Users.Domain.Infrastructure.Mappers;
+using Conduit.Users.Domain.Infrastructure.Repositories;
+using Conduit.Users.Domain.Infrastructure.Services;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace Conduit.Identity.Domain.Operations.Commands.RegisterUser
+namespace Conduit.Users.Domain.Operations.Commands.RegisterUser
 {
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, OperationResponse<RegisterUserResult>>
     {

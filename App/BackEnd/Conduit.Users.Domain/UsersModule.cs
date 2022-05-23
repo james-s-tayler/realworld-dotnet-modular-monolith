@@ -1,10 +1,11 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Conduit.Core.Modules;
-using Conduit.Identity.Domain.Configuration;
-using Conduit.Identity.Domain.Entities;
-using Conduit.Identity.Domain.Infrastructure.Repositories;
-using Conduit.Identity.Domain.Infrastructure.Services;
+using Conduit.Users.Domain;
+using Conduit.Users.Domain.Configuration;
+using Conduit.Users.Domain.Entities;
+using Conduit.Users.Domain.Infrastructure.Repositories;
+using Conduit.Users.Domain.Infrastructure.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -13,9 +14,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using ScottBrady91.AspNetCore.Identity;
 
 //would be epic to add this in via Fody!
-[assembly: HostingStartup(typeof(Conduit.Identity.Domain.UsersModule))]
+[assembly: HostingStartup(typeof(UsersModule))]
 [assembly: InternalsVisibleTo("Conduit.Users.Domain.Tests.Unit")]
-namespace Conduit.Identity.Domain
+namespace Conduit.Users.Domain
 {
     internal class UsersModule : AbstractModule
     {

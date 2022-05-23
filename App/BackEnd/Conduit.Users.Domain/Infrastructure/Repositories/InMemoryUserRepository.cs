@@ -3,9 +3,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Conduit.Identity.Domain.Entities;
+using Conduit.Users.Domain.Entities;
 
-namespace Conduit.Identity.Domain.Infrastructure.Repositories
+namespace Conduit.Users.Domain.Infrastructure.Repositories
 {
     public class InMemoryUserRepository : IUserRepository
     {

@@ -1,8 +1,8 @@
-using TracerAttributes;
+using Conduit.Core.DataAccess;
 
-namespace Conduit.Identity.Domain.Contracts.Queries.GetCurrentUser
+namespace Conduit.Users.Domain.Contracts.Queries.GetCurrentUser
 {
-    public class GetCurrentUserQueryResult
+    public class GetCurrentUserQueryResult : ContractModel
     {
         public UserDTO CurrentUser { get; set; }
     }

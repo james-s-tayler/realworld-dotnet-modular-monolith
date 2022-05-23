@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoFixture;
 using Conduit.Core.Context;
-using Conduit.Identity.Domain.Configuration;
-using Conduit.Identity.Domain.Entities;
-using Conduit.Identity.Domain.Infrastructure.Repositories;
+using Conduit.Users.Domain.Configuration;
+using Conduit.Users.Domain.Entities;
+using Conduit.Users.Domain.Infrastructure.Repositories;
 using JetBrains.Annotations;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using ScottBrady91.AspNetCore.Identity;
 using Serilog;
 
-namespace Conduit.Identity.Domain.Tests.Unit.Setup
+namespace Conduit.Users.Domain.Tests.Unit.Setup
 {
     public class UsersModuleSetupFixture : IDisposable
     {
@@ -71,6 +70,7 @@ namespace Conduit.Identity.Domain.Tests.Unit.Setup
             Services.AddLogging(builder =>
             {
                 builder.AddSerilog();
+                builder.SetMinimumLevel(LogLevel.Debug);
             });
             Module.AddServices(Configuration.Build(), Services);
             Module.ReplaceSingleton(UserRepo.Object);

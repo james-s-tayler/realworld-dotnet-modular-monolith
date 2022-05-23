@@ -3,13 +3,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Conduit.Core.Context;
 using Conduit.Core.PipelineBehaviors;
-using Conduit.Identity.Domain.Contracts;
-using Conduit.Identity.Domain.Contracts.Queries.GetCurrentUser;
-using Conduit.Identity.Domain.Infrastructure.Mappers;
-using Conduit.Identity.Domain.Infrastructure.Repositories;
+using Conduit.Users.Domain.Contracts.Queries.GetCurrentUser;
+using Conduit.Users.Domain.Infrastructure.Mappers;
+using Conduit.Users.Domain.Infrastructure.Repositories;
 using MediatR;
 
-namespace Conduit.Identity.Domain.Operations.Queries.GetCurrentUser
+namespace Conduit.Users.Domain.Operations.Queries.GetCurrentUser
 {
     public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, OperationResponse<GetCurrentUserQueryResult>>
     {

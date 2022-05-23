@@ -1,10 +1,9 @@
-using System;
+using Conduit.Core.DataAccess;
 using JetBrains.Annotations;
-using TracerAttributes;
 
-namespace Conduit.Identity.Domain.Contracts.Commands.LoginUser
+namespace Conduit.Users.Domain.Contracts.Commands.LoginUser
 {
-    public class LoginUserResult
+    public class LoginUserResult : ContractModel
     {
         public UserDTO LoggedInUser { get; }
 

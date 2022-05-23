@@ -3,13 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Conduit.Core.Context;
 using Conduit.Core.PipelineBehaviors;
-using Conduit.Identity.Domain.Contracts.Commands.UpdateUser;
-using Conduit.Identity.Domain.Infrastructure.Mappers;
-using Conduit.Identity.Domain.Infrastructure.Repositories;
+using Conduit.Users.Domain.Contracts.Commands.UpdateUser;
+using Conduit.Users.Domain.Infrastructure.Mappers;
+using Conduit.Users.Domain.Infrastructure.Repositories;
 using JetBrains.Annotations;
 using MediatR;
 
-namespace Conduit.Identity.Domain.Operations.Commands.UpdateUser
+namespace Conduit.Users.Domain.Operations.Commands.UpdateUser
 {
     public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, OperationResponse<UpdateUserResult>>
     {

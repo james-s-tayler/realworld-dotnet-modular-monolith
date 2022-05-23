@@ -1,10 +1,8 @@
+using Conduit.Core.DataAccess;
 using Conduit.Core.PipelineBehaviors;
 using MediatR;
-using TracerAttributes;
 
-namespace Conduit.Identity.Domain.Contracts.Queries.GetCurrentUser
+namespace Conduit.Users.Domain.Contracts.Queries.GetCurrentUser
 {
-    public class GetCurrentUserQuery : IRequest<OperationResponse<GetCurrentUserQueryResult>>
-    {
-    }
+    public class GetCurrentUserQuery : ContractModel, IRequest<OperationResponse<GetCurrentUserQueryResult>> {}
 }

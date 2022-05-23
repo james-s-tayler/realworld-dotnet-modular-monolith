@@ -1,12 +1,11 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Conduit.Identity.Domain.Contracts.Commands.LoginUser;
-using Conduit.Identity.Domain.Infrastructure.Repositories;
+using Conduit.Users.Domain.Contracts.Commands.LoginUser;
+using Conduit.Users.Domain.Infrastructure.Repositories;
 using FluentValidation;
 using JetBrains.Annotations;
 
-namespace Conduit.Identity.Domain.Operations.Commands.LoginUser
+namespace Conduit.Users.Domain.Operations.Commands.LoginUser
 {
     public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
     {

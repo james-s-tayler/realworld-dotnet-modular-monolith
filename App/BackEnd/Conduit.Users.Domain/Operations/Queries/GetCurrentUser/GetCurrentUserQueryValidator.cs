@@ -1,13 +1,12 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Conduit.Core.Context;
-using Conduit.Identity.Domain.Contracts.Queries.GetCurrentUser;
-using Conduit.Identity.Domain.Infrastructure.Repositories;
+using Conduit.Users.Domain.Contracts.Queries.GetCurrentUser;
+using Conduit.Users.Domain.Infrastructure.Repositories;
 using FluentValidation;
 using JetBrains.Annotations;
 
-namespace Conduit.Identity.Domain.Operations.Queries.GetCurrentUser
+namespace Conduit.Users.Domain.Operations.Queries.GetCurrentUser
 {
     public class GetCurrentUserQueryValidator : AbstractValidator<GetCurrentUserQuery>
     {
