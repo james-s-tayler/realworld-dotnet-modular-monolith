@@ -11,7 +11,7 @@ using MediatR;
 
 namespace Conduit.Users.Domain.Operations.Commands.UpdateUser
 {
-    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, OperationResponse<UpdateUserResult>>
+    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, OperationResponse<UpdateUserCommandResult>>
     {
         private readonly IUserContext _userContext;
         private readonly IUserRepository _userRepository;
@@ -23,7 +23,7 @@ namespace Conduit.Users.Domain.Operations.Commands.UpdateUser
             _userRepository = userRepository;
         }
 
-        public async Task<OperationResponse<UpdateUserResult>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<OperationResponse<UpdateUserCommandResult>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetById(_userContext.UserId);
             if (user == null)
@@ -36,7 +36,7 @@ namespace Conduit.Users.Domain.Operations.Commands.UpdateUser
 
             await _userRepository.Update(user);
 
-            return new OperationResponse<UpdateUserResult>(new UpdateUserResult
+            return new OperationResponse<UpdateUserCommandResult>(new UpdateUserCommandResult
             {
                 UpdatedUser = user.ToUserDTO(_userContext.Token) 
             });

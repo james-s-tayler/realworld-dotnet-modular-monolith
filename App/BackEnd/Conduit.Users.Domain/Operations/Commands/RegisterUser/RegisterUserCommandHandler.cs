@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Conduit.Users.Domain.Operations.Commands.RegisterUser
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, OperationResponse<RegisterUserResult>>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, OperationResponse<RegisterUserCommandResult>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher<User> _passwordHasher;
@@ -26,7 +26,7 @@ namespace Conduit.Users.Domain.Operations.Commands.RegisterUser
             _authTokenService = authTokenService;
         }
 
-        public async Task<OperationResponse<RegisterUserResult>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<OperationResponse<RegisterUserCommandResult>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var newUser = new User
             {
@@ -40,7 +40,7 @@ namespace Conduit.Users.Domain.Operations.Commands.RegisterUser
             var user = await _userRepository.GetById(userId); 
             var token = await _authTokenService.GenerateAuthToken(user);
             
-            return new OperationResponse<RegisterUserResult>(new RegisterUserResult
+            return new OperationResponse<RegisterUserCommandResult>(new RegisterUserCommandResult
             {
                 RegisteredUser = user.ToUserDTO(token),
                 UserId = userId

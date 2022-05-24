@@ -6,7 +6,7 @@ using MediatR;
 namespace Conduit.Users.Domain.Contracts.Commands.LoginUser
 {
     [AllowUnauthenticated]
-    public class LoginUserCommand : ContractModel, IRequest<OperationResponse<LoginUserResult>>
+    public class LoginUserCommand : ContractModel, IRequest<OperationResponse<LoginUserCommandResult>>
     {
         public UserCredentialsDTO UserCredentials { get; set; }
     }

@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Conduit.Users.Domain.Operations.Commands.LoginUser
 {
-    public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, OperationResponse<LoginUserResult>>
+    public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, OperationResponse<LoginUserCommandResult>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher<User> _passwordHasher;
@@ -28,7 +28,7 @@ namespace Conduit.Users.Domain.Operations.Commands.LoginUser
             _authTokenService = authTokenService;
         }
         
-        public async Task<OperationResponse<LoginUserResult>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+        public async Task<OperationResponse<LoginUserCommandResult>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByEmail(request.UserCredentials.Email);
             if (user == null) 
@@ -37,11 +37,11 @@ namespace Conduit.Users.Domain.Operations.Commands.LoginUser
             var result = _passwordHasher.VerifyHashedPassword(user, user.Password, request.UserCredentials.Password);
 
             if (result == PasswordVerificationResult.Failed)
-                return new OperationResponse<LoginUserResult>(LoginUserResult.FailedLoginResult());
+                return new OperationResponse<LoginUserCommandResult>(LoginUserCommandResult.FailedLoginResult());
             
             var token = await _authTokenService.GenerateAuthToken(user);
             
-            return new OperationResponse<LoginUserResult>(LoginUserResult.SuccessfulLoginResult(user.ToUserDTO(token)));
+            return new OperationResponse<LoginUserCommandResult>(LoginUserCommandResult.SuccessfulLoginResult(user.ToUserDTO(token)));
         }
     }
 }

@@ -1,5 +1,10 @@
+using System.Linq;
+using ArchUnitNET.Domain.Dependencies;
+using ArchUnitNET.Domain.Extensions;
+using ArchUnitNET.Fluent.Conditions;
 using ArchUnitNET.xUnit;
 using Conduit.Core.DataAccess;
+using Conduit.Core.PipelineBehaviors;
 using FluentAssertions;
 using JetBrains.Annotations;
 using MediatR;
@@ -85,12 +90,33 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
                 .Check(_conduit.Architecture);
         }
         
+        [Fact]
+        public void DomainOperationsReturnOperationResponseOfOperationNameResult()
+        {
+            Classes().That().Are(_conduit.DomainOperations)
+                .Should().FollowCustomCondition(domainOperation =>
+                {
+                    var outerGenericParameter = domainOperation.Dependencies
+                        .Where(d => d.GetType() == typeof(ImplementsInterfaceDependency))
+                        .Where(d => d.Target.FullName == "MediatR.IRequest`1")
+                        .Select(d => d.TargetGenericArguments.Single())
+                        .Single();
+
+                    var innerGenericParameter = outerGenericParameter.GenericArguments.Single();
+
+                    var isOperationResponse = outerGenericParameter.Type.NameEndsWith("OperationResponse`1");
+                    var isOperationNameResult = innerGenericParameter.Type.FullNameMatches($"{domainOperation.FullName}Result");
+                    var pass = isOperationResponse && isOperationNameResult;
+                    
+                    return new ConditionResult(domainOperation, pass, "does not match");
+                }, "implement IRequest<OperationResponse<${OperationName}Result>>")
+                .Because("MediatR pipeline behaviors rely on this return type")
+                .Check(_conduit.Architecture);
+        }
+        
         /*
          implement rules to ensure:
-         - operation name is prepended to query
          - operation name is in the namespace
-         - IRequest is of Type OperationResponse<****Result>
-         - Result lives next to request
          - contracts doesn't depend on domain and/or only depends on Core, 
          namespace Conduit.Users.Domain.Contracts.Queries.GetCurrentUser
         {
