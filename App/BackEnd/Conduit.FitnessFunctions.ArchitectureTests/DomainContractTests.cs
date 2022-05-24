@@ -3,11 +3,9 @@ using ArchUnitNET.Domain.Dependencies;
 using ArchUnitNET.Domain.Extensions;
 using ArchUnitNET.Fluent.Conditions;
 using ArchUnitNET.xUnit;
+using Conduit.Core;
 using Conduit.Core.DataAccess;
-using Conduit.Core.PipelineBehaviors;
-using FluentAssertions;
 using JetBrains.Annotations;
-using MediatR;
 using Xunit;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
 
@@ -40,7 +38,8 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
                 .OrShould().HaveNameEndingWith("Query")
                 .OrShould().HaveNameEndingWith("Result")
                 .OrShould().HaveNameEndingWith("DTO")
-                .Because("semantics matter")
+                .OrShould().HaveNameEndingWith("Enum")
+                .Because("the semantics should indicate what the model is for")
                 .Check(_conduit.Architecture);
         }
         
@@ -63,7 +62,7 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
         }
         
         [Fact]
-        public void DomainOperationsFollowNamingConvention()
+        public void DomainOperationsEndInEitherCommandOrQuery()
         {
             Classes().That().Are(_conduit.DomainOperations)
                 .Should().HaveNameEndingWith("Command")
@@ -76,8 +75,13 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
         public void CommandsResideInCorrectNamespace()
         {
             Classes().That().Are(_conduit.Commands)
-                .Should().ResideInNamespace(".*Domain.Contracts.Commands.*", true)
-                .Because("Domain operations must indicate whether they mutate state or not")
+                .Should().FollowCustomCondition(command =>
+                {
+                    var operationName = command.Name.Replace("Command", "");
+                    var pass = command.ResidesInNamespace($".*Domain.Contracts.Commands.{operationName}", true);
+                    return new ConditionResult(command, true, "does not match");
+                }, "reside in Domain.Contracts.Commands.{OperationName}")
+                .Because("this is the convention")
                 .Check(_conduit.Architecture);
         }
         
@@ -85,8 +89,13 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
         public void QueriesResideInCorrectNamespace()
         {
             Classes().That().Are(_conduit.Queries)
-                .Should().ResideInNamespace(".*Domain.Contracts.Queries.*", true)
-                .Because("Domain operations must indicate whether they mutate state or not")
+                .Should().FollowCustomCondition(query =>
+                {
+                    var operationName = query.Name.Replace("Query", "");
+                    var pass = query.ResidesInNamespace($".*Domain.Contracts.Queries.{operationName}", true);
+                    return new ConditionResult(query, true, "does not match");
+                }, "reside in Domain.Contracts.Queries.{OperationName}")
+                .Because("this is the convention")
                 .Check(_conduit.Architecture);
         }
         
@@ -101,12 +110,14 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
                         .Where(d => d.Target.FullName == "MediatR.IRequest`1")
                         .Select(d => d.TargetGenericArguments.Single())
                         .Single();
-
                     var innerGenericParameter = outerGenericParameter.GenericArguments.Single();
-
+                    var operationName = domainOperation.Name.Replace("Command", "").Replace("Query", "");
+                    
                     var isOperationResponse = outerGenericParameter.Type.NameEndsWith("OperationResponse`1");
                     var isOperationNameResult = innerGenericParameter.Type.FullNameMatches($"{domainOperation.FullName}Result");
-                    var pass = isOperationResponse && isOperationNameResult;
+                    var isResultNextToOperation = innerGenericParameter.Type.ResidesInNamespace($".*Domain.Contracts.*.{operationName}", true);
+                    
+                    var pass = isOperationResponse && isOperationNameResult && isResultNextToOperation;
                     
                     return new ConditionResult(domainOperation, pass, "does not match");
                 }, "implement IRequest<OperationResponse<${OperationName}Result>>")
@@ -114,13 +125,14 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
                 .Check(_conduit.Architecture);
         }
         
-        /*
-         implement rules to ensure:
-         - operation name is in the namespace
-         - contracts doesn't depend on domain and/or only depends on Core, 
-         namespace Conduit.Users.Domain.Contracts.Queries.GetCurrentUser
+        [Fact]
+        public void DomainContractsShouldOnlyDependOnCore()
         {
-            public class GetCurrentUserQuery : ContractModel, IRequest<OperationResponse<GetCurrentUserQueryResult>> {}
-        }*/
+            var coreNamespace = typeof(ConduitCore).Namespace;
+            Classes().That().Are(_conduit.DomainContractClasses)
+                .Should().OnlyDependOnTypesThat().ResideInNamespace($"{coreNamespace}|.*Domain.Contracts.*|System.*|MediatR.*|Destructurama.*", true)
+                .Because("contracts shouldn't be responsible for any business logic")
+                .Check(_conduit.Architecture);
+        }
     }
 }
