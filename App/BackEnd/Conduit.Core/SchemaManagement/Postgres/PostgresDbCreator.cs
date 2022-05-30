@@ -6,15 +6,15 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 
-namespace Conduit.Core.SchemaManagement
+namespace Conduit.Core.SchemaManagement.Postgres
 {
-    public class DbCreator
+    public class PostgresDbCreator : IDbCreator
     {
         private readonly IHostEnvironment _hostEnvironment;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<DbCreator> _logger;
+        private readonly ILogger<PostgresDbCreator> _logger;
 
-        public DbCreator(ILogger<DbCreator> logger, 
+        public PostgresDbCreator(ILogger<PostgresDbCreator> logger, 
             IHostEnvironment hostEnvironment, 
             IConfiguration configuration)
         {

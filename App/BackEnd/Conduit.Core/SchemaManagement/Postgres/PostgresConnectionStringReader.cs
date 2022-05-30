@@ -2,14 +2,14 @@ using FluentMigrator.Runner.Initialization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace Conduit.Core.SchemaManagement
+namespace Conduit.Core.SchemaManagement.Postgres
 {
-    public class CustomConnectionStringReader : IConnectionStringReader
+    public class PostgresConnectionStringReader : IConnectionStringReader
     {
         private readonly IConfiguration _configuration;
         private readonly IHostEnvironment _hostEnvironment;
 
-        public CustomConnectionStringReader(IConfiguration configuration, 
+        public PostgresConnectionStringReader(IConfiguration configuration, 
             IHostEnvironment hostEnvironment)
         {
             _configuration = configuration;

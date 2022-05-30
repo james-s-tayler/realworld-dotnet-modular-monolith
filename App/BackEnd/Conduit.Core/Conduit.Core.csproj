@@ -43,6 +43,7 @@
       <Folder Include="PipelineBehaviors\Idempotency" />
       <Folder Include="PipelineBehaviors\Telemetry" />
       <Folder Include="PipelineBehaviors\Transactions" />
+      <Folder Include="SchemaManagement\Sqlite" />
     </ItemGroup>
 
     <ItemGroup>

@@ -18,11 +18,17 @@ using Conduit.API.Formatters;
 using Conduit.API.Models;
 using Conduit.Core.Exceptions;
 using Conduit.Core.Logging;
+using Conduit.Core.SchemaManagement;
+using Conduit.Core.SchemaManagement.Postgres;
+using Dapper.Logging;
+using FluentMigrator.Runner;
+using FluentMigrator.Runner.Initialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
+using Npgsql;
 using OpenTelemetry.Trace;
 using Serilog;
 
@@ -37,15 +43,17 @@ namespace Conduit.API
         /// Constructor
         /// </summary>
         /// <param name="configuration"></param>
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostEnvironment environment)
         {
             Configuration = configuration;
+            _environment = environment;
         }
 
         /// <summary>
         /// The application configuration.
         /// </summary>
         public IConfiguration Configuration { get; }
+        private IHostEnvironment _environment { get; }
 
         /// <summary>
         /// This method gets called by the runtime. Use this method to add services to the container.
@@ -86,22 +94,23 @@ namespace Conduit.API
                 {
                     options.InputFormatters.Insert(0, new InputFormatterStream());
                 });
-            /*services.AddMediatR(Assembly.GetExecutingAssembly());*/
             
             //database schema management
-            /*services.AddSingleton<IConnectionStringReader, CustomConnectionStringReader>();
+            //add two different dbs https://stackoverflow.com/questions/58110840/fluentmigrator-two-sql-databases
+            
+            /*services.AddSingleton<IConnectionStringReader, PostgresConnectionStringReader>();
             services.AddDbConnectionFactory(_ =>
             {
-                var database = $"{_configuration["DatabaseConfig:DatabaseName"]}_{_hostEnvironment.EnvironmentName.ToLowerInvariant()}";
-                var server = _configuration["DatabaseConfig:Server"];
-                var port = _configuration["DatabaseConfig:Port"];
-                var userId = _configuration["DatabaseConfig:UserId"];
-                var password = _configuration["DatabaseConfig:Password"];
+                var database = $"{Configuration["DatabaseConfig:DatabaseName"]}_{_environment.EnvironmentName.ToLowerInvariant()}";
+                var server = Configuration["DatabaseConfig:Server"];
+                var port = Configuration["DatabaseConfig:Port"];
+                var userId = Configuration["DatabaseConfig:UserId"];
+                var password = Configuration["DatabaseConfig:Password"];
 
                 var connectionString = $"Server={server};Port={port};Database={database};User Id={userId};Password={password};";
                 return new NpgsqlConnection(connectionString);
             });
-            services.AddScoped<DbCreator>();
+            services.AddScoped<IDbCreator, PostgresDbCreator>();
             services.AddLogging(c => c.AddFluentMigratorConsole());
             services.AddFluentMigratorCore()
                 .ConfigureRunner(c => c.AddPostgres()
