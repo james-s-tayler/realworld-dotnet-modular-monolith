@@ -16,15 +16,13 @@ namespace Conduit.Core.SchemaManagement.Postgres
             _hostEnvironment = hostEnvironment;
         }
 
-        public string GetConnectionString(string connectionStringOrName)
+        public string GetConnectionString(string moduleName)
         {
-            var isMasterDb = connectionStringOrName.Equals("MasterSqlConnection");
-            
-            var database = isMasterDb ? "postgres" : $"{_configuration["DatabaseConfig:DatabaseName"]}_{_hostEnvironment.EnvironmentName.ToLowerInvariant()}";
-            var server = _configuration["DatabaseConfig:Server"];
-            var port = _configuration["DatabaseConfig:Port"];
-            var userId = _configuration["DatabaseConfig:UserId"];
-            var password = _configuration["DatabaseConfig:Password"];
+            var database = $"{_configuration[$"DatabaseConfig:{moduleName}:DatabaseName"]}_{_hostEnvironment.EnvironmentName.ToLowerInvariant()}";
+            var server = _configuration[$"DatabaseConfig:{moduleName}:Server"];
+            var port = _configuration[$"DatabaseConfig:{moduleName}:Port"];
+            var userId = _configuration[$"DatabaseConfig:{moduleName}:UserId"];
+            var password = _configuration[$"DatabaseConfig:{moduleName}:Password"];
 
             return $"Server={server};Port={port};Database={database};User Id={userId};Password={password};";
         }

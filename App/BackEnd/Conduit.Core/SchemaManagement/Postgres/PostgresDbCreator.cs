@@ -23,13 +23,11 @@ namespace Conduit.Core.SchemaManagement.Postgres
             _configuration = configuration;
         }
 
-        public void EnsureCreateDatabase(string name)
+        public void EnsureCreateDatabase(string moduleName, string dbName)
         {
-            var dbName = $"{name}_{_hostEnvironment.EnvironmentName.ToLowerInvariant()}";
-            
             try
             {
-                using var connection = GetMasterDbConnection();
+                using var connection = GetMasterDbConnection(moduleName);
             
                 if (!DatabaseExists(connection, dbName))
                 {
@@ -43,13 +41,13 @@ namespace Conduit.Core.SchemaManagement.Postgres
             }
         }
         
-        private NpgsqlConnection GetMasterDbConnection()
+        private NpgsqlConnection GetMasterDbConnection(string moduleName)
         {
-            var database = $"postgres";
-            var server = _configuration["DatabaseConfig:Server"];
-            var port = _configuration["DatabaseConfig:Port"];
-            var userId = _configuration["DatabaseConfig:UserId"];
-            var password = _configuration["DatabaseConfig:Password"];
+            var database = "postgres";
+            var server = _configuration[$"DatabaseConfig:{moduleName}:Server"];
+            var port = _configuration[$"DatabaseConfig:{moduleName}:Port"];
+            var userId = _configuration[$"DatabaseConfig:{moduleName}:UserId"];
+            var password = _configuration[$"DatabaseConfig:{moduleName}:Password"];
 
             var connectionString = $"Server={server};Port={port};Database={database};User Id={userId};Password={password};";
             return new NpgsqlConnection(connectionString);

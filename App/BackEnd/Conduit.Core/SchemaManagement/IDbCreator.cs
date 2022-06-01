@@ -2,6 +2,6 @@ namespace Conduit.Core.SchemaManagement
 {
     public interface IDbCreator
     {
-        void EnsureCreateDatabase(string name);
+        void EnsureCreateDatabase(string moduleName, string dbName);
     }
 }

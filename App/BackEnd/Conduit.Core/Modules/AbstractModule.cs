@@ -5,6 +5,10 @@ using Conduit.Core.Logging;
 using Conduit.Core.PipelineBehaviors.Authorization;
 using Conduit.Core.PipelineBehaviors.Logging;
 using Conduit.Core.PipelineBehaviors.Validation;
+using Conduit.Core.SchemaManagement;
+using Conduit.Core.SchemaManagement.Postgres;
+using FluentMigrator.Runner;
+using FluentMigrator.Runner.Initialization;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
@@ -23,8 +27,14 @@ namespace Conduit.Core.Modules
             Console.WriteLine($"Registering Module: {GetModuleAssembly().GetName().Name}");
             builder.ConfigureServices((context, services) =>
             {
+                RunModuleDatabaseMigrations(context);
                 AddServices(context.Configuration, services);
             });
+        }
+
+        private void RunModuleDatabaseMigrations(WebHostBuilderContext context)
+        {
+            SchemaManagerFactory.RunSqliteMigrations(context.Configuration, context.HostingEnvironment, GetModuleAssembly());
         }
 
         public void AddServices(IConfiguration configuration, IServiceCollection services)
