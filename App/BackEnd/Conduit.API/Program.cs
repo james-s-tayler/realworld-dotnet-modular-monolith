@@ -19,16 +19,12 @@ namespace Conduit.API
             {
                 CreateHostBuilder(args)
                     .Build()
-                    //.MigrateDatabase()
                     .Run();
             }
             catch (Exception e)
             {
-                Log.Error(e, e.Message);
-            }
-            finally
-            {
-                Log.CloseAndFlush();
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
             }
         }
 

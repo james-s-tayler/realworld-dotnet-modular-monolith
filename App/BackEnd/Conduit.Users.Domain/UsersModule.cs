@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Conduit.Core.Modules;
+using Conduit.Core.SchemaManagement;
 using Conduit.Users.Domain;
 using Conduit.Users.Domain.Configuration;
 using Conduit.Users.Domain.Entities;
@@ -20,6 +21,11 @@ namespace Conduit.Users.Domain
 {
     internal class UsersModule : AbstractModule
     {
+        protected override void RunModuleDatabaseMigrations(SchemaManager schemaManager)
+        {
+            schemaManager.RunSqliteMigrations();
+        }
+
         protected override Assembly GetModuleAssembly()
         {
             return UsersDomain.Assembly;

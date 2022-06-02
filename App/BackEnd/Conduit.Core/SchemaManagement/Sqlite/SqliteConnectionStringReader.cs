@@ -19,7 +19,7 @@ namespace Conduit.Core.SchemaManagement.Sqlite
 
         public string GetConnectionString(string moduleName)
         {
-            var database = $"{_configuration[$"DatabaseConfig:{moduleName}:DatabaseName"]}_{_hostEnvironment.EnvironmentName.ToLowerInvariant()}";
+            var database = $"{_configuration[$"DatabaseConfig:{moduleName}:DatabaseName"]}_{_hostEnvironment.EnvironmentName}".ToLowerInvariant();
             var filename = $"{database}.db";
             
             var connectionString = new SqliteConnectionStringBuilder
@@ -27,8 +27,7 @@ namespace Conduit.Core.SchemaManagement.Sqlite
                 DataSource = filename,
                 Cache = SqliteCacheMode.Shared,
                 ForeignKeys = true,
-                Mode = SqliteOpenMode.ReadWriteCreate,
-                Password = _configuration[$"DatabaseConfig:{moduleName}:Password"]
+                Mode = SqliteOpenMode.ReadWriteCreate
             }.ToString();
 
             return connectionString;

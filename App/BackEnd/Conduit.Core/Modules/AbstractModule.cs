@@ -27,15 +27,12 @@ namespace Conduit.Core.Modules
             Console.WriteLine($"Registering Module: {GetModuleAssembly().GetName().Name}");
             builder.ConfigureServices((context, services) =>
             {
-                RunModuleDatabaseMigrations(context);
+                RunModuleDatabaseMigrations(new SchemaManager(context.Configuration, context.HostingEnvironment, GetModuleAssembly()));
                 AddServices(context.Configuration, services);
             });
         }
 
-        private void RunModuleDatabaseMigrations(WebHostBuilderContext context)
-        {
-            SchemaManagerFactory.RunSqliteMigrations(context.Configuration, context.HostingEnvironment, GetModuleAssembly());
-        }
+        protected abstract void RunModuleDatabaseMigrations(SchemaManager schemaManager);
 
         public void AddServices(IConfiguration configuration, IServiceCollection services)
         {

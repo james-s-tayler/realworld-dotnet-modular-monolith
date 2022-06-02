@@ -1,43 +1,26 @@
-using System;
 using System.Linq;
 using Dapper;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Npgsql;
 
 namespace Conduit.Core.SchemaManagement.Postgres
 {
     public class PostgresDbCreator : IDbCreator
     {
-        private readonly IHostEnvironment _hostEnvironment;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<PostgresDbCreator> _logger;
 
-        public PostgresDbCreator(ILogger<PostgresDbCreator> logger, 
-            IHostEnvironment hostEnvironment, 
-            IConfiguration configuration)
+        public PostgresDbCreator(IConfiguration configuration)
         {
-            _logger = logger;
-            _hostEnvironment = hostEnvironment;
             _configuration = configuration;
         }
 
         public void EnsureCreateDatabase(string moduleName, string dbName)
         {
-            try
-            {
-                using var connection = GetMasterDbConnection(moduleName);
+            using var connection = GetMasterDbConnection(moduleName);
             
-                if (!DatabaseExists(connection, dbName))
-                {
-                    connection.Execute($"CREATE DATABASE {dbName}");
-                }
-            }
-            catch (Exception e)
+            if (!DatabaseExists(connection, dbName))
             {
-                _logger.LogCritical(e, "Fatal error encountered when trying to create the database.");
-                throw;
+                connection.Execute($"CREATE DATABASE {dbName}");
             }
         }
         

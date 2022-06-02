@@ -95,28 +95,6 @@ namespace Conduit.API
                     options.InputFormatters.Insert(0, new InputFormatterStream());
                 });
             
-            //database schema management
-            //add two different dbs https://stackoverflow.com/questions/58110840/fluentmigrator-two-sql-databases
-            
-            /*services.AddSingleton<IConnectionStringReader, PostgresConnectionStringReader>();
-            services.AddDbConnectionFactory(_ =>
-            {
-                var database = $"{Configuration["DatabaseConfig:DatabaseName"]}_{_environment.EnvironmentName.ToLowerInvariant()}";
-                var server = Configuration["DatabaseConfig:Server"];
-                var port = Configuration["DatabaseConfig:Port"];
-                var userId = Configuration["DatabaseConfig:UserId"];
-                var password = Configuration["DatabaseConfig:Password"];
-
-                var connectionString = $"Server={server};Port={port};Database={database};User Id={userId};Password={password};";
-                return new NpgsqlConnection(connectionString);
-            });
-            services.AddScoped<IDbCreator, PostgresDbCreator>();
-            services.AddLogging(c => c.AddFluentMigratorConsole());
-            services.AddFluentMigratorCore()
-                .ConfigureRunner(c => c.AddPostgres()
-                    .WithGlobalConnectionString("SqlConnection")
-                    .ScanIn(typeof(SchemaManager).Assembly).For.Migrations());*/
-            
             //caching
             /*var redisHost = _configuration["Redis:Host"] ?? throw new ArgumentNullException("Redis:Host");
             var redisPort = _configuration["Redis:Port"] ?? throw new ArgumentNullException("Redis:Port");
