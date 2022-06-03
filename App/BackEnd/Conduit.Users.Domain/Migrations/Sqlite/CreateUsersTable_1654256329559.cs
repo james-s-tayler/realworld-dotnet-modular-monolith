@@ -1,0 +1,39 @@
+using Conduit.Core.SchemaManagement;
+using FluentMigrator;
+
+namespace Conduit.Users.Domain.Migrations.Sqlite
+{
+    [Tags(DbConstants.SQLite)]
+    [Migration(1654256329559)]
+    public class CreateUsersTable_1654256329559 : Migration
+    {
+        public override void Up()
+        {
+            Create.Table("users")
+            .WithColumn("id")
+                .AsInt32()
+                .NotNullable()
+                .PrimaryKey()
+            .WithColumn("username")
+                .AsString(50)
+                .NotNullable()
+                .Unique()
+            .WithColumn("email")
+                .AsString(255)
+                .NotNullable()
+                .Unique()
+            .WithColumn("password")
+                .AsString(255)
+                .NotNullable()
+            .WithColumn("image")
+                .AsString(2048)
+            .WithColumn("bio")
+                .AsString(4000);
+        }
+
+        public override void Down()
+        {
+            Delete.Table("users");
+        }
+    }
+}

@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using Conduit.Users.Domain.Configuration;
 using Conduit.Users.Domain.Contracts.Commands.RegisterUser;
 using Conduit.Users.Domain.Infrastructure.Repositories;
 using FluentValidation;
@@ -17,7 +18,8 @@ namespace Conduit.Users.Domain.Operations.Commands.RegisterUser
 
             RuleFor(command => command.NewUser.Username)
                 .NotNull()
-                .NotEmpty();
+                .NotEmpty()
+                .MaximumLength(Constants.UsernameMaxLength);
             RuleFor(command => command.NewUser.Username)
                 .MustAsync(UsernameNotAlreadyInUse)
                 .WithMessage(_ => "Username is already in use")
@@ -32,7 +34,7 @@ namespace Conduit.Users.Domain.Operations.Commands.RegisterUser
             RuleFor(command => command.NewUser.Password)
                 .NotNull()
                 .NotEmpty()
-                .MinimumLength(8);
+                .MinimumLength(10);
         }
         
         private async Task<bool> UsernameNotAlreadyInUse(string username, CancellationToken cancellation)

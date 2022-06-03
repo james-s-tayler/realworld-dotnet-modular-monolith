@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Conduit.Core.Context;
+using Conduit.Users.Domain.Configuration;
 using Conduit.Users.Domain.Contracts.Commands.UpdateUser;
 using Conduit.Users.Domain.Infrastructure.Repositories;
 using FluentValidation;
@@ -21,7 +22,16 @@ namespace Conduit.Users.Domain.Operations.Commands.UpdateUser
             RuleFor(command => command.UpdateUser)
                 .Must(ContainUpdate)
                 .WithMessage("At least one property must be updated.");
-            RuleFor(query => query)
+            RuleFor(command => command.UpdateUser.Username)
+                .MaximumLength(Constants.UsernameMaxLength)
+                .When(command => !string.IsNullOrEmpty(command.UpdateUser.Username));
+            RuleFor(command => command.UpdateUser.Image)
+                .MaximumLength(Constants.ImageUriMaxLength)
+                .When(command => !string.IsNullOrEmpty(command.UpdateUser.Image));
+            RuleFor(command => command.UpdateUser.Bio)
+                .MaximumLength(Constants.BioMaxLength)
+                .When(command => !string.IsNullOrEmpty(command.UpdateUser.Bio));
+            RuleFor(command => command)
                 .MustAsync(UserMustExist)
                 .WithMessage($"User {_userContext.UserId} was not found.");
             RuleFor(command => command.UpdateUser.Username)
