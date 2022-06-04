@@ -21,6 +21,11 @@ services:
         MODEOF_TREESHAKING: Link
     networks:
      - conduit-api
+    volumes:
+      - ./sqlite:/sqlite
 
 networks:
   conduit-api:
+volumes:
+  conduit-api-redis:
+  seq_logs:

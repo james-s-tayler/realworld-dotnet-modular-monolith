@@ -20,7 +20,7 @@ namespace Conduit.Core.SchemaManagement.Sqlite
         public string GetConnectionString(string moduleName)
         {
             var database = $"{_configuration[$"DatabaseConfig:{moduleName}:DatabaseName"]}_{_hostEnvironment.EnvironmentName}".ToLowerInvariant();
-            var filename = $"{database}.db";
+            var filename = $"/sqlite/{database}.db";
             
             return new SqliteConnectionStringBuilder
             {

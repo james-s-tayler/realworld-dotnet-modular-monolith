@@ -58,6 +58,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{1582
 		..\..\build_n_run_backend.sh = ..\..\build_n_run_backend.sh
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{21BB14D4-2021-4EFB-ABEA-31D8ED961492}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\docker-compose.dev-dependencies.yml = ..\..\docker-compose.dev-dependencies.yml
+		..\..\docker-compose.tests.yml = ..\..\docker-compose.tests.yml
+		..\..\docker-compose.yml = ..\..\docker-compose.yml
+		Conduit.API\Dockerfile = Conduit.API\Dockerfile
+	EndProjectSection
+EndProject
 Global
 				GlobalSection(SolutionConfigurationPlatforms) = preSolution
 								Debug|Any CPU = Debug|Any CPU

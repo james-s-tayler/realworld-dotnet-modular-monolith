@@ -6,7 +6,7 @@ namespace Conduit.Core.SchemaManagement.Sqlite
     {
         public void EnsureCreateDatabase(string moduleName, string dbName)
         {
-            var filename = $"{dbName}.db";
+            var filename = $"/sqlite/{dbName}.db";
                 
             if (!File.Exists(filename))
             {
