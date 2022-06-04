@@ -22,7 +22,7 @@ namespace Conduit.Users.Domain.Tests.Unit.Setup
     {
         public Fixture AutoFixture { get; } = new ();
         public string Token { get; } = "jwt";
-        public string PlainTextPassword { get; } = "soloyolo";
+        public string PlainTextPassword { get; } = "soloyolo99";
         public BCryptPasswordHasher<User> PasswordHasher = new ();
         public User ExistingUser { get; }
         public User ExistingUser2 { get; }

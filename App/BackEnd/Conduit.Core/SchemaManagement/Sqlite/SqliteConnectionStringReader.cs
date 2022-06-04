@@ -22,15 +22,13 @@ namespace Conduit.Core.SchemaManagement.Sqlite
             var database = $"{_configuration[$"DatabaseConfig:{moduleName}:DatabaseName"]}_{_hostEnvironment.EnvironmentName}".ToLowerInvariant();
             var filename = $"{database}.db";
             
-            var connectionString = new SqliteConnectionStringBuilder
+            return new SqliteConnectionStringBuilder
             {
                 DataSource = filename,
                 Cache = SqliteCacheMode.Shared,
                 ForeignKeys = true,
                 Mode = SqliteOpenMode.ReadWriteCreate
             }.ToString();
-
-            return connectionString;
         }
 
         public int Priority => 0;

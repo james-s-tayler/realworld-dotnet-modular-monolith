@@ -109,6 +109,8 @@ namespace Conduit.Users.Domain.Tests.Unit.Commands
                             _registerUserCommand.NewUser.Password);
 
             //assert
+            _registeredUser.Should().NotBeNull();
+            _registeredUser.Password.Should().NotBeNullOrEmpty();
             _registeredUser.Password.Should().NotBe(_registerUserCommand.NewUser.Password);
             result.Should().Be(PasswordVerificationResult.Success);
             

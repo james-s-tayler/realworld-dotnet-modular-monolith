@@ -10,7 +10,13 @@ namespace Conduit.Core.SchemaManagement.Sqlite
                 
             if (!File.Exists(filename))
             {
+                Console.WriteLine($"Database {filename} does not exist - creating it...");
                 File.WriteAllBytes(filename, Array.Empty<byte>());
+            }
+            
+            if (!File.Exists(filename))
+            {
+                throw new Exception($"Database {filename} has not been created");
             }
         }
     }
