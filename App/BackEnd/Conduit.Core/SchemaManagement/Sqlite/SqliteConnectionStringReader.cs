@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Conduit.Core.SchemaManagement.Sqlite
 {
+    //interesting bedtime reading: https://stackoverflow.com/questions/1711631/improve-insert-per-second-performance-of-sqlite?rq=1
     public class SqliteConnectionStringReader : IConnectionStringReader
     {
         private readonly IConfiguration _configuration;
@@ -21,13 +22,14 @@ namespace Conduit.Core.SchemaManagement.Sqlite
         {
             var database = $"{_configuration[$"DatabaseConfig:{moduleName}:DatabaseName"]}_{_hostEnvironment.EnvironmentName}".ToLowerInvariant();
             var filename = $"/sqlite/{database}.db";
-            
+
             return new SqliteConnectionStringBuilder
             {
                 DataSource = filename,
                 Cache = SqliteCacheMode.Shared,
                 ForeignKeys = true,
-                Mode = SqliteOpenMode.ReadWriteCreate
+                Mode = SqliteOpenMode.ReadWriteCreate,
+                Pooling = true
             }.ToString();
         }
 

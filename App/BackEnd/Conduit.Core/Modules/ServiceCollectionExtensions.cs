@@ -13,7 +13,7 @@ namespace Conduit.Core.Modules
         public static void AddAuthorizersFromAssembly(
             this IServiceCollection services,
             Assembly assembly,
-            ServiceLifetime lifetime = ServiceLifetime.Scoped)
+            ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
             var authorizerType = typeof(IAuthorizer<>);
             assembly.GetTypesAssignableTo(authorizerType).ForEach((type) =>

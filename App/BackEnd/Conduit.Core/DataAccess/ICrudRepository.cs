@@ -8,8 +8,8 @@ namespace Conduit.Core.DataAccess
         Task<bool> Exists(TId id);
         Task<TEntity> GetById(TId id);
         Task<IEnumerable<TEntity>> GetAll();
-        Task<TId> Create(TEntity entity);
-        Task Update(TEntity entity);
+        Task<TId> Create(TEntity user);
+        Task Update(TEntity user);
         Task Delete(TId id);
     }
 }

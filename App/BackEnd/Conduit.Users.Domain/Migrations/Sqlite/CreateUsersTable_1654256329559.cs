@@ -27,8 +27,10 @@ namespace Conduit.Users.Domain.Migrations.Sqlite
                 .NotNullable()
             .WithColumn("image")
                 .AsString(2048)
+                .Nullable()
             .WithColumn("bio")
-                .AsString(4000);
+                .AsString(4000)
+                .Nullable();
         }
 
         public override void Down()

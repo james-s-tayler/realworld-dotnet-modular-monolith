@@ -45,17 +45,17 @@ namespace Conduit.Users.Domain.Infrastructure.Repositories
             return Task.FromResult(_repo.Values.ToList().AsEnumerable());
         }
 
-        public Task<int> Create(User entity)
+        public Task<int> Create(User user)
         {
             var id = Random.Next(1, Int32.MaxValue);
-            entity.Id = id;
-            _repo[entity.Id] = entity;
-            return Task.FromResult(entity.Id);
+            user.Id = id;
+            _repo[user.Id] = user;
+            return Task.FromResult(user.Id);
         }
 
-        public Task Update(User entity)
+        public Task Update(User user)
         {
-            _repo[entity.Id] = entity;
+            _repo[user.Id] = user;
             return Task.CompletedTask;
         }
 

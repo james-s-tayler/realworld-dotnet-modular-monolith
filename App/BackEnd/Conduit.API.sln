@@ -66,6 +66,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{21BB14
 		Conduit.API\Dockerfile = Conduit.API\Dockerfile
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.FitnessFunctions.MemoryTests", "Conduit.FitnessFunctions.MemoryTests\Conduit.FitnessFunctions.MemoryTests.csproj", "{647BF5D4-B836-44F3-AB2F-26254E6B97CA}"
+EndProject
 Global
 				GlobalSection(SolutionConfigurationPlatforms) = preSolution
 								Debug|Any CPU = Debug|Any CPU
@@ -120,6 +122,10 @@ Global
 					{12DDDC0A-472B-42B9-BEF1-E78F35A3091A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 					{12DDDC0A-472B-42B9-BEF1-E78F35A3091A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 					{12DDDC0A-472B-42B9-BEF1-E78F35A3091A}.Release|Any CPU.Build.0 = Release|Any CPU
+					{647BF5D4-B836-44F3-AB2F-26254E6B97CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+					{647BF5D4-B836-44F3-AB2F-26254E6B97CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+					{647BF5D4-B836-44F3-AB2F-26254E6B97CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+					{647BF5D4-B836-44F3-AB2F-26254E6B97CA}.Release|Any CPU.Build.0 = Release|Any CPU
 				EndGlobalSection
 				GlobalSection(SolutionProperties) = preSolution
 								HideSolutionNode = FALSE
@@ -143,5 +149,6 @@ Global
 		{920FDA89-3E6F-4B68-B83E-073DA03DCE44} = {47341F65-D512-421C-809D-6BB36CE52C53}
 		{6BB295EB-ABC1-4B3E-BED3-6EABC9D245EA} = {47341F65-D512-421C-809D-6BB36CE52C53}
 		{3BB27DFA-1924-41B2-B7FB-253DD70969DD} = {47341F65-D512-421C-809D-6BB36CE52C53}
+		{647BF5D4-B836-44F3-AB2F-26254E6B97CA} = {CF744F7C-DF0D-4AD9-A19D-F08F418D41C7}
 	EndGlobalSection
 EndGlobal
