@@ -20,6 +20,7 @@ namespace Conduit.Users.Domain.Tests.Unit.Commands
         {
             _module = module;
             _module.WithAuthenticatedUserContext();
+            _module.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
             _updateUserCommand = new UpdateUserCommand
             {
                 UpdateUser = new UpdateUserDTO

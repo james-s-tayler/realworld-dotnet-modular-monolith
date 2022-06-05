@@ -20,9 +20,10 @@ namespace Conduit.Core.SchemaManagement.Sqlite
 
         public string GetConnectionString(string moduleName)
         {
-            var database = $"{_configuration[$"DatabaseConfig:{moduleName}:DatabaseName"]}_{_hostEnvironment.EnvironmentName}".ToLowerInvariant();
-            var filename = $"/sqlite/{database}.db";
-
+            var runningInDocker = _configuration.GetValue<bool>("DOTNET_RUNNING_IN_CONTAINER");
+            var dbName = $"{_configuration[$"DatabaseConfig:{moduleName}:DatabaseName"]}_{_hostEnvironment.EnvironmentName}".ToLowerInvariant();
+            var filename = runningInDocker ? $"/sqlite/{dbName}.db" : $"{dbName}.db";
+            
             return new SqliteConnectionStringBuilder
             {
                 DataSource = filename,

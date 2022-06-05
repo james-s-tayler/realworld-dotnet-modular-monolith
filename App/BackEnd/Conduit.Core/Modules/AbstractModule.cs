@@ -7,12 +7,9 @@ using Conduit.Core.PipelineBehaviors.Authorization;
 using Conduit.Core.PipelineBehaviors.Logging;
 using Conduit.Core.PipelineBehaviors.Validation;
 using Conduit.Core.SchemaManagement;
-using Conduit.Core.SchemaManagement.Postgres;
 using Conduit.Core.SchemaManagement.Sqlite;
 using Dapper;
 using Dapper.Logging;
-using FluentMigrator.Runner;
-using FluentMigrator.Runner.Initialization;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
@@ -32,9 +29,14 @@ namespace Conduit.Core.Modules
             Console.WriteLine($"Registering Module: {GetModuleAssembly().GetName().Name}");
             builder.ConfigureServices((context, services) =>
             {
-                AddServices(context.Configuration, services);
-                AddModuleDatabase(context.Configuration, context.HostingEnvironment, services);
+                InitializeModule(context.Configuration, context.HostingEnvironment, services);
             });
+        }
+
+        public void InitializeModule(IConfiguration configuration, IHostEnvironment hostEnvironment, IServiceCollection services)
+        {
+            AddServices(configuration, services);
+            AddModuleDatabase(configuration, hostEnvironment, services);
         }
 
         private void AddModuleDatabase(IConfiguration configuration, IHostEnvironment hostEnvironment, IServiceCollection services)

@@ -1,13 +1,12 @@
+using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
 using Conduit.Core.PipelineBehaviors;
 using Conduit.Core.Testing;
 using Conduit.Users.Domain.Contracts.Commands.RegisterUser;
-using Conduit.Users.Domain.Entities;
 using Conduit.Users.Domain.Tests.Unit.Setup;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
-using Moq;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -17,40 +16,28 @@ namespace Conduit.Users.Domain.Tests.Unit.Commands
     public class RegisterUserTests : TestBase
     {
         private readonly UsersModuleSetupFixture _usersModule;
-        private User _registeredUser;
-        private readonly int _newUserId;
         private readonly RegisterUserCommand _registerUserCommand;
 
         public RegisterUserTests(UsersModuleSetupFixture usersModule, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
             _usersModule = usersModule;
+            _usersModule.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
             _registerUserCommand = new RegisterUserCommand
             {
                 NewUser = new NewUserDTO
                 {
-                    Email = _usersModule.AutoFixture.Create<string>(),
+                    Email = $"{_usersModule.AutoFixture.Create<string>()}@{_usersModule.AutoFixture.Create<string>()}.com",
                     Username = _usersModule.AutoFixture.Create<string>(),
                     Password = _usersModule.PlainTextPassword
                 }
             };
-            _newUserId = _usersModule.AutoFixture.Create<int>();
-            _registeredUser = null;
-            _usersModule.UserRepo.Setup(repository => repository.Create(It.IsAny<User>()))
-                .Callback<User>(registeredUser =>
-                {
-                    //don't really love this - maybe better not to mock and just use the in memory repository or SQLite
-                    registeredUser.Id = _newUserId;
-                    _usersModule.AddUserToUserRepo(registeredUser);
-                    _registeredUser = registeredUser;
-                })
-                .Returns(Task.FromResult(_newUserId));
         }
         
         [Fact]
         public async Task GivenANewUser_WhenRegisterUser_ThenNewUserReturned()
         {
             //arrange
-            
+
             //act
             var result = await _usersModule.Mediator.Send(_registerUserCommand);
             
@@ -59,7 +46,7 @@ namespace Conduit.Users.Domain.Tests.Unit.Commands
             result.Response.Should().NotBeNull();
             result.Response.RegisteredUser.Should().NotBeNull();
             var registeredUser = result.Response.RegisteredUser;
-            registeredUser.Id.Should().Be(_newUserId);
+            registeredUser.Id.Should().Be(3);
             registeredUser.Email.Should().Be(_registerUserCommand.NewUser.Email);
             registeredUser.Username.Should().Be(_registerUserCommand.NewUser.Username);
             registeredUser.Token.Should().NotBeNull();
@@ -103,17 +90,22 @@ namespace Conduit.Users.Domain.Tests.Unit.Commands
             //arrange
 
             //act
-            _ = await _usersModule.Mediator.Send(_registerUserCommand);
-            var result = _usersModule.PasswordHasher.VerifyHashedPassword(_registeredUser,
-                            _registeredUser.Password,
-                            _registerUserCommand.NewUser.Password);
-
-            //assert
-            _registeredUser.Should().NotBeNull();
-            _registeredUser.Password.Should().NotBeNullOrEmpty();
-            _registeredUser.Password.Should().NotBe(_registerUserCommand.NewUser.Password);
-            result.Should().Be(PasswordVerificationResult.Success);
+            var registerUserResponse = await _usersModule.Mediator.Send(_registerUserCommand);
             
+            //assert
+            registerUserResponse.Should().NotBeNull();
+            registerUserResponse.Response.Should().NotBeNull();
+
+            var registeredUser = await _usersModule.UserRepository.GetById(registerUserResponse.Response.UserId);
+            
+            var result = _usersModule.PasswordHasher.VerifyHashedPassword(registeredUser,
+                registeredUser.Password,
+                _registerUserCommand.NewUser.Password);
+            
+            registeredUser.Should().NotBeNull();
+            registeredUser.Password.Should().NotBeNullOrEmpty();
+            registeredUser.Password.Should().NotBe(_registerUserCommand.NewUser.Password);
+            result.Should().Be(PasswordVerificationResult.Success);
         }
         
         [Fact]
@@ -145,7 +137,7 @@ namespace Conduit.Users.Domain.Tests.Unit.Commands
         }
         
         [Theory]
-        [InlineData("1234567")]
+        [InlineData("123456789")]
         [InlineData("")]
         [InlineData(null)]
         public async Task GivenAnInvalidPassword_WhenRegisterUser_ThenFailsValidation(string invalidPassword)

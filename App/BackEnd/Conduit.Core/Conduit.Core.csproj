@@ -44,7 +44,6 @@
     <ItemGroup>
       <Folder Include="PipelineBehaviors\Idempotency" />
       <Folder Include="PipelineBehaviors\Telemetry" />
-      <Folder Include="PipelineBehaviors\Transactions" />
     </ItemGroup>
 
     <ItemGroup>

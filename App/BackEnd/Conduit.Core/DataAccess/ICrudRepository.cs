@@ -11,5 +11,6 @@ namespace Conduit.Core.DataAccess
         Task<TId> Create(TEntity user);
         Task Update(TEntity user);
         Task Delete(TId id);
+        Task<int> DeleteAll();
     }
 }

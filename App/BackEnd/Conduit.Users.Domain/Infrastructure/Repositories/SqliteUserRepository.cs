@@ -62,7 +62,7 @@ namespace Conduit.Users.Domain.Infrastructure.Repositories
         {
             await using var connection = _connectionFactory.CreateConnection();
 
-            var sql = "INSERT INTO users (username, email, password, image, bio) VALUES (@username, @email, @password, @image, @bio)";
+            var sql = "INSERT INTO users (username, email, password, image, bio) VALUES (@username, @email, @password, @image, @bio) RETURNING *";
 
             var arguments = new
             {
@@ -72,8 +72,10 @@ namespace Conduit.Users.Domain.Infrastructure.Repositories
                 image = user.Image,
                 bio = user.Bio
             };
-
-            return connection.Execute(sql, arguments);
+            
+            var insertedUser = connection.QuerySingle<User>(sql, arguments);
+            
+            return insertedUser.Id;
         }
 
         public async Task Update(User user)
@@ -107,6 +109,14 @@ namespace Conduit.Users.Domain.Infrastructure.Repositories
             };
 
             connection.Execute(sql, arguments);
+        }
+
+        public async Task<int> DeleteAll()
+        {
+            await using var connection = _connectionFactory.CreateConnection();
+            var sql = "DELETE FROM users";
+
+            return connection.Execute(sql);
         }
 
         public async Task<User> GetByEmail(string email)

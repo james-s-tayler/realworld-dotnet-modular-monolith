@@ -11,6 +11,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Moq;
 using ScottBrady91.AspNetCore.Identity;
@@ -30,9 +31,11 @@ namespace Conduit.Users.Domain.Tests.Unit.Setup
         internal UsersModule Module { get; }
         public IServiceCollection Services { get; }
         public ConfigurationBuilder Configuration { get; }
-        public Mock<IUserContext> UserContext { get; } = new ();
-        public Mock<IUserRepository> UserRepo { get; }
+        private Mock<IHostEnvironment> _hostEnvironment;
 
+        public IUserRepository UserRepository { get; }
+        public Mock<IUserContext> UserContext { get; } = new ();
+        
         public UsersModuleSetupFixture()
         {
             
@@ -52,10 +55,9 @@ namespace Conduit.Users.Domain.Tests.Unit.Setup
                 Password = PasswordHasher.HashPassword(null, PlainTextPassword)
             };
             
-            UserRepo = new Mock<IUserRepository>();
-            WithUserRepoContainingDefaultUsers();
-
             Module = new UsersModule();
+            _hostEnvironment = new Mock<IHostEnvironment>();
+            _hostEnvironment.Setup(environment => environment.EnvironmentName).Returns("Test");
             Services = new ServiceCollection();
             Configuration = new ConfigurationBuilder();
             Configuration.AddInMemoryCollection(new Dictionary<string, string>
@@ -63,6 +65,7 @@ namespace Conduit.Users.Domain.Tests.Unit.Setup
                 {$"{nameof(JwtSettings)}:{nameof(JwtSettings.Secret)}", "secretsecretsecretsecretsecretsecret"},
                 {$"{nameof(JwtSettings)}:{nameof(JwtSettings.ValidIssuer)}", "issuer"},
                 {$"{nameof(JwtSettings)}:{nameof(JwtSettings.ValidAudience)}", "audience"},
+                {$"DatabaseConfig:{UsersDomain.Assembly.GetName().Name}:DatabaseName", "users"}
             });
             
             WithAuthenticatedUserContext();
@@ -72,36 +75,33 @@ namespace Conduit.Users.Domain.Tests.Unit.Setup
                 builder.AddSerilog();
                 builder.SetMinimumLevel(LogLevel.Debug);
             });
-            Module.AddServices(Configuration.Build(), Services);
-            Module.ReplaceSingleton(UserRepo.Object);
-            Module.ReplaceScoped(UserContext.Object);
-            Module.ReplaceSingleton<IPasswordHasher<User>, BCryptPasswordHasher<User>>(PasswordHasher);
+            
+            Module.InitializeModule(Configuration.Build(), _hostEnvironment.Object, Services);
+            Module.ReplaceTransient(UserContext.Object);
+            Module.ReplaceTransient<IPasswordHasher<User>, BCryptPasswordHasher<User>>(PasswordHasher);
 
             var provider = Services.BuildServiceProvider();
             Mediator = provider.GetRequiredService<IMediator>();
+            UserRepository = provider.GetService<IUserRepository>();
+            WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
         }
 
-
-        public void WithUserRepoContainingDefaultUsers()
+        public async Task WithUserRepoContainingDefaultUsers()
         {
-            WithUserRepoContainingUsers(ExistingUser, ExistingUser2);
+            await WithUserRepoContainingUsers(ExistingUser, ExistingUser2);
         }
-        public void WithUserRepoContainingUsers(params User[] users)
+        public async Task WithUserRepoContainingUsers(params User[] users)
         {
-            UserRepo.Reset();
+            await UserRepository.DeleteAll();
             foreach (var user in users)
             {
-                AddUserToUserRepo(user);
+                await AddUserToUserRepo(user);
             }
         }
 
-        public void AddUserToUserRepo([NotNull] User user)
+        public async Task AddUserToUserRepo([NotNull] User user)
         {
-            UserRepo.Setup(repository => repository.Exists(It.Is<int>(id => id == user.Id))).Returns(Task.FromResult(true));
-            UserRepo.Setup(repository => repository.GetById(It.Is<int>(id => id == user.Id))).Returns(Task.FromResult(user));
-            UserRepo.Setup(repository => repository.ExistsByEmail(It.Is<string>(email => email.Equals(user.Email)))).Returns(Task.FromResult(true));
-            UserRepo.Setup(repository => repository.GetByEmail(It.Is<string>(email => email.Equals(user.Email)))).Returns(Task.FromResult(user));
-            UserRepo.Setup(repository => repository.ExistsByUsername(It.Is<string>(username => username.Equals(user.Username)))).Returns(Task.FromResult(true));
+            await UserRepository.Create(user);
         }
 
         public void WithUnauthenticatedUserContext()

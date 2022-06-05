@@ -45,8 +45,7 @@ namespace Conduit.Core.SchemaManagement
             where TDbCreator : class, IDbCreator where TConnectionStringReader : class, IConnectionStringReader
         {
             var moduleName = _moduleAssembly.GetName().Name;
-            var databaseName = $"{_configuration[$"DatabaseConfig:{moduleName}:DatabaseName"]}_{_hostEnvironment.EnvironmentName}".ToLowerInvariant();
-           
+
             var tempServiceProvider = new ServiceCollection()
                 .AddSingleton(_configuration)
                 .AddSingleton(_hostEnvironment)
@@ -71,7 +70,7 @@ namespace Conduit.Core.SchemaManagement
             var dbCreator = scope.ServiceProvider.GetRequiredService<IDbCreator>();
             var migrationRunner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
             
-            dbCreator.EnsureCreateDatabase(moduleName, databaseName);
+            dbCreator.EnsureCreateDatabase(_configuration, _hostEnvironment, moduleName);
             migrationRunner.ListMigrations();
             
             if (migrationRunner.HasMigrationsToApplyUp())

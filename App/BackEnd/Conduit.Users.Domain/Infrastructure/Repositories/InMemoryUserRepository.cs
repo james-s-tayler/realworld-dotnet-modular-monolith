@@ -64,5 +64,12 @@ namespace Conduit.Users.Domain.Infrastructure.Repositories
             _repo.Remove(id, out _);
             return Task.CompletedTask;
         }
+
+        public Task<int> DeleteAll()
+        {
+            var count = _repo.Count;
+            _repo.Clear();
+            return Task.FromResult(count);
+        }
     }
 }

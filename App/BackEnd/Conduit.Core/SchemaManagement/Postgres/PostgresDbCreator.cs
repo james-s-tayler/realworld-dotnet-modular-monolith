@@ -1,22 +1,18 @@
 using System.Linq;
 using Dapper;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Npgsql;
 
 namespace Conduit.Core.SchemaManagement.Postgres
 {
     public class PostgresDbCreator : IDbCreator
     {
-        private readonly IConfiguration _configuration;
-
-        public PostgresDbCreator(IConfiguration configuration)
+        
+        public void EnsureCreateDatabase(IConfiguration configuration, IHostEnvironment hostEnvironment, string moduleName)
         {
-            _configuration = configuration;
-        }
-
-        public void EnsureCreateDatabase(string moduleName, string dbName)
-        {
-            using var connection = GetMasterDbConnection(moduleName);
+            using var connection = GetMasterDbConnection(configuration, moduleName);
+            var dbName = $"{configuration[$"DatabaseConfig:{moduleName}:DatabaseName"]}_{hostEnvironment.EnvironmentName}".ToLowerInvariant();
             
             if (!DatabaseExists(connection, dbName))
             {
@@ -24,13 +20,13 @@ namespace Conduit.Core.SchemaManagement.Postgres
             }
         }
         
-        private NpgsqlConnection GetMasterDbConnection(string moduleName)
+        private NpgsqlConnection GetMasterDbConnection(IConfiguration configuration, string moduleName)
         {
             var database = "postgres";
-            var server = _configuration[$"DatabaseConfig:{moduleName}:Server"];
-            var port = _configuration[$"DatabaseConfig:{moduleName}:Port"];
-            var userId = _configuration[$"DatabaseConfig:{moduleName}:UserId"];
-            var password = _configuration[$"DatabaseConfig:{moduleName}:Password"];
+            var server = configuration[$"DatabaseConfig:{moduleName}:Server"];
+            var port = configuration[$"DatabaseConfig:{moduleName}:Port"];
+            var userId = configuration[$"DatabaseConfig:{moduleName}:UserId"];
+            var password = configuration[$"DatabaseConfig:{moduleName}:Password"];
 
             var connectionString = $"Server={server};Port={port};Database={database};User Id={userId};Password={password};";
             return new NpgsqlConnection(connectionString);
