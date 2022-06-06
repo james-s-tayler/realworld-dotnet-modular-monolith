@@ -11,7 +11,7 @@ namespace Conduit.Core.SchemaManagement.Sqlite
         private readonly IConfiguration _configuration;
         private readonly IHostEnvironment _hostEnvironment;
 
-        public SqliteConnectionStringReader(IConfiguration configuration, 
+        public SqliteConnectionStringReader(IConfiguration configuration,
             IHostEnvironment hostEnvironment)
         {
             _configuration = configuration;

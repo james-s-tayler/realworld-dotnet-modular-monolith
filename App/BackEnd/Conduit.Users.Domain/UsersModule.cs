@@ -28,17 +28,12 @@ namespace Conduit.Users.Domain
 {
     internal class UsersModule : AbstractModule
     {
-        protected override IDbConnectionFactory GetDbConnectionFactory(IConfiguration configuration, IHostEnvironment hostEnvironment, string moduleName)
-        {
-            return new SqliteDbConnectionFactory(new SqliteConnectionStringReader(configuration, hostEnvironment),  moduleName);
-        }
-
         protected override void RunModuleDatabaseMigrations(SchemaManager schemaManager)
         {
             schemaManager.RunSqliteMigrations();
         }
 
-        protected override Assembly GetModuleAssembly()
+        public override Assembly GetModuleAssembly()
         {
             return UsersDomain.Assembly;
         }

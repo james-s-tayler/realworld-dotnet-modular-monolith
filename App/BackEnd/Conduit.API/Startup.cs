@@ -46,14 +46,14 @@ namespace Conduit.API
         public Startup(IConfiguration configuration, IHostEnvironment environment)
         {
             Configuration = configuration;
-            _environment = environment;
+            Environment = environment;
         }
 
         /// <summary>
         /// The application configuration.
         /// </summary>
-        public IConfiguration Configuration { get; }
-        private IHostEnvironment _environment { get; }
+        private IConfiguration Configuration { get; }
+        private IHostEnvironment Environment { get; }
 
         /// <summary>
         /// This method gets called by the runtime. Use this method to add services to the container.
@@ -121,6 +121,11 @@ namespace Conduit.API
                 {
                     builder
                         .AddAspNetCoreInstrumentation()                     //trace inbound http requests
+                        .AddSqlClientInstrumentation(options =>
+                        {
+                            options.RecordException = true;
+                            options.SetDbStatementForText = true;
+                        })
                         .AddHttpClientInstrumentation()                     //trace outbound http requests
                         .AddJaegerExporter(options =>                       //export traces to jaeger container
                             options.AgentHost = "jaeger");

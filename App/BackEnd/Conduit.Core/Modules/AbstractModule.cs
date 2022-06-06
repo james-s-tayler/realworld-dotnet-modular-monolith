@@ -13,9 +13,11 @@ using Conduit.Core.SchemaManagement;
 using Conduit.Core.SchemaManagement.Sqlite;
 using Dapper;
 using Dapper.Logging;
+using FluentMigrator.Runner.Initialization;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -23,7 +25,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Conduit.Core.Modules
 {
-    public abstract class AbstractModule : IHostingStartup
+    public abstract class AbstractModule : IHostingStartup, IModule
     {
         private IServiceCollection _services;
         
@@ -44,38 +46,40 @@ namespace Conduit.Core.Modules
 
         private void AddModuleDatabase(IConfiguration configuration, IHostEnvironment hostEnvironment, IServiceCollection services)
         {
-            services.AddTransient(_ =>
+            services.AddDbConnectionFactory(provider =>
             {
-                var dbConnectionFactory = GetDbConnectionFactory(configuration, hostEnvironment, GetModuleAssembly().GetName().Name);
-
-                if (dbConnectionFactory.GetType() == typeof(SqliteDbConnectionFactory))
+                //need to tidy this up big time
+                if (!SqlMapper.HasTypeHandler(typeof(DateTimeOffset)))
                 {
-                    //this would be problematic if you wanted to have different modules with different database vendors and also using Dapper in both :(
-                    if (!SqlMapper.HasTypeHandler(typeof(DateTimeOffset)))
-                    {
-                        SqlMapper.AddTypeHandler(new SqliteDateTimeOffsetHandler());
-                    }
-                    if (!SqlMapper.HasTypeHandler(typeof(Guid)))
-                    {
-                        SqlMapper.AddTypeHandler(new SqliteGuidHandler());
-                    }
-                    if (!SqlMapper.HasTypeHandler(typeof(TimeSpan)))
-                    {
-                        SqlMapper.AddTypeHandler(new SqliteTimeSpanHandler());
-                    }
+                    SqlMapper.AddTypeHandler(new SqliteDateTimeOffsetHandler());
                 }
-                
-                return dbConnectionFactory;
+                if (!SqlMapper.HasTypeHandler(typeof(Guid)))
+                {
+                    SqlMapper.AddTypeHandler(new SqliteGuidHandler());
+                }
+                if (!SqlMapper.HasTypeHandler(typeof(TimeSpan)))
+                {
+                    SqlMapper.AddTypeHandler(new SqliteTimeSpanHandler());
+                }
+                var connectionStringReader = new SqliteConnectionStringReader(configuration, hostEnvironment);
+                var sqliteConnection = new SqliteConnection(connectionStringReader!.GetConnectionString(GetModuleName()));
+                sqliteConnection.Open();
+            
+                // Enable write-ahead logging - https://docs.microsoft.com/en-us/dotnet/standard/data/sqlite/async
+                var walCommand = sqliteConnection.CreateCommand();
+                walCommand.CommandText = @"PRAGMA journal_mode=WAL"; //can potentially speed up tests with ;PRAGMA synchronous=OFF 
+                walCommand.ExecuteNonQuery();
+
+                return sqliteConnection;
             });
             services.AddScoped(provider =>
             {
                 var connectionFactory = provider.GetService<IDbConnectionFactory>();
-                return connectionFactory.CreateConnection();
+                return connectionFactory!.CreateConnection();
             });
             RunModuleDatabaseMigrations(new SchemaManager(configuration, hostEnvironment, GetModuleAssembly()));
         }
-
-        protected abstract IDbConnectionFactory GetDbConnectionFactory(IConfiguration configuration, IHostEnvironment hostEnvironment, string moduleName);
+        
         protected abstract void RunModuleDatabaseMigrations(SchemaManager schemaManager);
 
         public void AddServices(IConfiguration configuration, IServiceCollection services)
@@ -102,7 +106,12 @@ namespace Conduit.Core.Modules
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
         }
 
-        protected abstract Assembly GetModuleAssembly();
+        public abstract Assembly GetModuleAssembly();
+        public string GetModuleName()
+        {
+            return GetModuleAssembly().GetName().Name;
+        }
+
         protected abstract void AddModuleServices(IConfiguration configuration, IServiceCollection services);
         
         public void ReplaceSingleton<TImplementation>(TImplementation implementation) where TImplementation : class
