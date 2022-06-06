@@ -27,7 +27,7 @@ namespace Conduit.Core.SchemaManagement.Sqlite
             return new SqliteConnectionStringBuilder
             {
                 DataSource = filename,
-                Cache = SqliteCacheMode.Shared,
+                Cache = SqliteCacheMode.Private,
                 ForeignKeys = true,
                 Mode = SqliteOpenMode.ReadWriteCreate,
                 Pooling = true

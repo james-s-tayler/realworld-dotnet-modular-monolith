@@ -30,7 +30,7 @@ namespace Conduit.Users.Domain
     {
         protected override IDbConnectionFactory GetDbConnectionFactory(IConfiguration configuration, IHostEnvironment hostEnvironment, string moduleName)
         {
-            return new SqliteDbConnectionFactory(new SqliteConnectionStringReader(configuration, hostEnvironment), moduleName);
+            return new SqliteDbConnectionFactory(new SqliteConnectionStringReader(configuration, hostEnvironment),  moduleName);
         }
 
         protected override void RunModuleDatabaseMigrations(SchemaManager schemaManager)

@@ -1,26 +1,24 @@
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Conduit.Users.Domain.Entities;
 using Dapper;
-using Dapper.Logging;
 
 namespace Conduit.Users.Domain.Infrastructure.Repositories
 {
     public class SqliteUserRepository : IUserRepository
     {
-        private readonly IDbConnectionFactory _connectionFactory;
+        private readonly DbConnection _connection;
 
-        public SqliteUserRepository(IDbConnectionFactory connectionFactory)
+        public SqliteUserRepository(DbConnection connection)
         {
-            _connectionFactory = connectionFactory;
+            _connection = connection;
         }
 
         //use sqlite - maybe even try litestream? https://news.ycombinator.com/item?id=31318708
-        public async Task<bool> Exists(int id)
+        public Task<bool> Exists(int id)
         {
-            await using var connection = _connectionFactory.CreateConnection();
-            
             string sql = "SELECT EXISTS(SELECT 1 FROM users WHERE id=@id)";
     
             var arguments = new
@@ -28,15 +26,13 @@ namespace Conduit.Users.Domain.Infrastructure.Repositories
                 id = id
             };
             
-            var exists = connection.ExecuteScalar<bool>(sql, arguments);
+            var exists = _connection.ExecuteScalar<bool>(sql, arguments);
             
-            return exists;
+            return Task.FromResult(exists);
         }
 
-        public async Task<User> GetById(int id)
+        public Task<User> GetById(int id)
         {
-            await using var connection = _connectionFactory.CreateConnection();
-            
             string sql = "SELECT * FROM users WHERE id=@id";
     
             var arguments = new
@@ -44,24 +40,20 @@ namespace Conduit.Users.Domain.Infrastructure.Repositories
                 id = id
             };
             
-            var user = connection.Query<User>(sql, arguments);
+            var user = _connection.Query<User>(sql, arguments);
             
-            return user.SingleOrDefault();
+            return Task.FromResult(user.SingleOrDefault());
         }
 
-        public async Task<IEnumerable<User>> GetAll()
+        public Task<IEnumerable<User>> GetAll()
         {
-            await using var connection = _connectionFactory.CreateConnection();
-
             string sql = "SELECT * FROM users";
 
-            return connection.Query<User>(sql);
+            return Task.FromResult(_connection.Query<User>(sql));
         }
 
-        public async Task<int> Create(User user)
+        public Task<int> Create(User user)
         {
-            await using var connection = _connectionFactory.CreateConnection();
-
             var sql = "INSERT INTO users (username, email, password, image, bio) VALUES (@username, @email, @password, @image, @bio) RETURNING *";
 
             var arguments = new
@@ -73,15 +65,13 @@ namespace Conduit.Users.Domain.Infrastructure.Repositories
                 bio = user.Bio
             };
             
-            var insertedUser = connection.QuerySingle<User>(sql, arguments);
+            var insertedUser = _connection.QuerySingle<User>(sql, arguments);
             
-            return insertedUser.Id;
+            return Task.FromResult(insertedUser.Id);
         }
 
-        public async Task Update(User user)
+        public Task Update(User user)
         {
-            await using var connection = _connectionFactory.CreateConnection();
-
             var sql = "UPDATE users SET username = @username, email = @email, password = @password, image = @image, bio = @bio WHERE id = @id";
 
             var arguments = new
@@ -94,13 +84,12 @@ namespace Conduit.Users.Domain.Infrastructure.Repositories
                 bio = user.Bio
             };
             
-            connection.Execute(sql, arguments);
+            _connection.Execute(sql, arguments);
+            return Task.CompletedTask;
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
-            await using var connection = _connectionFactory.CreateConnection();
-
             var sql = "DELETE FROM users WHERE id = @id";
 
             var arguments = new
@@ -108,48 +97,42 @@ namespace Conduit.Users.Domain.Infrastructure.Repositories
                 id = id
             };
 
-            connection.Execute(sql, arguments);
+            _connection.Execute(sql, arguments);
+            return Task.CompletedTask;
         }
 
-        public async Task<int> DeleteAll()
+        public Task<int> DeleteAll()
         {
-            await using var connection = _connectionFactory.CreateConnection();
             var sql = "DELETE FROM users";
 
-            return connection.Execute(sql);
+            return Task.FromResult(_connection.Execute(sql));
         }
 
-        public async Task<User> GetByEmail(string email)
+        public Task<User> GetByEmail(string email)
         {
-            await using var connection = _connectionFactory.CreateConnection();
-
             var sql = "SELECT * FROM users WHERE email = @email";
 
             var arguments = new { email };
             
-            return connection.Query<User>(sql, arguments).SingleOrDefault();
+            return Task.FromResult(_connection.Query<User>(sql, arguments).SingleOrDefault());
         }
 
-        public async Task<bool> ExistsByUsername(string username)
+        public Task<bool> ExistsByUsername(string username)
         {
-            await using var connection = _connectionFactory.CreateConnection();
-
             var sql = "SELECT EXISTS(SELECT 1 FROM users WHERE username=@username)";
 
             var arguments = new { username };
             
-            return connection.ExecuteScalar<bool>(sql, arguments);
+            return Task.FromResult(_connection.ExecuteScalar<bool>(sql, arguments));
         }
 
-        public async Task<bool> ExistsByEmail(string email)
+        public Task<bool> ExistsByEmail(string email)
         {
-            await using var connection = _connectionFactory.CreateConnection();
-
             var sql = "SELECT EXISTS(SELECT 1 FROM users WHERE email=@email)";
 
             var arguments = new { email };
             
-            return connection.ExecuteScalar<bool>(sql, arguments);
+            return Task.FromResult(_connection.ExecuteScalar<bool>(sql, arguments));
         }
     }
 }

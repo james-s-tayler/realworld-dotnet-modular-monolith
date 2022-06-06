@@ -1,10 +1,13 @@
 using System;
+using System.Data;
+using System.Data.Common;
 using System.Reflection;
 using Conduit.Core.Context;
 using Conduit.Core.DataAccess.Dapper.Sqlite;
 using Conduit.Core.Logging;
 using Conduit.Core.PipelineBehaviors.Authorization;
 using Conduit.Core.PipelineBehaviors.Logging;
+using Conduit.Core.PipelineBehaviors.Transactions;
 using Conduit.Core.PipelineBehaviors.Validation;
 using Conduit.Core.SchemaManagement;
 using Conduit.Core.SchemaManagement.Sqlite;
@@ -64,6 +67,11 @@ namespace Conduit.Core.Modules
                 
                 return dbConnectionFactory;
             });
+            services.AddScoped(provider =>
+            {
+                var connectionFactory = provider.GetService<IDbConnectionFactory>();
+                return connectionFactory.CreateConnection();
+            });
             RunModuleDatabaseMigrations(new SchemaManager(configuration, hostEnvironment, GetModuleAssembly()));
         }
 
@@ -87,6 +95,7 @@ namespace Conduit.Core.Modules
             services.AddAuthorizersFromAssembly(GetModuleAssembly(), ServiceLifetime.Transient);
             
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(OperationLoggingPipelineBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionPipelineBehavior<,>));
             //add telemetry pipeline behavior
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationPipelineBehavior<,>));
             //add transaction pipeline behavior

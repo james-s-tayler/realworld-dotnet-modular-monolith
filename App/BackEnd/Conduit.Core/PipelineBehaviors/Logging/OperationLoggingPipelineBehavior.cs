@@ -13,13 +13,10 @@ namespace Conduit.Core.PipelineBehaviors.Logging
         where TRequest : IRequest<TResponse>
     {
         private readonly ILogger<OperationLoggingPipelineBehavior<TRequest, TResponse>> _logger;
-        private readonly IUserContext _userContext;
 
-        public OperationLoggingPipelineBehavior(ILogger<OperationLoggingPipelineBehavior<TRequest, TResponse>> logger, 
-            IUserContext userContext)
+        public OperationLoggingPipelineBehavior(ILogger<OperationLoggingPipelineBehavior<TRequest, TResponse>> logger)
         {
             _logger = logger;
-            _userContext = userContext;
         }
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)

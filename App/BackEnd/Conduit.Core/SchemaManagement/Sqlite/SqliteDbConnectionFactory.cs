@@ -1,8 +1,8 @@
 using System.Data.Common;
 using Dapper.Logging;
 using JetBrains.Annotations;
-using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Hosting;
 
 namespace Conduit.Core.SchemaManagement.Sqlite
 {
@@ -11,7 +11,7 @@ namespace Conduit.Core.SchemaManagement.Sqlite
         public string ModuleName { get; }
         private readonly SqliteConnectionStringReader _sqliteConnectionStringReader;
 
-        public SqliteDbConnectionFactory([NotNull]SqliteConnectionStringReader sqliteConnectionStringReader, [NotNull]string moduleName)
+        public SqliteDbConnectionFactory([NotNull]SqliteConnectionStringReader sqliteConnectionStringReader,  [NotNull]string moduleName)
         {
             _sqliteConnectionStringReader = sqliteConnectionStringReader;
             ModuleName = moduleName;
@@ -24,7 +24,7 @@ namespace Conduit.Core.SchemaManagement.Sqlite
             
             // Enable write-ahead logging - https://docs.microsoft.com/en-us/dotnet/standard/data/sqlite/async
             var walCommand = sqliteConnection.CreateCommand();
-            walCommand.CommandText = @"PRAGMA journal_mode=WAL";
+            walCommand.CommandText = @"PRAGMA journal_mode=WAL"; //can potentially speed up tests with ;PRAGMA synchronous=OFF 
             walCommand.ExecuteNonQuery();
             
             return sqliteConnection;
