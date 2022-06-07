@@ -28,6 +28,11 @@ namespace Conduit.Users.Domain
 {
     internal class UsersModule : AbstractModule
     {
+        protected override void AddDbConnectionFactory(IServiceCollection services, IConfiguration configuration, IHostEnvironment hostEnvironment)
+        {
+            services.AddSqliteDbConnectionFactory(configuration, hostEnvironment, this);
+        }
+
         protected override void RunModuleDatabaseMigrations(SchemaManager schemaManager)
         {
             schemaManager.RunSqliteMigrations();
@@ -40,7 +45,6 @@ namespace Conduit.Users.Domain
 
         protected override void AddModuleServices(IConfiguration configuration, IServiceCollection services)
         {
-            services.AddTransient<IConnectionStringReader, SqliteConnectionStringReader>();
             services.TryAddTransient<IPasswordHasher<User>, BCryptPasswordHasher<User>>();
             services.AddTransient<IUserRepository, SqliteUserRepository>();
             services.AddTransient<IAuthTokenService, JwtAuthTokenService>();

@@ -46,40 +46,11 @@ namespace Conduit.Core.Modules
 
         private void AddModuleDatabase(IConfiguration configuration, IHostEnvironment hostEnvironment, IServiceCollection services)
         {
-            services.AddDbConnectionFactory(provider =>
-            {
-                //need to tidy this up big time
-                if (!SqlMapper.HasTypeHandler(typeof(DateTimeOffset)))
-                {
-                    SqlMapper.AddTypeHandler(new SqliteDateTimeOffsetHandler());
-                }
-                if (!SqlMapper.HasTypeHandler(typeof(Guid)))
-                {
-                    SqlMapper.AddTypeHandler(new SqliteGuidHandler());
-                }
-                if (!SqlMapper.HasTypeHandler(typeof(TimeSpan)))
-                {
-                    SqlMapper.AddTypeHandler(new SqliteTimeSpanHandler());
-                }
-                var connectionStringReader = new SqliteConnectionStringReader(configuration, hostEnvironment);
-                var sqliteConnection = new SqliteConnection(connectionStringReader!.GetConnectionString(GetModuleName()));
-                sqliteConnection.Open();
-            
-                // Enable write-ahead logging - https://docs.microsoft.com/en-us/dotnet/standard/data/sqlite/async
-                var walCommand = sqliteConnection.CreateCommand();
-                walCommand.CommandText = @"PRAGMA journal_mode=WAL"; //can potentially speed up tests with ;PRAGMA synchronous=OFF 
-                walCommand.ExecuteNonQuery();
-
-                return sqliteConnection;
-            });
-            services.AddScoped(provider =>
-            {
-                var connectionFactory = provider.GetService<IDbConnectionFactory>();
-                return connectionFactory!.CreateConnection();
-            });
+            AddDbConnectionFactory(services, configuration, hostEnvironment);
             RunModuleDatabaseMigrations(new SchemaManager(configuration, hostEnvironment, GetModuleAssembly()));
         }
-        
+
+        protected abstract void AddDbConnectionFactory(IServiceCollection services, IConfiguration configuration, IHostEnvironment hostEnvironment);
         protected abstract void RunModuleDatabaseMigrations(SchemaManager schemaManager);
 
         public void AddServices(IConfiguration configuration, IServiceCollection services)
