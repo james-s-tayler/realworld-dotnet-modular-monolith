@@ -10,7 +10,7 @@ using MediatR;
 
 namespace Conduit.Users.Domain.Operations.Queries.GetCurrentUser
 {
-    public class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, OperationResponse<GetCurrentUserQueryResult>>
+    internal class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, OperationResponse<GetCurrentUserQueryResult>>
     {
         private readonly IUserContext _userContext;
         private readonly IUserRepository _userRepository;

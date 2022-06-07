@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 
 namespace Conduit.Users.Domain.Operations.Commands.LoginUser
 {
-    public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
+    internal class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
     {
         private readonly IUserRepository _userRepository;
         

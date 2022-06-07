@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 
 namespace Conduit.Users.Domain.Operations.Commands.UpdateUser
 {
-    public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
+    internal class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserContext _userContext;

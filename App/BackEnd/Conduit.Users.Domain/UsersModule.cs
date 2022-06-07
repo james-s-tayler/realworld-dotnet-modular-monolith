@@ -3,16 +3,23 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Conduit.Core.DataAccess.Dapper.Sqlite;
 using Conduit.Core.Modules;
+using Conduit.Core.PipelineBehaviors;
+using Conduit.Core.PipelineBehaviors.Transactions;
 using Conduit.Core.SchemaManagement;
 using Conduit.Core.SchemaManagement.Sqlite;
 using Conduit.Users.Domain;
 using Conduit.Users.Domain.Configuration;
+using Conduit.Users.Domain.Contracts.Commands.LoginUser;
+using Conduit.Users.Domain.Contracts.Commands.RegisterUser;
+using Conduit.Users.Domain.Contracts.Commands.UpdateUser;
+using Conduit.Users.Domain.Contracts.Queries.GetCurrentUser;
 using Conduit.Users.Domain.Entities;
 using Conduit.Users.Domain.Infrastructure.Repositories;
 using Conduit.Users.Domain.Infrastructure.Services;
 using Dapper;
 using Dapper.Logging;
 using FluentMigrator.Runner.Initialization;
+using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -30,12 +37,32 @@ namespace Conduit.Users.Domain
     {
         protected override void AddDbConnectionFactory(IServiceCollection services, IConfiguration configuration, IHostEnvironment hostEnvironment)
         {
-            services.AddSqliteDbConnectionFactory(configuration, hostEnvironment, this);
+            services.AddModuleSqliteDbConnectionFactory(configuration, hostEnvironment, this);
         }
 
         protected override void RunModuleDatabaseMigrations(SchemaManager schemaManager)
         {
             schemaManager.RunSqliteMigrations();
+        }
+
+        protected override void AddTransactionPipelineBehaviors(IServiceCollection services)
+        {
+            services
+                .AddTransient<
+                    IPipelineBehavior<RegisterUserCommand, OperationResponse<RegisterUserCommandResult>>, 
+                    TransactionPipelineBehavior<RegisterUserCommand, OperationResponse<RegisterUserCommandResult>, UsersModule>>();
+            services
+                .AddTransient<
+                    IPipelineBehavior<LoginUserCommand, OperationResponse<LoginUserCommandResult>>, 
+                    TransactionPipelineBehavior<LoginUserCommand, OperationResponse<LoginUserCommandResult>, UsersModule>>();
+            services
+                .AddTransient<
+                    IPipelineBehavior<UpdateUserCommand, OperationResponse<UpdateUserCommandResult>>, 
+                    TransactionPipelineBehavior<UpdateUserCommand, OperationResponse<UpdateUserCommandResult>, UsersModule>>();
+            services
+                .AddTransient<
+                    IPipelineBehavior<GetCurrentUserQuery, OperationResponse<GetCurrentUserQueryResult>>, 
+                    TransactionPipelineBehavior<GetCurrentUserQuery, OperationResponse<GetCurrentUserQueryResult>, UsersModule>>();
         }
 
         public override Assembly GetModuleAssembly()

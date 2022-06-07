@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Conduit.Users.Domain.Operations.Commands.RegisterUser
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, OperationResponse<RegisterUserCommandResult>>
+    internal class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, OperationResponse<RegisterUserCommandResult>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher<User> _passwordHasher;

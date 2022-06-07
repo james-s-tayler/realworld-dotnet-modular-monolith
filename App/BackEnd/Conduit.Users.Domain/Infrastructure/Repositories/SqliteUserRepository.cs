@@ -2,18 +2,19 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using Conduit.Core.DataAccess;
 using Conduit.Users.Domain.Entities;
 using Dapper;
 
 namespace Conduit.Users.Domain.Infrastructure.Repositories
 {
-    public class SqliteUserRepository : IUserRepository
+    internal class SqliteUserRepository : IUserRepository
     {
         private readonly DbConnection _connection;
 
-        public SqliteUserRepository(DbConnection connection)
+        public SqliteUserRepository(ModuleDbConnectionWrapper<UsersModule> connectionWrapper)
         {
-            _connection = connection;
+            _connection = connectionWrapper.Connection;
         }
 
         //use sqlite - maybe even try litestream? https://news.ycombinator.com/item?id=31318708

@@ -7,7 +7,7 @@ using Conduit.Users.Domain.Entities;
 
 namespace Conduit.Users.Domain.Infrastructure.Repositories
 {
-    public class InMemoryUserRepository : IUserRepository
+    internal class InMemoryUserRepository : IUserRepository
     {
         private readonly ConcurrentDictionary<int, User> _repo = new();
         private static readonly Random Random = new();

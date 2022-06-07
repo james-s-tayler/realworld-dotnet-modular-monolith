@@ -33,7 +33,7 @@ namespace Conduit.Users.Domain.Tests.Unit.Setup
         public ConfigurationBuilder Configuration { get; }
         private Mock<IHostEnvironment> _hostEnvironment;
 
-        public IUserRepository UserRepository { get; }
+        internal IUserRepository UserRepository { get; }
         public Mock<IUserContext> UserContext { get; } = new ();
         
         public UsersModuleSetupFixture()

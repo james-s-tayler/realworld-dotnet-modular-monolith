@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 
 namespace Conduit.Users.Domain.Operations.Queries.GetCurrentUser
 {
-    public class GetCurrentUserQueryValidator : AbstractValidator<GetCurrentUserQuery>
+    internal class GetCurrentUserQueryValidator : AbstractValidator<GetCurrentUserQuery>
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserContext _userContext;

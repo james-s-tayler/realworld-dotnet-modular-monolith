@@ -1,23 +1,15 @@
 using System;
-using System.Data;
-using System.Data.Common;
 using System.Reflection;
 using Conduit.Core.Context;
-using Conduit.Core.DataAccess.Dapper.Sqlite;
 using Conduit.Core.Logging;
 using Conduit.Core.PipelineBehaviors.Authorization;
 using Conduit.Core.PipelineBehaviors.Logging;
 using Conduit.Core.PipelineBehaviors.Transactions;
 using Conduit.Core.PipelineBehaviors.Validation;
 using Conduit.Core.SchemaManagement;
-using Conduit.Core.SchemaManagement.Sqlite;
-using Dapper;
-using Dapper.Logging;
-using FluentMigrator.Runner.Initialization;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -31,7 +23,7 @@ namespace Conduit.Core.Modules
         
         public void Configure(IWebHostBuilder builder)
         {
-            Console.WriteLine($"Registering Module: {GetModuleAssembly().GetName().Name}");
+            Console.WriteLine($"Registering Module: {GetModuleName()}");
             builder.ConfigureServices((context, services) =>
             {
                 InitializeModule(context.Configuration, context.HostingEnvironment, services);
@@ -66,16 +58,16 @@ namespace Conduit.Core.Modules
             services.TryAddTransient<IUserContext, ApiContext>();
             services.TryAddTransient<UserContextEnricher>();
             services.AddMediatR(GetModuleAssembly());
-            services.AddValidatorsFromAssembly(GetModuleAssembly(), ServiceLifetime.Transient);
+            services.AddValidatorsFromAssembly(GetModuleAssembly(), ServiceLifetime.Transient, null, true);
             services.AddAuthorizersFromAssembly(GetModuleAssembly(), ServiceLifetime.Transient);
             
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(OperationLoggingPipelineBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionPipelineBehavior<,>));
-            //add telemetry pipeline behavior
+            AddTransactionPipelineBehaviors(services);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationPipelineBehavior<,>));
-            //add transaction pipeline behavior
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
         }
+
+        protected abstract void AddTransactionPipelineBehaviors(IServiceCollection services);
 
         public abstract Assembly GetModuleAssembly();
         public string GetModuleName()

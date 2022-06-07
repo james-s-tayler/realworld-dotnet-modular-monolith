@@ -11,7 +11,7 @@ using MediatR;
 
 namespace Conduit.Users.Domain.Operations.Commands.UpdateUser
 {
-    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, OperationResponse<UpdateUserCommandResult>>
+    internal class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, OperationResponse<UpdateUserCommandResult>>
     {
         private readonly IUserContext _userContext;
         private readonly IUserRepository _userRepository;

@@ -4,19 +4,22 @@ using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
+using Conduit.Core.DataAccess;
+using Conduit.Core.Modules;
 using MediatR;
 
 namespace Conduit.Core.PipelineBehaviors.Transactions
 {
-    public class TransactionPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class TransactionPipelineBehavior<TRequest, TResponse, TModule> : IPipelineBehavior<TRequest, TResponse>
         where TResponse : class
         where TRequest : IRequest<TResponse>
+        where TModule : class, IModule
     {
         private readonly DbConnection _connection;
 
-        public TransactionPipelineBehavior(DbConnection connection)
+        public TransactionPipelineBehavior(ModuleDbConnectionWrapper<TModule> connectionWrapper)
         {
-            _connection = connection;
+            _connection = connectionWrapper.Connection;
         }
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)

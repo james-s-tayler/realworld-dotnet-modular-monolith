@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 
 namespace Conduit.Users.Domain.Operations.Commands.RegisterUser
 {
-    public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
+    internal class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
     {
         private readonly IUserRepository _userRepository;
         
