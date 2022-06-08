@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Conduit.Core.PipelineBehaviors.Authorization;
+using Conduit.Core.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Conduit.Core.Modules
@@ -34,18 +35,6 @@ namespace Conduit.Core.Modules
                     }
                 }
             });
-        }
-
-        public static List<TypeInfo> GetTypesAssignableTo(this Assembly assembly, Type compareType)
-        {
-            var typeInfoList = assembly.DefinedTypes.Where(x => x.IsClass
-                                                                && !x.IsAbstract
-                                                                && x != compareType
-                                                                && x.GetInterfaces()
-                                                                    .Any(i => i.IsGenericType
-                                                                              && i.GetGenericTypeDefinition() == compareType))?.ToList();
-
-            return typeInfoList;
         }
         /*
          *                                                                                                                .''''.      .''''. .''''...'''.  .''''.    .;:ccc:'   .''''. .'''''. .''''.                                                                                                                

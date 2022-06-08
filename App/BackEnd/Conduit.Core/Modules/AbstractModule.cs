@@ -62,17 +62,22 @@ namespace Conduit.Core.Modules
             services.AddAuthorizersFromAssembly(GetModuleAssembly(), ServiceLifetime.Transient);
             
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(OperationLoggingPipelineBehavior<,>));
-            AddTransactionPipelineBehaviors(services);
+            services.AddTransactionPipelineBehaviorsFromAssembly(GetModuleContractsAssembly(), GetModuleType());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationPipelineBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
         }
 
-        protected abstract void AddTransactionPipelineBehaviors(IServiceCollection services);
-
         public abstract Assembly GetModuleAssembly();
+        public abstract Assembly GetModuleContractsAssembly();
+
         public string GetModuleName()
         {
             return GetModuleAssembly().GetName().Name;
+        }
+
+        public Type GetModuleType()
+        {
+            return GetType();
         }
 
         protected abstract void AddModuleServices(IConfiguration configuration, IServiceCollection services);

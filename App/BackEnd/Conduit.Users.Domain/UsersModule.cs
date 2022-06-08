@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Conduit.Core.DataAccess.Dapper.Sqlite;
@@ -9,6 +10,7 @@ using Conduit.Core.SchemaManagement;
 using Conduit.Core.SchemaManagement.Sqlite;
 using Conduit.Users.Domain;
 using Conduit.Users.Domain.Configuration;
+using Conduit.Users.Domain.Contracts;
 using Conduit.Users.Domain.Contracts.Commands.LoginUser;
 using Conduit.Users.Domain.Contracts.Commands.RegisterUser;
 using Conduit.Users.Domain.Contracts.Commands.UpdateUser;
@@ -16,9 +18,6 @@ using Conduit.Users.Domain.Contracts.Queries.GetCurrentUser;
 using Conduit.Users.Domain.Entities;
 using Conduit.Users.Domain.Infrastructure.Repositories;
 using Conduit.Users.Domain.Infrastructure.Services;
-using Dapper;
-using Dapper.Logging;
-using FluentMigrator.Runner.Initialization;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -44,30 +43,15 @@ namespace Conduit.Users.Domain
         {
             schemaManager.RunSqliteMigrations();
         }
-
-        protected override void AddTransactionPipelineBehaviors(IServiceCollection services)
-        {
-            services
-                .AddTransient<
-                    IPipelineBehavior<RegisterUserCommand, OperationResponse<RegisterUserCommandResult>>, 
-                    TransactionPipelineBehavior<RegisterUserCommand, OperationResponse<RegisterUserCommandResult>, UsersModule>>();
-            services
-                .AddTransient<
-                    IPipelineBehavior<LoginUserCommand, OperationResponse<LoginUserCommandResult>>, 
-                    TransactionPipelineBehavior<LoginUserCommand, OperationResponse<LoginUserCommandResult>, UsersModule>>();
-            services
-                .AddTransient<
-                    IPipelineBehavior<UpdateUserCommand, OperationResponse<UpdateUserCommandResult>>, 
-                    TransactionPipelineBehavior<UpdateUserCommand, OperationResponse<UpdateUserCommandResult>, UsersModule>>();
-            services
-                .AddTransient<
-                    IPipelineBehavior<GetCurrentUserQuery, OperationResponse<GetCurrentUserQueryResult>>, 
-                    TransactionPipelineBehavior<GetCurrentUserQuery, OperationResponse<GetCurrentUserQueryResult>, UsersModule>>();
-        }
-
+        
         public override Assembly GetModuleAssembly()
         {
             return UsersDomain.Assembly;
+        }
+
+        public override Assembly GetModuleContractsAssembly()
+        {
+            return UsersDomainContracts.Assembly;
         }
 
         protected override void AddModuleServices(IConfiguration configuration, IServiceCollection services)

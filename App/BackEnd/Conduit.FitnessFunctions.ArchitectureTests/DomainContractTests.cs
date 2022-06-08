@@ -39,6 +39,7 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
                 .OrShould().HaveNameEndingWith("Result")
                 .OrShould().HaveNameEndingWith("DTO")
                 .OrShould().HaveNameEndingWith("Enum")
+                .OrShould().HaveNameEndingWith("DomainContracts")
                 .Because("the semantics should indicate what the model is for")
                 .Check(_conduit.Architecture);
         }
