@@ -4,4 +4,15 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Conduit.Core\Conduit.Core.csproj" />
+      <ProjectReference Include="..\Conduit.Social.Domain.Contracts\Conduit.Social.Domain.Contracts.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Configuration" />
+      <Folder Include="Infrastructure" />
+      <Folder Include="Operations" />
+    </ItemGroup>
+
 </Project>

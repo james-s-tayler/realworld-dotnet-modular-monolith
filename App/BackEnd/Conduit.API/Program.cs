@@ -1,8 +1,6 @@
 using System;
-using System.Reflection;
 using Conduit.Core.Logging;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
@@ -32,7 +30,7 @@ namespace Conduit.API
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, "Conduit.Users.Domain");
+                    webBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, "Conduit.Users.Domain;Conduit.Social.Domain");
                     webBuilder.UseStartup<Startup>();
                 })
                 .UseSerilog((context, services, configuration) =>
