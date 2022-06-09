@@ -52,6 +52,11 @@ namespace Conduit.Core.SchemaManagement
                 .AddSingleton<IDbCreator, TDbCreator>()
                 .AddSingleton<IConnectionStringReader, TConnectionStringReader>()
                 .AddLogging(c => c.AddFluentMigratorConsole())
+                .Configure<FluentMigratorLoggerOptions>(o =>
+                {
+                    o.ShowSql = _configuration.GetValue<bool>("DatabaseConfig:FluentMigratorOptions:ShowSql");
+                    o.ShowElapsedTime = _configuration.GetValue<bool>("DatabaseConfig:FluentMigratorOptions:ShowElapsedTime");
+                })
                 .AddFluentMigratorCore()
                 .ConfigureRunner(migrationRunnerBuilder =>
                 {

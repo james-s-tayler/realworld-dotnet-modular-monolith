@@ -16,13 +16,22 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
         public IObjectProvider<Class> DomainOperations { get; private set; }
         public IObjectProvider<Class> Commands { get; private set; }
         public IObjectProvider<Class> Queries { get; private set; }
+        public IObjectProvider<Class> DatabaseMigrations { get; private set; }
 
         public ArchitectureTestSetupFixture()
         {
             Architecture = new ArchLoader().LoadAssemblies(GetSolutionAssemblies()).Build();
             SetupDomainContracts();
+            SetupDatabaseMigrations();
         }
 
+        private void SetupDatabaseMigrations()
+        {
+            DatabaseMigrations = Classes().That().ResideInNamespace(".*Domain.Migrations.*", true)
+                .And().AreNot(".*ProcessedByFody", true)
+                .As("Database Migrations");
+        }
+        
         private void SetupDomainContracts()
         {
             SetupDomainContractClasses();

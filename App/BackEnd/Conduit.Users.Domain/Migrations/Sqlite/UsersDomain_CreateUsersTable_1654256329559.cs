@@ -1,11 +1,13 @@
 using Conduit.Core.SchemaManagement;
 using FluentMigrator;
+using JetBrains.Annotations;
 
 namespace Conduit.Users.Domain.Migrations.Sqlite
 {
     [Tags(DbConstants.SQLite)]
     [Migration(1654256329559)]
-    public class CreateUsersTable_1654256329559 : Migration
+    [UsedImplicitly]
+    public class UsersDomain_CreateUsersTable_1654256329559 : Migration
     {
         public override void Up()
         {

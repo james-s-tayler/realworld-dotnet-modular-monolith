@@ -14,26 +14,26 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
     [Collection(nameof(ArchitectureTestCollection))]
     public class DomainContractTests
     {
-        private readonly ArchitectureTestSetupFixture _conduit;
+        private readonly ArchitectureTestSetupFixture _application;
 
-        public DomainContractTests([NotNull] ArchitectureTestSetupFixture conduit)
+        public DomainContractTests([NotNull] ArchitectureTestSetupFixture application)
         {
-            _conduit = conduit;
+            _application = application;
         }
 
         [Fact]
         public void DomainContractsMustBePublic()
         {
-            Classes().That().Are(_conduit.DomainContractClasses)
+            Classes().That().Are(_application.DomainContractClasses)
                 .Should().BePublic()
                 .Because("this is how other parts of the system interact with a given domain module")
-                .Check(_conduit.Architecture);
+                .Check(_application.Architecture);
         }
         
         [Fact]
         public void DomainContractsFollowNamingConvention()
         {
-            Classes().That().Are(_conduit.DomainContractClasses)
+            Classes().That().Are(_application.DomainContractClasses)
                 .Should().HaveNameEndingWith("Command")
                 .OrShould().HaveNameEndingWith("Query")
                 .OrShould().HaveNameEndingWith("Result")
@@ -41,41 +41,41 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
                 .OrShould().HaveNameEndingWith("Enum")
                 .OrShould().HaveNameEndingWith("DomainContracts")
                 .Because("the semantics should indicate what the model is for")
-                .Check(_conduit.Architecture);
+                .Check(_application.Architecture);
         }
         
         [Fact]
         public void DomainContractsMustSubclassContractModel()
         {
-            Classes().That().Are(_conduit.DomainContractClasses)
+            Classes().That().Are(_application.DomainContractClasses)
                 .Should().BeAssignableTo(typeof(ContractModel))
                 .Because("Fody.Tracer [NoTrace] is applied to ContractModel.ToString() to reduce log noise")
-                .Check(_conduit.Architecture);
+                .Check(_application.Architecture);
         }
         
         [Fact]
         public void DomainOperationsResideInCorrectNamespace()
         {
-            Classes().That().Are(_conduit.DomainOperations)
+            Classes().That().Are(_application.DomainOperations)
                 .Should().ResideInNamespace(@".*Domain.Contracts.Commands.*|.*Domain.Contracts.Queries.*", true)
                 .Because("Domain operations must indicate whether they mutate state or not")
-                .Check(_conduit.Architecture);
+                .Check(_application.Architecture);
         }
         
         [Fact]
         public void DomainOperationsEndInEitherCommandOrQuery()
         {
-            Classes().That().Are(_conduit.DomainOperations)
+            Classes().That().Are(_application.DomainOperations)
                 .Should().HaveNameEndingWith("Command")
                 .OrShould().HaveNameEndingWith("Query")
                 .Because("Domain operations must indicate whether they mutate state or not")
-                .Check(_conduit.Architecture);
+                .Check(_application.Architecture);
         }
         
         [Fact]
         public void CommandsResideInCorrectNamespace()
         {
-            Classes().That().Are(_conduit.Commands)
+            Classes().That().Are(_application.Commands)
                 .Should().FollowCustomCondition(command =>
                 {
                     var operationName = command.Name.Replace("Command", "");
@@ -83,13 +83,13 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
                     return new ConditionResult(command, true, "does not match");
                 }, "reside in Domain.Contracts.Commands.{OperationName}")
                 .Because("this is the convention")
-                .Check(_conduit.Architecture);
+                .Check(_application.Architecture);
         }
         
         [Fact]
         public void QueriesResideInCorrectNamespace()
         {
-            Classes().That().Are(_conduit.Queries)
+            Classes().That().Are(_application.Queries)
                 .Should().FollowCustomCondition(query =>
                 {
                     var operationName = query.Name.Replace("Query", "");
@@ -97,13 +97,13 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
                     return new ConditionResult(query, true, "does not match");
                 }, "reside in Domain.Contracts.Queries.{OperationName}")
                 .Because("this is the convention")
-                .Check(_conduit.Architecture);
+                .Check(_application.Architecture);
         }
         
         [Fact]
         public void DomainOperationsReturnOperationResponseOfOperationNameResult()
         {
-            Classes().That().Are(_conduit.DomainOperations)
+            Classes().That().Are(_application.DomainOperations)
                 .Should().FollowCustomCondition(domainOperation =>
                 {
                     var outerGenericParameter = domainOperation.Dependencies
@@ -123,17 +123,17 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
                     return new ConditionResult(domainOperation, pass, "does not match");
                 }, "implement IRequest<OperationResponse<${OperationName}Result>>")
                 .Because("MediatR pipeline behaviors rely on this return type")
-                .Check(_conduit.Architecture);
+                .Check(_application.Architecture);
         }
         
         [Fact]
         public void DomainContractsShouldOnlyDependOnCore()
         {
             var coreNamespace = typeof(ConduitCore).Namespace;
-            Classes().That().Are(_conduit.DomainContractClasses)
+            Classes().That().Are(_application.DomainContractClasses)
                 .Should().OnlyDependOnTypesThat().ResideInNamespace($"{coreNamespace}|.*Domain.Contracts.*|System.*|MediatR.*|Destructurama.*", true)
                 .Because("contracts shouldn't be responsible for any business logic")
-                .Check(_conduit.Architecture);
+                .Check(_application.Architecture);
         }
     }
 }
