@@ -36,6 +36,16 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
                 .Because("FluentMigrator console logger needs some way to help us differentiate what database a migration was run on.")
                 .Check(_application.Architecture);
         }
+        
+        [Fact]
+        public void DatabaseMigrationsEndWithTimestamp()
+        {
+            Classes().That().Are(_application.DatabaseMigrations)
+                .Should()
+                .HaveName(".*[0-9]{12}", true)
+                .Because("timestamps provide info on when a migration was created and help reduce merge conflicts.")
+                .Check(_application.Architecture);
+        }
 
         [Fact]
         public void DatabaseMigrationsAreTaggedWithDatabaseVendor()
