@@ -1,9 +1,8 @@
-using System.Linq;
-using ArchUnitNET.Domain.Dependencies;
 using ArchUnitNET.Domain.Extensions;
 using ArchUnitNET.Fluent.Conditions;
 using ArchUnitNET.xUnit;
-using JetBrains.Annotations;
+using Conduit.Core.SchemaManagement;
+using FluentMigrator;
 using Xunit;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
 
@@ -35,6 +34,18 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
                     return new ConditionResult(databaseMigration, pass, $"does not start with {moduleName}Domain_");
                 }, "start with {moduleName}Domain_")
                 .Because("FluentMigrator console logger needs some way to help us differentiate what database a migration was run on.")
+                .Check(_application.Architecture);
+        }
+
+        [Fact]
+        public void DatabaseMigrationsAreTaggedWithDatabaseVendor()
+        {
+            Classes().That().Are(_application.DatabaseMigrations)
+                .Should()
+                .HaveAttributeWithArguments(typeof(TagsAttribute), DbConstants.SQLite)
+                .OrShould()
+                .HaveAttributeWithArguments(typeof(TagsAttribute), DbConstants.Postgres)
+                .Because("SchemaManager scans the assembly for migrations containing the tag")
                 .Check(_application.Architecture);
         }
     }
