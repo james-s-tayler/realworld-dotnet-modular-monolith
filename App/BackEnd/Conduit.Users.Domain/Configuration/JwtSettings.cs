@@ -1,6 +1,6 @@
 namespace Conduit.Users.Domain.Configuration
 {
-    public class JwtSettings
+    internal class JwtSettings
     {
         public string Secret { get; set; }
         public string ValidIssuer { get; set; }

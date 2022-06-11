@@ -14,6 +14,7 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
         public Architecture Architecture { get; }
         public IObjectProvider<Class> DomainContractClasses { get; private set; }
         public IObjectProvider<Class> DomainOperations { get; private set; }
+        public IObjectProvider<Class> DomainClasses { get; private set; }
         public IObjectProvider<Class> Commands { get; private set; }
         public IObjectProvider<Class> Queries { get; private set; }
         public IObjectProvider<Class> DatabaseMigrations { get; private set; }
@@ -21,6 +22,7 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
         public ArchitectureTestSetupFixture()
         {
             Architecture = new ArchLoader().LoadAssemblies(GetSolutionAssemblies()).Build();
+            SetupDomain();
             SetupDomainContracts();
             SetupDatabaseMigrations();
         }
@@ -31,6 +33,11 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
                 .And().AreNot(".*ProcessedByFody", true)
                 .As("Database Migrations");
         }
+
+        private void SetupDomain()
+        {
+            DomainClasses = Classes().That().ResideInAssembly(".*.Domain", true).As("Domain Classes");
+        }
         
         private void SetupDomainContracts()
         {
@@ -39,6 +46,7 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
             SetupCommands();
             SetupQueries();
         }
+        
         private void SetupDomainContractClasses()
         {
             DomainContractClasses = Classes().That().ResideInAssembly(".*Domain.Contracts.*", true)

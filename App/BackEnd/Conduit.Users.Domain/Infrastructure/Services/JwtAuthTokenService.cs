@@ -12,7 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Conduit.Users.Domain.Infrastructure.Services
 {
-    public class JwtAuthTokenService : IAuthTokenService
+    internal class JwtAuthTokenService : IAuthTokenService
     {
         private readonly JwtSettings _jwtSettings;
 

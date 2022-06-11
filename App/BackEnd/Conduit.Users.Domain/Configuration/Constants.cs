@@ -1,6 +1,6 @@
 namespace Conduit.Users.Domain.Configuration
 {
-    public class Constants
+    internal class Constants
     {
         public const int UsernameMaxLength = 50;
         public const int ImageUriMaxLength = 2048;

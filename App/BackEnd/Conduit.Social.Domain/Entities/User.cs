@@ -1,6 +1,6 @@
 namespace Conduit.Social.Domain.Entities
 {
-    public class User
+    internal class User
     {
         public int Id { get; set; }
     }

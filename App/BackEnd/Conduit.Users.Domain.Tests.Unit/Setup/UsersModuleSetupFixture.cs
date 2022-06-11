@@ -24,9 +24,9 @@ namespace Conduit.Users.Domain.Tests.Unit.Setup
         public Fixture AutoFixture { get; } = new ();
         public string Token { get; } = "jwt";
         public string PlainTextPassword { get; } = "soloyolo99";
-        public BCryptPasswordHasher<User> PasswordHasher = new ();
-        public User ExistingUser { get; }
-        public User ExistingUser2 { get; }
+        internal BCryptPasswordHasher<User> PasswordHasher = new ();
+        internal User ExistingUser { get; }
+        internal User ExistingUser2 { get; }
         public IMediator Mediator { get; set; }
         internal UsersModule Module { get; }
         public IServiceCollection Services { get; }
@@ -90,7 +90,7 @@ namespace Conduit.Users.Domain.Tests.Unit.Setup
         {
             await WithUserRepoContainingUsers(ExistingUser, ExistingUser2);
         }
-        public async Task WithUserRepoContainingUsers(params User[] users)
+        internal async Task WithUserRepoContainingUsers(params User[] users)
         {
             await UserRepository.DeleteAll();
             foreach (var user in users)
@@ -99,7 +99,7 @@ namespace Conduit.Users.Domain.Tests.Unit.Setup
             }
         }
 
-        public async Task AddUserToUserRepo([NotNull] User user)
+        internal async Task AddUserToUserRepo([NotNull] User user)
         {
             await UserRepository.Create(user);
         }
@@ -122,7 +122,7 @@ namespace Conduit.Users.Domain.Tests.Unit.Setup
             WithUserContextReturning(user, token);
         }
         
-        public void WithUserContextReturning(User user, string token)
+        internal void WithUserContextReturning(User user, string token)
         {
             UserContext.Reset();
             UserContext.SetupGet(context => context.IsAuthenticated).Returns(true);
