@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
 using Conduit.Core.PipelineBehaviors;
+using Conduit.Core.PipelineBehaviors.OperationResponse;
 using Conduit.Core.Testing;
 using Conduit.Users.Domain.Contracts.Commands.RegisterUser;
 using Conduit.Users.Domain.Tests.Unit.Setup;
@@ -96,7 +97,7 @@ namespace Conduit.Users.Domain.Tests.Unit.Commands
             registerUserResponse.Should().NotBeNull();
             registerUserResponse.Response.Should().NotBeNull();
 
-            var registeredUser = await _usersModule.UserRepository.GetById(registerUserResponse.Response.UserId);
+            var registeredUser = await _usersModule.UserRepository.GetById(registerUserResponse.Response.RegisteredUser.Id);
             
             var result = _usersModule.PasswordHasher.VerifyHashedPassword(registeredUser,
                 registeredUser.Password,

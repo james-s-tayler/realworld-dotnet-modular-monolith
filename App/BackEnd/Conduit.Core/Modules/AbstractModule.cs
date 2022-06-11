@@ -3,6 +3,7 @@ using System.Reflection;
 using Conduit.Core.Context;
 using Conduit.Core.Logging;
 using Conduit.Core.PipelineBehaviors.Authorization;
+using Conduit.Core.PipelineBehaviors.Events;
 using Conduit.Core.PipelineBehaviors.Logging;
 using Conduit.Core.PipelineBehaviors.Transactions;
 using Conduit.Core.PipelineBehaviors.Validation;
@@ -20,7 +21,7 @@ namespace Conduit.Core.Modules
     public abstract class AbstractModule : IHostingStartup, IModule
     {
         private IServiceCollection _services;
-        
+
         public void Configure(IWebHostBuilder builder)
         {
             Console.WriteLine($"Registering Module: {GetModuleName()}");
@@ -30,19 +31,23 @@ namespace Conduit.Core.Modules
             });
         }
 
-        public void InitializeModule(IConfiguration configuration, IHostEnvironment hostEnvironment, IServiceCollection services)
+        public void InitializeModule(IConfiguration configuration, IHostEnvironment hostEnvironment,
+            IServiceCollection services)
         {
             AddServices(configuration, services);
             AddModuleDatabase(configuration, hostEnvironment, services);
         }
 
-        private void AddModuleDatabase(IConfiguration configuration, IHostEnvironment hostEnvironment, IServiceCollection services)
+        private void AddModuleDatabase(IConfiguration configuration, IHostEnvironment hostEnvironment,
+            IServiceCollection services)
         {
             AddDbConnectionFactory(services, configuration, hostEnvironment);
             RunModuleDatabaseMigrations(new SchemaManager(configuration, hostEnvironment, GetModuleAssembly()));
         }
 
-        protected abstract void AddDbConnectionFactory(IServiceCollection services, IConfiguration configuration, IHostEnvironment hostEnvironment);
+        protected abstract void AddDbConnectionFactory(IServiceCollection services, IConfiguration configuration,
+            IHostEnvironment hostEnvironment);
+
         protected abstract void RunModuleDatabaseMigrations(SchemaManager schemaManager);
 
         public void AddServices(IConfiguration configuration, IServiceCollection services)
@@ -60,8 +65,9 @@ namespace Conduit.Core.Modules
             services.AddMediatR(GetModuleAssembly());
             services.AddValidatorsFromAssembly(GetModuleAssembly(), ServiceLifetime.Transient, null, true);
             services.AddAuthorizersFromAssembly(GetModuleAssembly(), ServiceLifetime.Transient);
-            
+
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(OperationLoggingPipelineBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(EventPublishingPipelineBehavior<,>));
             services.AddTransactionPipelineBehaviorsFromAssembly(GetModuleContractsAssembly(), GetModuleType());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationPipelineBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));

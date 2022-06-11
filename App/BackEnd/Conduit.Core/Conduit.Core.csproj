@@ -43,11 +43,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="PipelineBehaviors\Idempotency" />
-      <Folder Include="PipelineBehaviors\Telemetry" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Reference Include="Microsoft.AspNetCore.Http">
         <HintPath>..\..\..\..\..\..\..\..\snap\dotnet-sdk\current\shared\Microsoft.AspNetCore.App\5.0.17\Microsoft.AspNetCore.Http.dll</HintPath>
       </Reference>

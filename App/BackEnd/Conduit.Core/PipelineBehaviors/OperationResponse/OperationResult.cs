@@ -1,4 +1,4 @@
-namespace Conduit.Core.PipelineBehaviors
+namespace Conduit.Core.PipelineBehaviors.OperationResponse
 {
     public enum OperationResult
     {

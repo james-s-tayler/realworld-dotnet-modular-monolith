@@ -16,6 +16,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using Conduit.API.Attributes;
 using Conduit.API.Models;
 using Conduit.Core.PipelineBehaviors;
+using Conduit.Core.PipelineBehaviors.OperationResponse;
 using Conduit.Users.Domain.Contracts.Commands.LoginUser;
 using Conduit.Users.Domain.Contracts.Commands.RegisterUser;
 using Conduit.Users.Domain.Contracts.Commands.UpdateUser;

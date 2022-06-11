@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Conduit.Core.PipelineBehaviors.Logging
+namespace Conduit.Core.PipelineBehaviors.OperationResponse
 {
     public interface IOperationResponseSummary
     {
@@ -10,5 +10,6 @@ namespace Conduit.Core.PipelineBehaviors.Logging
         Exception Exception { get; }
         bool IsSuccess();
         Type GetResponseType();
+        object GetResponse();
     }
 }

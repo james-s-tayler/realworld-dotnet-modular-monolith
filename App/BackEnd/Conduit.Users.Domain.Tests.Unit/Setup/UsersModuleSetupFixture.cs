@@ -1,49 +1,46 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoFixture;
-using Conduit.Core.Context;
+using Conduit.Core.Modules;
+using Conduit.Core.Testing;
 using Conduit.Users.Domain.Configuration;
 using Conduit.Users.Domain.Entities;
 using Conduit.Users.Domain.Infrastructure.Repositories;
 using JetBrains.Annotations;
-using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Moq;
 using ScottBrady91.AspNetCore.Identity;
-using Serilog;
 
 namespace Conduit.Users.Domain.Tests.Unit.Setup
 {
-    public class UsersModuleSetupFixture : IDisposable
+    public class UsersModuleSetupFixture : AbstractModuleSetupFixture
     {
-        public Fixture AutoFixture { get; } = new ();
-        public string Token { get; } = "jwt";
         public string PlainTextPassword { get; } = "soloyolo99";
         internal BCryptPasswordHasher<User> PasswordHasher = new ();
-        internal User ExistingUser { get; }
-        internal User ExistingUser2 { get; }
-        public IMediator Mediator { get; set; }
-        internal UsersModule Module { get; }
-        public IServiceCollection Services { get; }
-        public ConfigurationBuilder Configuration { get; }
-        private Mock<IHostEnvironment> _hostEnvironment;
-
-        internal IUserRepository UserRepository { get; }
-        public Mock<IUserContext> UserContext { get; } = new ();
+        internal User ExistingUser { get; private set; }
+        internal User ExistingUser2 { get; private set; }
         
-        public UsersModuleSetupFixture()
+        internal IUserRepository UserRepository { get; private set; }
+        
+        protected override void AddConfiguration(IDictionary<string, string> configuration)
         {
-            
+            configuration.Add($"{nameof(JwtSettings)}:{nameof(JwtSettings.Secret)}", "secretsecretsecretsecretsecretsecret");
+            configuration.Add($"{nameof(JwtSettings)}:{nameof(JwtSettings.ValidIssuer)}", "issuer");
+            configuration.Add($"{nameof(JwtSettings)}:{nameof(JwtSettings.ValidAudience)}", "audience");
+        }
+        
+        protected override void ReplaceServices(AbstractModule module)
+        {
+            module.ReplaceTransient<IPasswordHasher<User>, BCryptPasswordHasher<User>>(PasswordHasher);
+        }
+        
+        protected override void SetupPostProcess(ServiceProvider provider)
+        {
             ExistingUser = new User
             {
                 Id = 1,
                 Email = "solo@yolo.com",
                 Username = "soloyolo",
+                Bio = "I work at statefarm",
                 Password = PasswordHasher.HashPassword(null, PlainTextPassword)
             };
             
@@ -52,39 +49,15 @@ namespace Conduit.Users.Domain.Tests.Unit.Setup
                 Id = 2,
                 Email = "solo2@yolo2.com",
                 Username = "soloyolo2",
+                Bio = "I work at statefarm",
                 Password = PasswordHasher.HashPassword(null, PlainTextPassword)
             };
-            
-            Module = new UsersModule();
-            _hostEnvironment = new Mock<IHostEnvironment>();
-            _hostEnvironment.Setup(environment => environment.EnvironmentName).Returns("Test");
-            Services = new ServiceCollection();
-            Configuration = new ConfigurationBuilder();
-            Configuration.AddInMemoryCollection(new Dictionary<string, string>
-            {
-                {$"{nameof(JwtSettings)}:{nameof(JwtSettings.Secret)}", "secretsecretsecretsecretsecretsecret"},
-                {$"{nameof(JwtSettings)}:{nameof(JwtSettings.ValidIssuer)}", "issuer"},
-                {$"{nameof(JwtSettings)}:{nameof(JwtSettings.ValidAudience)}", "audience"},
-                {$"DatabaseConfig:{UsersDomain.Assembly.GetName().Name}:DatabaseName", "users"}
-            });
-            
-            WithAuthenticatedUserContext();
-
-            Services.AddLogging(builder =>
-            {
-                builder.AddSerilog();
-                builder.SetMinimumLevel(LogLevel.Debug);
-            });
-            
-            Module.InitializeModule(Configuration.Build(), _hostEnvironment.Object, Services);
-            Module.ReplaceTransient(UserContext.Object);
-            Module.ReplaceTransient<IPasswordHasher<User>, BCryptPasswordHasher<User>>(PasswordHasher);
-
-            var provider = Services.BuildServiceProvider();
-            Mediator = provider.GetRequiredService<IMediator>();
             UserRepository = provider.GetService<IUserRepository>();
             WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
+            WithAuthenticatedUserContext();
         }
+
+        public UsersModuleSetupFixture() : base(new UsersModule()) {}
 
         public async Task WithUserRepoContainingDefaultUsers()
         {
@@ -104,34 +77,9 @@ namespace Conduit.Users.Domain.Tests.Unit.Setup
             await UserRepository.Create(user);
         }
 
-        public void WithUnauthenticatedUserContext()
-        {
-            UserContext.Reset();
-            UserContext.SetupGet(context => context.IsAuthenticated).Returns(false);
-        }
-        
         public void WithAuthenticatedUserContext()
         {
-            WithUserContextReturning(ExistingUser, Token);
+            WithUserContextReturning(true, ExistingUser.Id, ExistingUser.Username, ExistingUser.Email, AuthenticatedUserToken);
         }
-
-        public void WithRandomUserContext()
-        {
-            var user = AutoFixture.Create<User>();
-            var token = AutoFixture.Create<string>();
-            WithUserContextReturning(user, token);
-        }
-        
-        internal void WithUserContextReturning(User user, string token)
-        {
-            UserContext.Reset();
-            UserContext.SetupGet(context => context.IsAuthenticated).Returns(true);
-            UserContext.SetupGet(context => context.UserId).Returns(user.Id);
-            UserContext.SetupGet(context => context.Username).Returns(user.Username);
-            UserContext.SetupGet(context => context.Email).Returns(user.Email);
-            UserContext.SetupGet(context => context.Token).Returns(token);
-        }
-
-        public void Dispose() {}
     }
 }

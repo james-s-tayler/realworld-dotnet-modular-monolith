@@ -5,6 +5,7 @@ using Conduit.Core.Modules;
 using Conduit.Core.SchemaManagement;
 using Conduit.Social.Domain;
 using Conduit.Social.Domain.Contracts;
+using Conduit.Social.Domain.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,7 +40,7 @@ namespace Conduit.Social.Domain
 
         protected override void AddModuleServices(IConfiguration configuration, IServiceCollection services)
         {
-            
+            services.AddTransient<IUserRepository, SqliteUserRepository>();
         }
     }
 }

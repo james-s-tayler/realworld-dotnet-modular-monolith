@@ -4,7 +4,7 @@ using System.Linq;
 using FluentValidation.Results;
 using MediatR;
 
-namespace Conduit.Core.PipelineBehaviors
+namespace Conduit.Core.PipelineBehaviors.OperationResponse
 {
     public class OperationResponseFactory
     {

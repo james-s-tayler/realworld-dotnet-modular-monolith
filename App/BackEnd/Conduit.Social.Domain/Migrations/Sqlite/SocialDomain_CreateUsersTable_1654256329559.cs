@@ -15,7 +15,7 @@ namespace Conduit.Social.Domain.Migrations.Sqlite
                 .WithColumn("id")
                 .AsInt32()
                 .NotNullable()
-                .PrimaryKey();
+                .Unique();
         }
 
         public override void Down()

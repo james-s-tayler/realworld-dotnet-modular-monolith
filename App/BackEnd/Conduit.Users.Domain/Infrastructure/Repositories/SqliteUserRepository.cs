@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Conduit.Core.DataAccess;
 using Conduit.Users.Domain.Entities;
 using Dapper;
+using JetBrains.Annotations;
 
 namespace Conduit.Users.Domain.Infrastructure.Repositories
 {
@@ -12,7 +13,7 @@ namespace Conduit.Users.Domain.Infrastructure.Repositories
     {
         private readonly DbConnection _connection;
 
-        public SqliteUserRepository(ModuleDbConnectionWrapper<UsersModule> connectionWrapper)
+        public SqliteUserRepository([NotNull] ModuleDbConnectionWrapper<UsersModule> connectionWrapper)
         {
             _connection = connectionWrapper.Connection;
         }
@@ -53,7 +54,7 @@ namespace Conduit.Users.Domain.Infrastructure.Repositories
             return Task.FromResult(_connection.Query<User>(sql));
         }
 
-        public Task<int> Create(User user)
+        public Task<int> Create([NotNull] User user)
         {
             var sql = "INSERT INTO users (username, email, password, image, bio) VALUES (@username, @email, @password, @image, @bio) RETURNING *";
 
@@ -71,7 +72,7 @@ namespace Conduit.Users.Domain.Infrastructure.Repositories
             return Task.FromResult(insertedUser.Id);
         }
 
-        public Task Update(User user)
+        public Task Update([NotNull] User user)
         {
             var sql = "UPDATE users SET username = @username, email = @email, password = @password, image = @image, bio = @bio WHERE id = @id";
 
@@ -109,7 +110,7 @@ namespace Conduit.Users.Domain.Infrastructure.Repositories
             return Task.FromResult(_connection.Execute(sql));
         }
 
-        public Task<User> GetByEmail(string email)
+        public Task<User> GetByEmail([NotNull] string email)
         {
             var sql = "SELECT * FROM users WHERE email = @email";
 
@@ -127,7 +128,7 @@ namespace Conduit.Users.Domain.Infrastructure.Repositories
             return Task.FromResult(_connection.ExecuteScalar<bool>(sql, arguments));
         }
 
-        public Task<bool> ExistsByEmail(string email)
+        public Task<bool> ExistsByEmail([NotNull] string email)
         {
             var sql = "SELECT EXISTS(SELECT 1 FROM users WHERE email=@email)";
 

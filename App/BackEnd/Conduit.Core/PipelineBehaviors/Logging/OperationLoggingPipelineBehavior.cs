@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Conduit.Core.Context;
+using Conduit.Core.PipelineBehaviors.OperationResponse;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

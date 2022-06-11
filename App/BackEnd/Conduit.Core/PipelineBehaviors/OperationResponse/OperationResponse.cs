@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Conduit.Core.Exceptions;
-using Conduit.Core.PipelineBehaviors.Logging;
 using JetBrains.Annotations;
 
-namespace Conduit.Core.PipelineBehaviors
+namespace Conduit.Core.PipelineBehaviors.OperationResponse
 {
     public class OperationResponse<T> : IOperationResponseSummary where T : class
     {
@@ -41,6 +40,11 @@ namespace Conduit.Core.PipelineBehaviors
         public Type GetResponseType()
         {
             return typeof(T);
+        }
+
+        public object GetResponse()
+        {
+            return Response;
         }
     }
 

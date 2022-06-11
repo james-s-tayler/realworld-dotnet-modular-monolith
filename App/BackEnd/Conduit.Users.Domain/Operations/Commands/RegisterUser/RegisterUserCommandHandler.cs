@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Conduit.Core.PipelineBehaviors;
+using Conduit.Core.PipelineBehaviors.OperationResponse;
 using Conduit.Users.Domain.Contracts.Commands.RegisterUser;
 using Conduit.Users.Domain.Entities;
 using Conduit.Users.Domain.Infrastructure.Mappers;
@@ -42,8 +43,7 @@ namespace Conduit.Users.Domain.Operations.Commands.RegisterUser
             
             return new OperationResponse<RegisterUserCommandResult>(new RegisterUserCommandResult
             {
-                RegisteredUser = user.ToUserDTO(token),
-                UserId = userId
+                RegisteredUser = user.ToUserDTO(token)
             });
         }
     }

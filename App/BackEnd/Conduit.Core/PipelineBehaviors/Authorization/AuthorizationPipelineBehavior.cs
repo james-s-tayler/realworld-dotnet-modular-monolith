@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Conduit.Core.Context;
+using Conduit.Core.PipelineBehaviors.OperationResponse;
 using MediatR;
 
 namespace Conduit.Core.PipelineBehaviors.Authorization
