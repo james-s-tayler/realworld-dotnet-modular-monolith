@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Conduit.Social.Domain.Entities;
+using Conduit.Social.Domain.Infrastructure.Mappers;
 using Conduit.Social.Domain.Infrastructure.Repositories;
 using Conduit.Users.Domain.Contracts.Commands.RegisterUser;
 using JetBrains.Annotations;
@@ -17,9 +18,9 @@ namespace Conduit.Social.Domain.Infrastructure.EventListeners
             _userRepository = userRepository;
         }
 
-        public async Task Handle(RegisterUserCommandResult @event, CancellationToken cancellationToken)
+        public async Task Handle(RegisterUserCommandResult registerUserEvent, CancellationToken cancellationToken)
         {
-            await _userRepository.Create(new User { Id = @event.RegisteredUser.Id });
+            await _userRepository.Create(registerUserEvent.RegisteredUser.ToUser());
         }
     }
 }

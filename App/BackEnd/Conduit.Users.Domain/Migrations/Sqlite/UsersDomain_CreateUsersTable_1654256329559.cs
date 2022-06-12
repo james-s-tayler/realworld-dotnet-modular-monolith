@@ -12,27 +12,12 @@ namespace Conduit.Users.Domain.Migrations.Sqlite
         public override void Up()
         {
             Create.Table("users")
-            .WithColumn("id")
-                .AsInt32()
-                .NotNullable()
-                .PrimaryKey()
-            .WithColumn("username")
-                .AsString(50)
-                .NotNullable()
-                .Unique()
-            .WithColumn("email")
-                .AsString(255)
-                .NotNullable()
-                .Unique()
-            .WithColumn("password")
-                .AsString(255)
-                .NotNullable()
-            .WithColumn("image")
-                .AsString(2048)
-                .Nullable()
-            .WithColumn("bio")
-                .AsString(4000)
-                .Nullable();
+            .WithColumn("id").AsInt32().NotNullable().PrimaryKey()
+            .WithColumn("username").AsString(50).NotNullable().Unique()
+            .WithColumn("email").AsString(255).NotNullable().Unique()
+            .WithColumn("password").AsString(255).NotNullable()
+            .WithColumn("image").AsString(2048).Nullable()
+            .WithColumn("bio").AsString(4000).Nullable();
         }
 
         public override void Down()

@@ -119,6 +119,14 @@ namespace Conduit.Users.Domain.Infrastructure.Repositories
             return Task.FromResult(_connection.Query<User>(sql, arguments).SingleOrDefault());
         }
 
+        public Task<User> GetByUsername(string username)
+        {
+            var sql = "SELECT * FROM users WHERE username=@username";
+            var arguments = new { username };
+
+            return Task.FromResult(_connection.Query<User>(sql, arguments).SingleOrDefault());
+        }
+
         public Task<bool> ExistsByUsername(string username)
         {
             var sql = "SELECT EXISTS(SELECT 1 FROM users WHERE username=@username)";

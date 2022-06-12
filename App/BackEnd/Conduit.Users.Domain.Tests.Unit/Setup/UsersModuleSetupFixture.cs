@@ -5,9 +5,11 @@ using Conduit.Core.Testing;
 using Conduit.Users.Domain.Configuration;
 using Conduit.Users.Domain.Entities;
 using Conduit.Users.Domain.Infrastructure.Repositories;
+using Conduit.Users.Domain.Infrastructure.Services;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using ScottBrady91.AspNetCore.Identity;
 
 namespace Conduit.Users.Domain.Tests.Unit.Setup
@@ -20,6 +22,7 @@ namespace Conduit.Users.Domain.Tests.Unit.Setup
         internal User ExistingUser2 { get; private set; }
         
         internal IUserRepository UserRepository { get; private set; }
+        internal Mock<ISocialService> SocialService { get; } = new ();
         
         protected override void AddConfiguration(IDictionary<string, string> configuration)
         {
@@ -31,6 +34,7 @@ namespace Conduit.Users.Domain.Tests.Unit.Setup
         protected override void ReplaceServices(AbstractModule module)
         {
             module.ReplaceTransient<IPasswordHasher<User>, BCryptPasswordHasher<User>>(PasswordHasher);
+            Module.ReplaceTransient(SocialService.Object);
         }
         
         protected override void SetupPostProcess(ServiceProvider provider)

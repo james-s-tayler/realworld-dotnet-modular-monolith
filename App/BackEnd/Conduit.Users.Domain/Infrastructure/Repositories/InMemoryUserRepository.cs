@@ -16,7 +16,12 @@ namespace Conduit.Users.Domain.Infrastructure.Repositories
         {
             return Task.FromResult(_repo.ContainsKey(id));
         }
-        
+
+        public Task<User> GetByUsername(string username)
+        {
+            return Task.FromResult(_repo.Values.SingleOrDefault(user => user.Username.Equals(username)));
+        }
+
         public Task<bool> ExistsByUsername(string username)
         {
             return Task.FromResult(_repo.Values.Any(user => user.Username.Equals(username)));
