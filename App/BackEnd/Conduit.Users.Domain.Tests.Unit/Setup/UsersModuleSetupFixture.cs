@@ -22,8 +22,7 @@ namespace Conduit.Users.Domain.Tests.Unit.Setup
         internal User ExistingUser2 { get; private set; }
         
         internal IUserRepository UserRepository { get; private set; }
-        internal Mock<ISocialService> SocialService { get; } = new ();
-        
+
         protected override void AddConfiguration(IDictionary<string, string> configuration)
         {
             configuration.Add($"{nameof(JwtSettings)}:{nameof(JwtSettings.Secret)}", "secretsecretsecretsecretsecretsecret");
@@ -34,7 +33,6 @@ namespace Conduit.Users.Domain.Tests.Unit.Setup
         protected override void ReplaceServices(AbstractModule module)
         {
             module.ReplaceTransient<IPasswordHasher<User>, BCryptPasswordHasher<User>>(PasswordHasher);
-            Module.ReplaceTransient(SocialService.Object);
         }
         
         protected override void SetupPostProcess(ServiceProvider provider)

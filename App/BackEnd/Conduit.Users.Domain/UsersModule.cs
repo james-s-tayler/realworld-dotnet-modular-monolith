@@ -50,7 +50,6 @@ namespace Conduit.Users.Domain
             services.TryAddTransient<IPasswordHasher<User>, BCryptPasswordHasher<User>>();
             services.AddTransient<IUserRepository, SqliteUserRepository>();
             services.AddTransient<IAuthTokenService, JwtAuthTokenService>();
-            services.AddTransient<ISocialService, SocialService>();
             services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
         }
     }

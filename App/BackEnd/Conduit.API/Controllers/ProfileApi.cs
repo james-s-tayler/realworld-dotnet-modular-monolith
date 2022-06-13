@@ -21,6 +21,10 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Newtonsoft.Json;
 using Conduit.API.Attributes;
 using Conduit.API.Models;
+using Conduit.Core.PipelineBehaviors.OperationResponse;
+using Conduit.Social.Domain.Contracts.Queries.GetIsFollowing;
+using Conduit.Users.Domain.Contracts.Queries.GetProfile;
+using MediatR;
 
 namespace Conduit.API.Controllers
 { 
@@ -28,8 +32,11 @@ namespace Conduit.API.Controllers
     /// 
     /// </summary>
     [ApiController]
-    public class ProfileApiController : ControllerBase
-    { 
+    public class ProfileApiController : OperationResponseController
+    {
+
+        public ProfileApiController(IMediator mediator) : base(mediator) {}
+        
         /// <summary>
         /// Follow a user
         /// </summary>
@@ -66,7 +73,31 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> GetProfileByUsername([FromRoute (Name = "username")][Required]string username)
         {
-            return StatusCode((int)HttpStatusCode.NotImplemented);
+            var getIsFollowingResponse = await Mediator.Send(new GetIsFollowingQuery { Username = username });
+
+            if (getIsFollowingResponse.Result != OperationResult.Success)
+                return UnsuccessfulResponseResult(getIsFollowingResponse);
+
+            var getProfileResponse = await Mediator.Send(new GetProfileQuery { Username = username });
+            
+            if (getProfileResponse.Result != OperationResult.Success)
+                return UnsuccessfulResponseResult(getProfileResponse);
+
+            var profile = getProfileResponse.Response.Profile;
+            profile.Following = getIsFollowingResponse.Response.Following;
+            
+            var profileResponse = new ProfileResponse
+            {
+                Profile = new Profile
+                {
+                    Username = profile.Username,
+                    Image = profile.Image,
+                    Bio = profile.Bio,
+                    Following = profile.Following
+                }
+            };
+            
+            return Ok(profileResponse);
         }
 
         /// <summary>

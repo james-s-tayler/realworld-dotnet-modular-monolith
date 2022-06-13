@@ -9,7 +9,8 @@ namespace Conduit.Social.Domain.Infrastructure.Mappers
         {
             return new User
             {
-                Id = user.Id
+                Id = user.Id,
+                Username = user.Username
             };
         }
     }

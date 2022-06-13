@@ -14,17 +14,20 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
         public Architecture Architecture { get; }
         public IObjectProvider<Class> DomainContractClasses { get; private set; }
         public IObjectProvider<Class> DomainOperations { get; private set; }
+        public IObjectProvider<Class> DomainOperationHandlers { get; private set; }
         public IObjectProvider<Class> DomainClasses { get; private set; }
         public IObjectProvider<Class> Commands { get; private set; }
+        public IObjectProvider<Class> CommandHandlers { get; private set; }
         public IObjectProvider<Class> Queries { get; private set; }
+        public IObjectProvider<Class> QueryHandlers { get; private set; }
         public IObjectProvider<Class> DatabaseMigrations { get; private set; }
 
         public ArchitectureTestSetupFixture()
         {
             Architecture = new ArchLoader().LoadAssemblies(GetSolutionAssemblies()).Build();
-            SetupDomain();
             SetupDomainContracts();
             SetupDatabaseMigrations();
+            SetupDomain();
         }
 
         private void SetupDatabaseMigrations()
@@ -36,7 +39,40 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
 
         private void SetupDomain()
         {
-            DomainClasses = Classes().That().ResideInAssembly(".*.Domain", true).As("Domain Classes");
+            SetupDomainClasses();
+            SetupOperationHandlers();
+            SetupCommandHandlers();
+            SetupQueryHandlers();
+        }
+
+        private void SetupDomainClasses()
+        {
+            DomainClasses = Classes().That().ResideInAssembly(".*.Domain", true)
+                .And().AreNot(DomainContractClasses)
+                .And().AreNot(DatabaseMigrations)
+                .And().AreNot(".*ProcessedByFody", true)
+                .As("Domain Classes");
+        }
+
+        private void SetupOperationHandlers()
+        {
+            DomainOperationHandlers = Classes().That().Are(DomainClasses)
+                .And().ImplementInterface("MediatR.IRequestHandler`2")
+                .As("Domain Operation Handlers");
+        }
+        
+        private void SetupCommandHandlers()
+        {
+            CommandHandlers = Classes().That().Are(DomainOperationHandlers)
+                .And().HaveNameEndingWith("CommandHandler")
+                .As("Command Handlers");
+        }
+        
+        private void SetupQueryHandlers()
+        {
+            QueryHandlers = Classes().That().Are(DomainOperationHandlers)
+                .And().HaveNameEndingWith("QueryHandler")
+                .As("Query Handlers");
         }
         
         private void SetupDomainContracts()

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
+using Conduit.Core.Context;
 using Conduit.Core.DataAccess;
 using Conduit.Social.Domain.Entities;
 using Dapper;
@@ -43,8 +44,8 @@ namespace Conduit.Social.Domain.Infrastructure.Repositories
 
         public Task<int> Create(User user)
         {
-            var sql = "INSERT INTO users (id) VALUES (@id) RETURNING *";
-            var arguments = new { id = user.Id };
+            var sql = "INSERT INTO users (id, username) VALUES (@id, @username) RETURNING *";
+            var arguments = new { id = user.Id, username = user.Username };
 
             var insertedUser = _connection.QuerySingle<User>(sql, arguments);
             
@@ -64,6 +65,34 @@ namespace Conduit.Social.Domain.Infrastructure.Repositories
         public Task<int> DeleteAll()
         {
             throw new System.NotImplementedException();
+        }
+
+        public Task<User> GetByUsername(string username)
+        {
+            var sql = "SELECT * FROM users WHERE username=@username";
+            var arguments = new { username };
+
+            var user = _connection.QuerySingle<User>(sql, arguments);
+
+            return Task.FromResult(user);
+        }
+
+        public Task<bool> ExistsByUsername(string username)
+        {
+            var sql = "SELECT EXISTS(SELECT 1 FROM users WHERE username=@username)";
+            var arguments = new { username };
+
+            return Task.FromResult(_connection.ExecuteScalar<bool>(sql, arguments));
+        }
+
+        public Task<bool> IsFollowing(int userId, int followingUserId)
+        {
+            var sql = "SELECT EXISTS(SELECT 1 FROM following WHERE user_id=@user_id AND following_user_id=@following_user_id)";
+            var arguments = new { user_id = userId, following_user_id = followingUserId };
+
+            var isFollowing = _connection.ExecuteScalar<bool>(sql, arguments);
+
+            return Task.FromResult(isFollowing);
         }
     }
 }

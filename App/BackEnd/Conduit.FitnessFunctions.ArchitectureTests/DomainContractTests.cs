@@ -80,7 +80,7 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
                 {
                     var operationName = command.Name.Replace("Command", "");
                     var pass = command.ResidesInNamespace($".*Domain.Contracts.Commands.{operationName}", true);
-                    return new ConditionResult(command, true, "does not match");
+                    return new ConditionResult(command, pass, "does not match");
                 }, "reside in Domain.Contracts.Commands.{OperationName}")
                 .Because("this is the convention")
                 .Check(_application.Architecture);
@@ -94,7 +94,7 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
                 {
                     var operationName = query.Name.Replace("Query", "");
                     var pass = query.ResidesInNamespace($".*Domain.Contracts.Queries.{operationName}", true);
-                    return new ConditionResult(query, true, "does not match");
+                    return new ConditionResult(query, pass, "does not match");
                 }, "reside in Domain.Contracts.Queries.{OperationName}")
                 .Because("this is the convention")
                 .Check(_application.Architecture);

@@ -15,7 +15,6 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Conduit.API.Attributes;
 using Conduit.API.Models;
-using Conduit.Core.PipelineBehaviors;
 using Conduit.Core.PipelineBehaviors.OperationResponse;
 using Conduit.Users.Domain.Contracts.Commands.LoginUser;
 using Conduit.Users.Domain.Contracts.Commands.RegisterUser;
@@ -33,17 +32,9 @@ namespace Conduit.API.Controllers
     [ApiController]
     [Produces("application/json")]
     [Consumes("application/json")]
-    public class UserAndAuthenticationApiController : ControllerBase
+    public class UserAndAuthenticationApiController : OperationResponseController
     {
-        private readonly IMediator _mediator;
-        private readonly ILogger<UserAndAuthenticationApiController> _logger;
-
-        public UserAndAuthenticationApiController(IMediator mediator, 
-            ILogger<UserAndAuthenticationApiController> logger)
-        {
-            _mediator = mediator;
-            _logger = logger;
-        }
+        public UserAndAuthenticationApiController(IMediator mediator) : base(mediator) {}
 
         /// <summary>
         /// Register a new user
@@ -61,7 +52,7 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> CreateUser([FromBody]NewUserRequest request)
         {
-            var registerUserResponse = await _mediator.Send(new RegisterUserCommand
+            var registerUserResponse = await Mediator.Send(new RegisterUserCommand
             {
                 NewUser = new NewUserDTO
                 {
@@ -92,34 +83,6 @@ namespace Conduit.API.Controllers
             return StatusCode((int) HttpStatusCode.Created, newUser);
         }
 
-        private ObjectResult UnsuccessfulResponseResult<T>(OperationResponse<T> operationResponse) where T : class
-        {
-            if (operationResponse.Result == OperationResult.Success)
-                throw new InvalidOperationException("OperationResult was Success");
-
-            var errors = new GenericErrorModel
-            {
-                Errors = new GenericErrorModelErrors
-                {
-                    Body = operationResponse.Errors
-                }
-            };
-            switch (operationResponse.Result)
-            {
-                case OperationResult.NotAuthenticated:
-                    return StatusCode((int)HttpStatusCode.Unauthorized, errors);
-                case OperationResult.NotAuthorized:
-                    return StatusCode((int)HttpStatusCode.Forbidden, errors);
-                case OperationResult.ValidationError:
-                    return StatusCode((int)HttpStatusCode.UnprocessableEntity, errors);
-                case OperationResult.NotImplemented:
-                    return StatusCode((int)HttpStatusCode.NotImplemented, errors);
-                case OperationResult.UnhandledException:
-                default:
-                    return StatusCode((int)HttpStatusCode.InternalServerError, errors);
-            }
-        }
-
         /// <summary>
         /// Get current user
         /// </summary>
@@ -135,7 +98,7 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> GetCurrentUser()
         {
-            var getCurrentUserResponse = await _mediator.Send(new GetCurrentUserQuery());
+            var getCurrentUserResponse = await Mediator.Send(new GetCurrentUserQuery());
             
             if (getCurrentUserResponse.Result != OperationResult.Success)
                 return UnsuccessfulResponseResult(getCurrentUserResponse);
@@ -175,7 +138,7 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> Login([FromBody]LoginUserRequest request)
         {
-            var loginResponse = await _mediator.Send(new LoginUserCommand
+            var loginResponse = await Mediator.Send(new LoginUserCommand
             {
                 UserCredentials = new UserCredentialsDTO
                 {
@@ -221,7 +184,7 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> UpdateCurrentUser([FromBody]UpdateUserRequest body)
         {
-            var getCurrentUserResponse = await _mediator.Send(new UpdateUserCommand
+            var getCurrentUserResponse = await Mediator.Send(new UpdateUserCommand
             {
                 UpdateUser = new UpdateUserDTO
                 {

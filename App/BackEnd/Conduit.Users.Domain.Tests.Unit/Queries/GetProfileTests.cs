@@ -19,13 +19,10 @@ namespace Conduit.Users.Domain.Tests.Unit.Queries
             _usersModule = usersModule;
         }
 
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task GivenAUsernameWhenGetProfileThenReturnsProfile(bool isFollowing)
+        [Fact]
+        public async Task GivenAUsernameWhenGetProfileThenReturnsProfile()
         {
             //arrange
-            _usersModule.SocialService.Setup(socialService => socialService.IsFollowing(_usersModule.ExistingUser2.Id)).Returns(Task.FromResult(isFollowing));
             var getProfileRequest = new GetProfileQuery { Username = _usersModule.ExistingUser2.Username };
 
             //act
@@ -39,7 +36,7 @@ namespace Conduit.Users.Domain.Tests.Unit.Queries
             result.Response.Profile.Username.Should().Be(_usersModule.ExistingUser2.Username);
             result.Response.Profile.Image.Should().Be(_usersModule.ExistingUser2.Image);
             result.Response.Profile.Bio.Should().Be(_usersModule.ExistingUser2.Bio);
-            result.Response.Profile.Following.Should().Be(isFollowing);
+            result.Response.Profile.Following.Should().BeFalse();
         }
     }
 }
