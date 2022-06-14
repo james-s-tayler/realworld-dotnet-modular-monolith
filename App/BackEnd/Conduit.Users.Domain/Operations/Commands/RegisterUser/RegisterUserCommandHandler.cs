@@ -1,6 +1,5 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Conduit.Core.PipelineBehaviors;
 using Conduit.Core.PipelineBehaviors.OperationResponse;
 using Conduit.Users.Domain.Contracts.Commands.RegisterUser;
 using Conduit.Users.Domain.Entities;

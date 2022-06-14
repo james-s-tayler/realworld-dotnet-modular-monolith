@@ -1,6 +1,5 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Conduit.Social.Domain.Entities;
 using Conduit.Social.Domain.Infrastructure.Mappers;
 using Conduit.Social.Domain.Infrastructure.Repositories;
 using Conduit.Users.Domain.Contracts.Commands.RegisterUser;

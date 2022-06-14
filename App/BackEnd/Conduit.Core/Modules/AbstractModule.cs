@@ -66,11 +66,11 @@ namespace Conduit.Core.Modules
             services.AddValidatorsFromAssembly(GetModuleAssembly(), ServiceLifetime.Transient, null, true);
             services.AddAuthorizersFromAssembly(GetModuleAssembly(), ServiceLifetime.Transient);
 
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(OperationLoggingPipelineBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(EventPublishingPipelineBehavior<,>));
+            services.AddPipelineBehaviorsFromAssembly(GetModuleContractsAssembly(), typeof(OperationLoggingPipelineBehavior<,>));
+            services.AddPipelineBehaviorsFromAssembly(GetModuleContractsAssembly(), typeof(EventPublishingPipelineBehavior<,>));
             services.AddTransactionPipelineBehaviorsFromAssembly(GetModuleContractsAssembly(), GetModuleType());
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationPipelineBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+            services.AddPipelineBehaviorsFromAssembly(GetModuleContractsAssembly(), typeof(AuthorizationPipelineBehavior<,>));
+            services.AddPipelineBehaviorsFromAssembly(GetModuleContractsAssembly(), typeof(ValidationPipelineBehavior<,>));
         }
 
         public abstract Assembly GetModuleAssembly();

@@ -153,7 +153,7 @@ namespace Conduit.API
                         Version = "1.0.0",
                     });
                     c.CustomSchemaIds(type => type.FriendlyId(true));
-                    c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{Assembly.GetEntryAssembly().GetName().Name}.xml");
+                    //c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{Assembly.GetEntryAssembly().GetName().Name}.xml");
                     c.EnableAnnotations();
                     
                     c.AddSecurityDefinition(authScheme, new OpenApiSecurityScheme

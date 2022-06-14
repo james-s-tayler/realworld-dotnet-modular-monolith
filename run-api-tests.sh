@@ -4,7 +4,7 @@ set -x
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 APIURL=${APIURL:-http://localhost:5100/api}
-USERNAME=${USERNAME:-u`date +%s`}
+USERNAME=$(uuidgen)
 EMAIL=${EMAIL:-$USERNAME@mail.com}
 PASSWORD=${PASSWORD:-password123}
 

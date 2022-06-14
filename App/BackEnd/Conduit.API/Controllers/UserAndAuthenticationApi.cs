@@ -22,7 +22,6 @@ using Conduit.Users.Domain.Contracts.Commands.UpdateUser;
 using Conduit.Users.Domain.Contracts.Queries.GetCurrentUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace Conduit.API.Controllers
 { 
