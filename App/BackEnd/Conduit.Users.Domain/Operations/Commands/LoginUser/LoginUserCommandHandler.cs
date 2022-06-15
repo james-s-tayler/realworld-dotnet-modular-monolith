@@ -1,8 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Conduit.Core.PipelineBehaviors;
-using Conduit.Core.PipelineBehaviors.OperationResponse;
+using Application.Core.PipelineBehaviors.OperationResponse;
 using Conduit.Users.Domain.Contracts.Commands.LoginUser;
 using Conduit.Users.Domain.Entities;
 using Conduit.Users.Domain.Infrastructure.Mappers;

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
-using Conduit.Core.Context;
-using Conduit.Core.DataAccess;
+using Application.Core.Context;
+using Application.Core.DataAccess;
 using Conduit.Social.Domain.Entities;
 using Dapper;
 using JetBrains.Annotations;

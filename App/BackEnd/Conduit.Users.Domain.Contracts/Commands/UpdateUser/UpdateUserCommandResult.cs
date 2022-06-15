@@ -1,4 +1,4 @@
-using Conduit.Core.DataAccess;
+using Application.Core.DataAccess;
 using MediatR;
 
 namespace Conduit.Users.Domain.Contracts.Commands.UpdateUser

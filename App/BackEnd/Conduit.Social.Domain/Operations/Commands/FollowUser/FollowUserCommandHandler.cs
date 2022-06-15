@@ -1,6 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Conduit.Core.PipelineBehaviors.OperationResponse;
+using Application.Core.PipelineBehaviors.OperationResponse;
 using Conduit.Social.Domain.Contracts.Commands.FollowUser;
 using Conduit.Social.Domain.Infrastructure.Mappers;
 using Conduit.Social.Domain.Infrastructure.Repositories;

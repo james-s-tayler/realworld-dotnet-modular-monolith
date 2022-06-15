@@ -11,13 +11,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
+using Application.Core.PipelineBehaviors.OperationResponse;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Conduit.API.Attributes;
 using Conduit.API.Models;
 using Conduit.API.Models.Mappers;
-using Conduit.Core.PipelineBehaviors.OperationResponse;
 using Conduit.Social.Domain.Contracts.Commands.FollowUser;
 using Conduit.Social.Domain.Contracts.Commands.UnfollowUser;
 using Conduit.Social.Domain.Contracts.Queries.GetProfile;

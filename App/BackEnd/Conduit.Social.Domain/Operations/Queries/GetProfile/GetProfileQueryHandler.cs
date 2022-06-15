@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Conduit.Core.PipelineBehaviors.OperationResponse;
+using Application.Core.PipelineBehaviors.OperationResponse;
 using Conduit.Social.Domain.Contracts.Queries.GetProfile;
 using Conduit.Social.Domain.Infrastructure.Mappers;
 using Conduit.Social.Domain.Infrastructure.Repositories;

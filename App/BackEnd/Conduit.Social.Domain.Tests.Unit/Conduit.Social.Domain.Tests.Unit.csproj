@@ -21,7 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Conduit.Core.Testing\Conduit.Core.Testing.csproj" />
-      <ProjectReference Include="..\Conduit.Core\Conduit.Core.csproj" />
+      <ProjectReference Include="..\Application.Core\Application.Core.csproj" />
       <ProjectReference Include="..\Conduit.Social.Domain.Contracts\Conduit.Social.Domain.Contracts.csproj" />
       <ProjectReference Include="..\Conduit.Social.Domain\Conduit.Social.Domain.csproj" />
       <ProjectReference Include="..\Conduit.Users.Domain.Contracts\Conduit.Users.Domain.Contracts.csproj" />

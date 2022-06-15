@@ -11,11 +11,11 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using Application.Core.PipelineBehaviors.OperationResponse;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Conduit.API.Attributes;
 using Conduit.API.Models;
-using Conduit.Core.PipelineBehaviors.OperationResponse;
 using Conduit.Users.Domain.Contracts.Commands.LoginUser;
 using Conduit.Users.Domain.Contracts.Commands.RegisterUser;
 using Conduit.Users.Domain.Contracts.Commands.UpdateUser;

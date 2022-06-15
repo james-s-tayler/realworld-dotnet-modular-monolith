@@ -1,7 +1,7 @@
+using Application.Core.SchemaManagement;
 using ArchUnitNET.Domain.Extensions;
 using ArchUnitNET.Fluent.Conditions;
 using ArchUnitNET.xUnit;
-using Conduit.Core.SchemaManagement;
 using FluentMigrator;
 using Xunit;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;

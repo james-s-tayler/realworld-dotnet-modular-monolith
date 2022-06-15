@@ -1,10 +1,10 @@
 using System.Linq;
+using Application.Core;
+using Application.Core.DataAccess;
 using ArchUnitNET.Domain.Dependencies;
 using ArchUnitNET.Domain.Extensions;
 using ArchUnitNET.Fluent.Conditions;
 using ArchUnitNET.xUnit;
-using Conduit.Core;
-using Conduit.Core.DataAccess;
 using JetBrains.Annotations;
 using Xunit;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;

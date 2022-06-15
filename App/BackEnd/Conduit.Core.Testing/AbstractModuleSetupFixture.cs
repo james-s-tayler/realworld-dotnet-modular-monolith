@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using Application.Core.Context;
+using Application.Core.Modules;
 using AutoFixture;
-using Conduit.Core.Context;
-using Conduit.Core.Modules;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

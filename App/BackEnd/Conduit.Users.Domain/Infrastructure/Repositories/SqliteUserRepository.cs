@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
-using Conduit.Core.DataAccess;
+using Application.Core.DataAccess;
 using Conduit.Users.Domain.Entities;
 using Dapper;
 using JetBrains.Annotations;

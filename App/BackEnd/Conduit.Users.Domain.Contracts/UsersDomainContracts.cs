@@ -1,5 +1,5 @@
 using System.Reflection;
-using Conduit.Core.DataAccess;
+using Application.Core.DataAccess;
 
 namespace Conduit.Users.Domain.Contracts
 {

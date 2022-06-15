@@ -1,4 +1,4 @@
-using Conduit.Core.DataAccess;
+using Application.Core.DataAccess;
 using Destructurama.Attributed;
 
 namespace Conduit.Users.Domain.Contracts

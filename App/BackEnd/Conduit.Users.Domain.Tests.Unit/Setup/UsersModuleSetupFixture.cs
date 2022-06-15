@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Conduit.Core.Modules;
+using Application.Core.Modules;
 using Conduit.Core.Testing;
 using Conduit.Users.Domain.Configuration;
 using Conduit.Users.Domain.Entities;

@@ -1,7 +1,7 @@
 using System;
 using System.Net;
+using Application.Core.PipelineBehaviors.OperationResponse;
 using Conduit.API.Models;
-using Conduit.Core.PipelineBehaviors.OperationResponse;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

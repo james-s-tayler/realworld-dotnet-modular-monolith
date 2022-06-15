@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Conduit.Core.DataAccess;
+using Application.Core.DataAccess;
 using Conduit.Users.Domain.Entities;
 
 namespace Conduit.Users.Domain.Infrastructure.Repositories

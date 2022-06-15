@@ -1,6 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Conduit.Core.Context;
+using Application.Core.Context;
 using Conduit.Users.Domain.Configuration;
 using Conduit.Users.Domain.Contracts.Commands.UpdateUser;
 using Conduit.Users.Domain.Infrastructure.Repositories;

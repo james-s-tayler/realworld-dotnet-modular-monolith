@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Conduit.Core.Modules;
+using Application.Core.Modules;
 using Conduit.Core.Testing;
 using Conduit.Social.Domain.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;

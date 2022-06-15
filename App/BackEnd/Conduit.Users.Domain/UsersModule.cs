@@ -1,8 +1,8 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Conduit.Core.DataAccess.Dapper.Sqlite;
-using Conduit.Core.Modules;
-using Conduit.Core.SchemaManagement;
+using Application.Core.DataAccess.Dapper.Sqlite;
+using Application.Core.Modules;
+using Application.Core.SchemaManagement;
 using Conduit.Users.Domain;
 using Conduit.Users.Domain.Configuration;
 using Conduit.Users.Domain.Contracts;

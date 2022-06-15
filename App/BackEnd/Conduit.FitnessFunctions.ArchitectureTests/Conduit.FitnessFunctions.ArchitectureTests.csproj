@@ -24,7 +24,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Conduit.API\Conduit.API.csproj" />
       <ProjectReference Include="..\Conduit.Content.Domain\Conduit.Content.Domain.csproj" />
-      <ProjectReference Include="..\Conduit.Core\Conduit.Core.csproj" />
+      <ProjectReference Include="..\Application.Core\Application.Core.csproj" />
       <ProjectReference Include="..\Conduit.Feed.Domain\Conduit.Feed.Domain.csproj" />
       <ProjectReference Include="..\Conduit.Social.Domain\Conduit.Social.Domain.csproj" />
       <ProjectReference Include="..\Conduit.Social.Domain.Contracts\Conduit.Social.Domain.Contracts.csproj" />

@@ -1,4 +1,4 @@
-using Conduit.Core.DataAccess;
+using Application.Core.DataAccess;
 using JetBrains.Annotations;
 
 namespace Conduit.Users.Domain.Contracts.Commands.LoginUser

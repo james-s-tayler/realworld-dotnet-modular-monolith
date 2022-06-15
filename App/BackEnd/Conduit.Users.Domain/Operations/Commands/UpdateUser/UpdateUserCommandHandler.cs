@@ -1,9 +1,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Conduit.Core.Context;
-using Conduit.Core.PipelineBehaviors;
-using Conduit.Core.PipelineBehaviors.OperationResponse;
+using Application.Core.Context;
+using Application.Core.PipelineBehaviors.OperationResponse;
 using Conduit.Users.Domain.Contracts.Commands.UpdateUser;
 using Conduit.Users.Domain.Infrastructure.Mappers;
 using Conduit.Users.Domain.Infrastructure.Repositories;

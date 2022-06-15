@@ -1,6 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Conduit.Core.Context;
+using Application.Core.Context;
 using Conduit.Social.Domain.Contracts.Queries.GetProfile;
 using Conduit.Social.Domain.Infrastructure.Repositories;
 using FluentValidation;

@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Users.Domain", "Con
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Users.Domain.Tests.Unit", "Conduit.Users.Domain.Tests.Unit\Conduit.Users.Domain.Tests.Unit.csproj", "{3BBBCD3C-A851-4117-9F13-FC2CA43BA9CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Core", "Conduit.Core\Conduit.Core.csproj", "{7DE296F6-F055-4B5D-A9D0-FF410A5A1AF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Core", "Application.Core\Application.Core.csproj", "{7DE296F6-F055-4B5D-A9D0-FF410A5A1AF8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Users.Domain.Contracts", "Conduit.Users.Domain.Contracts\Conduit.Users.Domain.Contracts.csproj", "{3B8A620A-56F2-422A-81CA-93A94426E7CA}"
 EndProject
@@ -46,8 +46,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.FitnessFunctions.Ar
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{47341F65-D512-421C-809D-6BB36CE52C53}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{B9445BFA-907E-4EFE-97F9-0CD858BF44A8}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{15829510-7835-4630-BA28-B7955FC6108F}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\build_n_run_tests.sh = ..\..\build_n_run_tests.sh
@@ -71,6 +69,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Social.Domain.Contracts", "Conduit.Social.Domain.Contracts\Conduit.Social.Domain.Contracts.csproj", "{0D1E9E45-1139-42B1-945C-157B6C80D526}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Social.Domain.Tests.Unit", "Conduit.Social.Domain.Tests.Unit\Conduit.Social.Domain.Tests.Unit.csproj", "{B1D08C3F-8FA3-4959-8EF0-2F9F7F46DC3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppTemplates", "AppTemplates", "{6FC2BBD5-038B-42CC-8851-98D417A6BEF3}"
 EndProject
 Global
 				GlobalSection(SolutionConfigurationPlatforms) = preSolution
