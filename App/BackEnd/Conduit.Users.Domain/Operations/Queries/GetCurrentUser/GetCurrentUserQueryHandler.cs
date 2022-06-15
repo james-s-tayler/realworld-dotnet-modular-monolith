@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Core.Context;
 using Application.Core.PipelineBehaviors.OperationResponse;
-using Conduit.Users.Domain.Contracts.Queries.GetCurrentUser;
+using Application.Users.Domain.Contracts.Queries.GetCurrentUser;
 using Conduit.Users.Domain.Infrastructure.Mappers;
 using Conduit.Users.Domain.Infrastructure.Repositories;
 using MediatR;

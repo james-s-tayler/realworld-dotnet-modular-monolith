@@ -1,7 +1,7 @@
 using Application.Core.DataAccess;
 using Destructurama.Attributed;
 
-namespace Conduit.Users.Domain.Contracts.Commands.LoginUser
+namespace Application.Users.Domain.Contracts.Commands.LoginUser
 {
     public class UserCredentialsDTO : ContractModel
     {

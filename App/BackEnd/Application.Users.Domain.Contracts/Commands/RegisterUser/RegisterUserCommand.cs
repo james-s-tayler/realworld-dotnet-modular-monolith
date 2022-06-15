@@ -3,7 +3,7 @@ using Application.Core.PipelineBehaviors.Authorization;
 using Application.Core.PipelineBehaviors.OperationResponse;
 using MediatR;
 
-namespace Conduit.Users.Domain.Contracts.Commands.RegisterUser
+namespace Application.Users.Domain.Contracts.Commands.RegisterUser
 {
     [AllowUnauthenticated]
     public class RegisterUserCommand : ContractModel, IRequest<OperationResponse<RegisterUserCommandResult>>

@@ -1,7 +1,7 @@
 using Application.Core.DataAccess;
 using MediatR;
 
-namespace Conduit.Users.Domain.Contracts.Commands.RegisterUser
+namespace Application.Users.Domain.Contracts.Commands.RegisterUser
 {
     public class RegisterUserCommandResult : ContractModel, INotification
     {

@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Users.Domain.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Core", "Application.Core\Application.Core.csproj", "{7DE296F6-F055-4B5D-A9D0-FF410A5A1AF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Users.Domain.Contracts", "Conduit.Users.Domain.Contracts\Conduit.Users.Domain.Contracts.csproj", "{3B8A620A-56F2-422A-81CA-93A94426E7CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Users.Domain.Contracts", "Application.Users.Domain.Contracts\Application.Users.Domain.Contracts.csproj", "{3B8A620A-56F2-422A-81CA-93A94426E7CA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Content.Domain", "Conduit.Content.Domain\Conduit.Content.Domain.csproj", "{2B904167-732C-429D-807D-630D1C219B6A}"
 EndProject

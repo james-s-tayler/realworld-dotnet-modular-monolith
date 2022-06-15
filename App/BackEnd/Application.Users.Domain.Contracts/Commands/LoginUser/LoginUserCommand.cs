@@ -3,7 +3,7 @@ using Application.Core.PipelineBehaviors.Authorization;
 using Application.Core.PipelineBehaviors.OperationResponse;
 using MediatR;
 
-namespace Conduit.Users.Domain.Contracts.Commands.LoginUser
+namespace Application.Users.Domain.Contracts.Commands.LoginUser
 {
     [AllowUnauthenticated]
     public class LoginUserCommand : ContractModel, IRequest<OperationResponse<LoginUserCommandResult>>

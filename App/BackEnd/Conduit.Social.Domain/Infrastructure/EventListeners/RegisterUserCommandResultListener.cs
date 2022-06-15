@@ -1,9 +1,9 @@
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Users.Domain.Contracts.Commands.RegisterUser;
 using Conduit.Social.Domain.Infrastructure.Mappers;
 using Conduit.Social.Domain.Infrastructure.Repositories;
-using Conduit.Users.Domain.Contracts.Commands.RegisterUser;
 using JetBrains.Annotations;
 using MediatR;
 using Microsoft.AspNetCore.Http;

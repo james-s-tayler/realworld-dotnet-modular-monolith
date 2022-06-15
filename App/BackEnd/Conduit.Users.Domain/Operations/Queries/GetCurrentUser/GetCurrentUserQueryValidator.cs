@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core.Context;
-using Conduit.Users.Domain.Contracts.Queries.GetCurrentUser;
+using Application.Users.Domain.Contracts.Queries.GetCurrentUser;
 using Conduit.Users.Domain.Infrastructure.Repositories;
 using FluentValidation;
 using JetBrains.Annotations;

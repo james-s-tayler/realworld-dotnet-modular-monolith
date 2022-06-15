@@ -12,14 +12,14 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Application.Core.PipelineBehaviors.OperationResponse;
+using Application.Users.Domain.Contracts.Commands.LoginUser;
+using Application.Users.Domain.Contracts.Commands.RegisterUser;
+using Application.Users.Domain.Contracts.Commands.UpdateUser;
+using Application.Users.Domain.Contracts.Queries.GetCurrentUser;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Conduit.API.Attributes;
 using Conduit.API.Models;
-using Conduit.Users.Domain.Contracts.Commands.LoginUser;
-using Conduit.Users.Domain.Contracts.Commands.RegisterUser;
-using Conduit.Users.Domain.Contracts.Commands.UpdateUser;
-using Conduit.Users.Domain.Contracts.Queries.GetCurrentUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 

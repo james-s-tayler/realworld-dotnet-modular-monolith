@@ -1,6 +1,6 @@
 using Application.Core.DataAccess;
 
-namespace Conduit.Users.Domain.Contracts.Commands.UpdateUser
+namespace Application.Users.Domain.Contracts.Commands.UpdateUser
 {
     public class UpdateUserDTO : ContractModel
     {

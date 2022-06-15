@@ -1,4 +1,4 @@
-using Conduit.Users.Domain.Contracts;
+using Application.Users.Domain.Contracts;
 using Conduit.Users.Domain.Entities;
 
 namespace Conduit.Users.Domain.Infrastructure.Mappers

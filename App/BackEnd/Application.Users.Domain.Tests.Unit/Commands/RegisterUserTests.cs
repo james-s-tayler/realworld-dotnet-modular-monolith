@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using Application.Core.PipelineBehaviors.OperationResponse;
 using Application.Core.Testing;
+using Application.Users.Domain.Contracts.Commands.RegisterUser;
 using Application.Users.Domain.Tests.Unit.Setup;
 using AutoFixture;
-using Conduit.Users.Domain.Contracts.Commands.RegisterUser;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Xunit;

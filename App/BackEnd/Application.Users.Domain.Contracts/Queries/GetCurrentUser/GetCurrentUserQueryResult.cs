@@ -1,6 +1,6 @@
 using Application.Core.DataAccess;
 
-namespace Conduit.Users.Domain.Contracts.Queries.GetCurrentUser
+namespace Application.Users.Domain.Contracts.Queries.GetCurrentUser
 {
     public class GetCurrentUserQueryResult : ContractModel
     {

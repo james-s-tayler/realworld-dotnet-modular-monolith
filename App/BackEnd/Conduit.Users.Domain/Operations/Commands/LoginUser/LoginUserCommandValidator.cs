@@ -1,6 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Conduit.Users.Domain.Contracts.Commands.LoginUser;
+using Application.Users.Domain.Contracts.Commands.LoginUser;
 using Conduit.Users.Domain.Infrastructure.Repositories;
 using FluentValidation;
 using JetBrains.Annotations;

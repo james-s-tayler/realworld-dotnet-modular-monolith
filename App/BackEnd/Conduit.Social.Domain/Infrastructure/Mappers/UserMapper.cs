@@ -1,6 +1,6 @@
+using Application.Users.Domain.Contracts;
 using Conduit.Social.Domain.Contracts;
 using Conduit.Social.Domain.Entities;
-using Conduit.Users.Domain.Contracts;
 
 namespace Conduit.Social.Domain.Infrastructure.Mappers
 {

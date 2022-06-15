@@ -1,8 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core.Context;
+using Application.Users.Domain.Contracts.Commands.UpdateUser;
 using Conduit.Users.Domain.Configuration;
-using Conduit.Users.Domain.Contracts.Commands.UpdateUser;
 using Conduit.Users.Domain.Infrastructure.Repositories;
 using FluentValidation;
 using JetBrains.Annotations;

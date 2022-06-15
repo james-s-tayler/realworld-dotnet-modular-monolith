@@ -1,8 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Users.Domain.Contracts.Commands.UpdateUser;
 using Conduit.Social.Domain.Infrastructure.Mappers;
 using Conduit.Social.Domain.Infrastructure.Repositories;
-using Conduit.Users.Domain.Contracts.Commands.UpdateUser;
 using JetBrains.Annotations;
 using MediatR;
 

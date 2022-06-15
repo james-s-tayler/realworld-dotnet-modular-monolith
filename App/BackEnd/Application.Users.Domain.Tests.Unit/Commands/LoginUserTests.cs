@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using Application.Core.PipelineBehaviors.OperationResponse;
 using Application.Core.Testing;
+using Application.Users.Domain.Contracts.Commands.LoginUser;
 using Application.Users.Domain.Tests.Unit.Setup;
 using AutoFixture;
-using Conduit.Users.Domain.Contracts.Commands.LoginUser;
 using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;

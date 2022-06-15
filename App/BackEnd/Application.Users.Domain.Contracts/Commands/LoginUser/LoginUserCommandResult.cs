@@ -1,7 +1,7 @@
 using Application.Core.DataAccess;
 using JetBrains.Annotations;
 
-namespace Conduit.Users.Domain.Contracts.Commands.LoginUser
+namespace Application.Users.Domain.Contracts.Commands.LoginUser
 {
     public class LoginUserCommandResult : ContractModel
     {

@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using Application.Core.PipelineBehaviors.OperationResponse;
 using Application.Core.Testing;
+using Application.Users.Domain.Contracts.Queries.GetCurrentUser;
 using Application.Users.Domain.Tests.Unit.Setup;
-using Conduit.Users.Domain.Contracts.Queries.GetCurrentUser;
 using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;

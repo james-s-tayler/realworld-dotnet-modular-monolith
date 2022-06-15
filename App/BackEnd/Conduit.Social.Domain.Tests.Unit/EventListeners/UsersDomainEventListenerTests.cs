@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
 using Application.Core.Testing;
+using Application.Users.Domain.Contracts;
+using Application.Users.Domain.Contracts.Commands.RegisterUser;
+using Application.Users.Domain.Contracts.Commands.UpdateUser;
 using AutoFixture;
 using Conduit.Social.Domain.Tests.Unit.Setup;
-using Conduit.Users.Domain.Contracts;
-using Conduit.Users.Domain.Contracts.Commands.RegisterUser;
-using Conduit.Users.Domain.Contracts.Commands.UpdateUser;
 using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;

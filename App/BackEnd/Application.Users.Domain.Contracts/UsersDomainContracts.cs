@@ -1,7 +1,7 @@
 using System.Reflection;
 using Application.Core.DataAccess;
 
-namespace Conduit.Users.Domain.Contracts
+namespace Application.Users.Domain.Contracts
 {
     public class UsersDomainContracts : ContractModel
     {

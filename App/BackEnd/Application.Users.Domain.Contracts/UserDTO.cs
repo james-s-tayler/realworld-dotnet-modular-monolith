@@ -1,7 +1,7 @@
 using Application.Core.DataAccess;
 using Destructurama.Attributed;
 
-namespace Conduit.Users.Domain.Contracts
+namespace Application.Users.Domain.Contracts
 {
     public class UserDTO : ContractModel
     {
