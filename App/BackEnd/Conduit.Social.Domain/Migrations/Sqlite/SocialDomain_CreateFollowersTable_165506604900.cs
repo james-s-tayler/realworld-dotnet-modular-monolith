@@ -7,18 +7,18 @@ namespace Conduit.Social.Domain.Migrations.Sqlite
     [Tags(DbConstants.SQLite)]
     [Migration(165506604900)]
     [UsedImplicitly]
-    public class SocialDomain_CreateFollowingTable_165506604900 : Migration
+    public class SocialDomain_CreateFollowersTable_165506604900 : Migration
     {
         public override void Up()
         {
-            Create.Table("following")
-                .WithColumn("user_id").AsInt32().NotNullable().Indexed()
-                .WithColumn("following_user_id").AsInt32().NotNullable().Indexed();
+            Create.Table("followers")
+                .WithColumn("user_id").AsInt32().NotNullable().PrimaryKey()
+                .WithColumn("follow_user_id").AsInt32().NotNullable().PrimaryKey();
         }
 
         public override void Down()
         {
-            Delete.Table("following");
+            Delete.Table("followers");
         }
     }
 }

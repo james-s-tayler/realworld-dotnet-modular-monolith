@@ -41,6 +41,7 @@ namespace Conduit.Social.Domain
         protected override void AddModuleServices(IConfiguration configuration, IServiceCollection services)
         {
             services.AddTransient<IUserRepository, SqliteUserRepository>();
+            services.AddHttpContextAccessor();
         }
     }
 }

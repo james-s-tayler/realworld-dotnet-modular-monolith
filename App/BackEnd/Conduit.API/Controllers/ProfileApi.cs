@@ -16,9 +16,11 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Conduit.API.Attributes;
 using Conduit.API.Models;
+using Conduit.API.Models.Mappers;
 using Conduit.Core.PipelineBehaviors.OperationResponse;
-using Conduit.Social.Domain.Contracts.Queries.GetIsFollowing;
-using Conduit.Users.Domain.Contracts.Queries.GetProfile;
+using Conduit.Social.Domain.Contracts.Commands.FollowUser;
+using Conduit.Social.Domain.Contracts.Commands.UnfollowUser;
+using Conduit.Social.Domain.Contracts.Queries.GetProfile;
 using MediatR;
 
 namespace Conduit.API.Controllers
@@ -48,7 +50,12 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> FollowUserByUsername([FromRoute (Name = "username")][Required]string username)
         {
-            return StatusCode((int)HttpStatusCode.NotImplemented);
+            var followUserResponse = await Mediator.Send(new FollowUserCommand { Username = username });
+            
+            if (followUserResponse.Result != OperationResult.Success)
+                return UnsuccessfulResponseResult(followUserResponse);
+
+            return Ok(followUserResponse.Response.FollowedProfile.ToProfileResponse());
         }
 
         /// <summary>
@@ -68,31 +75,12 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> GetProfileByUsername([FromRoute (Name = "username")][Required]string username)
         {
-            var getIsFollowingResponse = await Mediator.Send(new GetIsFollowingQuery { Username = username });
-
-            if (getIsFollowingResponse.Result != OperationResult.Success)
-                return UnsuccessfulResponseResult(getIsFollowingResponse);
-
             var getProfileResponse = await Mediator.Send(new GetProfileQuery { Username = username });
             
             if (getProfileResponse.Result != OperationResult.Success)
                 return UnsuccessfulResponseResult(getProfileResponse);
 
-            var profile = getProfileResponse.Response.Profile;
-            profile.Following = getIsFollowingResponse.Response.Following;
-            
-            var profileResponse = new ProfileResponse
-            {
-                Profile = new Profile
-                {
-                    Username = profile.Username,
-                    Image = profile.Image,
-                    Bio = profile.Bio,
-                    Following = profile.Following
-                }
-            };
-            
-            return Ok(profileResponse);
+            return Ok(getProfileResponse.Response.Profile.ToProfileResponse());
         }
 
         /// <summary>
@@ -111,7 +99,12 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> UnfollowUserByUsername([FromRoute (Name = "username")][Required]string username)
         {
-            return StatusCode((int)HttpStatusCode.NotImplemented);
+            var unfollowUserResponse = await Mediator.Send(new UnfollowUserCommand { Username = username });
+            
+            if (unfollowUserResponse.Result != OperationResult.Success)
+                return UnsuccessfulResponseResult(unfollowUserResponse);
+
+            return Ok(unfollowUserResponse.Response.UnfollowedProfile.ToProfileResponse());
         }
     }
 }

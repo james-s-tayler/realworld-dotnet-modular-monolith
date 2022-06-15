@@ -12,8 +12,10 @@ namespace Conduit.Social.Domain.Migrations.Sqlite
         public override void Up()
         {
             Create.Table("users")
-                .WithColumn("id").AsInt32().NotNullable().Unique()
-                .WithColumn("username").AsString(50).NotNullable().Unique();
+                .WithColumn("id").AsInt32().NotNullable().PrimaryKey()
+                .WithColumn("username").AsString(50).NotNullable().Unique()
+                .WithColumn("image").AsString(2048).Nullable()
+                .WithColumn("bio").AsString(4000).Nullable();
         }
 
         public override void Down()

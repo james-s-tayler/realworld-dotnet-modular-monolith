@@ -1,6 +1,6 @@
 using Conduit.Core.DataAccess;
 
-namespace Conduit.Users.Domain.Contracts
+namespace Conduit.Social.Domain.Contracts
 {
     public class ProfileDTO : ContractModel
     {

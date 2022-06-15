@@ -12,9 +12,12 @@ namespace Conduit.Social.Domain.Infrastructure.Repositories
     internal class SqliteUserRepository : IUserRepository
     {
         private readonly DbConnection _connection;
+        private readonly IUserContext _userContext;
 
-        public SqliteUserRepository([NotNull] ModuleDbConnectionWrapper<SocialModule> connectionWrapper)
+        public SqliteUserRepository([NotNull] ModuleDbConnectionWrapper<SocialModule> connectionWrapper, 
+            [NotNull] IUserContext userContext)
         {
+            _userContext = userContext;
             _connection = connectionWrapper.Connection;
         }
         
@@ -22,10 +25,7 @@ namespace Conduit.Social.Domain.Infrastructure.Repositories
         {
             var sql = "SELECT EXISTS(SELECT 1 FROM users WHERE id=@id)";
 
-            var arguments = new
-            {
-                id = id
-            };
+            var arguments = new { id };
 
             var exists = _connection.ExecuteScalar<bool>(sql, arguments);
             
@@ -34,7 +34,9 @@ namespace Conduit.Social.Domain.Infrastructure.Repositories
 
         public Task<User> GetById(int id)
         {
-            throw new System.NotImplementedException();
+            var sql = "SELECT * FROM users WHERE id=@id";
+            var arguments = new {id};
+            return Task.FromResult(_connection.QuerySingle<User>(sql, arguments));
         }
 
         public Task<IEnumerable<User>> GetAll()
@@ -44,8 +46,14 @@ namespace Conduit.Social.Domain.Infrastructure.Repositories
 
         public Task<int> Create(User user)
         {
-            var sql = "INSERT INTO users (id, username) VALUES (@id, @username) RETURNING *";
-            var arguments = new { id = user.Id, username = user.Username };
+            var sql = "INSERT INTO users (id, username, image, bio) VALUES (@id, @username, @image, @bio) RETURNING *";
+            var arguments = new
+            {
+                id = user.Id, 
+                username = user.Username,
+                image = user.Image,
+                bio = user.Bio
+            };
 
             var insertedUser = _connection.QuerySingle<User>(sql, arguments);
             
@@ -54,17 +62,29 @@ namespace Conduit.Social.Domain.Infrastructure.Repositories
 
         public Task Update(User user)
         {
-            throw new System.NotImplementedException();
+            var sql = "UPDATE users SET username = @username, image = @image, bio = @bio WHERE id=@id";
+            var arguments = new
+            {
+                id = user.Id,
+                username = user.Username,
+                image = user.Image,
+                bio = user.Bio
+            };
+
+            return Task.FromResult(_connection.Execute(sql, arguments));
         }
 
         public Task Delete(int id)
         {
-            throw new System.NotImplementedException();
+            var sql = "DELETE FROM users WHERE id=@id";
+            var arguments = new { id };
+            return Task.FromResult(_connection.Execute(sql, arguments));
         }
 
         public Task<int> DeleteAll()
         {
-            throw new System.NotImplementedException();
+            var sql = "DELETE FROM users";
+            return Task.FromResult(_connection.Execute(sql));
         }
 
         public Task<User> GetByUsername(string username)
@@ -85,14 +105,38 @@ namespace Conduit.Social.Domain.Infrastructure.Repositories
             return Task.FromResult(_connection.ExecuteScalar<bool>(sql, arguments));
         }
 
-        public Task<bool> IsFollowing(int userId, int followingUserId)
+        public Task<bool> IsFollowing(int followUserId)
         {
-            var sql = "SELECT EXISTS(SELECT 1 FROM following WHERE user_id=@user_id AND following_user_id=@following_user_id)";
-            var arguments = new { user_id = userId, following_user_id = followingUserId };
+            var sql = "SELECT EXISTS(SELECT 1 FROM followers WHERE user_id=@user_id AND follow_user_id=@follow_user_id)";
+            var arguments = new { user_id = _userContext.UserId, follow_user_id = followUserId };
 
             var isFollowing = _connection.ExecuteScalar<bool>(sql, arguments);
 
             return Task.FromResult(isFollowing);
+        }
+
+        public Task FollowUser(int followUserId)
+        {
+            var sql = "INSERT OR IGNORE INTO followers(user_id, follow_user_id) VALUES(@user_id, @follow_user_id)";
+            var arguments = new
+            {
+                user_id = _userContext.UserId,
+                follow_user_id = followUserId
+            };
+            
+            return Task.FromResult(_connection.Execute(sql, arguments));
+        }
+
+        public Task UnfollowUser(int followUserId)
+        {
+            var sql = "DELETE FROM followers WHERE user_id=@user_id AND follow_user_id=@follow_user_id";
+            var arguments = new
+            {
+                user_id = _userContext.UserId,
+                follow_user_id = followUserId
+            };
+
+            return Task.FromResult(_connection.Execute(sql, arguments));
         }
     }
 }

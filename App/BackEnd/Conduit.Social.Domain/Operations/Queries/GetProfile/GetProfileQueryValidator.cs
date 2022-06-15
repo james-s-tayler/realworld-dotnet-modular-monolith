@@ -1,12 +1,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Conduit.Core.Context;
-using Conduit.Users.Domain.Contracts.Queries.GetProfile;
-using Conduit.Users.Domain.Infrastructure.Repositories;
+using Conduit.Social.Domain.Contracts.Queries.GetProfile;
+using Conduit.Social.Domain.Infrastructure.Repositories;
 using FluentValidation;
 using JetBrains.Annotations;
 
-namespace Conduit.Users.Domain.Operations.Queries.GetProfile
+namespace Conduit.Social.Domain.Operations.Queries.GetProfile
 {
     internal class GetProfileQueryValidator : AbstractValidator<GetProfileQuery>
     {

@@ -18,6 +18,9 @@ namespace Conduit.Core.Testing
         public string AuthenticatedUserUsername { get; private set; }
         public string AuthenticatedUserEmail { get; private set; }
         public string AuthenticatedUserToken { get; private set; }
+        public string AuthenticatedUserBio { get; private set; }
+        public string AuthenticatedUserImage { get; private set; }
+        
         public Fixture AutoFixture { get; } = new ();
         public IMediator Mediator { get; set; }
         public AbstractModule Module { get; }
@@ -82,6 +85,8 @@ namespace Conduit.Core.Testing
             AuthenticatedUserUsername = AutoFixture.Create<string>();
             AuthenticatedUserEmail = $"{AuthenticatedUserUsername}@{AutoFixture.Create<string>()}.com";
             AuthenticatedUserToken = AutoFixture.Create<string>();
+            AuthenticatedUserImage = AutoFixture.Create<string>();
+            AuthenticatedUserBio = AutoFixture.Create<string>();
             WithUserContextReturning(true, AuthenticatedUserId, AuthenticatedUserUsername, AuthenticatedUserEmail, AuthenticatedUserToken);
         }
         

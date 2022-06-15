@@ -8,6 +8,8 @@ namespace Conduit.Social.Domain.Infrastructure.Repositories
     {
         Task<User> GetByUsername(string username);
         Task<bool> ExistsByUsername(string username);
-        Task<bool> IsFollowing(int userId, int followingUserId);
+        Task<bool> IsFollowing(int followUserId);
+        Task FollowUser(int followUserId);
+        Task UnfollowUser(int followUserId);
     }
 }

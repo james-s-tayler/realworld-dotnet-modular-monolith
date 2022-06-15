@@ -2,12 +2,12 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Conduit.Core.PipelineBehaviors.OperationResponse;
-using Conduit.Users.Domain.Contracts.Queries.GetProfile;
-using Conduit.Users.Domain.Infrastructure.Mappers;
-using Conduit.Users.Domain.Infrastructure.Repositories;
+using Conduit.Social.Domain.Contracts.Queries.GetProfile;
+using Conduit.Social.Domain.Infrastructure.Mappers;
+using Conduit.Social.Domain.Infrastructure.Repositories;
 using MediatR;
 
-namespace Conduit.Users.Domain.Operations.Queries.GetProfile
+namespace Conduit.Social.Domain.Operations.Queries.GetProfile
 {
     internal class GetProfileQueryHandler : IRequestHandler<GetProfileQuery, OperationResponse<GetProfileQueryResult>>
     {
@@ -24,9 +24,11 @@ namespace Conduit.Users.Domain.Operations.Queries.GetProfile
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
 
+            var isFollowing = await _userRepository.IsFollowing(user.Id);
+
             return new OperationResponse<GetProfileQueryResult>(new GetProfileQueryResult
             {
-                Profile = user.ToProfileDTO(false)
+                Profile = user.ToProfileDTO(isFollowing)
             });
         }
     }
