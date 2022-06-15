@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
+using Application.Core.Testing;
 using AutoFixture;
-using Conduit.Core.Testing;
 using Conduit.Social.Domain.Tests.Unit.Setup;
 using Conduit.Users.Domain.Contracts;
 using Conduit.Users.Domain.Contracts.Commands.RegisterUser;

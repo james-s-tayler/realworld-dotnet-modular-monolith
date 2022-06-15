@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Application.Core.Modules;
-using Conduit.Core.Testing;
+using Application.Core.Testing;
 using Conduit.Social.Domain.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 

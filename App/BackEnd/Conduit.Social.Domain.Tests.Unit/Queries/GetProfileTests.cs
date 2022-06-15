@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Application.Core.PipelineBehaviors.OperationResponse;
+using Application.Core.Testing;
 using AutoFixture;
-using Conduit.Core.Testing;
 using Conduit.Social.Domain.Contracts;
 using Conduit.Social.Domain.Contracts.Queries.GetProfile;
 using Conduit.Social.Domain.Entities;

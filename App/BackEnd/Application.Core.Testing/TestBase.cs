@@ -3,7 +3,7 @@ using Serilog.Events;
 using Serilog.Exceptions;
 using Xunit.Abstractions;
 
-namespace Conduit.Core.Testing
+namespace Application.Core.Testing
 {
     public abstract class TestBase
     {

@@ -1,8 +1,8 @@
 using System.Net;
 using System.Threading.Tasks;
+using Application.Core.Testing;
 using AutoFixture;
 using Conduit.API.Models;
-using Conduit.Core.Testing;
 using Xunit;
 using Xunit.Abstractions;
 using FluentAssertions;

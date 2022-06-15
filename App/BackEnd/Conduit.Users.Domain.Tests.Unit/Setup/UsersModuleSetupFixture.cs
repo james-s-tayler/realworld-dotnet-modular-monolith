@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Core.Modules;
-using Conduit.Core.Testing;
+using Application.Core.Testing;
 using Conduit.Users.Domain.Configuration;
 using Conduit.Users.Domain.Entities;
 using Conduit.Users.Domain.Infrastructure.Repositories;

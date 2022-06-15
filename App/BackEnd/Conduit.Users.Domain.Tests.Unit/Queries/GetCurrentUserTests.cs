@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Application.Core.PipelineBehaviors.OperationResponse;
-using Conduit.Core.Testing;
+using Application.Core.Testing;
 using Conduit.Users.Domain.Contracts.Queries.GetCurrentUser;
 using Conduit.Users.Domain.Tests.Unit.Setup;
 using FluentAssertions;

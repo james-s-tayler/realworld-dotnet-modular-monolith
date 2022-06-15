@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Serilog;
 
-namespace Conduit.Core.Testing
+namespace Application.Core.Testing
 {
     public abstract class AbstractModuleSetupFixture
     {

@@ -1,8 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Core.PipelineBehaviors.OperationResponse;
+using Application.Core.Testing;
 using AutoFixture;
-using Conduit.Core.Testing;
 using Conduit.Users.Domain.Contracts.Commands.RegisterUser;
 using Conduit.Users.Domain.Tests.Unit.Setup;
 using FluentAssertions;
