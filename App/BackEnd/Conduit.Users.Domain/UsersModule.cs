@@ -19,7 +19,7 @@ using ScottBrady91.AspNetCore.Identity;
 
 //would be epic to add this in via Fody!
 [assembly: HostingStartup(typeof(UsersModule))]
-[assembly: InternalsVisibleTo("Conduit.Users.Domain.Tests.Unit")]
+[assembly: InternalsVisibleTo("Application.Users.Domain.Tests.Unit")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 namespace Conduit.Users.Domain
 {

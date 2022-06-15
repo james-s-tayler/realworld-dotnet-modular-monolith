@@ -2,17 +2,16 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Core.Modules;
 using Application.Core.Testing;
+using Conduit.Users.Domain;
 using Conduit.Users.Domain.Configuration;
 using Conduit.Users.Domain.Entities;
 using Conduit.Users.Domain.Infrastructure.Repositories;
-using Conduit.Users.Domain.Infrastructure.Services;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
 using ScottBrady91.AspNetCore.Identity;
 
-namespace Conduit.Users.Domain.Tests.Unit.Setup
+namespace Application.Users.Domain.Tests.Unit.Setup
 {
     public class UsersModuleSetupFixture : AbstractModuleSetupFixture
     {

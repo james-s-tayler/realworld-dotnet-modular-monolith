@@ -1,13 +1,13 @@
 using System.Threading.Tasks;
 using Application.Core.PipelineBehaviors.OperationResponse;
 using Application.Core.Testing;
+using Application.Users.Domain.Tests.Unit.Setup;
 using Conduit.Users.Domain.Contracts.Queries.GetCurrentUser;
-using Conduit.Users.Domain.Tests.Unit.Setup;
 using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Conduit.Users.Domain.Tests.Unit.Queries
+namespace Application.Users.Domain.Tests.Unit.Queries
 {
     [Collection(nameof(UsersModuleTestCollection))]
     public class GetCurrentUserTests : TestBase

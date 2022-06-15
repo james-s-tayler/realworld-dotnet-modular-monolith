@@ -11,7 +11,7 @@ using Polly;
 using Refit;
 using Xunit;
 
-namespace Conduit.Core.Tests.Unit
+namespace Application.Core.Tests.Unit
 {
     public class RefitPollyTests
     {

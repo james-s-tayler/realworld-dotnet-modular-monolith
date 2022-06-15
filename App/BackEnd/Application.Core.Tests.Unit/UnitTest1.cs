@@ -1,7 +1,6 @@
-using System;
 using Xunit;
 
-namespace Conduit.Core.Tests.Unit
+namespace Application.Core.Tests.Unit
 {
     public class UnitTest1
     {
