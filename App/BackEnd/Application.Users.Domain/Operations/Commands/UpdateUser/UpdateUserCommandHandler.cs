@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Core.Context;
 using Application.Core.PipelineBehaviors.OperationResponse;
-using Application.Users.Domain.Contracts.Commands.UpdateUser;
+using Application.Users.Domain.Contracts.Operations.Commands.UpdateUser;
 using Application.Users.Domain.Infrastructure.Mappers;
 using Application.Users.Domain.Infrastructure.Repositories;
 using JetBrains.Annotations;

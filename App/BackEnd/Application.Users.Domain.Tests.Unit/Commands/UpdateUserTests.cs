@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
 using Application.Core.PipelineBehaviors.OperationResponse;
 using Application.Core.Testing;
-using Application.Users.Domain.Contracts.Commands.UpdateUser;
+using Application.Users.Domain.Contracts.DTOs;
+using Application.Users.Domain.Contracts.Operations.Commands.UpdateUser;
 using Application.Users.Domain.Tests.Unit.Setup;
 using AutoFixture;
 using FluentAssertions;

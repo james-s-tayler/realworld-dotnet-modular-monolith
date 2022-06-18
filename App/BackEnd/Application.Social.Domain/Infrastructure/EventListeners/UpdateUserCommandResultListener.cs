@@ -2,7 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Social.Domain.Infrastructure.Mappers;
 using Application.Social.Domain.Infrastructure.Repositories;
-using Application.Users.Domain.Contracts.Commands.UpdateUser;
+using Application.Users.Domain.Contracts.Operations.Commands.UpdateUser;
 using JetBrains.Annotations;
 using MediatR;
 

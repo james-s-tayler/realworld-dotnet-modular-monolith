@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core.PipelineBehaviors.OperationResponse;
-using Application.Users.Domain.Contracts.Commands.RegisterUser;
+using Application.Users.Domain.Contracts.Operations.Commands.RegisterUser;
 using Application.Users.Domain.Entities;
 using Application.Users.Domain.Infrastructure.Mappers;
 using Application.Users.Domain.Infrastructure.Repositories;

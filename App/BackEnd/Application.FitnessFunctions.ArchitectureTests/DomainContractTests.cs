@@ -6,6 +6,7 @@ using ArchUnitNET.Domain.Extensions;
 using ArchUnitNET.Fluent.Conditions;
 using ArchUnitNET.xUnit;
 using JetBrains.Annotations;
+using MediatR;
 using Xunit;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
 
@@ -36,7 +37,8 @@ namespace Application.FitnessFunctions.ArchitectureTests
             Classes().That().Are(_application.DomainContractClasses)
                 .Should().HaveNameEndingWith("Command")
                 .OrShould().HaveNameEndingWith("Query")
-                .OrShould().HaveNameEndingWith("Result")
+                .OrShould().HaveNameEndingWith("CommandResult")
+                .OrShould().HaveNameEndingWith("QueryResult")
                 .OrShould().HaveNameEndingWith("DTO")
                 .OrShould().HaveNameEndingWith("Enum")
                 .OrShould().HaveNameEndingWith("DomainContracts")
@@ -54,11 +56,41 @@ namespace Application.FitnessFunctions.ArchitectureTests
         }
         
         [Fact]
+        public void CommandResultsMustImplementINotification()
+        {
+            Classes().That().Are(_application.DomainContractClasses)
+                .And().HaveNameEndingWith("CommandResult")
+                .Should().BeAssignableTo(typeof(INotification))
+                .Because("this is how events are published for other modules to consume")
+                .Check(_application.Architecture);
+        }
+        
+        [Fact]
         public void DomainOperationsResideInCorrectNamespace()
         {
             Classes().That().Are(_application.DomainOperations)
-                .Should().ResideInNamespace(@".*Domain.Contracts.Commands.*|.*Domain.Contracts.Queries.*", true)
+                .Should().ResideInNamespace(@".*Domain.Contracts.Operations.Commands.*|.*Domain.Contracts.Operations.Queries.*", true)
                 .Because("Domain operations must indicate whether they mutate state or not")
+                .Check(_application.Architecture);
+        }
+        
+        [Fact]
+        public void DTOsResideInCorrectNamespace()
+        {
+            Classes().That().Are(_application.DomainContractClasses)
+                .And().HaveNameEndingWith("DTO")
+                .Should().ResideInNamespace(@".*Domain.Contracts.DTOs", true)
+                .Because("this is the convention")
+                .Check(_application.Architecture);
+        }
+        
+        [Fact]
+        public void EnumsResideInCorrectNamespace()
+        {
+            Classes().That().Are(_application.DomainContractClasses)
+                .And().HaveNameEndingWith("Enum")
+                .Should().ResideInNamespace(@".*Domain.Contracts.Enums", true)
+                .Because("this is the convention")
                 .Check(_application.Architecture);
         }
         
@@ -79,7 +111,7 @@ namespace Application.FitnessFunctions.ArchitectureTests
                 .Should().FollowCustomCondition(command =>
                 {
                     var operationName = command.Name.Replace("Command", "");
-                    var pass = command.ResidesInNamespace($".*Domain.Contracts.Commands.{operationName}", true);
+                    var pass = command.ResidesInNamespace($".*Domain.Contracts.Operations.Commands.{operationName}", true);
                     return new ConditionResult(command, pass, "does not match");
                 }, "reside in Domain.Contracts.Commands.{OperationName}")
                 .Because("this is the convention")
@@ -93,7 +125,7 @@ namespace Application.FitnessFunctions.ArchitectureTests
                 .Should().FollowCustomCondition(query =>
                 {
                     var operationName = query.Name.Replace("Query", "");
-                    var pass = query.ResidesInNamespace($".*Domain.Contracts.Queries.{operationName}", true);
+                    var pass = query.ResidesInNamespace($".*Domain.Contracts.Operations.Queries.{operationName}", true);
                     return new ConditionResult(query, pass, "does not match");
                 }, "reside in Domain.Contracts.Queries.{OperationName}")
                 .Because("this is the convention")

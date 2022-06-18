@@ -1,4 +1,5 @@
 using Application.Users.Domain.Contracts;
+using Application.Users.Domain.Contracts.DTOs;
 using Application.Users.Domain.Entities;
 
 namespace Application.Users.Domain.Infrastructure.Mappers

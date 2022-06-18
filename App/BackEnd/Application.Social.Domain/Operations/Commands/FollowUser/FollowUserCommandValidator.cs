@@ -1,6 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Social.Domain.Contracts.Commands.FollowUser;
+using Application.Social.Domain.Contracts.Operations.Commands.FollowUser;
 using Application.Social.Domain.Infrastructure.Repositories;
 using FluentValidation;
 using JetBrains.Annotations;

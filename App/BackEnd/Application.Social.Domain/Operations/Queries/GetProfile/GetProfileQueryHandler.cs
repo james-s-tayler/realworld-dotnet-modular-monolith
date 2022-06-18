@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core.PipelineBehaviors.OperationResponse;
-using Application.Social.Domain.Contracts.Queries.GetProfile;
+using Application.Social.Domain.Contracts.Operations.Queries.GetProfile;
 using Application.Social.Domain.Infrastructure.Mappers;
 using Application.Social.Domain.Infrastructure.Repositories;
 using MediatR;

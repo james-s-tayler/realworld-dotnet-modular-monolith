@@ -22,6 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\DevOps\AppTemplates\BackEnd\Application.ModuleName.Domain.Contracts\Application.ModuleName.Domain.Contracts.csproj" />
       <ProjectReference Include="..\Conduit.API\Conduit.API.csproj" />
       <ProjectReference Include="..\Application.Content.Domain\Application.Content.Domain.csproj" />
       <ProjectReference Include="..\Application.Core\Application.Core.csproj" />

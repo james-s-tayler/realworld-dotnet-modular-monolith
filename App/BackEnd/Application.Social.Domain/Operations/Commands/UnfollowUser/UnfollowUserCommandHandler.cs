@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core.PipelineBehaviors.OperationResponse;
-using Application.Social.Domain.Contracts.Commands.UnfollowUser;
+using Application.Social.Domain.Contracts.Operations.Commands.UnfollowUser;
 using Application.Social.Domain.Infrastructure.Mappers;
 using Application.Social.Domain.Infrastructure.Repositories;
 using JetBrains.Annotations;

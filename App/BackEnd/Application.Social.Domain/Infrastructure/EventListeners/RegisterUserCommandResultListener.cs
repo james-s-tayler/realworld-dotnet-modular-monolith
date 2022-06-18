@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Social.Domain.Infrastructure.Mappers;
 using Application.Social.Domain.Infrastructure.Repositories;
-using Application.Users.Domain.Contracts.Commands.RegisterUser;
+using Application.Users.Domain.Contracts.Operations.Commands.RegisterUser;
 using JetBrains.Annotations;
 using MediatR;
 using Microsoft.AspNetCore.Http;
