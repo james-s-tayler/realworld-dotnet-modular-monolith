@@ -19,6 +19,7 @@ namespace Application.Users.Domain.Tests.Unit.Queries
         {
             _usersModule = usersModule;
             _getCurrentUserQuery = new GetCurrentUserQuery();
+            _usersModule.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
         }
 
         [Fact]

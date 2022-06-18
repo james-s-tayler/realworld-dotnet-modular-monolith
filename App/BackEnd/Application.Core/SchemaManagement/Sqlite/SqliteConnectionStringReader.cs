@@ -1,3 +1,4 @@
+using System;
 using FluentMigrator.Runner.Initialization;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
@@ -20,8 +21,16 @@ namespace Application.Core.SchemaManagement.Sqlite
 
         public string GetConnectionString(string moduleName)
         {
+            var moduleDbName = _configuration[$"DatabaseConfig:{moduleName}:DatabaseName"];
+
+            if (string.IsNullOrEmpty(moduleName))
+                throw new ArgumentNullException(nameof(moduleName));
+
+            if (string.IsNullOrEmpty(moduleDbName))
+                throw new ArgumentNullException(moduleDbName);
+            
             var runningInDocker = _configuration.GetValue<bool>("DOTNET_RUNNING_IN_CONTAINER");
-            var dbName = $"{_configuration[$"DatabaseConfig:{moduleName}:DatabaseName"]}_{_hostEnvironment.EnvironmentName}".ToLowerInvariant();
+            var dbName = $"{moduleDbName}_{_hostEnvironment.EnvironmentName}".ToLowerInvariant();
             var filename = runningInDocker ? $"/sqlite/{dbName}.db" : $"{dbName}.db";
             
             return new SqliteConnectionStringBuilder

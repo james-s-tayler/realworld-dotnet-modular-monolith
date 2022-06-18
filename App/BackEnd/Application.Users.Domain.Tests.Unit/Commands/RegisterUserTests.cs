@@ -30,6 +30,8 @@ namespace Application.Users.Domain.Tests.Unit.Commands
                     Password = _usersModule.PlainTextPassword
                 }
             };
+            
+            _usersModule.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
         }
         
         [Fact]

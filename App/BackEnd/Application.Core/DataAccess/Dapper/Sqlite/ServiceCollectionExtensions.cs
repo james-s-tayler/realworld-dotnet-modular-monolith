@@ -1,5 +1,6 @@
 using System;
 using Application.Core.Modules;
+using Application.Core.SchemaManagement;
 using Application.Core.SchemaManagement.Sqlite;
 using Dapper;
 using Dapper.Logging;
@@ -87,7 +88,13 @@ namespace Application.Core.DataAccess.Dapper.Sqlite
             {
                 var connectionFactory = provider.GetService<IDbConnectionFactory<T>>();
                 var connection = connectionFactory!.CreateConnection(module);
-                return new ModuleDbConnectionWrapper<T>(connection);
+                return new ModuleDbConnectionWrapper<T>(connection, DbVendor.Sqlite);
+            });
+            
+            services.AddScoped(provider =>
+            {
+                var moduleDbConnection = provider.GetService<ModuleDbConnectionWrapper<T>>() as IModuleDbConnection;
+                return moduleDbConnection;
             });
             
             return services;

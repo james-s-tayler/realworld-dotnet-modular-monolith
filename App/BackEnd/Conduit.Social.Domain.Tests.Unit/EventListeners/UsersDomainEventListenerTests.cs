@@ -19,14 +19,13 @@ namespace Conduit.Social.Domain.Tests.Unit.EventListeners
         public UsersDomainEventListenerTests(SocialModuleSetupFixture socialModule, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
             _socialModule = socialModule;
+            _socialModule.UserRepository.DeleteAll().GetAwaiter().GetResult();
         }
 
         [Fact]
         public async Task GivenUserRegisterEvent_WhenCheckUserRepository_ThenUserExists()
         {
             //arrange
-            await _socialModule.UserRepository.DeleteAll();
-            
             var registerUserEvent = new RegisterUserCommandResult
             {
                 RegisteredUser = new UserDTO
@@ -51,8 +50,6 @@ namespace Conduit.Social.Domain.Tests.Unit.EventListeners
         public async Task GivenAnExistingUser_WhenUpdateUserEventFired_ThenUserGetsUpdated()
         {
             //arrange
-            await _socialModule.UserRepository.DeleteAll();
-            
             var registerUserEvent = new RegisterUserCommandResult
             {
                 RegisteredUser = new UserDTO

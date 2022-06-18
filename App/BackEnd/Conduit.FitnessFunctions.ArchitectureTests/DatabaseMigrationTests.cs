@@ -27,7 +27,7 @@ namespace Conduit.FitnessFunctions.ArchitectureTests
                 {
                     var @namespace = databaseMigration.Namespace.FullName.Split(".");
                     var moduleName = @namespace[1];
-                    var dbMigrationPrefix = $"{moduleName}Domain_"; //e.g Conduit.Users.Domain.Migrations => UsersDomain_
+                    var dbMigrationPrefix = $"{moduleName}Domain_"; //e.g Application.Users.Domain.Migrations => UsersDomain_
 
                     var pass = databaseMigration.NameStartsWith(dbMigrationPrefix);
                     

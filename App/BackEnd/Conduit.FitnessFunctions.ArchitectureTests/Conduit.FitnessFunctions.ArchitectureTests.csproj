@@ -29,7 +29,7 @@
       <ProjectReference Include="..\Conduit.Social.Domain\Conduit.Social.Domain.csproj" />
       <ProjectReference Include="..\Conduit.Social.Domain.Contracts\Conduit.Social.Domain.Contracts.csproj" />
       <ProjectReference Include="..\Application.Users.Domain.Contracts\Application.Users.Domain.Contracts.csproj" />
-      <ProjectReference Include="..\Conduit.Users.Domain\Conduit.Users.Domain.csproj" />
+      <ProjectReference Include="..\Application.Users.Domain\Application.Users.Domain.csproj" />
     </ItemGroup>
 
 </Project>

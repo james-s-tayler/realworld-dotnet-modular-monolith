@@ -84,6 +84,9 @@ namespace Conduit.Social.Domain.Infrastructure.Repositories
         public Task<int> DeleteAll()
         {
             var sql = "DELETE FROM users";
+            _connection.Execute(sql);
+
+            sql = "DELETE FROM followers";
             return Task.FromResult(_connection.Execute(sql));
         }
 

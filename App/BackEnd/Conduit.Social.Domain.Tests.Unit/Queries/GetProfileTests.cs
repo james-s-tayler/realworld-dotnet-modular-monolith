@@ -20,13 +20,12 @@ namespace Conduit.Social.Domain.Tests.Unit.Queries
         public GetProfileTests(SocialModuleSetupFixture socialModule, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
             _socialModule = socialModule;
+            _socialModule.UserRepository.DeleteAll().GetAwaiter().GetResult();
         }
 
         [Fact]
         public async Task GivenAUsernameWhenGetProfileThenReturnsProfile()
         {
-            await _socialModule.UserRepository.DeleteAll();
-            
             //arrange
             var authenticatedUser = new User
             {

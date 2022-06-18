@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.API", "Conduit.API\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.API.Tests.Integration", "Conduit.API.Tests.Integration\Conduit.API.Tests.Integration.csproj", "{41354E03-8F46-47D0-AB6E-628A67832FD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Users.Domain", "Conduit.Users.Domain\Conduit.Users.Domain.csproj", "{5498CD4B-C15A-47F1-A85B-917C4BACB335}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Users.Domain", "Application.Users.Domain\Application.Users.Domain.csproj", "{5498CD4B-C15A-47F1-A85B-917C4BACB335}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Users.Domain.Tests.Unit", "Application.Users.Domain.Tests.Unit\Application.Users.Domain.Tests.Unit.csproj", "{3BBBCD3C-A851-4117-9F13-FC2CA43BA9CB}"
 EndProject

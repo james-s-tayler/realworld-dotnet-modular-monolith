@@ -2,10 +2,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Core.Modules;
 using Application.Core.Testing;
-using Conduit.Users.Domain;
-using Conduit.Users.Domain.Configuration;
-using Conduit.Users.Domain.Entities;
-using Conduit.Users.Domain.Infrastructure.Repositories;
+using Application.Users.Domain.Configuration;
+using Application.Users.Domain.Entities;
+using Application.Users.Domain.Infrastructure.Repositories;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,7 +53,6 @@ namespace Application.Users.Domain.Tests.Unit.Setup
                 Password = PasswordHasher.HashPassword(null, PlainTextPassword)
             };
             UserRepository = provider.GetService<IUserRepository>();
-            WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
             WithAuthenticatedUserContext();
         }
 

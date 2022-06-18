@@ -30,7 +30,7 @@ namespace Conduit.API
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, "Conduit.Users.Domain;Conduit.Social.Domain");
+                    webBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, "Application.Users.Domain;Conduit.Social.Domain");
                     webBuilder.UseStartup<Startup>();
                 })
                 .UseSerilog((context, services, configuration) =>
