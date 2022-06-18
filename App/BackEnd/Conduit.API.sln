@@ -15,13 +15,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Core", "Applica
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Users.Domain.Contracts", "Application.Users.Domain.Contracts\Application.Users.Domain.Contracts.csproj", "{3B8A620A-56F2-422A-81CA-93A94426E7CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Content.Domain", "Conduit.Content.Domain\Conduit.Content.Domain.csproj", "{2B904167-732C-429D-807D-630D1C219B6A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Content.Domain", "Application.Content.Domain\Application.Content.Domain.csproj", "{2B904167-732C-429D-807D-630D1C219B6A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Core.Tests.Unit", "Application.Core.Tests.Unit\Application.Core.Tests.Unit.csproj", "{3687684A-9CD0-4AB8-999F-9AE6C1391589}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Social.Domain", "Conduit.Social.Domain\Conduit.Social.Domain.csproj", "{0024039A-630B-47C4-B088-B847DED181EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Social.Domain", "Application.Social.Domain\Application.Social.Domain.csproj", "{0024039A-630B-47C4-B088-B847DED181EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Feed.Domain", "Conduit.Feed.Domain\Conduit.Feed.Domain.csproj", "{2161BE15-078D-4594-AB6E-EE0EDD74856E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Feed.Domain", "Application.Feed.Domain\Application.Feed.Domain.csproj", "{2161BE15-078D-4594-AB6E-EE0EDD74856E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Users", "Users", "{3BB27DFA-1924-41B2-B7FB-253DD70969DD}"
 EndProject
@@ -42,7 +42,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Core.Testing", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FitnessFunctions", "FitnessFunctions", "{CF744F7C-DF0D-4AD9-A19D-F08F418D41C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.FitnessFunctions.ArchitectureTests", "Conduit.FitnessFunctions.ArchitectureTests\Conduit.FitnessFunctions.ArchitectureTests.csproj", "{12DDDC0A-472B-42B9-BEF1-E78F35A3091A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.FitnessFunctions.ArchitectureTests", "Application.FitnessFunctions.ArchitectureTests\Application.FitnessFunctions.ArchitectureTests.csproj", "{12DDDC0A-472B-42B9-BEF1-E78F35A3091A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{47341F65-D512-421C-809D-6BB36CE52C53}"
 EndProject
@@ -64,11 +64,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{21BB14
 		Conduit.API\Dockerfile = Conduit.API\Dockerfile
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.FitnessFunctions.MemoryTests", "Conduit.FitnessFunctions.MemoryTests\Conduit.FitnessFunctions.MemoryTests.csproj", "{647BF5D4-B836-44F3-AB2F-26254E6B97CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.FitnessFunctions.MemoryTests", "Application.FitnessFunctions.MemoryTests\Application.FitnessFunctions.MemoryTests.csproj", "{647BF5D4-B836-44F3-AB2F-26254E6B97CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Social.Domain.Contracts", "Conduit.Social.Domain.Contracts\Conduit.Social.Domain.Contracts.csproj", "{0D1E9E45-1139-42B1-945C-157B6C80D526}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Social.Domain.Contracts", "Application.Social.Domain.Contracts\Application.Social.Domain.Contracts.csproj", "{0D1E9E45-1139-42B1-945C-157B6C80D526}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduit.Social.Domain.Tests.Unit", "Conduit.Social.Domain.Tests.Unit\Conduit.Social.Domain.Tests.Unit.csproj", "{B1D08C3F-8FA3-4959-8EF0-2F9F7F46DC3A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Social.Domain.Tests.Unit", "Application.Social.Domain.Tests.Unit\Application.Social.Domain.Tests.Unit.csproj", "{B1D08C3F-8FA3-4959-8EF0-2F9F7F46DC3A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppTemplates", "AppTemplates", "{6FC2BBD5-038B-42CC-8851-98D417A6BEF3}"
 EndProject

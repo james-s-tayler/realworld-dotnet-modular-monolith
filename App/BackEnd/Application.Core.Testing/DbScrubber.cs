@@ -16,7 +16,7 @@ namespace Application.Core.Testing
             
             var moduleDbConnections = scope.ServiceProvider.GetServices<IModuleDbConnection>();
             
-            //hmm this ain't going to work if you've got foreign keys unless it's relatively complex...
+            //hmm this ain't going to work if you've got foreign keys unless you drop them first
             foreach (var moduleDbConnection in moduleDbConnections)
             {
                 switch (moduleDbConnection.Vendor)

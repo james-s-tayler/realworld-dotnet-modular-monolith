@@ -1,7 +1,6 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Application.Core.DataAccess;
 using Application.Core.Testing;
 using AutoFixture;
 using Conduit.API.Models;
@@ -9,7 +8,6 @@ using Xunit;
 using Xunit.Abstractions;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.DependencyInjection;
 using Refit;
 
 namespace Conduit.API.Tests.Integration
