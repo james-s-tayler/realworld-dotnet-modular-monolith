@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Application.Core.Context;
 using Application.Core.DataAccess;
 using Application.Social.Domain.Entities;
+using Application.Social.Domain.Setup.Module;
 using Dapper;
 using JetBrains.Annotations;
 

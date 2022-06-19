@@ -2,8 +2,10 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Application.Core.Modules;
 using ArchUnitNET.Domain;
 using ArchUnitNET.Loader;
+using FluentMigrator;
 using MediatR;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
 
@@ -12,9 +14,10 @@ namespace Application.FitnessFunctions.ArchitectureTests
     public class ArchitectureTestSetupFixture : IDisposable
     {
         public Architecture Architecture { get; }
-        public IObjectProvider<Class> DomainContractClasses { get; private set; }
+        public IObjectProvider<Class> DomainContracts { get; private set; }
         public IObjectProvider<Class> DomainOperations { get; private set; }
         public IObjectProvider<Class> DomainOperationHandlers { get; private set; }
+        public IObjectProvider<Class> DomainModules { get; private set; }
         public IObjectProvider<Class> DomainClasses { get; private set; }
         public IObjectProvider<Class> Commands { get; private set; }
         public IObjectProvider<Class> CommandHandlers { get; private set; }
@@ -32,7 +35,8 @@ namespace Application.FitnessFunctions.ArchitectureTests
 
         private void SetupDatabaseMigrations()
         {
-            DatabaseMigrations = Classes().That().ResideInNamespace(".*Domain.Migrations.*", true)
+            DatabaseMigrations = Classes().That()
+                .AreAssignableTo(typeof(Migration))
                 .And().AreNot(".*ProcessedByFody", true)
                 .As("Database Migrations");
         }
@@ -40,6 +44,7 @@ namespace Application.FitnessFunctions.ArchitectureTests
         private void SetupDomain()
         {
             SetupDomainClasses();
+            SetupDomainModules();
             SetupOperationHandlers();
             SetupCommandHandlers();
             SetupQueryHandlers();
@@ -48,12 +53,20 @@ namespace Application.FitnessFunctions.ArchitectureTests
         private void SetupDomainClasses()
         {
             DomainClasses = Classes().That().ResideInAssembly(".*.Domain", true)
-                .And().AreNot(DomainContractClasses)
+                .And().AreNot(DomainContracts)
                 .And().AreNot(DatabaseMigrations)
                 .And().AreNot(".*ProcessedByFody", true)
                 .As("Domain Classes");
         }
 
+        private void SetupDomainModules()
+        {
+            DomainModules = Classes().That().Are(DomainClasses)
+                .And()
+                .AreAssignableTo(typeof(AbstractModule))
+                .As("Domain Modules");
+        }
+        
         private void SetupOperationHandlers()
         {
             DomainOperationHandlers = Classes().That().Are(DomainClasses)
@@ -85,14 +98,14 @@ namespace Application.FitnessFunctions.ArchitectureTests
         
         private void SetupDomainContractClasses()
         {
-            DomainContractClasses = Classes().That().ResideInAssembly(".*Domain.Contracts.*", true)
+            DomainContracts = Classes().That().ResideInAssembly(".*Domain.Contracts.*", true)
                 .And().AreNot(".*ProcessedByFody", true)
                 .As("Domain Contracts");
         }
 
         private void SetupOperations()
         {
-            DomainOperations = Classes().That().Are(DomainContractClasses)
+            DomainOperations = Classes().That().Are(DomainContracts)
                 .And().ImplementInterface(typeof(IRequest<>))
                 .As("Domain Operations");
         }

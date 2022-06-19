@@ -25,7 +25,7 @@ namespace Application.FitnessFunctions.ArchitectureTests
         [Fact]
         public void DomainContractsMustBePublic()
         {
-            Classes().That().Are(_application.DomainContractClasses)
+            Classes().That().Are(_application.DomainContracts)
                 .Should().BePublic()
                 .Because("this is how other parts of the system interact with a given domain module")
                 .Check(_application.Architecture);
@@ -34,7 +34,7 @@ namespace Application.FitnessFunctions.ArchitectureTests
         [Fact]
         public void DomainContractsFollowNamingConvention()
         {
-            Classes().That().Are(_application.DomainContractClasses)
+            Classes().That().Are(_application.DomainContracts)
                 .Should().HaveNameEndingWith("Command")
                 .OrShould().HaveNameEndingWith("Query")
                 .OrShould().HaveNameEndingWith("CommandResult")
@@ -49,7 +49,7 @@ namespace Application.FitnessFunctions.ArchitectureTests
         [Fact]
         public void DomainContractsMustSubclassContractModel()
         {
-            Classes().That().Are(_application.DomainContractClasses)
+            Classes().That().Are(_application.DomainContracts)
                 .Should().BeAssignableTo(typeof(ContractModel))
                 .Because("Fody.Tracer [NoTrace] is applied to ContractModel.ToString() to reduce log noise")
                 .Check(_application.Architecture);
@@ -58,7 +58,7 @@ namespace Application.FitnessFunctions.ArchitectureTests
         [Fact]
         public void CommandResultsMustImplementINotification()
         {
-            Classes().That().Are(_application.DomainContractClasses)
+            Classes().That().Are(_application.DomainContracts)
                 .And().HaveNameEndingWith("CommandResult")
                 .Should().BeAssignableTo(typeof(INotification))
                 .Because("this is how events are published for other modules to consume")
@@ -77,7 +77,7 @@ namespace Application.FitnessFunctions.ArchitectureTests
         [Fact]
         public void DTOsResideInCorrectNamespace()
         {
-            Classes().That().Are(_application.DomainContractClasses)
+            Classes().That().Are(_application.DomainContracts)
                 .And().HaveNameEndingWith("DTO")
                 .Should().ResideInNamespace(@".*Domain.Contracts.DTOs", true)
                 .Because("this is the convention")
@@ -87,7 +87,7 @@ namespace Application.FitnessFunctions.ArchitectureTests
         [Fact]
         public void EnumsResideInCorrectNamespace()
         {
-            Classes().That().Are(_application.DomainContractClasses)
+            Classes().That().Are(_application.DomainContracts)
                 .And().HaveNameEndingWith("Enum")
                 .Should().ResideInNamespace(@".*Domain.Contracts.Enums", true)
                 .Because("this is the convention")
@@ -162,7 +162,7 @@ namespace Application.FitnessFunctions.ArchitectureTests
         public void DomainContractsShouldOnlyDependOnCore()
         {
             var coreNamespace = typeof(ConduitCore).Namespace;
-            Classes().That().Are(_application.DomainContractClasses)
+            Classes().That().Are(_application.DomainContracts)
                 .Should().OnlyDependOnTypesThat().ResideInNamespace($"{coreNamespace}|.*Domain.Contracts.*|System.*|MediatR.*|Destructurama.*", true)
                 .Because("contracts shouldn't be responsible for any business logic")
                 .Check(_application.Architecture);

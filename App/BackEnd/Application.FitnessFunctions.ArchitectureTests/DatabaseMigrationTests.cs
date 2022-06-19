@@ -58,5 +58,15 @@ namespace Application.FitnessFunctions.ArchitectureTests
                 .Because("SchemaManager scans the assembly for migrations containing the tag")
                 .Check(_application.Architecture);
         }
+        
+        [Fact]
+        public void DatabaseMigrationsShouldResideInCorrectNamespace()
+        {
+            Classes().That().Are(_application.DatabaseMigrations)
+                .Should()
+                .ResideInNamespace(".*Domain.Setup.Migrations.*", true)
+                .Because("this is the convention.")
+                .Check(_application.Architecture);
+        }
     }
 }

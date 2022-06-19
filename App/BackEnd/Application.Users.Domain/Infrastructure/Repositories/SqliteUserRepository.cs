@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Core.DataAccess;
 using Application.Users.Domain.Entities;
+using Application.Users.Domain.Setup.Module;
 using Dapper;
 using JetBrains.Annotations;
 

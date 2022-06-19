@@ -63,5 +63,15 @@ namespace Application.FitnessFunctions.ArchitectureTests
                 .Because("this is the convention")
                 .Check(_application.Architecture);
         }
+        
+        [Fact]
+        public void DomainModulesShouldResideInCorrectNamespace()
+        {
+            Classes().That().Are(_application.DomainModules)
+                .Should()
+                .ResideInNamespace(".*.Domain.Setup.Module", true)
+                .Because("that's the convention")
+                .Check(_application.Architecture);
+        }
     }
 }

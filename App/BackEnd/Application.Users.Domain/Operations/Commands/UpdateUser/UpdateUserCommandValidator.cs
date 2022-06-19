@@ -1,10 +1,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core.Context;
-using Application.Users.Domain.Configuration;
 using Application.Users.Domain.Contracts.DTOs;
 using Application.Users.Domain.Contracts.Operations.Commands.UpdateUser;
 using Application.Users.Domain.Infrastructure.Repositories;
+using Application.Users.Domain.Setup.Configuration;
 using FluentValidation;
 using JetBrains.Annotations;
 

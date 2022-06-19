@@ -1,8 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Users.Domain.Configuration;
 using Application.Users.Domain.Contracts.Operations.Commands.RegisterUser;
 using Application.Users.Domain.Infrastructure.Repositories;
+using Application.Users.Domain.Setup.Configuration;
 using FluentValidation;
 using JetBrains.Annotations;
 
