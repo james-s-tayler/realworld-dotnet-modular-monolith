@@ -72,11 +72,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Social.Domain.T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppTemplates", "AppTemplates", "{6FC2BBD5-038B-42CC-8851-98D417A6BEF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.ModuleName.Domain.Contracts", "..\..\DevOps\AppTemplates\BackEnd\Application.ModuleName.Domain.Contracts\Application.ModuleName.Domain.Contracts.csproj", "{4C794195-4B72-4CBB-BF61-028833025E1C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.ModuleName.Domain.Contracts", "..\..\DevOps\AppTemplates\Module\Application.ModuleName.Domain.Contracts\Application.ModuleName.Domain.Contracts.csproj", "{4C794195-4B72-4CBB-BF61-028833025E1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.ModuleName.Domain.Tests.Unit", "..\..\DevOps\AppTemplates\BackEnd\Application.ModuleName.Domain.Tests.Unit\Application.ModuleName.Domain.Tests.Unit.csproj", "{FCF4801B-FC1C-4715-B7BB-DAAF3E5E0700}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.ModuleName.Domain.Tests.Unit", "..\..\DevOps\AppTemplates\Module\Application.ModuleName.Domain.Tests.Unit\Application.ModuleName.Domain.Tests.Unit.csproj", "{FCF4801B-FC1C-4715-B7BB-DAAF3E5E0700}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.ModuleName.Domain", "..\..\DevOps\AppTemplates\BackEnd\Application.ModuleName.Domain\Application.ModuleName.Domain.csproj", "{A8DBEAF7-B701-43A6-81F2-2BF2E1FFF574}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.ModuleName.Domain", "..\..\DevOps\AppTemplates\Module\Application.ModuleName.Domain\Application.ModuleName.Domain.csproj", "{A8DBEAF7-B701-43A6-81F2-2BF2E1FFF574}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Module", "Module", "{69E5A151-D135-47D9-AF4D-26F8BC2A2CA9}"
 EndProject
 Global
 				GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -182,8 +184,9 @@ Global
 		{647BF5D4-B836-44F3-AB2F-26254E6B97CA} = {CF744F7C-DF0D-4AD9-A19D-F08F418D41C7}
 		{0D1E9E45-1139-42B1-945C-157B6C80D526} = {6BB295EB-ABC1-4B3E-BED3-6EABC9D245EA}
 		{B1D08C3F-8FA3-4959-8EF0-2F9F7F46DC3A} = {6BB295EB-ABC1-4B3E-BED3-6EABC9D245EA}
-		{4C794195-4B72-4CBB-BF61-028833025E1C} = {6FC2BBD5-038B-42CC-8851-98D417A6BEF3}
-		{FCF4801B-FC1C-4715-B7BB-DAAF3E5E0700} = {6FC2BBD5-038B-42CC-8851-98D417A6BEF3}
-		{A8DBEAF7-B701-43A6-81F2-2BF2E1FFF574} = {6FC2BBD5-038B-42CC-8851-98D417A6BEF3}
+		{69E5A151-D135-47D9-AF4D-26F8BC2A2CA9} = {6FC2BBD5-038B-42CC-8851-98D417A6BEF3}
+		{FCF4801B-FC1C-4715-B7BB-DAAF3E5E0700} = {69E5A151-D135-47D9-AF4D-26F8BC2A2CA9}
+		{4C794195-4B72-4CBB-BF61-028833025E1C} = {69E5A151-D135-47D9-AF4D-26F8BC2A2CA9}
+		{A8DBEAF7-B701-43A6-81F2-2BF2E1FFF574} = {69E5A151-D135-47D9-AF4D-26F8BC2A2CA9}
 	EndGlobalSection
 EndGlobal
