@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\..\App\BackEnd\Application.Core\Application.Core.csproj"/>
+        <ProjectReference Include="..\Application.Content.Domain.Contracts\Application.Content.Domain.Contracts.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Infrastructure\Services"/>
+        <Folder Include="Setup\Configuration"/>
+    </ItemGroup>
+
+</Project>
