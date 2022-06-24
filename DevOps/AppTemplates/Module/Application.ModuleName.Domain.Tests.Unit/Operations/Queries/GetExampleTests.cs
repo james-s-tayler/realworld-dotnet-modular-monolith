@@ -9,12 +9,12 @@ using Xunit.Abstractions;
 
 namespace Application.ModuleName.Domain.Tests.Unit.Operations.Queries
 {
-    [Collection(nameof(ModuleNameTestCollection))]
+    [Collection(nameof(ModuleNameModuleTestCollection))]
     public class GetExampleTests : TestBase
     {
-        private readonly ModuleNameSetupFixture _module;
+        private readonly ModuleNameModuleSetupFixture _module;
         
-        public GetExampleTests(ModuleNameSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        public GetExampleTests(ModuleNameModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
             _module = module;
         }

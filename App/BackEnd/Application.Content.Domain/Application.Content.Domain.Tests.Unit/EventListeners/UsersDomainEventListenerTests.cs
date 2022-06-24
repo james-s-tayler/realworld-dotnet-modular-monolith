@@ -1,0 +1,90 @@
+using System.Threading.Tasks;
+using Application.Content.Domain.Tests.Unit.Setup;
+using Application.Core.Testing;
+using Application.Users.Domain.Contracts.DTOs;
+using Application.Users.Domain.Contracts.Operations.Commands.RegisterUser;
+using Application.Users.Domain.Contracts.Operations.Commands.UpdateUser;
+using FluentAssertions;
+using Xunit;
+using Xunit.Abstractions;
+using AutoFixture;
+
+namespace Application.Content.Domain.Tests.Unit.EventListeners
+{
+    [Collection(nameof(ContentModuleTestCollection))]
+    public class UsersDomainEventListenerTests : TestBase
+    {
+        private readonly ContentModuleSetupFixture _module;
+
+        public UsersDomainEventListenerTests(ContentModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        {
+            _module = module;
+            _module.UserRepository.DeleteAll().GetAwaiter().GetResult();
+        }
+
+        [Fact]
+        public async Task GivenUserRegisterEvent_WhenCheckUserRepository_ThenUserExists()
+        {
+            //arrange
+            var registerUserEvent = new RegisterUserCommandResult
+            {
+                RegisteredUser = new UserDTO
+                {
+                    
+                    Email = $"{_module.AutoFixture.Create<string>()}@{_module.AutoFixture.Create<string>()}.com",
+                    Id = _module.AutoFixture.Create<int>(),
+                    Username = _module.AutoFixture.Create<string>(),
+                    Token = _module.AutoFixture.Create<string>()
+                }
+            };
+            
+            //act
+            await _module.Mediator.Publish(registerUserEvent);
+
+            //assert
+            var exists = await _module.UserRepository.Exists(registerUserEvent.RegisteredUser.Id);
+            var existsByUsername = await _module.UserRepository.ExistsByUsername(registerUserEvent.RegisteredUser.Username);
+            exists.Should().BeTrue();
+            existsByUsername.Should().BeTrue();
+        }
+        
+        [Fact]
+        public async Task GivenAnExistingUser_WhenUpdateUserEventFired_ThenUserGetsUpdated()
+        {
+            //arrange
+            var registerUserEvent = new RegisterUserCommandResult
+            {
+                RegisteredUser = new UserDTO
+                {
+                    
+                    Email = $"{_module.AutoFixture.Create<string>()}@{_module.AutoFixture.Create<string>()}.com",
+                    Id = _module.AutoFixture.Create<int>(),
+                    Username = _module.AutoFixture.Create<string>(),
+                    Token = _module.AutoFixture.Create<string>()
+                }
+            };
+            
+            await _module.Mediator.Publish(registerUserEvent);
+            
+            var updateUserEvent = new UpdateUserCommandResult
+            {
+                UpdatedUser = new UserDTO
+                {
+                    Id = registerUserEvent.RegisteredUser.Id,
+                    Email = $"{_module.AutoFixture.Create<string>()}@{_module.AutoFixture.Create<string>()}.com",
+                    Username = _module.AutoFixture.Create<string>(),
+                    Token = _module.AutoFixture.Create<string>(),
+                    Bio = _module.AutoFixture.Create<string>(),
+                    Image = _module.AutoFixture.Create<string>()
+                }
+            };
+            
+            //act
+            await _module.Mediator.Publish(updateUserEvent);
+
+            //assert
+            var updateUser = await _module.UserRepository.GetById(registerUserEvent.RegisteredUser.Id);
+            updateUser.Username.Should().Be(updateUserEvent.UpdatedUser.Username);
+        }
+    }
+}

@@ -9,12 +9,12 @@ using Xunit.Abstractions;
 
 namespace Application.Content.Domain.Tests.Unit.Operations.Queries
 {
-    [Collection(nameof(ContentTestCollection))]
+    [Collection(nameof(ContentModuleTestCollection))]
     public class GetSingleArticleTests : TestBase
     {
-        private readonly ContentSetupFixture _module;
+        private readonly ContentModuleSetupFixture _module;
 
-        public GetSingleArticleTests(ContentSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        public GetSingleArticleTests(ContentModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
             _module = module;
         }
@@ -22,6 +22,7 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
         [Fact]
         public async Task GivenNoArticle_WhenGetArticle_ThenNotFound()
         {
+            
             //arrange
             var getSingleArticleQuery = new GetSingleArticleQuery { Slug = "some-non-existent-article" };
 

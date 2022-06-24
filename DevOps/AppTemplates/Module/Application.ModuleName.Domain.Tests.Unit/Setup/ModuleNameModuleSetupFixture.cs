@@ -1,27 +1,28 @@
 using System.Collections.Generic;
 using Application.Core.Modules;
 using Application.Core.Testing;
-using Application.Content.Domain.Setup.Module;
+using Application.ModuleName.Domain.Setup.Module;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Application.Content.Domain.Tests.Unit.Setup
+namespace Application.ModuleName.Domain.Tests.Unit.Setup
 {
-    public class ContentSetupFixture : AbstractModuleSetupFixture
+    public class ModuleNameModuleSetupFixture : AbstractModuleSetupFixture
     {
         protected override void AddConfiguration(IDictionary<string, string> configuration)
         {
+            
         }
-
+        
         protected override void ReplaceServices(AbstractModule module)
         {
+            
         }
-
+        
         protected override void SetupPostProcess(ServiceProvider provider)
         {
+            
         }
 
-        public ContentSetupFixture() : base(new ContentModule())
-        {
-        }
+        public ModuleNameModuleSetupFixture() : base(new ModuleNameModule()) {}
     }
 }
