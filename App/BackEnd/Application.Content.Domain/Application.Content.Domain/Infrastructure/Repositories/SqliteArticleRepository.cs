@@ -1,0 +1,127 @@
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
+using System.Threading.Tasks;
+using Application.Core.DataAccess;
+using Application.Content.Domain.Entities;
+using Application.Content.Domain.Setup.Module;
+using Dapper;
+using JetBrains.Annotations;
+
+namespace Application.Content.Domain.Infrastructure.Repositories
+{
+    internal class SqliteArticleRepository : IArticleRepository
+    {
+        private readonly DbConnection _connection;
+
+        public SqliteArticleRepository([NotNull] ModuleDbConnectionWrapper<ContentModule> connectionWrapper)
+        {
+            _connection = connectionWrapper.Connection;
+        }
+
+        public Task<bool> Exists(int id)
+        {
+            string sql = "SELECT EXISTS(SELECT 1 FROM articles WHERE id=@id)";
+
+            var arguments = new
+            {
+                id = id
+            };
+
+            var exists = _connection.ExecuteScalar<bool>(sql, arguments);
+
+            return Task.FromResult(exists);
+        }
+        
+        public Task<bool> ExistsBySlug(string slug)
+        {
+            string sql = "SELECT EXISTS(SELECT 1 FROM articles WHERE slug=@slug)";
+
+            var arguments = new { slug };
+
+            var exists = _connection.ExecuteScalar<bool>(sql, arguments);
+
+            return Task.FromResult(exists);
+        }
+
+        public Task<Article> GetBySlug(string slug)
+        {
+            string sql = "SELECT * FROM articles WHERE slug=@slug";
+
+            var arguments = new { slug };
+
+            var articles = _connection.Query<Article>(sql, arguments);
+
+            return Task.FromResult(articles.SingleOrDefault());
+        }
+
+        public Task<Article> GetById(int id)
+        {
+            string sql = "SELECT * FROM articles WHERE id=@id";
+
+            var arguments = new
+            {
+                id = id
+            };
+
+            var articles = _connection.Query<Article>(sql, arguments);
+
+            return Task.FromResult(articles.SingleOrDefault());
+        }
+
+        public Task<IEnumerable<Article>> GetAll()
+        {
+            string sql = "SELECT * FROM articles";
+
+            return Task.FromResult(_connection.Query<Article>(sql));
+        }
+
+        public Task<int> Create([NotNull] Article article)
+        {
+            var sql = "INSERT INTO articles (something) VALUES (@something) RETURNING *";
+
+            var arguments = new
+            {
+                something = article.Something
+            };
+
+            var insertedArticle = _connection.QuerySingle<Article>(sql, arguments);
+
+            return Task.FromResult(insertedArticle.Id);
+        }
+
+        public Task Update([NotNull] Article article)
+        {
+            var sql = "UPDATE articles SET something = @something WHERE id = @id";
+
+            var arguments = new
+            {
+                id = article.Id,
+                username = article.Something
+            };
+
+            _connection.Execute(sql, arguments);
+            return Task.CompletedTask;
+        }
+
+        public Task Delete(int id)
+        {
+            var sql = "DELETE FROM articles WHERE id = @id";
+
+            var arguments = new
+            {
+                id = id
+            };
+
+            _connection.Execute(sql, arguments);
+            return Task.CompletedTask;
+        }
+
+        public Task<int> DeleteAll()
+        {
+            var sql = "DELETE FROM articles";
+
+            return Task.FromResult(_connection.Execute(sql));
+        }
+    }
+}

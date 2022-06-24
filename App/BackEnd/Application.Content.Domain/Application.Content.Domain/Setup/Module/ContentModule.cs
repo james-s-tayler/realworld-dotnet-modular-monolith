@@ -43,7 +43,7 @@ namespace Application.Content.Domain.Setup.Module
 
         protected override void AddModuleServices(IConfiguration configuration, IServiceCollection services)
         {
-            services.AddTransient<IExampleRepository, SqliteExampleRepository>();
+            services.AddTransient<IArticleRepository, SqliteArticleRepository>();
         }
     }
 }

@@ -62,6 +62,8 @@ namespace Application.Core.Modules
             services.AddHttpContextAccessor(); //dubious about web specific assemblies leaking into here...
             services.TryAddTransient<IUserContext, ApiContext>();
             services.TryAddTransient<UserContextEnricher>();
+            services.TryAddTransient<IDataAnnotationsValidator, DataAnnotationsValidator>();
+            services.TryAddTransient<IInputContractValidator, InputContractValidator>();
             services.AddMediatR(GetModuleAssembly());
             services.AddValidatorsFromAssembly(GetModuleAssembly(), ServiceLifetime.Transient, null, true);
             services.AddAuthorizersFromAssembly(GetModuleAssembly(), ServiceLifetime.Transient);

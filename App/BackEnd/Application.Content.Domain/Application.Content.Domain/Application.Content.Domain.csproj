@@ -5,13 +5,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\App\BackEnd\Application.Core\Application.Core.csproj"/>
-        <ProjectReference Include="..\Application.Content.Domain.Contracts\Application.Content.Domain.Contracts.csproj"/>
+        <ProjectReference Include="..\..\..\..\App\BackEnd\Application.Core\Application.Core.csproj" />
+        <ProjectReference Include="..\..\Application.Social.Domain.Contracts\Application.Social.Domain.Contracts.csproj" />
+        <ProjectReference Include="..\Application.Content.Domain.Contracts\Application.Content.Domain.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Infrastructure\Services"/>
-        <Folder Include="Setup\Configuration"/>
+        <Folder Include="Infrastructure\Services" />
+        <Folder Include="Setup\Configuration" />
     </ItemGroup>
 
 </Project>

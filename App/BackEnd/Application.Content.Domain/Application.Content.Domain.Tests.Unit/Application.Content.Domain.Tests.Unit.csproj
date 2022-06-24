@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4"/>
-        <PackageReference Include="xunit" Version="2.4.1"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+        <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
@@ -20,12 +20,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\App\BackEnd\Application.Core.Testing\Application.Core.Testing.csproj"/>
-        <ProjectReference Include="..\Application.Content.Domain\Application.Content.Domain.csproj"/>
+        <ProjectReference Include="..\..\..\..\App\BackEnd\Application.Core.Testing\Application.Core.Testing.csproj" />
+        <ProjectReference Include="..\Application.Content.Domain\Application.Content.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Operations\Commands"/>
+        <Folder Include="Operations\Commands" />
     </ItemGroup>
 
 </Project>

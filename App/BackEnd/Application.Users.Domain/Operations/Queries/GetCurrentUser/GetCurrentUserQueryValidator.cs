@@ -13,8 +13,7 @@ namespace Application.Users.Domain.Operations.Queries.GetCurrentUser
         private readonly IUserRepository _userRepository;
         private readonly IUserContext _userContext;
         
-        public GetCurrentUserQueryValidator([NotNull] IUserRepository userRepository, 
-            [NotNull] IUserContext userContext)
+        public GetCurrentUserQueryValidator([NotNull] IUserRepository userRepository, [NotNull] IUserContext userContext)
         {
             _userContext = userContext;
             _userRepository = userRepository;

@@ -5,7 +5,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\App\BackEnd\Application.Core\Application.Core.csproj"/>
+        <ProjectReference Include="..\..\..\..\App\BackEnd\Application.Core\Application.Core.csproj" />
+        <ProjectReference Include="..\..\Application.Social.Domain.Contracts\Application.Social.Domain.Contracts.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Enums" />
     </ItemGroup>
 
 </Project>
