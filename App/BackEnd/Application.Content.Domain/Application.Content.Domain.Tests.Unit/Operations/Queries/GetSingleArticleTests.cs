@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Application.Content.Domain.Contracts.Operations.Queries.GetSingleArticle;
 using Application.Core.PipelineBehaviors.OperationResponse;
@@ -31,6 +32,28 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
 
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
+        }
+        
+        [Fact]
+        public async Task GivenAnArticle_WhenGetArticleBySlug_ThenReturnsArticle()
+        {
+            //arrange
+            var testStartTime = DateTime.UtcNow;
+            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingArticle.GetSlug() };
+
+            //act
+            var result = await _module.Mediator.Send(getSingleArticleQuery);
+
+            //assert
+            result.Result.Should().Be(OperationResult.Success);
+            result.Response.Should().NotBeNull();
+            result.Response.Article.Should().NotBeNull();
+            result.Response.Article.Slug.Should().Be(_module.ExistingArticle.GetSlug());
+            result.Response.Article.Title.Should().Be(_module.ExistingArticle.Title);
+            result.Response.Article.Description.Should().Be(_module.ExistingArticle.Description);
+            result.Response.Article.Body.Should().Be(_module.ExistingArticle.Body);
+            result.Response.Article.CreatedAt.Should().BeAfter(testStartTime);
+            result.Response.Article.UpdatedAt.Should().BeAfter(testStartTime);
         }
     }
 }

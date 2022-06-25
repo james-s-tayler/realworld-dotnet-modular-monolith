@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -59,10 +60,7 @@ namespace Application.Content.Domain.Infrastructure.Repositories
         {
             string sql = "SELECT * FROM articles WHERE id=@id";
 
-            var arguments = new
-            {
-                id = id
-            };
+            var arguments = new { id };
 
             var articles = _connection.Query<Article>(sql, arguments);
 
@@ -78,11 +76,19 @@ namespace Application.Content.Domain.Infrastructure.Repositories
 
         public Task<int> Create([NotNull] Article article)
         {
-            var sql = "INSERT INTO articles (something) VALUES (@something) RETURNING *";
+            var sql = "INSERT INTO articles (user_id, slug, title, description, body, created_at, updated_at) VALUES (@user_id, @slug, @title, @description, @body, @created_at, @updated_at) RETURNING *";
 
+            var now = DateTime.UtcNow;
+            
             var arguments = new
             {
-                something = article.Something
+                user_id = article.UserId, 
+                slug = article.GetSlug(), 
+                title = article.Title, 
+                description = article.Description, 
+                body = article.Body, 
+                created_at = now.ToString("O"), 
+                updated_at = now.ToString("O")
             };
 
             var insertedArticle = _connection.QuerySingle<Article>(sql, arguments);
@@ -92,12 +98,15 @@ namespace Application.Content.Domain.Infrastructure.Repositories
 
         public Task Update([NotNull] Article article)
         {
-            var sql = "UPDATE articles SET something = @something WHERE id = @id";
+            var sql = "UPDATE articles SET slug = @slug, title = @title, description = @description, body = @body, updated_at = @updated_at WHERE id = @id";
 
             var arguments = new
             {
-                id = article.Id,
-                username = article.Something
+                slug = article.GetSlug(), 
+                title = article.Title, 
+                description = article.Description, 
+                body = article.Body,
+                updated_at = DateTime.UtcNow.ToString("O")
             };
 
             _connection.Execute(sql, arguments);
@@ -108,10 +117,7 @@ namespace Application.Content.Domain.Infrastructure.Repositories
         {
             var sql = "DELETE FROM articles WHERE id = @id";
 
-            var arguments = new
-            {
-                id = id
-            };
+            var arguments = new { id };
 
             _connection.Execute(sql, arguments);
             return Task.CompletedTask;

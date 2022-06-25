@@ -31,6 +31,7 @@ namespace Application.Core.DataAccess.Dapper.Sqlite
                 {
                     SqlMapper.AddTypeHandler(new SqliteTimeSpanHandler());
                 }
+                
                 var connectionStringReader = new SqliteConnectionStringReader(configuration, hostEnvironment);
                 var sqliteConnection = new SqliteConnection(connectionStringReader!.GetConnectionString(module.GetModuleName()));
                 sqliteConnection.Open();
