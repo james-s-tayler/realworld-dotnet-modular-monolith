@@ -52,9 +52,86 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
             result.Response.Article.Title.Should().Be(_module.ExistingArticleEntity.Title);
             result.Response.Article.Description.Should().Be(_module.ExistingArticleEntity.Description);
             result.Response.Article.Body.Should().Be(_module.ExistingArticleEntity.Body);
-            result.Response.Article.TagList.Should().BeEquivalentTo(new []{"Tag1", "Tag2"});
             result.Response.Article.CreatedAt.Should().BeAfter(testStartTime);
             result.Response.Article.UpdatedAt.Should().BeAfter(testStartTime);
+        }
+        
+        [Fact]
+        public async Task GivenAnArticle_WhenGetArticleBySlug_ThenArticleContainsTags()
+        {
+            //arrange
+            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingArticleEntity.GetSlug() };
+
+            //act
+            var result = await _module.Mediator.Send(getSingleArticleQuery);
+
+            //assert
+            result.Response.Article.TagList.Should().BeEquivalentTo(new []{_module.ExistingArticleTag1, _module.ExistingArticleTag2});
+        }
+        
+        [Fact]
+        public async Task GivenAnArticle_WhenGetArticleBySlug_ThenArticleContainsAuthorProfile()
+        {
+            //arrange
+            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingArticleEntity.GetSlug() };
+
+            //act
+            var result = await _module.Mediator.Send(getSingleArticleQuery);
+
+            //assert
+            result.Response.Article.Author.Should().NotBeNull();
+        }
+        
+        [Fact]
+        public async Task GivenAFavoritedArticle_WhenGetArticleBySlug_ThenArticleIsFavorited()
+        {
+            //arrange
+            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingArticleEntity.GetSlug() };
+
+            //act
+            var result = await _module.Mediator.Send(getSingleArticleQuery);
+
+            //assert
+            result.Response.Article.Favorited.Should().BeTrue();
+        }
+        
+        [Fact]
+        public async Task GivenANonFavoritedArticle_WhenGetArticleBySlug_ThenArticleIsNotFavorited()
+        {
+            //arrange
+            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingArticleEntity.GetSlug() };
+
+            //act
+            var result = await _module.Mediator.Send(getSingleArticleQuery);
+
+            //assert
+            result.Response.Article.Favorited.Should().BeFalse();
+        }
+        
+        [Fact]
+        public async Task GivenANonFavoritedArticle_WhenGetArticleBySlug_ThenFavoritesCountIsZero()
+        {
+            //arrange
+            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingArticleEntity.GetSlug() };
+
+            //act
+            var result = await _module.Mediator.Send(getSingleArticleQuery);
+
+            //assert
+            result.Response.Article.FavoritesCount.Should().Be(0);
+        }
+        
+        [Fact]
+        public async Task GivenAFavoritedArticle_WhenGetArticleBySlug_ThenFavoritesCountIsNonZero()
+        {
+            //arrange
+            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingArticleEntity.GetSlug() };
+
+            //act
+            var result = await _module.Mediator.Send(getSingleArticleQuery);
+
+            //assert
+            result.Response.Article.FavoritesCount.Should().Be(1);
         }
         
         [Fact]
