@@ -23,7 +23,6 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
         [Fact]
         public async Task GivenNoArticle_WhenGetArticle_ThenNotFound()
         {
-            
             //arrange
             var getSingleArticleQuery = new GetSingleArticleQuery { Slug = "some-non-existent-article" };
 

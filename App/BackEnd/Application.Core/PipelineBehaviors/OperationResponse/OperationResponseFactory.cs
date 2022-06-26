@@ -9,6 +9,12 @@ namespace Application.Core.PipelineBehaviors.OperationResponse
 {
     public class OperationResponseFactory
     {
+        public static TResponse NotFound<TRequest, TResponse>(Type entityType, object identifier) where TResponse : class where TRequest : IRequest<TResponse>
+        {
+            var errorMessages = new List<string>{$"{entityType.Name.Replace("Entity", "")} '{identifier}' was not found."};
+            return CreateResponse<TRequest, TResponse>(OperationResult.NotFound, errorMessages);
+        }
+        
         public static TResponse InvalidRequest<TRequest, TResponse>([NotNull] List<string> errorMessages) where TResponse : class where TRequest : IRequest<TResponse>
         {
             return CreateResponse<TRequest, TResponse>(OperationResult.InvalidRequest, errorMessages);
