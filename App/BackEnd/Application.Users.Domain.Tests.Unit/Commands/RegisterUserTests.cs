@@ -114,7 +114,7 @@ namespace Application.Users.Domain.Tests.Unit.Commands
         public async Task GivenAUsernameAlreadyInUse_WhenRegisterUser_ThenFailsValidation()
         {
             //arrange
-            _registerUserCommand.NewUser.Username = _usersModule.ExistingUser.Username;
+            _registerUserCommand.NewUser.Username = _usersModule.ExistingUserEntity.Username;
 
             //act
             var result = await _usersModule.Mediator.Send(_registerUserCommand);
@@ -128,7 +128,7 @@ namespace Application.Users.Domain.Tests.Unit.Commands
         public async Task GivenAnEmailAlreadyInUse_WhenRegisterUser_ThenFailsValidation()
         {
             //arrange
-            _registerUserCommand.NewUser.Email = _usersModule.ExistingUser.Email;
+            _registerUserCommand.NewUser.Email = _usersModule.ExistingUserEntity.Email;
 
             //act
             var result = await _usersModule.Mediator.Send(_registerUserCommand);

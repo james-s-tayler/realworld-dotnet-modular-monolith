@@ -72,7 +72,8 @@ namespace Application.Core.Modules
             services.AddPipelineBehaviorsFromAssembly(GetModuleContractsAssembly(), typeof(EventPublishingPipelineBehavior<,>));
             services.AddTransactionPipelineBehaviorsFromAssembly(GetModuleContractsAssembly(), GetModuleType());
             services.AddPipelineBehaviorsFromAssembly(GetModuleContractsAssembly(), typeof(AuthorizationPipelineBehavior<,>));
-            services.AddPipelineBehaviorsFromAssembly(GetModuleContractsAssembly(), typeof(ValidationPipelineBehavior<,>));
+            services.AddPipelineBehaviorsFromAssembly(GetModuleContractsAssembly(), typeof(ContractValidationPipelineBehavior<,>));
+            services.AddPipelineBehaviorsFromAssembly(GetModuleContractsAssembly(), typeof(BusinessValidationPipelineBehavior<,>));
         }
 
         public abstract Assembly GetModuleAssembly();

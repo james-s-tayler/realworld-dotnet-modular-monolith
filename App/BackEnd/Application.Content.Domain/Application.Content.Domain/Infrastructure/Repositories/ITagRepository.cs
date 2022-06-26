@@ -4,7 +4,7 @@ using Application.Content.Domain.Entities;
 
 namespace Application.Content.Domain.Infrastructure.Repositories
 {
-    public interface ITagRepository
+    internal interface ITagRepository
     {
         Task<List<TagEntity>> GetByArticleId(int articleId);
     }

@@ -25,7 +25,7 @@ namespace Application.Users.Domain.Tests.Unit.Commands
             {
                 UserCredentials = new UserCredentialsDTO
                 {
-                    Email = _usersModule.ExistingUser.Email,
+                    Email = _usersModule.ExistingUserEntity.Email,
                     Password = _usersModule.PlainTextPassword
                 }
             };
@@ -48,8 +48,8 @@ namespace Application.Users.Domain.Tests.Unit.Commands
             
             var loggedInUser = result.Response.LoggedInUser;
 
-            loggedInUser.Email.Should().Be(_usersModule.ExistingUser.Email);
-            loggedInUser.Username.Should().Be(_usersModule.ExistingUser.Username);
+            loggedInUser.Email.Should().Be(_usersModule.ExistingUserEntity.Email);
+            loggedInUser.Username.Should().Be(_usersModule.ExistingUserEntity.Username);
             loggedInUser.Token.Should().NotBeEmpty();
         }
         

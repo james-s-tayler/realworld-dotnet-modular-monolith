@@ -19,6 +19,7 @@ namespace Application.FitnessFunctions.ArchitectureTests
         public IObjectProvider<Class> DomainOperationHandlers { get; private set; }
         public IObjectProvider<Class> DomainModules { get; private set; }
         public IObjectProvider<Class> DomainClasses { get; private set; }
+        public IObjectProvider<Class> Entities { get; private set; }
         public IObjectProvider<Class> Commands { get; private set; }
         public IObjectProvider<Class> CommandHandlers { get; private set; }
         public IObjectProvider<Class> Queries { get; private set; }
@@ -45,6 +46,7 @@ namespace Application.FitnessFunctions.ArchitectureTests
         {
             SetupDomainClasses();
             SetupDomainModules();
+            SetupEntities();
             SetupOperationHandlers();
             SetupCommandHandlers();
             SetupQueryHandlers();
@@ -65,6 +67,13 @@ namespace Application.FitnessFunctions.ArchitectureTests
                 .And()
                 .AreAssignableTo(typeof(AbstractModule))
                 .As("Domain Modules");
+        }
+        
+        private void SetupEntities()
+        {
+            Entities = Classes().That().Are(DomainClasses)
+                .And().ResideInNamespace("Application.*.Domain.Entities.*", true)
+                .As("Entities");
         }
         
         private void SetupOperationHandlers()

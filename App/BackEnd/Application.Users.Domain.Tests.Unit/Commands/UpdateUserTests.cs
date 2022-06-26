@@ -56,30 +56,30 @@ namespace Application.Users.Domain.Tests.Unit.Commands
             //assert
             updateUserResult.Result.Should().Be(OperationResult.Success);
             updateUserResult.Response.Should().NotBeNull();
-            updateUserResult.Response.UpdatedUser.Id.Should().Be(_usersModule.ExistingUser.Id);
+            updateUserResult.Response.UpdatedUser.Id.Should().Be(_usersModule.ExistingUserEntity.Id);
 
             updateUserResult.Response.UpdatedUser.Username.Should().Be(updateUsername
                 ? _updateUserCommand.UpdateUser.Username
-                : _usersModule.ExistingUser.Username);
+                : _usersModule.ExistingUserEntity.Username);
             
             updateUserResult.Response.UpdatedUser.Email.Should().Be(updateEmail
                 ? _updateUserCommand.UpdateUser.Email
-                : _usersModule.ExistingUser.Email);
+                : _usersModule.ExistingUserEntity.Email);
             
             updateUserResult.Response.UpdatedUser.Image.Should().Be(updateImage
                 ? _updateUserCommand.UpdateUser.Image
-                : _usersModule.ExistingUser.Image);
+                : _usersModule.ExistingUserEntity.Image);
             
             updateUserResult.Response.UpdatedUser.Bio.Should().Be(updateBio
                 ? _updateUserCommand.UpdateUser.Bio
-                : _usersModule.ExistingUser.Bio);
+                : _usersModule.ExistingUserEntity.Bio);
         }
         
         [Fact]
         public async Task GivenUpdateEmailWithExistingValue_WhenUpdateUser_ThenSucceeds()
         {
             //arrange
-            _updateUserCommand.UpdateUser = new UpdateUserDTO {Email = _usersModule.ExistingUser.Email};
+            _updateUserCommand.UpdateUser = new UpdateUserDTO {Email = _usersModule.ExistingUserEntity.Email};
 
             //act
             var updateUserResult = await _usersModule.Mediator.Send(_updateUserCommand);
@@ -87,16 +87,16 @@ namespace Application.Users.Domain.Tests.Unit.Commands
             //assert
             updateUserResult.Result.Should().Be(OperationResult.Success);
             updateUserResult.Response.Should().NotBeNull();
-            updateUserResult.Response.UpdatedUser.Id.Should().Be(_usersModule.ExistingUser.Id);
+            updateUserResult.Response.UpdatedUser.Id.Should().Be(_usersModule.ExistingUserEntity.Id);
 
-            updateUserResult.Response.UpdatedUser.Email.Should().Be(_usersModule.ExistingUser.Email);
+            updateUserResult.Response.UpdatedUser.Email.Should().Be(_usersModule.ExistingUserEntity.Email);
         }
        
         [Fact]
         public async Task GivenUpdateUsernameWithExistingValue_WhenUpdateUser_ThenSucceeds()
         {
             //arrange
-            _updateUserCommand.UpdateUser = new UpdateUserDTO {Email = _usersModule.ExistingUser.Username};
+            _updateUserCommand.UpdateUser = new UpdateUserDTO {Email = _usersModule.ExistingUserEntity.Username};
 
             //act
             var updateUserResult = await _usersModule.Mediator.Send(_updateUserCommand);
@@ -104,9 +104,9 @@ namespace Application.Users.Domain.Tests.Unit.Commands
             //assert
             updateUserResult.Result.Should().Be(OperationResult.Success);
             updateUserResult.Response.Should().NotBeNull();
-            updateUserResult.Response.UpdatedUser.Id.Should().Be(_usersModule.ExistingUser.Id);
+            updateUserResult.Response.UpdatedUser.Id.Should().Be(_usersModule.ExistingUserEntity.Id);
 
-            updateUserResult.Response.UpdatedUser.Username.Should().Be(_usersModule.ExistingUser.Username);
+            updateUserResult.Response.UpdatedUser.Username.Should().Be(_usersModule.ExistingUserEntity.Username);
         }
         
         [Fact]

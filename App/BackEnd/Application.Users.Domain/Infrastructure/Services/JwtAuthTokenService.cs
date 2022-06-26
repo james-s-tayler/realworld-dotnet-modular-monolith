@@ -21,14 +21,14 @@ namespace Application.Users.Domain.Infrastructure.Services
             _jwtSettings = jwtSettings.Value;
         }
 
-        public Task<string> GenerateAuthToken([NotNull] User user)
+        public Task<string> GenerateAuthToken([NotNull] UserEntity userEntity)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
 
             var authClaims = new List<Claim>();
-            authClaims.Add(new Claim("user_id", user.Id.ToString()));
-            authClaims.Add(new Claim("username", user.Username));
-            authClaims.Add(new Claim("email", user.Email));
+            authClaims.Add(new Claim("user_id", userEntity.Id.ToString()));
+            authClaims.Add(new Claim("username", userEntity.Username));
+            authClaims.Add(new Claim("email", userEntity.Email));
             
             var token = new JwtSecurityToken(
                 issuer: _jwtSettings.ValidIssuer,

@@ -23,60 +23,53 @@ namespace Application.ModuleName.Domain.Infrastructure.Repositories
         {
             string sql = "SELECT EXISTS(SELECT 1 FROM example WHERE id=@id)";
     
-            var arguments = new
-            {
-                id = id
-            };
+            var arguments = new { id };
             
             var exists = _connection.ExecuteScalar<bool>(sql, arguments);
             
             return Task.FromResult(exists);
         }
 
-        public Task<Example> GetById(int id)
+        public Task<ExampleEntity> GetById(int id)
         {
             string sql = "SELECT * FROM example WHERE id=@id";
     
-            var arguments = new
-            {
-                id = id
-            };
+            var arguments = new { id };
             
-            var examples = _connection.Query<Example>(sql, arguments);
+            var example = _connection.QuerySingleOrDefault<ExampleEntity>(sql, arguments);
             
-            return Task.FromResult(examples.SingleOrDefault());
+            return Task.FromResult(example);
         }
 
-        public Task<IEnumerable<Example>> GetAll()
+        public Task<IEnumerable<ExampleEntity>> GetAll()
         {
             string sql = "SELECT * FROM example";
 
-            return Task.FromResult(_connection.Query<Example>(sql));
+            return Task.FromResult(_connection.Query<ExampleEntity>(sql));
         }
 
-        public Task<int> Create([NotNull] Example example)
+        public Task<int> Create([NotNull] ExampleEntity exampleEntity)
         {
             var sql = "INSERT INTO example (something) VALUES (@something) RETURNING *";
 
             var arguments = new
             {
-                
-                something = example.Something
+                something = exampleEntity.Something
             };
             
-            var insertedUser = _connection.QuerySingle<Example>(sql, arguments);
+            var insertedUser = _connection.QuerySingle<ExampleEntity>(sql, arguments);
             
             return Task.FromResult(insertedUser.Id);
         }
 
-        public Task Update([NotNull] Example example)
+        public Task Update([NotNull] ExampleEntity exampleEntity)
         {
             var sql = "UPDATE example SET something = @something WHERE id = @id";
 
             var arguments = new
             {
-                id = example.Id,
-                username = example.Something
+                id = exampleEntity.Id,
+                something = exampleEntity.Something
             };
             
             _connection.Execute(sql, arguments);
@@ -87,10 +80,7 @@ namespace Application.ModuleName.Domain.Infrastructure.Repositories
         {
             var sql = "DELETE FROM example WHERE id = @id";
 
-            var arguments = new
-            {
-                id = id
-            };
+            var arguments = new { id };
 
             _connection.Execute(sql, arguments);
             return Task.CompletedTask;

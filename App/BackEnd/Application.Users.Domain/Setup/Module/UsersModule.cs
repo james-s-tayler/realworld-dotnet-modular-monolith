@@ -47,7 +47,7 @@ namespace Application.Users.Domain.Setup.Module
 
         protected override void AddModuleServices(IConfiguration configuration, IServiceCollection services)
         {
-            services.TryAddTransient<IPasswordHasher<User>, BCryptPasswordHasher<User>>();
+            services.TryAddTransient<IPasswordHasher<UserEntity>, BCryptPasswordHasher<UserEntity>>();
             services.AddTransient<IUserRepository, SqliteUserRepository>();
             services.AddTransient<IAuthTokenService, JwtAuthTokenService>();
             services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));

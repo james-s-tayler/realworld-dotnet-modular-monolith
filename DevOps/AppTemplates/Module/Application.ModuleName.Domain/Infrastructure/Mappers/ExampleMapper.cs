@@ -5,12 +5,12 @@ namespace Application.ModuleName.Domain.Infrastructure.Mappers
 {
     internal static class ExampleMapper
     {
-        internal static ExampleDTO ToExampleDTO(this Example example)
+        internal static ExampleDTO ToExampleDTO(this ExampleEntity exampleEntity)
         {
             return new ExampleDTO
             {
-                Id = example.Id,
-                SensitiveValue = example.Something
+                Id = exampleEntity.Id,
+                SensitiveValue = exampleEntity.Something
             };
         }
     }

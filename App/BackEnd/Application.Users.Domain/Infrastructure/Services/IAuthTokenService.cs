@@ -5,6 +5,6 @@ namespace Application.Users.Domain.Infrastructure.Services
 {
     internal interface IAuthTokenService
     {
-        Task<string> GenerateAuthToken(User user);
+        Task<string> GenerateAuthToken(UserEntity userEntity);
     }
 }

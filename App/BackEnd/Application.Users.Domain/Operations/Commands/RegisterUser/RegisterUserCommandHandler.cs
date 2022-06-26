@@ -14,11 +14,11 @@ namespace Application.Users.Domain.Operations.Commands.RegisterUser
     internal class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, OperationResponse<RegisterUserCommandResult>>
     {
         private readonly IUserRepository _userRepository;
-        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IPasswordHasher<UserEntity> _passwordHasher;
         private readonly IAuthTokenService _authTokenService;
 
         public RegisterUserCommandHandler(IUserRepository userRepository,
-            IPasswordHasher<User> passwordHasher, 
+            IPasswordHasher<UserEntity> passwordHasher, 
             IAuthTokenService authTokenService)
         {
             _userRepository = userRepository;
@@ -28,7 +28,7 @@ namespace Application.Users.Domain.Operations.Commands.RegisterUser
 
         public async Task<OperationResponse<RegisterUserCommandResult>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            var newUser = new User
+            var newUser = new UserEntity
             {
                 Username = request.NewUser.Username,
                 Email = request.NewUser.Email

@@ -8,9 +8,9 @@ namespace Application.Social.Domain.Infrastructure.Mappers
 {
     internal static class UserMapper
     {
-        internal static User ToUser(this UserDTO user)
+        internal static UserEntity ToUser(this UserDTO user)
         {
-            return new User
+            return new UserEntity
             {
                 Id = user.Id,
                 Username = user.Username,
@@ -19,13 +19,13 @@ namespace Application.Social.Domain.Infrastructure.Mappers
             };
         }
         
-        internal static ProfileDTO ToProfileDTO(this User user, bool isFollowing)
+        internal static ProfileDTO ToProfileDTO(this UserEntity userEntity, bool isFollowing)
         {
             return new ProfileDTO
             {
-                Username = user.Username,
-                Image = user.Image,
-                Bio = user.Bio,
+                Username = userEntity.Username,
+                Image = userEntity.Image,
+                Bio = userEntity.Bio,
                 Following = isFollowing
             };
         }

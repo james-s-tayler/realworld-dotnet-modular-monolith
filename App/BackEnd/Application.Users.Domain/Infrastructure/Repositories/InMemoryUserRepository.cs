@@ -9,7 +9,7 @@ namespace Application.Users.Domain.Infrastructure.Repositories
 {
     internal class InMemoryUserRepository : IUserRepository
     {
-        private readonly ConcurrentDictionary<int, User> _repo = new();
+        private readonly ConcurrentDictionary<int, UserEntity> _repo = new();
         private static readonly Random Random = new();
 
         public Task<bool> Exists(int id)
@@ -17,7 +17,7 @@ namespace Application.Users.Domain.Infrastructure.Repositories
             return Task.FromResult(_repo.ContainsKey(id));
         }
 
-        public Task<User> GetByUsername(string username)
+        public Task<UserEntity> GetByUsername(string username)
         {
             return Task.FromResult(_repo.Values.SingleOrDefault(user => user.Username.Equals(username)));
         }
@@ -32,7 +32,7 @@ namespace Application.Users.Domain.Infrastructure.Repositories
             return Task.FromResult(_repo.Values.Any(user => user.Email.Equals(email)));
         }
 
-        public async Task<User> GetById(int id)
+        public async Task<UserEntity> GetById(int id)
         {
             if (await Exists(id))
                 return _repo[id];
@@ -40,27 +40,27 @@ namespace Application.Users.Domain.Infrastructure.Repositories
             return default;
         }
         
-        public Task<User> GetByEmail(string email)
+        public Task<UserEntity> GetByEmail(string email)
         {
             return Task.FromResult(_repo.Values.SingleOrDefault(user => user.Email.Equals(email)));
         }
 
-        public Task<IEnumerable<User>> GetAll()
+        public Task<IEnumerable<UserEntity>> GetAll()
         {
             return Task.FromResult(_repo.Values.ToList().AsEnumerable());
         }
 
-        public Task<int> Create(User user)
+        public Task<int> Create(UserEntity userEntity)
         {
             var id = Random.Next(1, Int32.MaxValue);
-            user.Id = id;
-            _repo[user.Id] = user;
-            return Task.FromResult(user.Id);
+            userEntity.Id = id;
+            _repo[userEntity.Id] = userEntity;
+            return Task.FromResult(userEntity.Id);
         }
 
-        public Task Update(User user)
+        public Task Update(UserEntity userEntity)
         {
-            _repo[user.Id] = user;
+            _repo[userEntity.Id] = userEntity;
             return Task.CompletedTask;
         }
 

@@ -27,6 +27,16 @@ namespace Application.FitnessFunctions.ArchitectureTests
         }
         
         [Fact]
+        public void EntitiesShouldFollowNamingConvention()
+        {
+            Classes().That().Are(_application.Entities)
+                .Should()
+                .HaveNameEndingWith("Entity")
+                .Because("this avoids compilation failures arising from having a property with the same name as the class")
+                .Check(_application.Architecture);
+        }
+        
+        [Fact]
         public void DomainOperationHandlersEndInEitherCommandHandlerOrQueryHandler()
         {
             Classes().That().Are(_application.DomainOperationHandlers)

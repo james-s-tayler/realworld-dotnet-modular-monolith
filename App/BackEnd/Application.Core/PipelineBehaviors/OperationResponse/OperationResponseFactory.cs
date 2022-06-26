@@ -9,6 +9,11 @@ namespace Application.Core.PipelineBehaviors.OperationResponse
 {
     public class OperationResponseFactory
     {
+        public static TResponse InvalidRequest<TRequest, TResponse>([NotNull] List<string> errorMessages) where TResponse : class where TRequest : IRequest<TResponse>
+        {
+            return CreateResponse<TRequest, TResponse>(OperationResult.InvalidRequest, errorMessages);
+        }
+        
         public static TResponse ValidationError<TRequest, TResponse>([NotNull] List<string> errorMessages) where TResponse : class where TRequest : IRequest<TResponse>
         {
             return CreateResponse<TRequest, TResponse>(OperationResult.ValidationError, errorMessages);

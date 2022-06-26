@@ -4,10 +4,10 @@ using Application.Users.Domain.Entities;
 
 namespace Application.Users.Domain.Infrastructure.Repositories
 {
-    internal interface IUserRepository : ICrudRepository<User, int>
+    internal interface IUserRepository : ICrudRepository<UserEntity, int>
     {
-        Task<User> GetByEmail(string email);
-        Task<User> GetByUsername(string username);
+        Task<UserEntity> GetByEmail(string email);
+        Task<UserEntity> GetByUsername(string username);
         Task<bool> ExistsByUsername(string username);
         Task<bool> ExistsByEmail(string email);
     }

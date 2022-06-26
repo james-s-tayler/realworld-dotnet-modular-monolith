@@ -33,43 +33,43 @@ namespace Application.Social.Domain.Infrastructure.Repositories
             return Task.FromResult(exists);
         }
 
-        public Task<User> GetById(int id)
+        public Task<UserEntity> GetById(int id)
         {
             var sql = "SELECT * FROM users WHERE id=@id";
             var arguments = new {id};
-            return Task.FromResult(_connection.QuerySingle<User>(sql, arguments));
+            return Task.FromResult(_connection.QuerySingle<UserEntity>(sql, arguments));
         }
 
-        public Task<IEnumerable<User>> GetAll()
+        public Task<IEnumerable<UserEntity>> GetAll()
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<int> Create(User user)
+        public Task<int> Create(UserEntity userEntity)
         {
             var sql = "INSERT INTO users (id, username, image, bio) VALUES (@id, @username, @image, @bio) RETURNING *";
             var arguments = new
             {
-                id = user.Id, 
-                username = user.Username,
-                image = user.Image,
-                bio = user.Bio
+                id = userEntity.Id, 
+                username = userEntity.Username,
+                image = userEntity.Image,
+                bio = userEntity.Bio
             };
 
-            var insertedUser = _connection.QuerySingle<User>(sql, arguments);
+            var insertedUser = _connection.QuerySingle<UserEntity>(sql, arguments);
             
             return Task.FromResult(insertedUser.Id);
         }
 
-        public Task Update(User user)
+        public Task Update(UserEntity userEntity)
         {
             var sql = "UPDATE users SET username = @username, image = @image, bio = @bio WHERE id=@id";
             var arguments = new
             {
-                id = user.Id,
-                username = user.Username,
-                image = user.Image,
-                bio = user.Bio
+                id = userEntity.Id,
+                username = userEntity.Username,
+                image = userEntity.Image,
+                bio = userEntity.Bio
             };
 
             return Task.FromResult(_connection.Execute(sql, arguments));
@@ -91,12 +91,12 @@ namespace Application.Social.Domain.Infrastructure.Repositories
             return Task.FromResult(_connection.Execute(sql));
         }
 
-        public Task<User> GetByUsername(string username)
+        public Task<UserEntity> GetByUsername(string username)
         {
             var sql = "SELECT * FROM users WHERE username=@username";
             var arguments = new { username };
 
-            var user = _connection.QuerySingle<User>(sql, arguments);
+            var user = _connection.QuerySingle<UserEntity>(sql, arguments);
 
             return Task.FromResult(user);
         }

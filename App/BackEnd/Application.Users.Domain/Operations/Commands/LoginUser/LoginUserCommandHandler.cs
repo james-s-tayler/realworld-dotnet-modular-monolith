@@ -16,11 +16,11 @@ namespace Application.Users.Domain.Operations.Commands.LoginUser
     internal class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, OperationResponse<LoginUserCommandResult>>
     {
         private readonly IUserRepository _userRepository;
-        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IPasswordHasher<UserEntity> _passwordHasher;
         private readonly IAuthTokenService _authTokenService;
 
         public LoginUserCommandHandler([NotNull] IUserRepository userRepository, 
-            [NotNull] IPasswordHasher<User> passwordHasher, 
+            [NotNull] IPasswordHasher<UserEntity> passwordHasher, 
             [NotNull] IAuthTokenService authTokenService)
         {
             _userRepository = userRepository;

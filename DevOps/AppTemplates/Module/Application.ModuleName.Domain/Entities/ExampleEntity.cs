@@ -1,6 +1,6 @@
 namespace Application.ModuleName.Domain.Entities
 {
-    internal class Example
+    internal class ExampleEntity
     {
         public int Id { get; set; }
         public string Something { get; set; }

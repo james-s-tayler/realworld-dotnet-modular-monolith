@@ -34,7 +34,7 @@ namespace Application.Users.Domain.Infrastructure.Repositories
             return Task.FromResult(exists);
         }
 
-        public Task<User> GetById(int id)
+        public Task<UserEntity> GetById(int id)
         {
             string sql = "SELECT * FROM users WHERE id=@id";
     
@@ -43,48 +43,48 @@ namespace Application.Users.Domain.Infrastructure.Repositories
                 id = id
             };
             
-            var user = _connection.Query<User>(sql, arguments);
+            var user = _connection.Query<UserEntity>(sql, arguments);
             
             return Task.FromResult(user.SingleOrDefault());
         }
 
-        public Task<IEnumerable<User>> GetAll()
+        public Task<IEnumerable<UserEntity>> GetAll()
         {
             string sql = "SELECT * FROM users";
 
-            return Task.FromResult(_connection.Query<User>(sql));
+            return Task.FromResult(_connection.Query<UserEntity>(sql));
         }
 
-        public Task<int> Create([NotNull] User user)
+        public Task<int> Create([NotNull] UserEntity userEntity)
         {
             var sql = "INSERT INTO users (username, email, password, image, bio) VALUES (@username, @email, @password, @image, @bio) RETURNING *";
 
             var arguments = new
             {
-                username = user.Username,
-                email = user.Email,
-                password = user.Password,
-                image = user.Image,
-                bio = user.Bio
+                username = userEntity.Username,
+                email = userEntity.Email,
+                password = userEntity.Password,
+                image = userEntity.Image,
+                bio = userEntity.Bio
             };
             
-            var insertedUser = _connection.QuerySingle<User>(sql, arguments);
+            var insertedUser = _connection.QuerySingle<UserEntity>(sql, arguments);
             
             return Task.FromResult(insertedUser.Id);
         }
 
-        public Task Update([NotNull] User user)
+        public Task Update([NotNull] UserEntity userEntity)
         {
             var sql = "UPDATE users SET username = @username, email = @email, password = @password, image = @image, bio = @bio WHERE id = @id";
 
             var arguments = new
             {
-                id = user.Id,
-                username = user.Username,
-                email = user.Email,
-                password = user.Password,
-                image = user.Image,
-                bio = user.Bio
+                id = userEntity.Id,
+                username = userEntity.Username,
+                email = userEntity.Email,
+                password = userEntity.Password,
+                image = userEntity.Image,
+                bio = userEntity.Bio
             };
             
             _connection.Execute(sql, arguments);
@@ -111,21 +111,21 @@ namespace Application.Users.Domain.Infrastructure.Repositories
             return Task.FromResult(_connection.Execute(sql));
         }
 
-        public Task<User> GetByEmail([NotNull] string email)
+        public Task<UserEntity> GetByEmail([NotNull] string email)
         {
             var sql = "SELECT * FROM users WHERE email = @email";
 
             var arguments = new { email };
             
-            return Task.FromResult(_connection.Query<User>(sql, arguments).SingleOrDefault());
+            return Task.FromResult(_connection.Query<UserEntity>(sql, arguments).SingleOrDefault());
         }
 
-        public Task<User> GetByUsername(string username)
+        public Task<UserEntity> GetByUsername(string username)
         {
             var sql = "SELECT * FROM users WHERE username=@username";
             var arguments = new { username };
 
-            return Task.FromResult(_connection.Query<User>(sql, arguments).SingleOrDefault());
+            return Task.FromResult(_connection.Query<UserEntity>(sql, arguments).SingleOrDefault());
         }
 
         public Task<bool> ExistsByUsername(string username)

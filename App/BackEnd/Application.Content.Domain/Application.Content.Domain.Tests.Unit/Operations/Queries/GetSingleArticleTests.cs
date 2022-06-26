@@ -31,7 +31,7 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
             var result = await _module.Mediator.Send(getSingleArticleQuery);
 
             //assert
-            result.Result.Should().Be(OperationResult.ValidationError);
+            result.Result.Should().Be(OperationResult.NotFound);
         }
         
         [Fact]
@@ -93,6 +93,7 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
 
             //assert
             result.Response.Article.Favorited.Should().BeTrue();
+            result.Response.Article.FavoritesCount.Should().Be(1);
         }
         
         [Fact]
@@ -106,36 +107,11 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
 
             //assert
             result.Response.Article.Favorited.Should().BeFalse();
-        }
-        
-        [Fact]
-        public async Task GivenANonFavoritedArticle_WhenGetArticleBySlug_ThenFavoritesCountIsZero()
-        {
-            //arrange
-            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingArticleEntity.GetSlug() };
-
-            //act
-            var result = await _module.Mediator.Send(getSingleArticleQuery);
-
-            //assert
             result.Response.Article.FavoritesCount.Should().Be(0);
         }
         
         [Fact]
-        public async Task GivenAFavoritedArticle_WhenGetArticleBySlug_ThenFavoritesCountIsNonZero()
-        {
-            //arrange
-            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingArticleEntity.GetSlug() };
-
-            //act
-            var result = await _module.Mediator.Send(getSingleArticleQuery);
-
-            //assert
-            result.Response.Article.FavoritesCount.Should().Be(1);
-        }
-        
-        [Fact]
-        public async Task GivenNoSlug_WhenGetArticle_ThenValidationError()
+        public async Task GivenNoSlug_WhenGetArticle_ThenInvalidRequest()
         {
             //arrange
             var getSingleArticleQuery = new GetSingleArticleQuery { Slug = null };
@@ -144,7 +120,7 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
             var result = await _module.Mediator.Send(getSingleArticleQuery);
 
             //assert
-            result.Result.Should().Be(OperationResult.ValidationError);
+            result.Result.Should().Be(OperationResult.InvalidRequest);
             result.Response.Should().BeNull();
         }
     }

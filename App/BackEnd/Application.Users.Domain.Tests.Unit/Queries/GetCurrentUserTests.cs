@@ -37,10 +37,10 @@ namespace Application.Users.Domain.Tests.Unit.Queries
             currentUser.Should().NotBeNull();
             
             //need to implement equality comparison between DTOs and Entities so we can just do Equals and have it update automatically without tests missing anything
-            currentUser.Email.Should().Be(_usersModule.ExistingUser.Email);
-            currentUser.Username.Should().Be(_usersModule.ExistingUser.Username);
-            currentUser.Image.Should().Be(_usersModule.ExistingUser.Image);
-            currentUser.Bio.Should().Be(_usersModule.ExistingUser.Bio);
+            currentUser.Email.Should().Be(_usersModule.ExistingUserEntity.Email);
+            currentUser.Username.Should().Be(_usersModule.ExistingUserEntity.Username);
+            currentUser.Image.Should().Be(_usersModule.ExistingUserEntity.Image);
+            currentUser.Bio.Should().Be(_usersModule.ExistingUserEntity.Bio);
             currentUser.Token.Should().NotBeEmpty();
         }
         

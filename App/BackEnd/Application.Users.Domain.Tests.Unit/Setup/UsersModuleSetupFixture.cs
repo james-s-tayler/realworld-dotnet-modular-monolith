@@ -16,9 +16,9 @@ namespace Application.Users.Domain.Tests.Unit.Setup
     public class UsersModuleSetupFixture : AbstractModuleSetupFixture
     {
         public string PlainTextPassword { get; } = "soloyolo99";
-        internal BCryptPasswordHasher<User> PasswordHasher = new ();
-        internal User ExistingUser { get; private set; }
-        internal User ExistingUser2 { get; private set; }
+        internal BCryptPasswordHasher<UserEntity> PasswordHasher = new ();
+        internal UserEntity ExistingUserEntity { get; private set; }
+        internal UserEntity ExistingUser2 { get; private set; }
         
         internal IUserRepository UserRepository { get; private set; }
 
@@ -31,12 +31,12 @@ namespace Application.Users.Domain.Tests.Unit.Setup
         
         protected override void ReplaceServices(AbstractModule module)
         {
-            module.ReplaceTransient<IPasswordHasher<User>, BCryptPasswordHasher<User>>(PasswordHasher);
+            module.ReplaceTransient<IPasswordHasher<UserEntity>, BCryptPasswordHasher<UserEntity>>(PasswordHasher);
         }
         
         protected override void SetupPostProcess(ServiceProvider provider)
         {
-            ExistingUser = new User
+            ExistingUserEntity = new UserEntity
             {
                 Id = 1,
                 Email = "solo@yolo.com",
@@ -45,7 +45,7 @@ namespace Application.Users.Domain.Tests.Unit.Setup
                 Password = PasswordHasher.HashPassword(null, PlainTextPassword)
             };
             
-            ExistingUser2 = new User
+            ExistingUser2 = new UserEntity
             {
                 Id = 2,
                 Email = "solo2@yolo2.com",
@@ -61,9 +61,9 @@ namespace Application.Users.Domain.Tests.Unit.Setup
 
         public async Task WithUserRepoContainingDefaultUsers()
         {
-            await WithUserRepoContainingUsers(ExistingUser, ExistingUser2);
+            await WithUserRepoContainingUsers(ExistingUserEntity, ExistingUser2);
         }
-        internal async Task WithUserRepoContainingUsers(params User[] users)
+        internal async Task WithUserRepoContainingUsers(params UserEntity[] users)
         {
             await UserRepository.DeleteAll();
             foreach (var user in users)
@@ -72,14 +72,14 @@ namespace Application.Users.Domain.Tests.Unit.Setup
             }
         }
 
-        internal async Task AddUserToUserRepo([NotNull] User user)
+        internal async Task AddUserToUserRepo([NotNull] UserEntity userEntity)
         {
-            await UserRepository.Create(user);
+            await UserRepository.Create(userEntity);
         }
 
         public void WithAuthenticatedUserContext()
         {
-            WithUserContextReturning(true, ExistingUser.Id, ExistingUser.Username, ExistingUser.Email, AuthenticatedUserToken);
+            WithUserContextReturning(true, ExistingUserEntity.Id, ExistingUserEntity.Username, ExistingUserEntity.Email, AuthenticatedUserToken);
         }
     }
 }

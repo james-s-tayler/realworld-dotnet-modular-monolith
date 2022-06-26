@@ -26,7 +26,7 @@ namespace Application.Social.Domain.Tests.Unit.Queries
         public async Task GivenAUsernameWhenGetProfileThenReturnsProfile()
         {
             //arrange
-            var authenticatedUser = new User
+            var authenticatedUser = new UserEntity
             {
                 Id = _socialModule.AuthenticatedUserId,
                 Bio = _socialModule.AuthenticatedUserBio,
@@ -36,7 +36,7 @@ namespace Application.Social.Domain.Tests.Unit.Queries
             await _socialModule.UserRepository.Create(authenticatedUser);
             await _socialModule.UserRepository.FollowUser(authenticatedUser.Id);
 
-            var otherUser = new User
+            var otherUser = new UserEntity
             {
                 Id = _socialModule.AutoFixture.Create<int>(),
                 Bio = _socialModule.AutoFixture.Create<string>(),
@@ -46,7 +46,7 @@ namespace Application.Social.Domain.Tests.Unit.Queries
             await _socialModule.UserRepository.Create(otherUser);
             await _socialModule.UserRepository.FollowUser(otherUser.Id);
             
-            var otherUser2 = new User
+            var otherUser2 = new UserEntity
             {
                 Id = _socialModule.AutoFixture.Create<int>(),
                 Bio = _socialModule.AutoFixture.Create<string>(),
@@ -70,15 +70,15 @@ namespace Application.Social.Domain.Tests.Unit.Queries
             AssertFollowingUser(getOtherUser2ProfileResult, otherUser2, false);
         }
 
-        private void AssertFollowingUser(OperationResponse<GetProfileQueryResult> result, User user, bool shouldBeFollowing)
+        private void AssertFollowingUser(OperationResponse<GetProfileQueryResult> result, UserEntity userEntity, bool shouldBeFollowing)
         {
             result.Should().NotBeNull();
             result.Result.Should().Be(OperationResult.Success);
             result.Response.Should().NotBeNull();
             result.Response.Profile.Should().NotBeNull();
-            result.Response.Profile.Username.Should().Be(user.Username);
-            result.Response.Profile.Image.Should().Be(user.Image);
-            result.Response.Profile.Bio.Should().Be(user.Bio);
+            result.Response.Profile.Username.Should().Be(userEntity.Username);
+            result.Response.Profile.Image.Should().Be(userEntity.Image);
+            result.Response.Profile.Bio.Should().Be(userEntity.Bio);
             result.Response.Profile.Following.Should().Be(shouldBeFollowing);
         }
     }
