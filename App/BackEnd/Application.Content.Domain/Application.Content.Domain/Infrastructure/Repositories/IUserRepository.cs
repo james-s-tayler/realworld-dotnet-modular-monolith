@@ -4,9 +4,9 @@ using Application.Core.DataAccess;
 
 namespace Application.Content.Domain.Infrastructure.Repositories
 {
-    internal interface IUserRepository : ICrudRepository<User, int>
+    internal interface IUserRepository : ICrudRepository<UserEntity, int>
     {
-        Task<User> GetByUsername(string username);
+        Task<UserEntity> GetByUsername(string username);
         Task<bool> ExistsByUsername(string username);
     }
 }

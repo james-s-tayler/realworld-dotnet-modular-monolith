@@ -3,6 +3,7 @@ using Application.Core.Modules;
 using Application.Core.SchemaManagement;
 using Application.Core.SchemaManagement.Sqlite;
 using Dapper;
+using DefaultTypeMap = Dapper.DefaultTypeMap;
 using Dapper.Logging;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
@@ -31,6 +32,8 @@ namespace Application.Core.DataAccess.Dapper.Sqlite
                 {
                     SqlMapper.AddTypeHandler(new SqliteTimeSpanHandler());
                 }
+
+                DefaultTypeMap.MatchNamesWithUnderscores = true;
                 
                 var connectionStringReader = new SqliteConnectionStringReader(configuration, hostEnvironment);
                 var sqliteConnection = new SqliteConnection(connectionStringReader!.GetConnectionString(module.GetModuleName()));
@@ -74,6 +77,9 @@ namespace Application.Core.DataAccess.Dapper.Sqlite
                 {
                     SqlMapper.AddTypeHandler(new SqliteTimeSpanHandler());
                 }
+                
+                DefaultTypeMap.MatchNamesWithUnderscores = true;
+                
                 var connectionStringReader = new SqliteConnectionStringReader(configuration, hostEnvironment);
                 var sqliteConnection = new SqliteConnection(connectionStringReader!.GetConnectionString(module.GetModuleName()));
                 sqliteConnection.Open();

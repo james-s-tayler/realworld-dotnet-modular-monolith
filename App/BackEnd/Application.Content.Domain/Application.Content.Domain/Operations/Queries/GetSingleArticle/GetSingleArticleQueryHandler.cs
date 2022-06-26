@@ -32,7 +32,7 @@ namespace Application.Content.Domain.Operations.Queries.GetSingleArticle
             
             return new OperationResponse<GetSingleArticleQueryResult>(new GetSingleArticleQueryResult
             {
-                Article = article.ToArticleDTO(new []{"tag1"}, null, false, 0)
+                Article = article.ToArticleDTO(null, false, 0)
             });
         }
     }

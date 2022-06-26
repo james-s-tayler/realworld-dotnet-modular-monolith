@@ -39,7 +39,7 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
         {
             //arrange
             var testStartTime = DateTime.UtcNow;
-            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingArticle.GetSlug() };
+            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingArticleEntity.GetSlug() };
 
             //act
             var result = await _module.Mediator.Send(getSingleArticleQuery);
@@ -48,12 +48,27 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
             result.Result.Should().Be(OperationResult.Success);
             result.Response.Should().NotBeNull();
             result.Response.Article.Should().NotBeNull();
-            result.Response.Article.Slug.Should().Be(_module.ExistingArticle.GetSlug());
-            result.Response.Article.Title.Should().Be(_module.ExistingArticle.Title);
-            result.Response.Article.Description.Should().Be(_module.ExistingArticle.Description);
-            result.Response.Article.Body.Should().Be(_module.ExistingArticle.Body);
+            result.Response.Article.Slug.Should().Be(_module.ExistingArticleEntity.GetSlug());
+            result.Response.Article.Title.Should().Be(_module.ExistingArticleEntity.Title);
+            result.Response.Article.Description.Should().Be(_module.ExistingArticleEntity.Description);
+            result.Response.Article.Body.Should().Be(_module.ExistingArticleEntity.Body);
+            result.Response.Article.TagList.Should().BeEquivalentTo(new []{"Tag1", "Tag2"});
             result.Response.Article.CreatedAt.Should().BeAfter(testStartTime);
             result.Response.Article.UpdatedAt.Should().BeAfter(testStartTime);
+        }
+        
+        [Fact]
+        public async Task GivenNoSlug_WhenGetArticle_ThenValidationError()
+        {
+            //arrange
+            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = null };
+
+            //act
+            var result = await _module.Mediator.Send(getSingleArticleQuery);
+
+            //assert
+            result.Result.Should().Be(OperationResult.ValidationError);
+            result.Response.Should().BeNull();
         }
     }
 }

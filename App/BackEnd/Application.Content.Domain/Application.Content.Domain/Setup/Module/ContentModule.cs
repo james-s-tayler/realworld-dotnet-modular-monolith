@@ -45,6 +45,7 @@ namespace Application.Content.Domain.Setup.Module
         {
             services.AddTransient<IArticleRepository, SqliteArticleRepository>();
             services.AddTransient<IUserRepository, SqliteUserRepository>();
+            services.AddTransient<ITagRepository, SqliteTagRepository>();
         }
     }
 }

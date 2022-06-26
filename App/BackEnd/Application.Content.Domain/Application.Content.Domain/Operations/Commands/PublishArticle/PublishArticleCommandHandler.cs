@@ -32,7 +32,7 @@ namespace Application.Content.Domain.Operations.Commands.PublishArticle
             
             return new OperationResponse<PublishArticleCommandResult>(new PublishArticleCommandResult
             {
-                Article = article.ToArticleDTO(new []{"tag1"}, null, false, 0)
+                Article = article.ToArticleDTO(null, false, 0)
             });
         }
     }

@@ -1,6 +1,6 @@
 namespace Application.Content.Domain.Entities
 {
-    internal class User
+    internal class UserEntity
     {
         public int Id { get; set; }
         public string Username { get; set; }

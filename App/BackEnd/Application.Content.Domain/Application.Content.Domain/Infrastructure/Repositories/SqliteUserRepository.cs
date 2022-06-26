@@ -29,40 +29,40 @@ namespace Application.Content.Domain.Infrastructure.Repositories
             return Task.FromResult(exists);
         }
 
-        public Task<User> GetById(int id)
+        public Task<UserEntity> GetById(int id)
         {
             var sql = "SELECT * FROM users WHERE user_id=@user_id";
             var arguments = new {user_id = id};
-            return Task.FromResult(_connection.QuerySingle<User>(sql, arguments));
+            return Task.FromResult(_connection.QuerySingle<UserEntity>(sql, arguments));
         }
 
-        public Task<IEnumerable<User>> GetAll()
+        public Task<IEnumerable<UserEntity>> GetAll()
         {
             var sql = "SELECT * FROM users";
-            return Task.FromResult(_connection.Query<User>(sql));
+            return Task.FromResult(_connection.Query<UserEntity>(sql));
         }
 
-        public Task<int> Create(User user)
+        public Task<int> Create(UserEntity userEntity)
         {
             var sql = "INSERT INTO users (user_id, username) VALUES (@user_id, @username) RETURNING *";
             var arguments = new
             {
-                user_id = user.Id, 
-                username = user.Username
+                user_id = userEntity.Id, 
+                username = userEntity.Username
             };
 
-            var insertedUser = _connection.QuerySingle<User>(sql, arguments);
+            var insertedUser = _connection.QuerySingle<UserEntity>(sql, arguments);
             
             return Task.FromResult(insertedUser.Id);
         }
 
-        public Task Update(User user)
+        public Task Update(UserEntity userEntity)
         {
             var sql = "UPDATE users SET username = @username WHERE user_id=@user_id";
             var arguments = new
             {
-                user_id = user.Id,
-                username = user.Username
+                user_id = userEntity.Id,
+                username = userEntity.Username
             };
 
             return Task.FromResult(_connection.Execute(sql, arguments));
@@ -81,12 +81,12 @@ namespace Application.Content.Domain.Infrastructure.Repositories
             return Task.FromResult(_connection.Execute(sql));
         }
 
-        public Task<User> GetByUsername(string username)
+        public Task<UserEntity> GetByUsername(string username)
         {
             var sql = "SELECT * FROM users WHERE username=@username";
             var arguments = new { username };
 
-            var user = _connection.QuerySingle<User>(sql, arguments);
+            var user = _connection.QuerySingle<UserEntity>(sql, arguments);
 
             return Task.FromResult(user);
         }

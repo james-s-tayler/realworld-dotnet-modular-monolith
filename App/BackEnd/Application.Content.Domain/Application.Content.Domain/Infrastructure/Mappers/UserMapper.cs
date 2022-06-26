@@ -5,9 +5,9 @@ namespace Application.Content.Domain.Infrastructure.Mappers
 {
     internal static class UserMapper
     {
-        internal static User ToUser(this UserDTO user)
+        internal static UserEntity ToUser(this UserDTO user)
         {
-            return new User
+            return new UserEntity
             {
                 Id = user.Id,
                 Username = user.Username
