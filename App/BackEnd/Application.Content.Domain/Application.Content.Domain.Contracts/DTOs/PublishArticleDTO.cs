@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using Application.Core.DataAccess;
 
@@ -11,8 +12,8 @@ namespace Application.Content.Domain.Contracts.DTOs
         public string Description { get; set; }
         [Required]
         public string Body { get; set; }
-        
-        public string[] TagList { get; set; }
+
+        public string[] TagList { get; set; } = Array.Empty<string>();
 
         public string GetSlug()
         {

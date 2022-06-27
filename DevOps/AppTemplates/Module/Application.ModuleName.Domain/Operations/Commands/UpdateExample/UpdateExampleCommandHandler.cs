@@ -26,13 +26,11 @@ namespace Application.ModuleName.Domain.Operations.Commands.UpdateExample
         public async Task<OperationResponse<UpdateExampleCommandResult>> Handle(UpdateExampleCommand request, CancellationToken cancellationToken)
         {
             var example = await _exampleRepository.GetById(request.ExampleInput.Id);
-            if (example == null)
-                throw new ArgumentNullException(nameof(example));
 
             example.Something = request.ExampleInput.SensitiveValue;
             await _exampleRepository.Update(example);
 
-            return new OperationResponse<UpdateExampleCommandResult>(new UpdateExampleCommandResult
+            return OperationResponseFactory.Success(new UpdateExampleCommandResult
             {
                 ExampleOutput = example.ToExampleDTO()
             });

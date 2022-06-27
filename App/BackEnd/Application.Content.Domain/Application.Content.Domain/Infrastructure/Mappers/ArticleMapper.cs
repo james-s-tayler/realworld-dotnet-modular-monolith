@@ -25,10 +25,11 @@ namespace Application.Content.Domain.Infrastructure.Mappers
             };
         }
         
-        internal static ArticleEntity ToArticleEntity(this PublishArticleDTO article)
+        internal static ArticleEntity ToArticleEntity(this PublishArticleDTO article, UserEntity author)
         {
             return new ArticleEntity
             {
+                Author = author,
                 Title = article.Title,
                 Description = article.Description,
                 Body = article.Body,

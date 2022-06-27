@@ -15,20 +15,11 @@ namespace Application.ModuleName.Domain.Operations.Commands.UpdateExample
         {
             _exampleRepository = exampleRepository;
 
-            RuleFor(command => command.ExampleInput)
-                .Must(ContainUpdate)
-                .WithMessage("At least one property must be updated.");
             RuleFor(command => command)
                 .MustAsync(ExampleMustExist)
                 .WithMessage(command => $"Example {command.ExampleInput.Id} not found");
         }
-        
-        //this feels not very future proof?
-        private bool ContainUpdate(ExampleDTO updateExample)
-        {
-            return updateExample.SensitiveValue != null;
-        }
-        
+
         private async Task<bool> ExampleMustExist(UpdateExampleCommand command, CancellationToken cancellationToken)
         {
             return await _exampleRepository.Exists(command.ExampleInput.Id);
