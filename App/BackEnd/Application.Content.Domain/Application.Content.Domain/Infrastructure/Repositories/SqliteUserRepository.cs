@@ -47,13 +47,13 @@ namespace Application.Content.Domain.Infrastructure.Repositories
             var sql = "INSERT INTO users (user_id, username) VALUES (@user_id, @username) RETURNING *";
             var arguments = new
             {
-                user_id = userEntity.Id, 
+                user_id = userEntity.UserId, 
                 username = userEntity.Username
             };
 
             var insertedUser = _connection.QuerySingle<UserEntity>(sql, arguments);
             
-            return Task.FromResult(insertedUser.Id);
+            return Task.FromResult(insertedUser.UserId);
         }
 
         public Task Update(UserEntity userEntity)
@@ -61,7 +61,7 @@ namespace Application.Content.Domain.Infrastructure.Repositories
             var sql = "UPDATE users SET username = @username WHERE user_id=@user_id";
             var arguments = new
             {
-                user_id = userEntity.Id,
+                user_id = userEntity.UserId,
                 username = userEntity.Username
             };
 
@@ -79,6 +79,13 @@ namespace Application.Content.Domain.Infrastructure.Repositories
         {
             var sql = "DELETE FROM users";
             return Task.FromResult(_connection.Execute(sql));
+        }
+
+        public Task<UserEntity> GetByArticleId(int articleId)
+        {
+            var sql = "SELECT u.* FROM users u JOIN articles a ON a.user_id = u.user_id WHERE a.id=@article_id";
+            var arguments = new {article_id = articleId};
+            return Task.FromResult(_connection.QuerySingle<UserEntity>(sql, arguments));
         }
 
         public Task<UserEntity> GetByUsername(string username)

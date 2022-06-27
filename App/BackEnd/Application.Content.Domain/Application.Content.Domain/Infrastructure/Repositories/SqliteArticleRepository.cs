@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Application.Core.DataAccess;
 using Application.Content.Domain.Entities;
 using Application.Content.Domain.Setup.Module;
+using Application.Core.Context;
 using Dapper;
 using JetBrains.Annotations;
 
@@ -13,13 +14,19 @@ namespace Application.Content.Domain.Infrastructure.Repositories
 {
     internal class SqliteArticleRepository : IArticleRepository
     {
+        private readonly IUserContext _userContext;
         private readonly ITagRepository _tagRepository;
+        private readonly IUserRepository _userRepository;
         private readonly DbConnection _connection;
 
         public SqliteArticleRepository([NotNull] ModuleDbConnectionWrapper<ContentModule> connectionWrapper, 
-            ITagRepository tagRepository)
+            [NotNull] ITagRepository tagRepository, 
+            [NotNull] IUserRepository userRepository, 
+            [NotNull] IUserContext userContext)
         {
             _tagRepository = tagRepository;
+            _userRepository = userRepository;
+            _userContext = userContext;
             _connection = connectionWrapper.Connection;
         }
 
@@ -27,10 +34,7 @@ namespace Application.Content.Domain.Infrastructure.Repositories
         {
             string sql = "SELECT EXISTS(SELECT 1 FROM articles WHERE id=@id)";
 
-            var arguments = new
-            {
-                id = id
-            };
+            var arguments = new { id };
 
             var exists = _connection.ExecuteScalar<bool>(sql, arguments);
 
@@ -48,17 +52,32 @@ namespace Application.Content.Domain.Infrastructure.Repositories
             return Task.FromResult(exists);
         }
 
+        private async Task EnrichArticle(ArticleEntity article)
+        {
+            //un-optimized n+1 query
+            if (article != null)
+            {
+                article.Author = await _userRepository.GetByArticleId(article.Id); 
+                article.TagList = await _tagRepository.GetByArticleId(article.Id);
+                
+                var favoritedSql = "SELECT EXISTS(SELECT 1 FROM article_favorites WHERE article_id=@article_id AND user_id=@user_id)";
+                var favoritedArguments = new { article_id = article.Id, user_id = article.Author.UserId };
+                article.Favorited = _connection.ExecuteScalar<bool>(favoritedSql, favoritedArguments);
+
+                var favoritesCountSql = "SELECT COUNT(*) FROM article_favorites WHERE article_id=@article_id AND user_id=@user_id";
+                var favoritesCountArguments = new { article_id = article.Id, user_id = article.Author.UserId };
+                article.FavoritesCount = _connection.ExecuteScalar<int>(favoritesCountSql, favoritesCountArguments);
+            }
+        }
+
         public async Task<ArticleEntity> GetBySlug(string slug)
         {
-            string sql = "SELECT * FROM articles WHERE slug=@slug";
+            string sql = "SELECT * FROM articles a WHERE slug=@slug";
 
             var arguments = new { slug };
 
             var article = _connection.QuerySingleOrDefault<ArticleEntity>(sql, arguments);
-            if (article != null)
-            {
-                article.TagList = await _tagRepository.GetByArticleId(article.Id);
-            }
+            await EnrichArticle(article);
 
             return article;
         }
@@ -70,10 +89,7 @@ namespace Application.Content.Domain.Infrastructure.Repositories
             var arguments = new { id };
 
             var article = _connection.QuerySingleOrDefault<ArticleEntity>(sql, arguments);
-            if (article != null)
-            {
-                article.TagList = await _tagRepository.GetByArticleId(article.Id);
-            }
+            await EnrichArticle(article);
 
             return article;
         }
@@ -85,10 +101,28 @@ namespace Application.Content.Domain.Infrastructure.Repositories
 
             foreach (var article in articles)
             {
-                article.TagList = await _tagRepository.GetByArticleId(article.Id);
+                await EnrichArticle(article);
             }
             
             return articles;
+        }
+        
+        public Task FavoriteArticle(string slug)
+        {
+            var sql = "INSERT OR IGNORE INTO article_favorites (article_id, user_id) VALUES ((SELECT id FROM articles WHERE slug=@slug), @user_id)";
+            var arguments = new { slug, user_id = _userContext.UserId };
+            _connection.Execute(sql, arguments);
+            
+            return Task.CompletedTask;
+        }
+
+        public Task UnfavoriteArticle(string slug)
+        {
+            var sql = "DELETE FROM article_favorites WHERE article_id=(SELECT id FROM articles WHERE slug=@slug) AND user_id=@user_id";
+            var arguments = new { slug, user_id = _userContext.UserId };
+            _connection.Execute(sql, arguments);
+            
+            return Task.CompletedTask;
         }
 
         public Task<int> Create([NotNull] ArticleEntity articleEntity)
@@ -99,7 +133,7 @@ namespace Application.Content.Domain.Infrastructure.Repositories
             
             var arguments = new
             {
-                user_id = articleEntity.UserId, 
+                user_id = articleEntity.Author.UserId, 
                 slug = articleEntity.GetSlug(), 
                 title = articleEntity.Title, 
                 description = articleEntity.Description, 
@@ -150,18 +184,31 @@ namespace Application.Content.Domain.Infrastructure.Repositories
 
         public Task Delete(int id)
         {
+            var deleteArticleTagsSql = "DELETE FROM article_tags WHERE article_id = @article_id";
+            var deleteArticleTagsArguments = new { article_id = id };
+            _connection.Execute(deleteArticleTagsSql, deleteArticleTagsArguments);
+            
+            var deleteArticleFavoritesSql = "DELETE FROM article_favorites WHERE article_id = @article_id AND user_id=@user_id";
+            var deleteArticleFavoritesArguments = new { article_id = id, user_id = _userContext.UserId };
+            _connection.Execute(deleteArticleFavoritesSql, deleteArticleFavoritesArguments);
+
+            
             var sql = "DELETE FROM articles WHERE id = @id";
-
             var arguments = new { id };
-
             _connection.Execute(sql, arguments);
+            
             return Task.CompletedTask;
         }
 
         public Task<int> DeleteAll()
         {
+            var articleTagsSql = "DELETE FROM article_tags";
+            _connection.Execute(articleTagsSql);
+            
+            var articleFavoritesSql = "DELETE FROM article_favorites";
+            _connection.Execute(articleFavoritesSql);
+            
             var sql = "DELETE FROM articles";
-
             return Task.FromResult(_connection.Execute(sql));
         }
     }

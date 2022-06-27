@@ -38,7 +38,7 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
         {
             //arrange
             var testStartTime = DateTime.UtcNow;
-            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingArticleEntity.GetSlug() };
+            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingNonFavoritedArticleEntity.GetSlug() };
 
             //act
             var result = await _module.Mediator.Send(getSingleArticleQuery);
@@ -47,10 +47,10 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
             result.Result.Should().Be(OperationResult.Success);
             result.Response.Should().NotBeNull();
             result.Response.Article.Should().NotBeNull();
-            result.Response.Article.Slug.Should().Be(_module.ExistingArticleEntity.GetSlug());
-            result.Response.Article.Title.Should().Be(_module.ExistingArticleEntity.Title);
-            result.Response.Article.Description.Should().Be(_module.ExistingArticleEntity.Description);
-            result.Response.Article.Body.Should().Be(_module.ExistingArticleEntity.Body);
+            result.Response.Article.Slug.Should().Be(_module.ExistingNonFavoritedArticleEntity.GetSlug());
+            result.Response.Article.Title.Should().Be(_module.ExistingNonFavoritedArticleEntity.Title);
+            result.Response.Article.Description.Should().Be(_module.ExistingNonFavoritedArticleEntity.Description);
+            result.Response.Article.Body.Should().Be(_module.ExistingNonFavoritedArticleEntity.Body);
             result.Response.Article.CreatedAt.Should().BeAfter(testStartTime);
             result.Response.Article.UpdatedAt.Should().BeAfter(testStartTime);
         }
@@ -59,7 +59,7 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
         public async Task GivenAnArticle_WhenGetArticleBySlug_ThenArticleContainsTags()
         {
             //arrange
-            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingArticleEntity.GetSlug() };
+            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingNonFavoritedArticleEntity.GetSlug() };
 
             //act
             var result = await _module.Mediator.Send(getSingleArticleQuery);
@@ -72,20 +72,23 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
         public async Task GivenAnArticle_WhenGetArticleBySlug_ThenArticleContainsAuthorProfile()
         {
             //arrange
-            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingArticleEntity.GetSlug() };
+            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingNonFavoritedArticleEntity.GetSlug() };
 
             //act
             var result = await _module.Mediator.Send(getSingleArticleQuery);
 
             //assert
-            result.Response.Article.Author.Should().NotBeNull();
+            result.Response.Article.Author.Username.Should().Be(_module.AuthenticatedUserUsername);
+            result.Response.Article.Author.Bio.Should().Be(_module.AuthenticatedUserBio);
+            result.Response.Article.Author.Image.Should().Be(_module.AuthenticatedUserImage);
+            result.Response.Article.Author.Following.Should().Be(true);
         }
         
         [Fact]
         public async Task GivenAFavoritedArticle_WhenGetArticleBySlug_ThenArticleIsFavorited()
         {
             //arrange
-            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingArticleEntity.GetSlug() };
+            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingFavoritedArticleEntity.GetSlug() };
 
             //act
             var result = await _module.Mediator.Send(getSingleArticleQuery);
@@ -99,7 +102,7 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
         public async Task GivenANonFavoritedArticle_WhenGetArticleBySlug_ThenArticleIsNotFavorited()
         {
             //arrange
-            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingArticleEntity.GetSlug() };
+            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.ExistingNonFavoritedArticleEntity.GetSlug() };
 
             //act
             var result = await _module.Mediator.Send(getSingleArticleQuery);

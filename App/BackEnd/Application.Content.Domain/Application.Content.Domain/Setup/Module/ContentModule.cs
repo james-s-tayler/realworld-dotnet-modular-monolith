@@ -5,6 +5,7 @@ using Application.Core.Modules;
 using Application.Core.SchemaManagement;
 using Application.Content.Domain.Contracts;
 using Application.Content.Domain.Infrastructure.Repositories;
+using Application.Content.Domain.Infrastructure.Services;
 using Application.Content.Domain.Setup.Module;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -46,6 +47,7 @@ namespace Application.Content.Domain.Setup.Module
             services.AddTransient<IArticleRepository, SqliteArticleRepository>();
             services.AddTransient<IUserRepository, SqliteUserRepository>();
             services.AddTransient<ITagRepository, SqliteTagRepository>();
+            services.AddTransient<ISocialService, SocialService>();
         }
     }
 }

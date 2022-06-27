@@ -1,27 +1,27 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Content.Domain.Contracts.Operations.Queries.GetSingleArticle;
 using Application.Content.Domain.Entities;
 using Application.Content.Domain.Infrastructure.Mappers;
 using Application.Content.Domain.Infrastructure.Repositories;
+using Application.Content.Domain.Infrastructure.Services;
 using Application.Core.Context;
 using Application.Core.PipelineBehaviors.OperationResponse;
+using Application.Social.Domain.Contracts.Operations.Queries.GetProfile;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 
 namespace Application.Content.Domain.Operations.Queries.GetSingleArticle
 {
     internal class GetSingleArticleQueryHandler : IRequestHandler<GetSingleArticleQuery, OperationResponse<GetSingleArticleQueryResult>>
     {
-        private readonly IUserContext _userContext;
         private readonly IArticleRepository _articleRepository;
+        private readonly ISocialService _socialService;
 
-        public GetSingleArticleQueryHandler(IUserContext userContext,
-            IArticleRepository articleRepository)
+        public GetSingleArticleQueryHandler(IArticleRepository articleRepository,
+            ISocialService socialService)
         {
-            _userContext = userContext;
             _articleRepository = articleRepository;
+            _socialService = socialService;
         }
 
         public async Task<OperationResponse<GetSingleArticleQueryResult>> Handle(GetSingleArticleQuery request, CancellationToken cancellationToken)
@@ -30,11 +30,13 @@ namespace Application.Content.Domain.Operations.Queries.GetSingleArticle
             if (article == null)
                 return OperationResponseFactory.NotFound<GetSingleArticleQuery, OperationResponse<GetSingleArticleQueryResult>>(typeof(ArticleEntity), request.Slug);
 
-            //get author profile here
-            
-            return new OperationResponse<GetSingleArticleQueryResult>(new GetSingleArticleQueryResult
+            var getProfileQueryResult = await _socialService.GetProfile(article.Author.Username);
+            var authorProfile = getProfileQueryResult.Response.Profile;
+            //what if result is not success???
+
+            return OperationResponseFactory.Success(new GetSingleArticleQueryResult
             {
-                Article = article.ToArticleDTO(null, false, 0)
+                Article = article.ToArticleDTO(authorProfile)
             });
         }
     }

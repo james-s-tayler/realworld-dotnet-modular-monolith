@@ -8,7 +8,7 @@ namespace Application.Content.Domain.Infrastructure.Mappers
 {
     internal static class ArticleMapper
     {
-        internal static SingleArticleDTO ToArticleDTO(this ArticleEntity articleEntity, ProfileDTO author, bool isFavorited, int favoritesCount)
+        internal static SingleArticleDTO ToArticleDTO(this ArticleEntity articleEntity, ProfileDTO author)
         {
             return new SingleArticleDTO
             {
@@ -20,8 +20,8 @@ namespace Application.Content.Domain.Infrastructure.Mappers
                 UpdatedAt = articleEntity.UpdatedAt,
                 TagList = articleEntity.TagList.Select(tag => tag.Tag).ToArray(),
                 Author = author,
-                Favorited = isFavorited,
-                FavoritesCount = favoritesCount
+                Favorited = articleEntity.Favorited,
+                FavoritesCount = articleEntity.FavoritesCount
             };
         }
         

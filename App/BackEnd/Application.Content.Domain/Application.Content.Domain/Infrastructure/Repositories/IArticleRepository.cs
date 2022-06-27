@@ -8,5 +8,7 @@ namespace Application.Content.Domain.Infrastructure.Repositories
     {
         Task<bool> ExistsBySlug(string slug);
         Task<ArticleEntity> GetBySlug(string slug);
+        Task FavoriteArticle(string slug);
+        Task UnfavoriteArticle(string slug);
     }
 }

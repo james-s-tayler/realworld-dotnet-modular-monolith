@@ -9,7 +9,7 @@ namespace Application.Content.Domain.Infrastructure.Mappers
         {
             return new UserEntity
             {
-                Id = user.Id,
+                UserId = user.Id,
                 Username = user.Username
             };
         }
