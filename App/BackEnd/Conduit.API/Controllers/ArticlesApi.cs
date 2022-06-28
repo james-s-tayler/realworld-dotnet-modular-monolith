@@ -11,7 +11,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
-using Application.Content.Domain.Contracts.DTOs;
 using Application.Content.Domain.Contracts.Operations.Commands.PublishArticle;
 using Application.Core.PipelineBehaviors.OperationResponse;
 using Microsoft.AspNetCore.Authorization;

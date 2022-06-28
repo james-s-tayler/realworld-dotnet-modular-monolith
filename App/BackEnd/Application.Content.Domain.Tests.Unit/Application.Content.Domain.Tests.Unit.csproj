@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
@@ -20,8 +19,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\App\BackEnd\Application.Core.Testing\Application.Core.Testing.csproj" />
         <ProjectReference Include="..\Application.Content.Domain\Application.Content.Domain.csproj" />
+        <ProjectReference Include="..\Application.Content.Domain.Contracts\Application.Content.Domain.Contracts.csproj" />
+        <ProjectReference Include="..\Application.Core.Testing\Application.Core.Testing.csproj" />
     </ItemGroup>
 
 </Project>

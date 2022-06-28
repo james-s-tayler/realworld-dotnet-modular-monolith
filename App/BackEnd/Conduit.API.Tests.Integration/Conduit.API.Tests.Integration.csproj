@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Application.Content.Domain\Application.Content.Domain\Application.Content.Domain.csproj" />
+      <ProjectReference Include="..\Application.Content.Domain\Application.Content.Domain.csproj" />
       <ProjectReference Include="..\Conduit.API\Conduit.API.csproj" />
       <ProjectReference Include="..\Application.Core.Testing\Application.Core.Testing.csproj" />
     </ItemGroup>

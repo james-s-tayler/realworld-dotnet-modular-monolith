@@ -41,7 +41,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.3.0" />
   </ItemGroup>
   <ItemGroup><!--<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.0" />-->
-    <ProjectReference Include="..\Application.Content.Domain\Application.Content.Domain.Contracts\Application.Content.Domain.Contracts.csproj" />
+    <ProjectReference Include="..\Application.Content.Domain.Contracts\Application.Content.Domain.Contracts.csproj" />
     <ProjectReference Include="..\Application.Content.Domain\Application.Content.Domain.csproj" />
     <ProjectReference Include="..\Application.Feed.Domain\Application.Feed.Domain.csproj" />
     <ProjectReference Include="..\Application.Social.Domain.Contracts\Application.Social.Domain.Contracts.csproj" />

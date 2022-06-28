@@ -83,11 +83,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".template.config", ".templa
 		..\..\DevOps\AppTemplates\Module\.template.config\template.json = ..\..\DevOps\AppTemplates\Module\.template.config\template.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Content.Domain.Tests.Unit", "Application.Content.Domain\Application.Content.Domain.Tests.Unit\Application.Content.Domain.Tests.Unit.csproj", "{76A4D29F-106D-48CC-A90E-237B9A380CED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Content.Domain.Tests.Unit", "Application.Content.Domain.Tests.Unit\Application.Content.Domain.Tests.Unit.csproj", "{76A4D29F-106D-48CC-A90E-237B9A380CED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Content.Domain.Contracts", "Application.Content.Domain\Application.Content.Domain.Contracts\Application.Content.Domain.Contracts.csproj", "{D32F1E47-24AD-4BBE-B025-6109BFC1FD7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Content.Domain.Contracts", "Application.Content.Domain.Contracts\Application.Content.Domain.Contracts.csproj", "{D32F1E47-24AD-4BBE-B025-6109BFC1FD7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Content.Domain", "Application.Content.Domain\Application.Content.Domain\Application.Content.Domain.csproj", "{F986C723-4638-4800-BFF0-DA59B5CF3CB9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Content.Domain", "Application.Content.Domain\Application.Content.Domain.csproj", "{F986C723-4638-4800-BFF0-DA59B5CF3CB9}"
 EndProject
 Global
 				GlobalSection(SolutionConfigurationPlatforms) = preSolution
