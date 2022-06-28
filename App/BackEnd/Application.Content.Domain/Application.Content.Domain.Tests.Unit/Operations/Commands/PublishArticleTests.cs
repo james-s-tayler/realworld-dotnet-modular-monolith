@@ -139,5 +139,19 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Commands
             result.Result.Should().Be(OperationResult.InvalidRequest);
             result.Response.Should().BeNull();
         }
+        
+        [Fact]
+        public async Task GivenNoArticleToPublish_WhenPublishArticle_ThenInvalidRequest()
+        {
+            //arrange
+            _publishArticleCommand.NewArticle = null;
+
+            //act
+            var result = await _module.Mediator.Send(_publishArticleCommand);
+
+            //assert
+            result.Result.Should().Be(OperationResult.InvalidRequest);
+            result.Response.Should().BeNull();
+        }
     }
 }
