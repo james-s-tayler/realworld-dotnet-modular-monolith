@@ -21,6 +21,7 @@ using Conduit.API.Attributes;
 using Conduit.API.Models;
 using Conduit.API.Models.Mappers;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace Conduit.API.Controllers
 { 
@@ -52,12 +53,14 @@ namespace Conduit.API.Controllers
         [ProducesResponseType(statusCode: 201, type: typeof(SingleArticleResponse))]
         public virtual async Task<IActionResult> CreateArticle([FromBody]NewArticleRequest request)
         {
+            //TODO - write integration test for this, fix up docker build, maybe think about IMapper abstraction and test framework
+            
             var publishArticleResponse = await Mediator.Send(new PublishArticleCommand { NewArticle = request.Article.ToPublishArticleDto() });
             
             if (publishArticleResponse.Result != OperationResult.Success)
                 return UnsuccessfulResponseResult(publishArticleResponse);
 
-            return Ok(publishArticleResponse.Response.Article.ToSingleArticleResponse());
+            return StatusCode(StatusCodes.Status201Created, publishArticleResponse.Response.Article.ToSingleArticleResponse());
         }
 
         /// <summary>

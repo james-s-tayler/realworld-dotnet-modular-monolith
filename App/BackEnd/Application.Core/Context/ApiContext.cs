@@ -13,7 +13,16 @@ namespace Application.Core.Context
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public bool IsAuthenticated => _httpContextAccessor.HttpContext.User.Identity is {IsAuthenticated: true};
+        public bool IsAuthenticated
+        {
+            get
+            {
+                if (_httpContextAccessor == null || _httpContextAccessor.HttpContext == null)
+                    return false;
+                
+                return _httpContextAccessor.HttpContext.User.Identity is {IsAuthenticated: true};
+            }
+        }
 
         public int UserId => int.Parse(_httpContextAccessor.HttpContext.User.FindFirst("user_id")!.Value);
         public string Username => _httpContextAccessor.HttpContext.User.FindFirst("username")!.Value;

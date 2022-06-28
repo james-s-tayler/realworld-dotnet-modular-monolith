@@ -23,13 +23,13 @@ namespace Application.ModuleName.Domain.Tests.Unit.Operations.Queries
         public async Task GivenNoExample_WhenGetExample_ThenNotFound()
         {
             //arrange
-            var getExampleQuery = new GetExampleQuery {Id = 1};
+            var getExampleQuery = new GetExampleQuery { Id = 1 };
             
             //act
             var result = await _module.Mediator.Send(getExampleQuery);
             
             //assert
-            result.Result.Should().Be(OperationResult.ValidationError);
+            result.Result.Should().Be(OperationResult.NotFound);
         }
     }
 }
