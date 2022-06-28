@@ -11,11 +11,16 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
+using Application.Content.Domain.Contracts.DTOs;
+using Application.Content.Domain.Contracts.Operations.Commands.PublishArticle;
+using Application.Core.PipelineBehaviors.OperationResponse;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Conduit.API.Attributes;
 using Conduit.API.Models;
+using Conduit.API.Models.Mappers;
+using MediatR;
 
 namespace Conduit.API.Controllers
 { 
@@ -26,13 +31,17 @@ namespace Conduit.API.Controllers
     [Produces("application/json")]
     [Consumes("application/json")]
     [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
-    public class ArticlesApiController : ControllerBase
-    { 
+    public class ArticlesApiController : OperationResponseController
+    {
+        public ArticlesApiController(IMediator mediator) : base(mediator)
+        {
+        }
+        
         /// <summary>
         /// Create an article
         /// </summary>
         /// <remarks>Create an article. Auth is required</remarks>
-        /// <param name="article">Article to create</param>
+        /// <param name="request">Article to create</param>
         /// <response code="201">OK</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="422">Unexpected error</response>
@@ -41,9 +50,14 @@ namespace Conduit.API.Controllers
         [ValidateModelState]
         [SwaggerOperation("CreateArticle")]
         [ProducesResponseType(statusCode: 201, type: typeof(SingleArticleResponse))]
-        public virtual async Task<IActionResult> CreateArticle([FromBody]NewArticleRequest article)
+        public virtual async Task<IActionResult> CreateArticle([FromBody]NewArticleRequest request)
         {
-            return StatusCode((int)HttpStatusCode.NotImplemented);
+            var publishArticleResponse = await Mediator.Send(new PublishArticleCommand { NewArticle = request.Article.ToPublishArticleDto() });
+            
+            if (publishArticleResponse.Result != OperationResult.Success)
+                return UnsuccessfulResponseResult(publishArticleResponse);
+
+            return Ok(publishArticleResponse.Response.Article.ToSingleArticleResponse());
         }
 
         /// <summary>
