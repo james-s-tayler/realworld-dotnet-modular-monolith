@@ -12,8 +12,8 @@ COPY Directory.Build.props ./
 COPY */*.csproj ./
 RUN dotnet sln list | \
       grep ".csproj" | \
-      xargs -I {} sh -c \
-        'target="{}"; dir="${target%/*}"; file="${target##*/}"; mkdir -p -- "$dir"; mv -- "$file" "$target"'
+      grep -v "AppTemplates" | \
+      xargs -I {} sh -c 'target="{}"; dir="${target%/*}"; file="${target##*/}"; mkdir -p -- "$dir"; mv -- "$file" "$target"'
 
 #make sure your .dockerignore ignores **/bin and **/obj or dotnet build can fail 
 #if the runtime identifier of your host machine and your Docker image are different

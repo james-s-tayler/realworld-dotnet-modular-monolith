@@ -1,6 +1,8 @@
 #! /bin/bash
 set -x
 
+sudo ./sqlite/scrub-db.sh
+
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 APIURL=${APIURL:-http://localhost:5100/api}

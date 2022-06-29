@@ -12,6 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
 using Application.Content.Domain.Contracts.Operations.Commands.PublishArticle;
+using Application.Content.Domain.Contracts.Operations.Queries.GetSingleArticle;
 using Application.Core.PipelineBehaviors.OperationResponse;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -52,8 +53,6 @@ namespace Conduit.API.Controllers
         [ProducesResponseType(statusCode: 201, type: typeof(SingleArticleResponse))]
         public virtual async Task<IActionResult> CreateArticle([FromBody]NewArticleRequest request)
         {
-            //TODO - write integration test for this, fix up docker build, maybe think about IMapper abstraction and test framework
-            
             var publishArticleResponse = await Mediator.Send(new PublishArticleCommand { NewArticle = request.Article.ToPublishArticleDto() });
             
             if (publishArticleResponse.Result != OperationResult.Success)
@@ -94,7 +93,12 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 200, type: typeof(SingleArticleResponse), description: "OK")]
         public virtual async Task<IActionResult> GetArticle([FromRoute (Name = "slug")][Required]string slug)
         {
-            return StatusCode((int)HttpStatusCode.NotImplemented);
+            var followUserResponse = await Mediator.Send(new GetSingleArticleQuery { Slug = slug });
+            
+            if (followUserResponse.Result != OperationResult.Success)
+                return UnsuccessfulResponseResult(followUserResponse);
+
+            return Ok(followUserResponse.Response.Article.ToSingleArticleResponse());
         }
 
         /// <summary>
