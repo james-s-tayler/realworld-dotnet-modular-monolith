@@ -40,7 +40,7 @@ namespace Application.Social.Domain.Infrastructure.EventListeners
 
                 _httpContextAccessor.HttpContext!.User = principal;   
             }
-
+            
             await _userRepository.FollowUser(userId);
         }
     }

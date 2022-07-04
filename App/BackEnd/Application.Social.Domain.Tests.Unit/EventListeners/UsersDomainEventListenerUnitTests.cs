@@ -1,8 +1,6 @@
 using System.Threading.Tasks;
 using Application.Core.Testing;
 using Application.Social.Domain.Tests.Unit.Setup;
-using Application.Users.Domain.Contracts;
-using Application.Users.Domain.Contracts.DTOs;
 using Application.Users.Domain.Contracts.Operations.Commands.RegisterUser;
 using Application.Users.Domain.Contracts.Operations.Commands.UpdateUser;
 using AutoFixture;
@@ -26,17 +24,8 @@ namespace Application.Social.Domain.Tests.Unit.EventListeners
         public async Task GivenUserRegisterEvent_WhenCheckUserRepository_ThenUserExists()
         {
             //arrange
-            var registerUserEvent = new RegisterUserCommandResult
-            {
-                RegisteredUser = new UserDTO
-                {
-                    
-                    Email = $"{_module.AutoFixture.Create<string>()}@{_module.AutoFixture.Create<string>()}.com",
-                    Id = _module.AutoFixture.Create<int>(),
-                    Username = _module.AutoFixture.Create<string>(),
-                    Token = _module.AutoFixture.Create<string>()
-                }
-            };
+            var registerUserEvent = _module.AutoFixture.Create<RegisterUserCommandResult>();
+            registerUserEvent.RegisteredUser.Email = $"{_module.AutoFixture.Create<string>()}@{_module.AutoFixture.Create<string>()}.com";
             
             //act
             await _module.Mediator.Publish(registerUserEvent);
@@ -50,33 +39,15 @@ namespace Application.Social.Domain.Tests.Unit.EventListeners
         public async Task GivenAnExistingUser_WhenUpdateUserEventFired_ThenUserGetsUpdated()
         {
             //arrange
-            var registerUserEvent = new RegisterUserCommandResult
-            {
-                RegisteredUser = new UserDTO
-                {
-                    
-                    Email = $"{_module.AutoFixture.Create<string>()}@{_module.AutoFixture.Create<string>()}.com",
-                    Id = _module.AutoFixture.Create<int>(),
-                    Username = _module.AutoFixture.Create<string>(),
-                    Token = _module.AutoFixture.Create<string>()
-                }
-            };
+            var registerUserEvent = _module.AutoFixture.Create<RegisterUserCommandResult>();
+            registerUserEvent.RegisteredUser.Email = $"{_module.AutoFixture.Create<string>()}@{_module.AutoFixture.Create<string>()}.com";
             
             await _module.Mediator.Publish(registerUserEvent);
-            
-            var updateUserEvent = new UpdateUserCommandResult
-            {
-                UpdatedUser = new UserDTO
-                {
-                    Id = registerUserEvent.RegisteredUser.Id,
-                    Email = $"{_module.AutoFixture.Create<string>()}@{_module.AutoFixture.Create<string>()}.com",
-                    Username = _module.AutoFixture.Create<string>(),
-                    Token = _module.AutoFixture.Create<string>(),
-                    Bio = _module.AutoFixture.Create<string>(),
-                    Image = _module.AutoFixture.Create<string>()
-                }
-            };
-            
+
+            var updateUserEvent = _module.AutoFixture.Create<UpdateUserCommandResult>();
+            updateUserEvent.UpdatedUser.Id = registerUserEvent.RegisteredUser.Id;
+            updateUserEvent.UpdatedUser.Email = $"{_module.AutoFixture.Create<string>()}@{_module.AutoFixture.Create<string>()}.com";
+
             //act
             await _module.Mediator.Publish(updateUserEvent);
 

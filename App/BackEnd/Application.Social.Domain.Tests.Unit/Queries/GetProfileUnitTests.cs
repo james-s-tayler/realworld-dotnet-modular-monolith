@@ -35,23 +35,11 @@ namespace Application.Social.Domain.Tests.Unit.Queries
             await _module.UserRepository.Create(authenticatedUser);
             await _module.UserRepository.FollowUser(authenticatedUser.Id);
 
-            var otherUser = new UserEntity
-            {
-                Id = _module.AutoFixture.Create<int>(),
-                Bio = _module.AutoFixture.Create<string>(),
-                Image = _module.AutoFixture.Create<string>(),
-                Username = _module.AutoFixture.Create<string>()
-            };
+            var otherUser = _module.AutoFixture.Create<UserEntity>();
             await _module.UserRepository.Create(otherUser);
             await _module.UserRepository.FollowUser(otherUser.Id);
             
-            var otherUser2 = new UserEntity
-            {
-                Id = _module.AutoFixture.Create<int>(),
-                Bio = _module.AutoFixture.Create<string>(),
-                Image = _module.AutoFixture.Create<string>(),
-                Username = _module.AutoFixture.Create<string>()
-            };
+            var otherUser2 = _module.AutoFixture.Create<UserEntity>();
             await _module.UserRepository.Create(otherUser2);
 
             var getOwnProfileRequest = new GetProfileQuery { Username = _module.AuthenticatedUserUsername };
