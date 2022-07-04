@@ -20,7 +20,6 @@ namespace Application.Social.Domain.Tests.Unit.EventListeners
         public UsersDomainEventListenerUnitTests(SocialModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
             _module = module;
-            _module.UserRepository.DeleteAll().GetAwaiter().GetResult();
         }
 
         [Fact]

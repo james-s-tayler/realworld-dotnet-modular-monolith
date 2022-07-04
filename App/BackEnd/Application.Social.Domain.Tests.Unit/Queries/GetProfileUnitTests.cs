@@ -19,7 +19,6 @@ namespace Application.Social.Domain.Tests.Unit.Queries
         public GetProfileUnitTests(SocialModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
             _module = module;
-            _module.UserRepository.DeleteAll().GetAwaiter().GetResult();
         }
 
         [Fact]

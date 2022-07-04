@@ -30,7 +30,6 @@ namespace Application.Social.Domain.Tests.Unit.Setup
 
         public override void PerTestSetup()
         {
-            
         }
     }
 }
