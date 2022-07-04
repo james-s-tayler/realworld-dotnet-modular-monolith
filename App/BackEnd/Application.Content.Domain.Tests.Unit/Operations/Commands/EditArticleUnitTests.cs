@@ -102,6 +102,8 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Commands
             result.Result.Should().Be(OperationResult.Success);
             result.Response.Should().NotBeNull();
             result.Response.Article.Should().NotBeNull();
+            result.Response.Article.Title.Should().Be(_module.ExistingFavoritedArticleEntity.Title);
+            result.Response.Article.Description.Should().Be(_module.ExistingFavoritedArticleEntity.Description);
             result.Response.Article.Body.Should().Be(_editArticleCommand.UpdatedArticle.Body);
         }
         

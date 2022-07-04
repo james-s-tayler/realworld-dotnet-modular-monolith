@@ -6,6 +6,7 @@ namespace Application.Content.Domain.Infrastructure.Repositories
 {
     internal interface ITagRepository
     {
+        Task<List<TagEntity>> GetTags();
         Task<List<TagEntity>> GetByArticleId(int articleId);
     }
 }

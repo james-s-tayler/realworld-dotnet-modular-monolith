@@ -19,6 +19,13 @@ namespace Application.Content.Domain.Infrastructure.Repositories
             _connection = connectionWrapper.Connection;
         }
 
+        public Task<List<TagEntity>> GetTags()
+        {
+            var articleTagsSql = "SELECT distinct(tag) FROM tags";
+            var articleTags = _connection.Query<TagEntity>(articleTagsSql).ToList();
+            return Task.FromResult(articleTags);
+        }
+        
         public Task<List<TagEntity>> GetByArticleId(int articleId)
         {
             var articleTagsSql = "SELECT * FROM tags t JOIN article_tags at ON at.tag_id = t.id WHERE at.article_id = @article_id";

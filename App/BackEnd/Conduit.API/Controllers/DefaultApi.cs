@@ -11,8 +11,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Application.Content.Domain.Contracts.Operations.Queries.GetTags;
+using Application.Core.PipelineBehaviors.OperationResponse;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -21,6 +24,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Newtonsoft.Json;
 using Conduit.API.Attributes;
 using Conduit.API.Models;
+using MediatR;
 
 namespace Conduit.API.Controllers
 { 
@@ -28,8 +32,12 @@ namespace Conduit.API.Controllers
     /// 
     /// </summary>
     [ApiController]
-    public class DefaultApiController : ControllerBase
+    public class DefaultApiController : OperationResponseController
     { 
+        public DefaultApiController(IMediator mediator) : base(mediator)
+        {
+        }
+        
         /// <summary>
         /// Get tags
         /// </summary>
@@ -45,7 +53,15 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> TagsGet()
         {
-            return StatusCode((int)HttpStatusCode.NotImplemented);
+            var getTagsQueryResult = await Mediator.Send(new GetTagsQuery());
+            
+            if (getTagsQueryResult.Result != OperationResult.Success)
+                return UnsuccessfulResponseResult(getTagsQueryResult);
+
+            return Ok(new TagsResponse
+            {
+                Tags = getTagsQueryResult.Response.Tags.ToList()
+            });
         }
     }
 }
