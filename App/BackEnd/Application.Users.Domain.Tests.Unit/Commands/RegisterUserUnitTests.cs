@@ -21,7 +21,6 @@ namespace Application.Users.Domain.Tests.Unit.Commands
         public RegisterUserUnitTests(UsersModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
             _module = module;
-            _module.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
             _registerUserCommand = new RegisterUserCommand
             {
                 NewUser = new NewUserDTO
@@ -31,8 +30,6 @@ namespace Application.Users.Domain.Tests.Unit.Commands
                     Password = _module.PlainTextPassword
                 }
             };
-            
-            _module.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
         }
         
         [Fact]

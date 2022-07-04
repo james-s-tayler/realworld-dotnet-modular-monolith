@@ -20,7 +20,6 @@ namespace Application.Users.Domain.Tests.Unit.Commands
         public LoginUserUnitTests(UsersModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
             _module = module;
-            _module.WithUnauthenticatedUserContext();
             _loginUserCommand = new LoginUserCommand
             {
                 UserCredentials = new UserCredentialsDTO
@@ -30,7 +29,7 @@ namespace Application.Users.Domain.Tests.Unit.Commands
                 }
             };
             
-            _module.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
+            _module.WithUnauthenticatedUserContext();
         }
         
         [Fact]

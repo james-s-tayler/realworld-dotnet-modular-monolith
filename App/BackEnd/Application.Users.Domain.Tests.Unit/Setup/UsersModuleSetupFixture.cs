@@ -54,12 +54,12 @@ namespace Application.Users.Domain.Tests.Unit.Setup
                 Password = PasswordHasher.HashPassword(null, PlainTextPassword)
             };
             UserRepository = provider.GetService<IUserRepository>();
-            WithAuthenticatedUserContext();
         }
 
         public override void PerTestSetup()
         {
-            
+            WithAuthenticatedUserContext();
+            WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
         }
 
         public UsersModuleSetupFixture() : base(new UsersModule()) {}

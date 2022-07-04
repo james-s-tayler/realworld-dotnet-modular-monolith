@@ -19,7 +19,6 @@ namespace Application.Users.Domain.Tests.Unit.Queries
         {
             _module = module;
             _getCurrentUserQuery = new GetCurrentUserQuery();
-            _module.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
         }
 
         [Fact]

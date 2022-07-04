@@ -20,8 +20,6 @@ namespace Application.Users.Domain.Tests.Unit.Commands
         public UpdateUserUnitTests(UsersModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
             _module = module;
-            _module.WithAuthenticatedUserContext();
-            _module.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
             _updateUserCommand = new UpdateUserCommand
             {
                 UpdateUser = new UpdateUserDTO
@@ -32,8 +30,6 @@ namespace Application.Users.Domain.Tests.Unit.Commands
                     Username = _module.AutoFixture.Create<string>()
                 }
             };
-
-            _module.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
         }
 
         [Theory]
