@@ -11,6 +11,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
+using Application.Content.Domain.Contracts.Operations.Commands.DeleteArticle;
 using Application.Content.Domain.Contracts.Operations.Commands.PublishArticle;
 using Application.Content.Domain.Contracts.Operations.Queries.GetSingleArticle;
 using Application.Core.PipelineBehaviors.OperationResponse;
@@ -75,7 +76,12 @@ namespace Conduit.API.Controllers
         [SwaggerOperation("DeleteArticle")]
         public virtual async Task<IActionResult> DeleteArticle([FromRoute (Name = "slug")][Required]string slug)
         {
-            return StatusCode((int)HttpStatusCode.NotImplemented);
+            var deleteArticleResponse = await Mediator.Send(new DeleteArticleCommand { Slug = slug });
+            
+            if (deleteArticleResponse.Result != OperationResult.Success)
+                return UnsuccessfulResponseResult(deleteArticleResponse);
+
+            return Ok();
         }
 
         /// <summary>

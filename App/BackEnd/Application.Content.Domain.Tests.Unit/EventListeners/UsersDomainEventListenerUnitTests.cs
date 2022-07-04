@@ -12,11 +12,11 @@ using AutoFixture;
 namespace Application.Content.Domain.Tests.Unit.EventListeners
 {
     [Collection(nameof(ContentModuleTestCollection))]
-    public class UsersDomainEventListenerTests : TestBase
+    public class UsersDomainEventListenerUnitTests : UnitTestBase
     {
         private readonly ContentModuleSetupFixture _module;
 
-        public UsersDomainEventListenerTests(ContentModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        public UsersDomainEventListenerUnitTests(ContentModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
             _module = module;
             _module.UserRepository.DeleteAll().GetAwaiter().GetResult();

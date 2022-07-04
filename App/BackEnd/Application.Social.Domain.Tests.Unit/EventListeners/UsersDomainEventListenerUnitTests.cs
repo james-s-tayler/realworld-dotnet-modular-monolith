@@ -13,14 +13,14 @@ using Xunit.Abstractions;
 namespace Application.Social.Domain.Tests.Unit.EventListeners
 {
     [Collection(nameof(SocialModuleTestCollection))]
-    public class UsersDomainEventListenerTests : TestBase
+    public class UsersDomainEventListenerUnitTests : UnitTestBase
     {
-        private readonly SocialModuleSetupFixture _socialModule;
+        private readonly SocialModuleSetupFixture _module;
 
-        public UsersDomainEventListenerTests(SocialModuleSetupFixture socialModule, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        public UsersDomainEventListenerUnitTests(SocialModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
-            _socialModule = socialModule;
-            _socialModule.UserRepository.DeleteAll().GetAwaiter().GetResult();
+            _module = module;
+            _module.UserRepository.DeleteAll().GetAwaiter().GetResult();
         }
 
         [Fact]
@@ -32,18 +32,18 @@ namespace Application.Social.Domain.Tests.Unit.EventListeners
                 RegisteredUser = new UserDTO
                 {
                     
-                    Email = $"{_socialModule.AutoFixture.Create<string>()}@{_socialModule.AutoFixture.Create<string>()}.com",
-                    Id = _socialModule.AutoFixture.Create<int>(),
-                    Username = _socialModule.AutoFixture.Create<string>(),
-                    Token = _socialModule.AutoFixture.Create<string>()
+                    Email = $"{_module.AutoFixture.Create<string>()}@{_module.AutoFixture.Create<string>()}.com",
+                    Id = _module.AutoFixture.Create<int>(),
+                    Username = _module.AutoFixture.Create<string>(),
+                    Token = _module.AutoFixture.Create<string>()
                 }
             };
             
             //act
-            await _socialModule.Mediator.Publish(registerUserEvent);
+            await _module.Mediator.Publish(registerUserEvent);
 
             //assert
-            var exists = await _socialModule.UserRepository.Exists(registerUserEvent.RegisteredUser.Id);
+            var exists = await _module.UserRepository.Exists(registerUserEvent.RegisteredUser.Id);
             exists.Should().BeTrue();
         }
         
@@ -56,33 +56,33 @@ namespace Application.Social.Domain.Tests.Unit.EventListeners
                 RegisteredUser = new UserDTO
                 {
                     
-                    Email = $"{_socialModule.AutoFixture.Create<string>()}@{_socialModule.AutoFixture.Create<string>()}.com",
-                    Id = _socialModule.AutoFixture.Create<int>(),
-                    Username = _socialModule.AutoFixture.Create<string>(),
-                    Token = _socialModule.AutoFixture.Create<string>()
+                    Email = $"{_module.AutoFixture.Create<string>()}@{_module.AutoFixture.Create<string>()}.com",
+                    Id = _module.AutoFixture.Create<int>(),
+                    Username = _module.AutoFixture.Create<string>(),
+                    Token = _module.AutoFixture.Create<string>()
                 }
             };
             
-            await _socialModule.Mediator.Publish(registerUserEvent);
+            await _module.Mediator.Publish(registerUserEvent);
             
             var updateUserEvent = new UpdateUserCommandResult
             {
                 UpdatedUser = new UserDTO
                 {
                     Id = registerUserEvent.RegisteredUser.Id,
-                    Email = $"{_socialModule.AutoFixture.Create<string>()}@{_socialModule.AutoFixture.Create<string>()}.com",
-                    Username = _socialModule.AutoFixture.Create<string>(),
-                    Token = _socialModule.AutoFixture.Create<string>(),
-                    Bio = _socialModule.AutoFixture.Create<string>(),
-                    Image = _socialModule.AutoFixture.Create<string>()
+                    Email = $"{_module.AutoFixture.Create<string>()}@{_module.AutoFixture.Create<string>()}.com",
+                    Username = _module.AutoFixture.Create<string>(),
+                    Token = _module.AutoFixture.Create<string>(),
+                    Bio = _module.AutoFixture.Create<string>(),
+                    Image = _module.AutoFixture.Create<string>()
                 }
             };
             
             //act
-            await _socialModule.Mediator.Publish(updateUserEvent);
+            await _module.Mediator.Publish(updateUserEvent);
 
             //assert
-            var updateUser = await _socialModule.UserRepository.GetById(registerUserEvent.RegisteredUser.Id);
+            var updateUser = await _module.UserRepository.GetById(registerUserEvent.RegisteredUser.Id);
             updateUser.Bio.Should().Be(updateUserEvent.UpdatedUser.Bio);
             updateUser.Image.Should().Be(updateUserEvent.UpdatedUser.Image);
             updateUser.Username.Should().Be(updateUserEvent.UpdatedUser.Username);

@@ -9,6 +9,6 @@ namespace Application.Content.Domain.Contracts.Operations.Commands.DeleteArticle
     public class DeleteArticleCommand : ContractModel, IRequest<OperationResponse<DeleteArticleCommandResult>>
     {
         [Required]
-        public PublishArticleDTO NewArticle { get; set; }
+        public string Slug { get; set; }
     }
 }

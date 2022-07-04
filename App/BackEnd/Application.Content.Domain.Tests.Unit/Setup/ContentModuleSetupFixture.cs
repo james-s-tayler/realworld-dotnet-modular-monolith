@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Application.Content.Domain.Entities;
 using Application.Content.Domain.Infrastructure.Repositories;
 using Application.Content.Domain.Infrastructure.Services;
@@ -39,34 +40,7 @@ namespace Application.Content.Domain.Tests.Unit.Setup
         {
             UserRepository = provider.GetService<IUserRepository>();
             ArticleRepository = provider.GetService<IArticleRepository>();
-            
-            var userId = UserRepository!.Create(new UserEntity
-                {
-                    UserId = AuthenticatedUserId,
-                    Username = AuthenticatedUserUsername
-                })
-                .GetAwaiter().GetResult();
-            
-            var nonFavoritedArticleId = ArticleRepository!.Create(new ArticleEntity
-            {
-                Title = $"{AutoFixture.Create<string>()} {AutoFixture.Create<string>()}",
-                Description = AutoFixture.Create<string>(),
-                Body = AutoFixture.Create<string>(),
-                TagList = new List<TagEntity> {new() { Tag = ExistingArticleTag1}, new() { Tag = ExistingArticleTag2}},
-                Author = new UserEntity { UserId = userId }
-            }).GetAwaiter().GetResult();
 
-            var favoritedArticle = new ArticleEntity
-            {
-                Title = $"{AutoFixture.Create<string>()} {AutoFixture.Create<string>()}",
-                Description = AutoFixture.Create<string>(),
-                Body = AutoFixture.Create<string>(),
-                TagList = new List<TagEntity> {new() {Tag = ExistingArticleTag1}, new() {Tag = ExistingArticleTag2}},
-                Author = new UserEntity {UserId = userId}
-            };
-            var favoritedArticleId = ArticleRepository!.Create(favoritedArticle).GetAwaiter().GetResult();
-            ArticleRepository.FavoriteArticle(favoritedArticle.GetSlug()).GetAwaiter().GetResult();
-            
             var existingUserProfile = new ProfileDTO
             {
                 Username = AuthenticatedUserUsername,
@@ -78,10 +52,50 @@ namespace Application.Content.Domain.Tests.Unit.Setup
             SocialService
                 .Setup(service => 
                     service.GetProfile(It.Is<string>(s => s.Equals(AuthenticatedUserUsername))))
-                            .ReturnsAsync(OperationResponseFactory.Success(new GetProfileQueryResult { Profile = existingUserProfile }));
+                .ReturnsAsync(OperationResponseFactory.Success(new GetProfileQueryResult { Profile = existingUserProfile }));
+        }
 
-            ExistingNonFavoritedArticleEntity = ArticleRepository.GetById(nonFavoritedArticleId).GetAwaiter().GetResult();
-            ExistingFavoritedArticleEntity = ArticleRepository.GetById(favoritedArticleId).GetAwaiter().GetResult();
+        public override void PerTestSetup()
+        {
+            WithExistingUser().GetAwaiter().GetResult();
+            WithUnfavoritedArticle().GetAwaiter().GetResult();
+            WithFavoritedArticle().GetAwaiter().GetResult();
+        }
+
+        public async Task WithExistingUser()
+        {
+            await UserRepository!.Create(new UserEntity {
+                UserId = AuthenticatedUserId,
+                Username = AuthenticatedUserUsername
+            });
+        }
+
+        public async Task WithUnfavoritedArticle()
+        {
+            var nonFavoritedArticleId = ArticleRepository!.Create(new ArticleEntity
+            {
+                Title = $"{AutoFixture.Create<string>()} {AutoFixture.Create<string>()}",
+                Description = AutoFixture.Create<string>(),
+                Body = AutoFixture.Create<string>(),
+                TagList = new List<TagEntity> {new() { Tag = ExistingArticleTag1 }, new() { Tag = ExistingArticleTag2}},
+                Author = new UserEntity { UserId = AuthenticatedUserId }
+            }).GetAwaiter().GetResult();
+            ExistingNonFavoritedArticleEntity = await ArticleRepository.GetById(nonFavoritedArticleId);
+        }
+
+        public async Task WithFavoritedArticle()
+        {
+            var favoritedArticle = new ArticleEntity
+            {
+                Title = $"{AutoFixture.Create<string>()} {AutoFixture.Create<string>()}",
+                Description = AutoFixture.Create<string>(),
+                Body = AutoFixture.Create<string>(),
+                TagList = new List<TagEntity> {new() { Tag = ExistingArticleTag1 }, new() { Tag = ExistingArticleTag2 }},
+                Author = new UserEntity { UserId = AuthenticatedUserId }
+            };
+            var favoritedArticleId = await ArticleRepository!.Create(favoritedArticle);
+            await ArticleRepository.FavoriteArticle(favoritedArticle.GetSlug());
+            ExistingFavoritedArticleEntity = await ArticleRepository.GetById(favoritedArticleId);
         }
 
         public ContentModuleSetupFixture() : base(new ContentModule())

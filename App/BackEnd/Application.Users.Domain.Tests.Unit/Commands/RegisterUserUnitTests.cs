@@ -13,26 +13,26 @@ using Xunit.Abstractions;
 namespace Application.Users.Domain.Tests.Unit.Commands
 {
     [Collection(nameof(UsersModuleTestCollection))]
-    public class RegisterUserTests : TestBase
+    public class RegisterUserUnitTests : UnitTestBase
     {
-        private readonly UsersModuleSetupFixture _usersModule;
+        private readonly UsersModuleSetupFixture _module;
         private readonly RegisterUserCommand _registerUserCommand;
 
-        public RegisterUserTests(UsersModuleSetupFixture usersModule, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        public RegisterUserUnitTests(UsersModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
-            _usersModule = usersModule;
-            _usersModule.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
+            _module = module;
+            _module.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
             _registerUserCommand = new RegisterUserCommand
             {
                 NewUser = new NewUserDTO
                 {
-                    Email = $"{_usersModule.AutoFixture.Create<string>()}@{_usersModule.AutoFixture.Create<string>()}.com",
-                    Username = _usersModule.AutoFixture.Create<string>(),
-                    Password = _usersModule.PlainTextPassword
+                    Email = $"{_module.AutoFixture.Create<string>()}@{_module.AutoFixture.Create<string>()}.com",
+                    Username = _module.AutoFixture.Create<string>(),
+                    Password = _module.PlainTextPassword
                 }
             };
             
-            _usersModule.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
+            _module.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
         }
         
         [Fact]
@@ -41,7 +41,7 @@ namespace Application.Users.Domain.Tests.Unit.Commands
             //arrange
 
             //act
-            var result = await _usersModule.Mediator.Send(_registerUserCommand);
+            var result = await _module.Mediator.Send(_registerUserCommand);
             
             //assert
             result.Result.Should().Be(OperationResult.Success);
@@ -63,7 +63,7 @@ namespace Application.Users.Domain.Tests.Unit.Commands
             _registerUserCommand.NewUser.Email = email;
 
             //act
-            var result = await _usersModule.Mediator.Send(_registerUserCommand);
+            var result = await _module.Mediator.Send(_registerUserCommand);
             
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
@@ -79,7 +79,7 @@ namespace Application.Users.Domain.Tests.Unit.Commands
             _registerUserCommand.NewUser.Username = username;
 
             //act
-            var result = await _usersModule.Mediator.Send(_registerUserCommand);
+            var result = await _module.Mediator.Send(_registerUserCommand);
             
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
@@ -92,15 +92,15 @@ namespace Application.Users.Domain.Tests.Unit.Commands
             //arrange
 
             //act
-            var registerUserResponse = await _usersModule.Mediator.Send(_registerUserCommand);
+            var registerUserResponse = await _module.Mediator.Send(_registerUserCommand);
             
             //assert
             registerUserResponse.Should().NotBeNull();
             registerUserResponse.Response.Should().NotBeNull();
 
-            var registeredUser = await _usersModule.UserRepository.GetById(registerUserResponse.Response.RegisteredUser.Id);
+            var registeredUser = await _module.UserRepository.GetById(registerUserResponse.Response.RegisteredUser.Id);
             
-            var result = _usersModule.PasswordHasher.VerifyHashedPassword(registeredUser,
+            var result = _module.PasswordHasher.VerifyHashedPassword(registeredUser,
                 registeredUser.Password,
                 _registerUserCommand.NewUser.Password);
             
@@ -114,10 +114,10 @@ namespace Application.Users.Domain.Tests.Unit.Commands
         public async Task GivenAUsernameAlreadyInUse_WhenRegisterUser_ThenFailsValidation()
         {
             //arrange
-            _registerUserCommand.NewUser.Username = _usersModule.ExistingUserEntity.Username;
+            _registerUserCommand.NewUser.Username = _module.ExistingUserEntity.Username;
 
             //act
-            var result = await _usersModule.Mediator.Send(_registerUserCommand);
+            var result = await _module.Mediator.Send(_registerUserCommand);
             
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
@@ -128,10 +128,10 @@ namespace Application.Users.Domain.Tests.Unit.Commands
         public async Task GivenAnEmailAlreadyInUse_WhenRegisterUser_ThenFailsValidation()
         {
             //arrange
-            _registerUserCommand.NewUser.Email = _usersModule.ExistingUserEntity.Email;
+            _registerUserCommand.NewUser.Email = _module.ExistingUserEntity.Email;
 
             //act
-            var result = await _usersModule.Mediator.Send(_registerUserCommand);
+            var result = await _module.Mediator.Send(_registerUserCommand);
             
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
@@ -148,7 +148,7 @@ namespace Application.Users.Domain.Tests.Unit.Commands
             _registerUserCommand.NewUser.Password = invalidPassword;
 
             //act
-            var result = await _usersModule.Mediator.Send(_registerUserCommand);
+            var result = await _module.Mediator.Send(_registerUserCommand);
             
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);

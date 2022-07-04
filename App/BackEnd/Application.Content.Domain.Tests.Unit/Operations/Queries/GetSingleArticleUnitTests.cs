@@ -11,11 +11,11 @@ using Xunit.Abstractions;
 namespace Application.Content.Domain.Tests.Unit.Operations.Queries
 {
     [Collection(nameof(ContentModuleTestCollection))]
-    public class GetSingleArticleTests : TestBase
+    public class GetSingleArticleUnitTests : UnitTestBase
     {
         private readonly ContentModuleSetupFixture _module;
 
-        public GetSingleArticleTests(ContentModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        public GetSingleArticleUnitTests(ContentModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
             _module = module;
         }

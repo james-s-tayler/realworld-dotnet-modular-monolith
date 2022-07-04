@@ -1,7 +1,5 @@
-using System;
 using System.Threading.Tasks;
-using Application.Content.Domain.Contracts.DTOs;
-using Application.Content.Domain.Contracts.Operations.Commands.FavoriteArticle;
+using Application.Content.Domain.Contracts.Operations.Commands.UnfavoriteArticle;
 using Application.Content.Domain.Tests.Unit.Setup;
 using Application.Core.PipelineBehaviors.OperationResponse;
 using Application.Core.Testing;
@@ -12,42 +10,42 @@ using Xunit.Abstractions;
 namespace Application.Content.Domain.Tests.Unit.Operations.Commands
 {
     [Collection(nameof(ContentModuleTestCollection))]
-    public class FavoriteArticleTests : TestBase
+    public class UnfavoriteArticleUnitTests : UnitTestBase
     {
         private readonly ContentModuleSetupFixture _module;
-        private readonly FavoriteArticleCommand _favoriteArticleCommand;
+        private readonly UnfavoriteArticleCommand _unfavoriteArticleCommand;
 
-        public FavoriteArticleTests(ContentModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        public UnfavoriteArticleUnitTests(ContentModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
             _module = module;
-            _favoriteArticleCommand = new FavoriteArticleCommand { Slug = _module.ExistingNonFavoritedArticleEntity.GetSlug() };
+            _unfavoriteArticleCommand = new UnfavoriteArticleCommand { Slug = _module.ExistingFavoritedArticleEntity.GetSlug() };
         }
 
         [Fact]
-        public async Task GivenAnUnfavoritedArticle_WhenFavoriteArticle_ThenArticleFavorited()
+        public async Task GivenAFavoritedArticle_WhenUnfavoriteArticle_ThenArticleUnfavorited()
         {
             //pre-assert
-            _module.ExistingNonFavoritedArticleEntity.Favorited.Should().BeFalse();
+            _module.ExistingFavoritedArticleEntity.Favorited.Should().BeTrue();
             
             //act
-            var result = await _module.Mediator.Send(_favoriteArticleCommand);
+            var result = await _module.Mediator.Send(_unfavoriteArticleCommand);
             
             //assert
             result.Result.Should().Be(OperationResult.Success);
             result.Response.Should().NotBeNull();
             result.Response.Article.Should().NotBeNull();
-            result.Response.Article.Slug.Should().Be(_favoriteArticleCommand.Slug);
-            result.Response.Article.Favorited.Should().BeTrue();
+            result.Response.Article.Slug.Should().Be(_unfavoriteArticleCommand.Slug);
+            result.Response.Article.Favorited.Should().BeFalse();
         }
         
         [Fact]
         public async Task GivenSlugIsMissing_WhenFavoriteArticle_ThenInvalidRequest()
         {
             //arrange
-            _favoriteArticleCommand.Slug = null;
+            _unfavoriteArticleCommand.Slug = null;
 
             //act
-            var result = await _module.Mediator.Send(_favoriteArticleCommand);
+            var result = await _module.Mediator.Send(_unfavoriteArticleCommand);
 
             //assert
             result.Result.Should().Be(OperationResult.InvalidRequest);

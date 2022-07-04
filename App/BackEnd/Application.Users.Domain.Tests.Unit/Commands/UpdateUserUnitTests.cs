@@ -12,28 +12,28 @@ using Xunit.Abstractions;
 namespace Application.Users.Domain.Tests.Unit.Commands
 {
     [Collection(nameof(UsersModuleTestCollection))]
-    public class UpdateUserTests : TestBase
+    public class UpdateUserUnitTests : UnitTestBase
     {
-        private readonly UsersModuleSetupFixture _usersModule;
+        private readonly UsersModuleSetupFixture _module;
         private readonly UpdateUserCommand _updateUserCommand;
 
-        public UpdateUserTests(UsersModuleSetupFixture usersModule, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        public UpdateUserUnitTests(UsersModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
-            _usersModule = usersModule;
-            _usersModule.WithAuthenticatedUserContext();
-            _usersModule.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
+            _module = module;
+            _module.WithAuthenticatedUserContext();
+            _module.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
             _updateUserCommand = new UpdateUserCommand
             {
                 UpdateUser = new UpdateUserDTO
                 {
-                    Bio = _usersModule.AutoFixture.Create<string>(),
-                    Email = _usersModule.AutoFixture.Create<string>(),
-                    Image = _usersModule.AutoFixture.Create<string>(),
-                    Username = _usersModule.AutoFixture.Create<string>()
+                    Bio = _module.AutoFixture.Create<string>(),
+                    Email = _module.AutoFixture.Create<string>(),
+                    Image = _module.AutoFixture.Create<string>(),
+                    Username = _module.AutoFixture.Create<string>()
                 }
             };
 
-            _usersModule.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
+            _module.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
         }
 
         [Theory]
@@ -51,62 +51,62 @@ namespace Application.Users.Domain.Tests.Unit.Commands
             if(!updateBio) _updateUserCommand.UpdateUser.Bio = null;
 
             //act
-            var updateUserResult = await _usersModule.Mediator.Send(_updateUserCommand);
+            var updateUserResult = await _module.Mediator.Send(_updateUserCommand);
 
             //assert
             updateUserResult.Result.Should().Be(OperationResult.Success);
             updateUserResult.Response.Should().NotBeNull();
-            updateUserResult.Response.UpdatedUser.Id.Should().Be(_usersModule.ExistingUserEntity.Id);
+            updateUserResult.Response.UpdatedUser.Id.Should().Be(_module.ExistingUserEntity.Id);
 
             updateUserResult.Response.UpdatedUser.Username.Should().Be(updateUsername
                 ? _updateUserCommand.UpdateUser.Username
-                : _usersModule.ExistingUserEntity.Username);
+                : _module.ExistingUserEntity.Username);
             
             updateUserResult.Response.UpdatedUser.Email.Should().Be(updateEmail
                 ? _updateUserCommand.UpdateUser.Email
-                : _usersModule.ExistingUserEntity.Email);
+                : _module.ExistingUserEntity.Email);
             
             updateUserResult.Response.UpdatedUser.Image.Should().Be(updateImage
                 ? _updateUserCommand.UpdateUser.Image
-                : _usersModule.ExistingUserEntity.Image);
+                : _module.ExistingUserEntity.Image);
             
             updateUserResult.Response.UpdatedUser.Bio.Should().Be(updateBio
                 ? _updateUserCommand.UpdateUser.Bio
-                : _usersModule.ExistingUserEntity.Bio);
+                : _module.ExistingUserEntity.Bio);
         }
         
         [Fact]
         public async Task GivenUpdateEmailWithExistingValue_WhenUpdateUser_ThenSucceeds()
         {
             //arrange
-            _updateUserCommand.UpdateUser = new UpdateUserDTO {Email = _usersModule.ExistingUserEntity.Email};
+            _updateUserCommand.UpdateUser = new UpdateUserDTO {Email = _module.ExistingUserEntity.Email};
 
             //act
-            var updateUserResult = await _usersModule.Mediator.Send(_updateUserCommand);
+            var updateUserResult = await _module.Mediator.Send(_updateUserCommand);
 
             //assert
             updateUserResult.Result.Should().Be(OperationResult.Success);
             updateUserResult.Response.Should().NotBeNull();
-            updateUserResult.Response.UpdatedUser.Id.Should().Be(_usersModule.ExistingUserEntity.Id);
+            updateUserResult.Response.UpdatedUser.Id.Should().Be(_module.ExistingUserEntity.Id);
 
-            updateUserResult.Response.UpdatedUser.Email.Should().Be(_usersModule.ExistingUserEntity.Email);
+            updateUserResult.Response.UpdatedUser.Email.Should().Be(_module.ExistingUserEntity.Email);
         }
        
         [Fact]
         public async Task GivenUpdateUsernameWithExistingValue_WhenUpdateUser_ThenSucceeds()
         {
             //arrange
-            _updateUserCommand.UpdateUser = new UpdateUserDTO {Email = _usersModule.ExistingUserEntity.Username};
+            _updateUserCommand.UpdateUser = new UpdateUserDTO {Email = _module.ExistingUserEntity.Username};
 
             //act
-            var updateUserResult = await _usersModule.Mediator.Send(_updateUserCommand);
+            var updateUserResult = await _module.Mediator.Send(_updateUserCommand);
 
             //assert
             updateUserResult.Result.Should().Be(OperationResult.Success);
             updateUserResult.Response.Should().NotBeNull();
-            updateUserResult.Response.UpdatedUser.Id.Should().Be(_usersModule.ExistingUserEntity.Id);
+            updateUserResult.Response.UpdatedUser.Id.Should().Be(_module.ExistingUserEntity.Id);
 
-            updateUserResult.Response.UpdatedUser.Username.Should().Be(_usersModule.ExistingUserEntity.Username);
+            updateUserResult.Response.UpdatedUser.Username.Should().Be(_module.ExistingUserEntity.Username);
         }
         
         [Fact]
@@ -116,7 +116,7 @@ namespace Application.Users.Domain.Tests.Unit.Commands
             _updateUserCommand.UpdateUser = new UpdateUserDTO();
 
             //act
-            var updateUserResult = await _usersModule.Mediator.Send(_updateUserCommand);
+            var updateUserResult = await _module.Mediator.Send(_updateUserCommand);
 
             //assert
             updateUserResult.Result.Should().Be(OperationResult.ValidationError);
@@ -127,10 +127,10 @@ namespace Application.Users.Domain.Tests.Unit.Commands
         public async Task GivenUsernameAlreadyExists_WhenUpdateUser_ThenFailsValidation()
         {
             //arrange
-            _updateUserCommand.UpdateUser.Username = _usersModule.ExistingUser2.Username;
+            _updateUserCommand.UpdateUser.Username = _module.ExistingUser2.Username;
 
             //act
-            var updateUserResult = await _usersModule.Mediator.Send(_updateUserCommand);
+            var updateUserResult = await _module.Mediator.Send(_updateUserCommand);
 
             //assert
             updateUserResult.Result.Should().Be(OperationResult.ValidationError);
@@ -141,10 +141,10 @@ namespace Application.Users.Domain.Tests.Unit.Commands
         public async Task GivenEmailAlreadyExists_WhenUpdateUser_ThenFailsValidation()
         {
             //arrange
-            _updateUserCommand.UpdateUser.Email = _usersModule.ExistingUser2.Email;
+            _updateUserCommand.UpdateUser.Email = _module.ExistingUser2.Email;
 
             //act
-            var updateUserResult = await _usersModule.Mediator.Send(_updateUserCommand);
+            var updateUserResult = await _module.Mediator.Send(_updateUserCommand);
 
             //assert
             updateUserResult.Result.Should().Be(OperationResult.ValidationError);
@@ -155,10 +155,10 @@ namespace Application.Users.Domain.Tests.Unit.Commands
         public async Task GivenNonExistentUser_WhenUpdateUser_ThenFailsValidation()
         {
             //arrange
-            _usersModule.WithRandomUserContext();
+            _module.WithRandomUserContext();
 
             //act
-            var updateUserResult = await _usersModule.Mediator.Send(_updateUserCommand);
+            var updateUserResult = await _module.Mediator.Send(_updateUserCommand);
 
             //assert
             updateUserResult.Result.Should().Be(OperationResult.ValidationError);

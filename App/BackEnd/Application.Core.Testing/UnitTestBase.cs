@@ -1,13 +1,14 @@
-﻿using Serilog;
+﻿using JetBrains.Annotations;
+using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Xunit.Abstractions;
 
 namespace Application.Core.Testing
 {
-    public abstract class TestBase
+    public abstract class UnitTestBase
     {
-        protected TestBase(ITestOutputHelper testOutputHelper)
+        protected UnitTestBase([NotNull] ITestOutputHelper testOutputHelper, [NotNull] AbstractModuleSetupFixture module)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Is(LogEventLevel.Debug)
@@ -20,6 +21,9 @@ namespace Application.Core.Testing
                 .Destructure.ToMaximumStringLength(10000)
                 .WriteTo.TestOutput(testOutputHelper, LogEventLevel.Debug)
                 .CreateLogger();
+
+            module.ClearModuleDatabaseTables();
+            module.PerTestSetup();
         }
     }
 }

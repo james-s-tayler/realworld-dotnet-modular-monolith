@@ -23,6 +23,11 @@ namespace Application.ModuleName.Domain.Tests.Unit.Setup
             
         }
 
+        public override void PerTestSetup()
+        {
+            
+        }
+
         public ModuleNameModuleSetupFixture() : base(new ModuleNameModule()) {}
     }
 }

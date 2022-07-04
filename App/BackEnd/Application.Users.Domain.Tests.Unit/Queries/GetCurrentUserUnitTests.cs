@@ -10,26 +10,26 @@ using Xunit.Abstractions;
 namespace Application.Users.Domain.Tests.Unit.Queries
 {
     [Collection(nameof(UsersModuleTestCollection))]
-    public class GetCurrentUserTests : TestBase
+    public class GetCurrentUserUnitTests : UnitTestBase
     {
-        private readonly UsersModuleSetupFixture _usersModule;
+        private readonly UsersModuleSetupFixture _module;
         private readonly GetCurrentUserQuery _getCurrentUserQuery;
         
-        public GetCurrentUserTests(UsersModuleSetupFixture usersModule, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        public GetCurrentUserUnitTests(UsersModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
-            _usersModule = usersModule;
+            _module = module;
             _getCurrentUserQuery = new GetCurrentUserQuery();
-            _usersModule.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
+            _module.WithUserRepoContainingDefaultUsers().GetAwaiter().GetResult();
         }
 
         [Fact]
         public async Task GivenAuthenticatedUser_WhenGetCurrentUser_ThenUserIsReturned()
         {
             //arrange
-            _usersModule.WithAuthenticatedUserContext();
+            _module.WithAuthenticatedUserContext();
 
             //act
-            var result = await _usersModule.Mediator.Send(_getCurrentUserQuery);
+            var result = await _module.Mediator.Send(_getCurrentUserQuery);
             
             //assert
             result.Result.Should().Be(OperationResult.Success);
@@ -37,10 +37,10 @@ namespace Application.Users.Domain.Tests.Unit.Queries
             currentUser.Should().NotBeNull();
             
             //need to implement equality comparison between DTOs and Entities so we can just do Equals and have it update automatically without tests missing anything
-            currentUser.Email.Should().Be(_usersModule.ExistingUserEntity.Email);
-            currentUser.Username.Should().Be(_usersModule.ExistingUserEntity.Username);
-            currentUser.Image.Should().Be(_usersModule.ExistingUserEntity.Image);
-            currentUser.Bio.Should().Be(_usersModule.ExistingUserEntity.Bio);
+            currentUser.Email.Should().Be(_module.ExistingUserEntity.Email);
+            currentUser.Username.Should().Be(_module.ExistingUserEntity.Username);
+            currentUser.Image.Should().Be(_module.ExistingUserEntity.Image);
+            currentUser.Bio.Should().Be(_module.ExistingUserEntity.Bio);
             currentUser.Token.Should().NotBeEmpty();
         }
         
@@ -48,10 +48,10 @@ namespace Application.Users.Domain.Tests.Unit.Queries
         public async Task GivenUnauthenticatedUser_WhenGetCurrentUser_ThenNotAuthenticated()
         {
             //arrange
-            _usersModule.WithUnauthenticatedUserContext();
+            _module.WithUnauthenticatedUserContext();
 
             //act
-            var result = await _usersModule.Mediator.Send(_getCurrentUserQuery);
+            var result = await _module.Mediator.Send(_getCurrentUserQuery);
             
             //assert
             result.Result.Should().Be(OperationResult.NotAuthenticated);
@@ -62,10 +62,10 @@ namespace Application.Users.Domain.Tests.Unit.Queries
         public async Task GivenNonExistentUser_WhenGetCurrentUser_ThenFailsValidation()
         {
             //arrange
-            _usersModule.WithRandomUserContext();
+            _module.WithRandomUserContext();
 
             //act
-            var result = await _usersModule.Mediator.Send(_getCurrentUserQuery);
+            var result = await _module.Mediator.Send(_getCurrentUserQuery);
             
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);

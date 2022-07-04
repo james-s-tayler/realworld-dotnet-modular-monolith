@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Application.Core.Context;
+using Application.Core.DataAccess;
 using Application.Core.Modules;
 using AutoFixture;
 using MediatR;
@@ -29,6 +30,8 @@ namespace Application.Core.Testing
         public Mock<IHostEnvironment> _hostEnvironment;
         
         public Mock<IUserContext> UserContext { get; } = new ();
+
+        protected IModuleDbConnection ModuleDbConnection { get; }
         
         public AbstractModuleSetupFixture(AbstractModule module)
         {
@@ -59,6 +62,7 @@ namespace Application.Core.Testing
 
             var provider = Services.BuildServiceProvider();
             Mediator = provider.GetRequiredService<IMediator>();
+            ModuleDbConnection = provider.GetRequiredService<IModuleDbConnection>();
             SetupPostProcess(provider);
         }
         
@@ -67,6 +71,13 @@ namespace Application.Core.Testing
         protected abstract void ReplaceServices(AbstractModule module);
         
         protected abstract void SetupPostProcess(ServiceProvider provider);
+
+        public virtual void ClearModuleDatabaseTables()
+        {
+            ModuleDbConnection.ClearModuleDatabaseTables();
+        }
+        
+        public abstract void PerTestSetup();
 
         public string GetDatabaseName()
         {

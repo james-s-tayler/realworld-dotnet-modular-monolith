@@ -13,12 +13,12 @@ using Refit;
 namespace Conduit.API.Tests.Integration
 {
     [Collection(nameof(IntegrationTestCollection))]
-    public class UsersDomainTests : TestBase
+    public class UsersDomainUnitTests : IntegrationTestBase
     {
         public IConduitApiClient ApiClient { get; }
         public Fixture AutoFixture { get; } = new ();
         
-        public UsersDomainTests(WebApplicationFactory<Program> applicationFactory, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        public UsersDomainUnitTests(WebApplicationFactory<Program> applicationFactory, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
             ApiClient = RestService.For<IConduitApiClient>(applicationFactory.CreateClient());
             applicationFactory.ClearDatabaseTables();

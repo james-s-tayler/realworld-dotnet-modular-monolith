@@ -57,6 +57,11 @@ namespace Application.Users.Domain.Tests.Unit.Setup
             WithAuthenticatedUserContext();
         }
 
+        public override void PerTestSetup()
+        {
+            
+        }
+
         public UsersModuleSetupFixture() : base(new UsersModule()) {}
 
         public async Task WithUserRepoContainingDefaultUsers()

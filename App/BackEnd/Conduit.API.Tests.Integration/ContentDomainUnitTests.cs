@@ -12,7 +12,7 @@ using Xunit.Abstractions;
 namespace Conduit.API.Tests.Integration
 {
     [Collection(nameof(IntegrationTestCollection))]
-    public class ContentDomainTests : TestBase
+    public class ContentDomainUnitTests : IntegrationTestBase
     {
         private IConduitApiClient _unauthenticatedApiClient;
         private IConduitApiClient _authenticatedApiClient;
@@ -20,7 +20,7 @@ namespace Conduit.API.Tests.Integration
         private readonly NewUser _newUser;
         private string _token;
         
-        public ContentDomainTests(WebApplicationFactory<Program> applicationFactory, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        public ContentDomainUnitTests(WebApplicationFactory<Program> applicationFactory, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
             _unauthenticatedApiClient = RestService.For<IConduitApiClient>(applicationFactory.CreateClient());
             applicationFactory.ClearDatabaseTables();

@@ -27,5 +27,10 @@ namespace Application.Social.Domain.Tests.Unit.Setup
         {
             UserRepository = provider.GetService<IUserRepository>();
         }
+
+        public override void PerTestSetup()
+        {
+            
+        }
     }
 }

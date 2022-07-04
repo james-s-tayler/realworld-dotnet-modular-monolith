@@ -19,14 +19,19 @@ namespace Application.Core.Testing
             //hmm this ain't going to work if you've got foreign keys unless you drop them first
             foreach (var moduleDbConnection in moduleDbConnections)
             {
-                switch (moduleDbConnection.Vendor)
-                {
-                    case DbVendor.Sqlite:
-                        ClearSqliteDatabaseTables(moduleDbConnection.Connection);
-                        break;
-                    default:
-                        throw new NotImplementedException($"No DbScrubber implemented for {moduleDbConnection.Vendor}");
-                }
+                moduleDbConnection.ClearModuleDatabaseTables();
+            }
+        }
+
+        public static void ClearModuleDatabaseTables(this IModuleDbConnection moduleDbConnection)
+        {
+            switch (moduleDbConnection.Vendor)
+            {
+                case DbVendor.Sqlite:
+                    ClearSqliteDatabaseTables(moduleDbConnection.Connection);
+                    break;
+                default:
+                    throw new NotImplementedException($"No DbScrubber implemented for {moduleDbConnection.Vendor}");
             }
         }
         

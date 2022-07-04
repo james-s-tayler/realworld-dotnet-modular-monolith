@@ -13,12 +13,12 @@ using AutoFixture;
 namespace Application.Content.Domain.Tests.Unit.Operations.Commands
 {
     [Collection(nameof(ContentModuleTestCollection))]
-    public class PublishArticleTests : TestBase
+    public class PublishArticleUnitTests : UnitTestBase
     {
         private readonly ContentModuleSetupFixture _module;
         private readonly PublishArticleCommand _publishArticleCommand;
 
-        public PublishArticleTests(ContentModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        public PublishArticleUnitTests(ContentModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
             _module = module;
             _publishArticleCommand = new PublishArticleCommand { NewArticle = new PublishArticleDTO
