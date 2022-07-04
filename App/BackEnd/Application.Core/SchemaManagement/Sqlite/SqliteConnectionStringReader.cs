@@ -32,15 +32,17 @@ namespace Application.Core.SchemaManagement.Sqlite
             var runningInDocker = _configuration.GetValue<bool>("DOTNET_RUNNING_IN_CONTAINER");
             var dbName = $"{moduleDbName}_{_hostEnvironment.EnvironmentName}".ToLowerInvariant();
             var filename = runningInDocker ? $"/sqlite/{dbName}.db" : $"{dbName}.db";
-            
-            return new SqliteConnectionStringBuilder
+
+            var builder = new SqliteConnectionStringBuilder
             {
                 DataSource = filename,
                 Cache = SqliteCacheMode.Private,
                 ForeignKeys = true,
                 Mode = SqliteOpenMode.ReadWriteCreate,
                 Pooling = true
-            }.ToString();
+            };
+            
+            return builder.ToString();
         }
 
         public int Priority => 0;

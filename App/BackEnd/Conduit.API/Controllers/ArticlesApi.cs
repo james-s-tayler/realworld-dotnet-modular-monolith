@@ -12,6 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
 using Application.Content.Domain.Contracts.Operations.Commands.DeleteArticle;
+using Application.Content.Domain.Contracts.Operations.Commands.EditArticle;
 using Application.Content.Domain.Contracts.Operations.Commands.PublishArticle;
 using Application.Content.Domain.Contracts.Operations.Queries.GetSingleArticle;
 using Application.Core.PipelineBehaviors.OperationResponse;
@@ -166,7 +167,16 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 200, type: typeof(SingleArticleResponse), description: "OK")]
         public virtual async Task<IActionResult> UpdateArticle([FromRoute (Name = "slug")][Required]string slug, [FromBody]UpdateArticleRequest article)
         {
-            return StatusCode((int)HttpStatusCode.NotImplemented);
+            var editArticleResponse = await Mediator.Send(new EditArticleCommand
+            {
+                Slug = slug,
+                UpdatedArticle = article.ToEditArticleDto()
+            });
+            
+            if (editArticleResponse.Result != OperationResult.Success)
+                return UnsuccessfulResponseResult(editArticleResponse);
+
+            return Ok(editArticleResponse.Response.Article.ToSingleArticleResponse());
         }
     }
 }

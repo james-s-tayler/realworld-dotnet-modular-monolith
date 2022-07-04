@@ -9,6 +9,8 @@ namespace Application.Content.Domain.Contracts.Operations.Commands.EditArticle
     public class EditArticleCommand : ContractModel, IRequest<OperationResponse<EditArticleCommandResult>>
     {
         [Required]
-        public PublishArticleDTO NewArticle { get; set; }
+        public string Slug { get; set; }
+        [Required] 
+        public EditArticleDTO UpdatedArticle { get; set; }
     }
 }

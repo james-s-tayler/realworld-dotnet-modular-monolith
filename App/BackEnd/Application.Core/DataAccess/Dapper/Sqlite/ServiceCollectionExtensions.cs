@@ -32,6 +32,10 @@ namespace Application.Core.DataAccess.Dapper.Sqlite
                 {
                     SqlMapper.AddTypeHandler(new SqliteTimeSpanHandler());
                 }
+                if (!SqlMapper.HasTypeHandler(typeof(DateTime)))
+                {
+                    SqlMapper.AddTypeHandler(new SqliteDateTimeHandler());
+                }
 
                 DefaultTypeMap.MatchNamesWithUnderscores = true;
                 
@@ -76,6 +80,10 @@ namespace Application.Core.DataAccess.Dapper.Sqlite
                 if (!SqlMapper.HasTypeHandler(typeof(TimeSpan)))
                 {
                     SqlMapper.AddTypeHandler(new SqliteTimeSpanHandler());
+                }
+                if (!SqlMapper.HasTypeHandler(typeof(DateTime)))
+                {
+                    SqlMapper.AddTypeHandler(new SqliteDateTimeHandler());
                 }
                 
                 DefaultTypeMap.MatchNamesWithUnderscores = true;

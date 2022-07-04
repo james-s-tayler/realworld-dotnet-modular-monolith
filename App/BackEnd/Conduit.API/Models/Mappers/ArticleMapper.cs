@@ -16,6 +16,16 @@ namespace Conduit.API.Models.Mappers
             };
         }
         
+        public static EditArticleDTO ToEditArticleDto(this UpdateArticleRequest article)
+        {
+            return new EditArticleDTO
+            {
+                Title = article.Article.Title,
+                Description = article.Article.Description,
+                Body = article.Article.Body
+            };
+        }
+        
         public static SingleArticleResponse ToSingleArticleResponse(this SingleArticleDTO articleDto)
         {
             return new SingleArticleResponse

@@ -1,4 +1,3 @@
-using Application.Content.Domain.Contracts.DTOs;
 using Application.Core.DataAccess;
 using MediatR;
 

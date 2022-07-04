@@ -51,8 +51,8 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
             result.Response.Article.Title.Should().Be(_module.ExistingNonFavoritedArticleEntity.Title);
             result.Response.Article.Description.Should().Be(_module.ExistingNonFavoritedArticleEntity.Description);
             result.Response.Article.Body.Should().Be(_module.ExistingNonFavoritedArticleEntity.Body);
-            result.Response.Article.CreatedAt.Should().BeAfter(testStartTime);
-            result.Response.Article.UpdatedAt.Should().BeAfter(testStartTime);
+            result.Response.Article.CreatedAt.Should().BeBefore(testStartTime);
+            result.Response.Article.UpdatedAt.Should().BeBefore(testStartTime);
         }
         
         [Fact]

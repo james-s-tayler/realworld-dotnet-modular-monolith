@@ -130,10 +130,10 @@ namespace Application.Content.Domain.Infrastructure.Repositories
             var sql = "INSERT INTO articles (user_id, slug, title, description, body, created_at, updated_at) VALUES (@user_id, @slug, @title, @description, @body, @created_at, @updated_at) RETURNING *";
 
             var now = DateTime.UtcNow;
-            
+
             var arguments = new
             {
-                user_id = articleEntity.Author.UserId, 
+                user_id = articleEntity.Author.UserId,
                 slug = articleEntity.GetSlug(), 
                 title = articleEntity.Title, 
                 description = articleEntity.Description, 
@@ -171,7 +171,8 @@ namespace Application.Content.Domain.Infrastructure.Repositories
 
             var arguments = new
             {
-                slug = articleEntity.GetSlug(), 
+                id = articleEntity.Id,
+                slug = articleEntity.GetSlug(),
                 title = articleEntity.Title, 
                 description = articleEntity.Description, 
                 body = articleEntity.Body,
