@@ -151,7 +151,7 @@ namespace Application.Users.Domain.Tests.Unit.Commands
         public async Task GivenNonExistentUser_WhenUpdateUser_ThenFailsValidation()
         {
             //arrange
-            _module.WithRandomUserContext();
+            _module.WithAuthenticatedUserContext();
 
             //act
             var updateUserResult = await _module.Mediator.Send(_updateUserCommand);

@@ -24,9 +24,6 @@ namespace Application.Users.Domain.Tests.Unit.Queries
         [Fact]
         public async Task GivenAuthenticatedUser_WhenGetCurrentUser_ThenUserIsReturned()
         {
-            //arrange
-            _module.WithAuthenticatedUserContext();
-
             //act
             var result = await _module.Mediator.Send(_getCurrentUserQuery);
             
@@ -35,7 +32,6 @@ namespace Application.Users.Domain.Tests.Unit.Queries
             var currentUser = result.Response.CurrentUser;
             currentUser.Should().NotBeNull();
             
-            //need to implement equality comparison between DTOs and Entities so we can just do Equals and have it update automatically without tests missing anything
             currentUser.Email.Should().Be(_module.ExistingUserEntity.Email);
             currentUser.Username.Should().Be(_module.ExistingUserEntity.Username);
             currentUser.Image.Should().Be(_module.ExistingUserEntity.Image);
@@ -61,7 +57,7 @@ namespace Application.Users.Domain.Tests.Unit.Queries
         public async Task GivenNonExistentUser_WhenGetCurrentUser_ThenFailsValidation()
         {
             //arrange
-            _module.WithRandomUserContext();
+            _module.WithAuthenticatedUserContext();
 
             //act
             var result = await _module.Mediator.Send(_getCurrentUserQuery);

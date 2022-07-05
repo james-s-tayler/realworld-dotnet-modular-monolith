@@ -48,7 +48,7 @@ namespace Application.Core.Testing
             AddConfiguration(configuration);
             Configuration.AddInMemoryCollection(configuration);
             
-            WithRandomUserContext();
+            WithAuthenticatedUserContext();
 
             Services.AddLogging(builder =>
             {
@@ -76,6 +76,11 @@ namespace Application.Core.Testing
         {
             ModuleDbConnection.ClearModuleDatabaseTables();
         }
+
+        public virtual void SetDefaultUserContext()
+        {
+            WithAuthenticatedUserContext();
+        }
         
         public abstract void PerTestSetup();
 
@@ -90,7 +95,7 @@ namespace Application.Core.Testing
             UserContext.SetupGet(context => context.IsAuthenticated).Returns(false);
         }
 
-        public void WithRandomUserContext()
+        public void WithAuthenticatedUserContext()
         {
             AuthenticatedUserId = AutoFixture.Create<int>();
             AuthenticatedUserUsername = AutoFixture.Create<string>();

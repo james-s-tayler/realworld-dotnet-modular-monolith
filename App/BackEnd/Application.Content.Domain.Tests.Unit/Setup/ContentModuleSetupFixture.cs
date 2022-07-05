@@ -40,23 +40,11 @@ namespace Application.Content.Domain.Tests.Unit.Setup
         {
             UserRepository = provider.GetService<IUserRepository>();
             ArticleRepository = provider.GetService<IArticleRepository>();
-
-            var existingUserProfile = new ProfileDTO
-            {
-                Username = AuthenticatedUserUsername,
-                Bio = AuthenticatedUserBio,
-                Image = AuthenticatedUserImage,
-                Following = true
-            };
-            
-            SocialService
-                .Setup(service => 
-                    service.GetProfile(It.Is<string>(s => s.Equals(AuthenticatedUserUsername))))
-                .ReturnsAsync(OperationResponseFactory.Success(new GetProfileQueryResult { Profile = existingUserProfile }));
         }
 
         public override void PerTestSetup()
         {
+            SocialService.Reset();
             WithExistingUser().GetAwaiter().GetResult();
             WithUnfavoritedArticle().GetAwaiter().GetResult();
             WithFavoritedArticle().GetAwaiter().GetResult();
@@ -68,6 +56,19 @@ namespace Application.Content.Domain.Tests.Unit.Setup
                 UserId = AuthenticatedUserId,
                 Username = AuthenticatedUserUsername
             });
+            
+            var existingUserProfile = new ProfileDTO
+            {
+                Username = AuthenticatedUserUsername,
+                Bio = AuthenticatedUserBio,
+                Image = AuthenticatedUserImage,
+                Following = true
+            };
+
+            SocialService
+                .Setup(service => 
+                    service.GetProfile(It.Is<string>(s => s.Equals(AuthenticatedUserUsername))))
+                .ReturnsAsync(OperationResponseFactory.Success(new GetProfileQueryResult { Profile = existingUserProfile }));
         }
 
         public async Task WithUnfavoritedArticle()

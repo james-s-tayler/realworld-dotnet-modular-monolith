@@ -23,6 +23,7 @@ namespace Application.Core.Testing
                 .CreateLogger();
 
             module.ClearModuleDatabaseTables();
+            module.SetDefaultUserContext();
             module.PerTestSetup();
         }
     }

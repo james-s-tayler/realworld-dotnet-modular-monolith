@@ -1,6 +1,4 @@
-using System;
 using System.Threading.Tasks;
-using Application.Content.Domain.Contracts.Operations.Queries.GetSingleArticle;
 using Application.Content.Domain.Contracts.Operations.Queries.ListArticles;
 using Application.Core.PipelineBehaviors.OperationResponse;
 using Application.Core.Testing;
@@ -66,6 +64,22 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
             var listArticlesQuery = new ListArticlesQuery
             {
                 Limit = limit
+            };
+
+            //act
+            var result = await _module.Mediator.Send(listArticlesQuery);
+
+            //assert
+            result.Result.Should().Be(OperationResult.InvalidRequest);
+        }
+        
+        [Fact]
+        public async Task GivenAnAuthenticatedUser_WhenListArticlesByUsername_ThenInvalidRequest()
+        {
+            //arrange
+            var listArticlesQuery = new ListArticlesQuery
+            {
+                Offset = -1
             };
 
             //act
