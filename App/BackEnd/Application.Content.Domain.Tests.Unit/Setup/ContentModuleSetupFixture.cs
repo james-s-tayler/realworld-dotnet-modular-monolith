@@ -18,6 +18,9 @@ namespace Application.Content.Domain.Tests.Unit.Setup
 {
     public class ContentModuleSetupFixture : AbstractModuleSetupFixture
     {
+        internal IDictionary<string, List<ArticleEntity>> UserArticles = new Dictionary<string, List<ArticleEntity>>();
+        internal IDictionary<string, List<ArticleEntity>> TaggedArticles = new Dictionary<string, List<ArticleEntity>>();
+        internal List<ArticleEntity> FavoritedArticles = new ();
         internal ArticleEntity ExistingNonFavoritedArticleEntity { get; private set; }
         internal ArticleEntity ExistingFavoritedArticleEntity { get; private set; }
         internal string ExistingArticleTag1 { get; } = "Tag1";
@@ -48,6 +51,9 @@ namespace Application.Content.Domain.Tests.Unit.Setup
 
         public override void PerTestSetup()
         {
+            UserArticles.Clear();
+            FavoritedArticles.Clear();
+            TaggedArticles.Clear();
             SocialService.Reset();
             WithAuthenticatedUserEntityAndProfile().GetAwaiter().GetResult();
             WithUnfavoritedArticle().GetAwaiter().GetResult();
@@ -61,9 +67,9 @@ namespace Application.Content.Domain.Tests.Unit.Setup
         {
             var userId = await WithUserEntityAndProfile();
             
-            await WithArticle(false, userId, new []{ ExistingArticleTag1 });
+            await WithArticle(true, userId, new []{ ExistingArticleTag1 });
             await WithArticle(false, userId, new []{ ExistingArticleTag2 });
-            await WithArticle(false, userId, Array.Empty<string>());
+            await WithArticle(true, userId, Array.Empty<string>());
         }
 
         public async Task WithAuthenticatedUserEntityAndProfile()
@@ -111,6 +117,11 @@ namespace Application.Content.Domain.Tests.Unit.Setup
                 .Setup(service => 
                     service.GetProfile(It.Is<string>(s => s.Equals(username))))
                 .ReturnsAsync(OperationResponseFactory.Success(getProfileQueryResult));
+
+            if (!UserArticles.ContainsKey(username))
+            {
+                UserArticles.Add(username, new List<ArticleEntity>());
+            }
         }
 
         public async Task WithUnfavoritedArticle()
@@ -148,8 +159,27 @@ namespace Application.Content.Domain.Tests.Unit.Setup
             {
                 await ArticleRepository.FavoriteArticle(article.GetSlug());    
             }
+
+            var author = await UserRepository.GetById(authorId);
+            var createdArticle = await ArticleRepository.GetById(articleId);
             
-            return await ArticleRepository.GetById(articleId);
+            UserArticles[author.Username].Add(createdArticle);
+            
+            if (isFavorited)
+            {
+                FavoritedArticles.Add(createdArticle);
+            }
+
+            foreach (var tag in createdArticle.TagList)
+            {
+                if (!TaggedArticles.ContainsKey(tag.Tag))
+                {
+                    TaggedArticles.Add(tag.Tag, new List<ArticleEntity>());
+                }
+                TaggedArticles[tag.Tag].Add(createdArticle);
+            }
+            
+            return createdArticle;
         }
     }
 }

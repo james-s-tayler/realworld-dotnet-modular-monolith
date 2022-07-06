@@ -40,7 +40,7 @@ namespace Application.Content.Domain.Infrastructure.Repositories
 
             return Task.FromResult(exists);
         }
-        
+
         public Task<bool> ExistsBySlug(string slug)
         {
             string sql = "SELECT EXISTS(SELECT 1 FROM articles WHERE slug=@slug)";
@@ -98,6 +98,35 @@ namespace Application.Content.Domain.Infrastructure.Repositories
         {
             string sql = "SELECT * FROM articles";
             var articles = _connection.Query<ArticleEntity>(sql).ToList();
+
+            foreach (var article in articles)
+            {
+                await EnrichArticle(article);
+            }
+            
+            return articles;
+        }
+        
+        public async Task<IEnumerable<ArticleEntity>> GetByFilters(string authorUsername, string favoritedByUsername, string tag)
+        {
+            string sql = "SELECT a.* FROM articles a " +
+                         "JOIN users author ON author.user_id = a.user_id " +
+                         "LEFT JOIN article_tags at ON at.article_id = a.id " +
+                         "LEFT JOIN tags t ON t.id = at.tag_id " +
+                         "LEFT JOIN article_favorites af ON af.article_id = a.id " +
+                         "LEFT JOIN users favoriter ON favoriter.user_id = af.user_id " +
+                         "WHERE (@author_username IS NULL OR author.username = @author_username) " +
+                         "AND (@favorited_by_username IS NULL OR favoriter.username = @favorited_by_username) " +
+                         "AND (@tag IS NULL OR t.tag = @tag)";
+            
+            var arguments = new
+            {
+                author_username = authorUsername,
+                favorited_by_username = favoritedByUsername,
+                tag = tag
+            };
+            
+            var articles = _connection.Query<ArticleEntity>(sql, arguments).ToList();
 
             foreach (var article in articles)
             {

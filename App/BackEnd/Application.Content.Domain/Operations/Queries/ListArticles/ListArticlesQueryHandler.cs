@@ -41,7 +41,7 @@ namespace Application.Content.Domain.Operations.Queries.ListArticles
             if (!string.IsNullOrEmpty(request.Tag) && !await _tagRepository.Exists(request.Tag))
                 return OperationResponseFactory.NotFound<ListArticlesQuery, OperationResponse<ListArticlesQueryResult>>(typeof(TagEntity), request.Tag);
             
-            var articles = await _articleRepository.GetAll();
+            var articles = await _articleRepository.GetByFilters(request.AuthorUsername, request.FavoritedByUsername, request.Tag);
 
             var articleDtos = new List<SingleArticleDTO>();
 
