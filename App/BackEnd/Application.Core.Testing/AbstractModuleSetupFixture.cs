@@ -31,7 +31,7 @@ namespace Application.Core.Testing
         
         public Mock<IUserContext> UserContext { get; } = new ();
 
-        protected IModuleDbConnection ModuleDbConnection { get; }
+        public IModuleDbConnection ModuleDbConnection { get; }
         
         public AbstractModuleSetupFixture(AbstractModule module)
         {

@@ -22,9 +22,13 @@ namespace Application.Core.Testing
                 .WriteTo.TestOutput(testOutputHelper, LogEventLevel.Debug)
                 .CreateLogger();
 
+            using var transaction = module.ModuleDbConnection.Connection.BeginTransaction();
+            
             module.ClearModuleDatabaseTables();
             module.SetDefaultUserContext();
             module.PerTestSetup();
+            
+            transaction.Commit();
         }
     }
 }

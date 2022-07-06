@@ -65,7 +65,7 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
             var result = await _module.Mediator.Send(getSingleArticleQuery);
 
             //assert
-            result.Response.Article.TagList.Should().BeEquivalentTo(new []{_module.ExistingArticleTag1, _module.ExistingArticleTag2});
+            result.Response.Article.TagList.Should().BeEquivalentTo(new []{_module.ExistingArticleTag2});
         }
         
         [Fact]

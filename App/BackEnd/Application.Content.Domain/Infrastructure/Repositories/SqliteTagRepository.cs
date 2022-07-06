@@ -19,6 +19,13 @@ namespace Application.Content.Domain.Infrastructure.Repositories
             _connection = connectionWrapper.Connection;
         }
 
+        public Task<bool> Exists(string tag)
+        {
+            var sql = "SELECT EXISTS(SELECT 1 FROM tags WHERE tag=@tag)";
+            var arguments = new { tag };
+            return Task.FromResult(_connection.ExecuteScalar<bool>(sql, arguments));
+        }
+
         public Task<List<TagEntity>> GetTags()
         {
             var articleTagsSql = "SELECT distinct(tag) FROM tags";

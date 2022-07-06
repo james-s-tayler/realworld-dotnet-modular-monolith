@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Content.Domain.Entities;
@@ -26,6 +27,9 @@ namespace Application.Content.Domain.Tests.Unit.Setup
         internal IArticleRepository ArticleRepository { get; private set; }
         internal Mock<ISocialService> SocialService { get; } = new ();
         
+        public ContentModuleSetupFixture() : base(new ContentModule())
+        {
+        }
 
         protected override void AddConfiguration(IDictionary<string, string> configuration)
         {
@@ -45,62 +49,107 @@ namespace Application.Content.Domain.Tests.Unit.Setup
         public override void PerTestSetup()
         {
             SocialService.Reset();
-            WithExistingUser().GetAwaiter().GetResult();
+            WithAuthenticatedUserEntityAndProfile().GetAwaiter().GetResult();
             WithUnfavoritedArticle().GetAwaiter().GetResult();
             WithFavoritedArticle().GetAwaiter().GetResult();
+
+            WithUserAndArticles().GetAwaiter().GetResult();
+            WithUserAndArticles().GetAwaiter().GetResult();
         }
 
-        public async Task WithExistingUser()
+        public async Task WithUserAndArticles()
+        {
+            var userId = await WithUserEntityAndProfile();
+            
+            await WithArticle(false, userId, new []{ ExistingArticleTag1 });
+            await WithArticle(false, userId, new []{ ExistingArticleTag2 });
+            await WithArticle(false, userId, Array.Empty<string>());
+        }
+
+        public async Task WithAuthenticatedUserEntityAndProfile()
+        {
+            await WithUserEntityAndProfile(AuthenticatedUserId, AuthenticatedUserUsername, AuthenticatedUserBio, AuthenticatedUserImage, true);
+        }
+        
+        public async Task<int> WithUserEntityAndProfile()
+        {
+            var userId = AutoFixture.Create<int>();
+            
+            await WithUserEntityAndProfile(
+                userId, 
+                AutoFixture.Create<string>(), 
+                AutoFixture.Create<string>(), 
+                AutoFixture.Create<string>(),
+                true);
+
+            return userId;
+        }
+        
+        public async Task WithUserEntityAndProfile(int userId, string username, string bio, string image, bool isFollowing)
         {
             await UserRepository!.Create(new UserEntity {
-                UserId = AuthenticatedUserId,
-                Username = AuthenticatedUserUsername
+                UserId = userId,
+                Username = username
             });
             
             var existingUserProfile = new ProfileDTO
             {
-                Username = AuthenticatedUserUsername,
-                Bio = AuthenticatedUserBio,
-                Image = AuthenticatedUserImage,
-                Following = true
+                Username = username,
+                Bio = bio,
+                Image = image,
+                Following = isFollowing
             };
 
+            var getProfileQueryResult = new GetProfileQueryResult { Profile = existingUserProfile };
+            
+            if (!UserContext.Object.IsAuthenticated)
+            {
+                getProfileQueryResult.Profile.Following = false;
+            }
+            
             SocialService
                 .Setup(service => 
-                    service.GetProfile(It.Is<string>(s => s.Equals(AuthenticatedUserUsername))))
-                .ReturnsAsync(OperationResponseFactory.Success(new GetProfileQueryResult { Profile = existingUserProfile }));
+                    service.GetProfile(It.Is<string>(s => s.Equals(username))))
+                .ReturnsAsync(OperationResponseFactory.Success(getProfileQueryResult));
         }
 
         public async Task WithUnfavoritedArticle()
         {
-            var nonFavoritedArticleId = ArticleRepository!.Create(new ArticleEntity
-            {
-                Title = $"{AutoFixture.Create<string>()} {AutoFixture.Create<string>()}",
-                Description = AutoFixture.Create<string>(),
-                Body = AutoFixture.Create<string>(),
-                TagList = new List<TagEntity> {new() { Tag = ExistingArticleTag1 }, new() { Tag = ExistingArticleTag2}},
-                Author = new UserEntity { UserId = AuthenticatedUserId }
-            }).GetAwaiter().GetResult();
-            ExistingNonFavoritedArticleEntity = await ArticleRepository.GetById(nonFavoritedArticleId);
+            ExistingNonFavoritedArticleEntity = await WithArticle(false, AuthenticatedUserId, new []{ ExistingArticleTag2 });
         }
 
         public async Task WithFavoritedArticle()
         {
-            var favoritedArticle = new ArticleEntity
+            ExistingFavoritedArticleEntity = await WithArticle(true, AuthenticatedUserId, new []{ ExistingArticleTag1 });
+        }
+
+        internal async Task<ArticleEntity> WithArticle(bool isFavorited, int authorId, string[] tags = default)
+        {
+            var article = new ArticleEntity
             {
                 Title = $"{AutoFixture.Create<string>()} {AutoFixture.Create<string>()}",
                 Description = AutoFixture.Create<string>(),
                 Body = AutoFixture.Create<string>(),
-                TagList = new List<TagEntity> {new() { Tag = ExistingArticleTag1 }, new() { Tag = ExistingArticleTag2 }},
-                Author = new UserEntity { UserId = AuthenticatedUserId }
+                TagList = new List<TagEntity>(),
+                Author = new UserEntity { UserId = authorId }
             };
-            var favoritedArticleId = await ArticleRepository!.Create(favoritedArticle);
-            await ArticleRepository.FavoriteArticle(favoritedArticle.GetSlug());
-            ExistingFavoritedArticleEntity = await ArticleRepository.GetById(favoritedArticleId);
-        }
 
-        public ContentModuleSetupFixture() : base(new ContentModule())
-        {
+            if (tags != null)
+            {
+                foreach (var tag in tags)
+                {
+                    article.TagList.Add(new TagEntity { Tag = tag });
+                }    
+            }
+            
+            var articleId = await ArticleRepository!.Create(article);
+
+            if (isFavorited)
+            {
+                await ArticleRepository.FavoriteArticle(article.GetSlug());    
+            }
+            
+            return await ArticleRepository.GetById(articleId);
         }
     }
 }
