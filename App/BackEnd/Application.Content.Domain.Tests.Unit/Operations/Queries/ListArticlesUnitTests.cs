@@ -144,7 +144,7 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
         }*/
         
         [Fact]
-        public async Task GivenAnAuthenticatedUser_WhenListArticlesByUsername_ThenReturnsArticlesByThatUser()
+        public async Task GivenFilterByAuthor_WhenListArticlesByUsername_ThenReturnsMatchingArticles()
         {
             //arrange
             var listArticlesQuery = new ListArticlesQuery
@@ -181,7 +181,7 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
         }
 
         [Fact]
-        public async Task GivenAnAuthenticatedUser_WhenListArticlesFavoritedByUsername_ThenReturnsFavoritedByThatUser()
+        public async Task GivenFilterByFavoritedBy_WhenListArticles_ThenReturnsMatchingArticles()
         {
             //arrange
             var listArticlesQuery = new ListArticlesQuery
@@ -199,7 +199,7 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
         }
         
         [Fact]
-        public async Task GivenAnAuthenticatedUser_WhenListArticlesByTag_ThenReturnsArticlesWithThatTag()
+        public async Task GivenFilterByTag_WhenListArticles_ThenReturnsMatchingArticles()
         {
             //arrange
             var listArticlesQuery = new ListArticlesQuery
@@ -212,6 +212,51 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
 
             //assert
             var expectedArticles = _module.TaggedArticles[listArticlesQuery.Tag];
+
+            VerifyArticlesMatchExpectations(result, expectedArticles);
+        }
+        
+        [Fact]
+        public async Task GivenFilterByTagAuthorAndFavoritedBy_WhenListArticles_ThenReturnsMatchingArticles()
+        {
+            //arrange
+            var listArticlesQuery = new ListArticlesQuery
+            {
+                FavoritedByUsername = _module.AuthenticatedUserUsername,
+                AuthorUsername = _module.UserArticles.Keys.First(username => username != _module.AuthenticatedUserUsername),
+                Tag = _module.ExistingArticleTag1
+            };
+
+            //act
+            var result = await _module.Mediator.Send(listArticlesQuery);
+
+            //assert
+            var expectedArticles = _module.UserArticles[listArticlesQuery.AuthorUsername].Where(article =>
+                    article.Favorited &&
+                    article.TagList.Any(tag => tag.Tag == listArticlesQuery.Tag)
+                ).ToList();
+
+            VerifyArticlesMatchExpectations(result, expectedArticles);
+        }
+        
+        [Fact]
+        public async Task GivenFilterByTagAndAuthor_WhenListArticles_ThenReturnsMatchingArticles()
+        {
+            //arrange
+            var listArticlesQuery = new ListArticlesQuery
+            {
+                AuthorUsername = _module.UserArticles.Keys.First(username => username != _module.AuthenticatedUserUsername),
+                Tag = _module.ExistingArticleTag1
+            };
+
+            //act
+            var result = await _module.Mediator.Send(listArticlesQuery);
+
+            //assert
+            
+            var expectedArticles = _module.UserArticles[listArticlesQuery.AuthorUsername].Where(article =>
+                article.TagList.Any(tag => tag.Tag == listArticlesQuery.Tag)
+            ).ToList();
 
             VerifyArticlesMatchExpectations(result, expectedArticles);
         }

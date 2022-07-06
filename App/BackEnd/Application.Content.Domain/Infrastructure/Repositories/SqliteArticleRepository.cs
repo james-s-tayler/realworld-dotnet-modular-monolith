@@ -61,7 +61,7 @@ namespace Application.Content.Domain.Infrastructure.Repositories
                 article.TagList = await _tagRepository.GetByArticleId(article.Id);
                 
                 var favoritedSql = "SELECT EXISTS(SELECT 1 FROM article_favorites WHERE article_id=@article_id AND user_id=@user_id)";
-                var favoritedArguments = new { article_id = article.Id, user_id = article.Author.UserId };
+                var favoritedArguments = new { article_id = article.Id, user_id = _userContext.UserId };
                 article.Favorited = _connection.ExecuteScalar<bool>(favoritedSql, favoritedArguments);
 
                 var favoritesCountSql = "SELECT COUNT(*) FROM article_favorites WHERE article_id=@article_id AND user_id=@user_id";
