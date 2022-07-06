@@ -260,5 +260,47 @@ namespace Application.Content.Domain.Tests.Unit.Operations.Queries
 
             VerifyArticlesMatchExpectations(result, expectedArticles);
         }
+        
+        [Fact]
+        public async Task GivenFilterByTagAndFavoritedBy_WhenListArticles_ThenReturnsMatchingArticles()
+        {
+            //arrange
+            var listArticlesQuery = new ListArticlesQuery
+            {
+                FavoritedByUsername = _module.AuthenticatedUserUsername,
+                Tag = _module.ExistingArticleTag1
+            };
+
+            //act
+            var result = await _module.Mediator.Send(listArticlesQuery);
+
+            //assert
+            
+            var expectedArticles = _module.FavoritedArticles.Where(article =>
+                article.TagList.Any(tag => tag.Tag == listArticlesQuery.Tag)
+            ).ToList();
+
+            VerifyArticlesMatchExpectations(result, expectedArticles);
+        }
+        
+        [Fact]
+        public async Task GivenFilterByAuthorAndFavoritedBy_WhenListArticles_ThenReturnsMatchingArticles()
+        {
+            //arrange
+            var listArticlesQuery = new ListArticlesQuery
+            {
+                FavoritedByUsername = _module.AuthenticatedUserUsername,
+                AuthorUsername = _module.UserArticles.Keys.First(username => username != _module.AuthenticatedUserUsername),
+            };
+
+            //act
+            var result = await _module.Mediator.Send(listArticlesQuery);
+
+            //assert
+            
+            var expectedArticles = _module.UserArticles[listArticlesQuery.AuthorUsername].Where(article => article.Favorited).ToList();
+
+            VerifyArticlesMatchExpectations(result, expectedArticles);
+        }
     }
 }
