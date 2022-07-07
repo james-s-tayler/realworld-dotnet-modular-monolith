@@ -32,15 +32,16 @@ namespace Application.Content.Domain.Operations.Queries.ListArticles
 
         public async Task<OperationResponse<ListArticlesQueryResult>> Handle(ListArticlesQuery request, CancellationToken cancellationToken)
         {
-            if (!string.IsNullOrEmpty(request.AuthorUsername) && !await _userRepository.ExistsByUsername(request.AuthorUsername))
-                return OperationResponseFactory.NotFound<ListArticlesQuery, OperationResponse<ListArticlesQueryResult>>(typeof(UserEntity), request.AuthorUsername);
-            
-            if (!string.IsNullOrEmpty(request.FavoritedByUsername) && !await _userRepository.ExistsByUsername(request.FavoritedByUsername))
-                return OperationResponseFactory.NotFound<ListArticlesQuery, OperationResponse<ListArticlesQueryResult>>(typeof(UserEntity), request.FavoritedByUsername);
-
-            if (!string.IsNullOrEmpty(request.Tag) && !await _tagRepository.Exists(request.Tag))
-                return OperationResponseFactory.NotFound<ListArticlesQuery, OperationResponse<ListArticlesQueryResult>>(typeof(TagEntity), request.Tag);
-            
+            if (await UserNotFound(request.AuthorUsername) ||
+                await UserNotFound(request.FavoritedByUsername) ||
+                await TagNotFound(request.Tag))
+            {
+                return OperationResponseFactory.Success(new ListArticlesQueryResult
+                {
+                    Articles = new List<SingleArticleDTO>()
+                });   
+            }
+           
             var articles = await _articleRepository.GetByFilters(
                 request.AuthorUsername, 
                 request.FavoritedByUsername, 
@@ -61,6 +62,16 @@ namespace Application.Content.Domain.Operations.Queries.ListArticles
             {
                 Articles = articleDtos
             });
+        }
+
+        private async Task<bool> UserNotFound(string authorUsername)
+        {
+            return !string.IsNullOrEmpty(authorUsername) && !await _userRepository.ExistsByUsername(authorUsername);
+        }
+
+        private async Task<bool> TagNotFound(string tag)
+        {
+            return !string.IsNullOrEmpty(tag) && !await _tagRepository.Exists(tag);
         }
     }
 }
