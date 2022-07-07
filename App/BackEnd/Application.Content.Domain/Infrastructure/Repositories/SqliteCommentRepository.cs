@@ -49,8 +49,15 @@ namespace Application.Content.Domain.Infrastructure.Repositories
                 created_at = now,
                 updated_at = now
             };
+
+            comment = _connection.QuerySingle<CommentEntity>(sql, arguments);
+            comment.Author = new UserEntity
+            {
+                UserId = _userContext.UserId,
+                Username = _userContext.Username
+            };
             
-            return Task.FromResult(_connection.QuerySingle<CommentEntity>(sql, arguments));
+            return Task.FromResult(comment);
         }
 
         public Task DeleteComment(string articleSlug, int commentId)
