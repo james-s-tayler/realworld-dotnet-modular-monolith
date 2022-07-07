@@ -44,6 +44,7 @@ namespace Application.Content.Domain.Setup.Module
 
         protected override void AddModuleServices(IConfiguration configuration, IServiceCollection services)
         {
+            services.AddTransient<ICommentRepository, SqliteCommentRepository>();
             services.AddTransient<IArticleRepository, SqliteArticleRepository>();
             services.AddTransient<IUserRepository, SqliteUserRepository>();
             services.AddTransient<ITagRepository, SqliteTagRepository>();

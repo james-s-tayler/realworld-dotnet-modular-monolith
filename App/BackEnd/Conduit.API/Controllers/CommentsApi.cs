@@ -13,6 +13,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
+using Application.Content.Domain.Contracts.DTOs;
+using Application.Content.Domain.Contracts.Operations.Commands.DeleteComment;
+using Application.Content.Domain.Contracts.Operations.Commands.PostComment;
+using Application.Content.Domain.Contracts.Operations.Queries.GetArticleComments;
+using Application.Content.Domain.Contracts.Operations.Queries.ListArticles;
+using Application.Core.PipelineBehaviors.OperationResponse;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -21,6 +27,8 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Newtonsoft.Json;
 using Conduit.API.Attributes;
 using Conduit.API.Models;
+using Conduit.API.Models.Mappers;
+using MediatR;
 
 namespace Conduit.API.Controllers
 { 
@@ -28,8 +36,12 @@ namespace Conduit.API.Controllers
     /// 
     /// </summary>
     [ApiController]
-    public class CommentsApiController : ControllerBase
+    public class CommentsApiController : OperationResponseController
     { 
+        public CommentsApiController(IMediator mediator) : base(mediator)
+        {
+        }
+        
         /// <summary>
         /// Create a comment for an article
         /// </summary>
@@ -48,7 +60,19 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> CreateArticleComment([FromRoute (Name = "slug")][Required]string slug, [FromBody]NewCommentRequest comment)
         {
-            return StatusCode((int)HttpStatusCode.NotImplemented);
+            var postCommentResponse = await Mediator.Send(new PostCommentCommand
+            {
+                ArticleSlug = slug,
+                NewComment = new PostCommentDTO
+                {
+                    Body = comment.Comment.Body
+                }
+            });
+            
+            if (postCommentResponse.Result != OperationResult.Success)
+                return UnsuccessfulResponseResult(postCommentResponse);
+
+            return StatusCode(StatusCodes.Status201Created, postCommentResponse.Response.Comment.ToSingleCommentResponse());
         }
 
         /// <summary>
@@ -67,7 +91,16 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> DeleteArticleComment([FromRoute (Name = "slug")][Required]string slug, [FromRoute (Name = "id")][Required]int id)
         {
-            return StatusCode((int)HttpStatusCode.NotImplemented);
+            var deleteCommentResponse = await Mediator.Send(new DeleteCommentCommand
+            {
+                ArticleSlug = slug,
+                CommentId = id
+            });
+            
+            if (deleteCommentResponse.Result != OperationResult.Success)
+                return UnsuccessfulResponseResult(deleteCommentResponse);
+
+            return Ok();
         }
 
         /// <summary>
@@ -87,7 +120,14 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
         public virtual async Task<IActionResult> GetArticleComments([FromRoute (Name = "slug")][Required]string slug)
         {
-            return StatusCode((int)HttpStatusCode.NotImplemented);
+            var getArticleCommentsQuery = new GetArticleCommentsQuery { Slug = slug };
+
+            var getArticleCommentsResponse = await Mediator.Send(getArticleCommentsQuery);
+            
+            if (getArticleCommentsResponse.Result != OperationResult.Success)
+                return UnsuccessfulResponseResult(getArticleCommentsResponse);
+
+            return Ok(getArticleCommentsResponse.Response.Comments.ToMultipleCommentsResponse());
         }
     }
 }
