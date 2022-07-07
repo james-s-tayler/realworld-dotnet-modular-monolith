@@ -35,7 +35,11 @@ namespace Application.Content.Domain.Infrastructure.Repositories
         
         public Task<List<TagEntity>> GetByArticleId(int articleId)
         {
-            var articleTagsSql = "SELECT * FROM tags t JOIN article_tags at ON at.tag_id = t.id WHERE at.article_id = @article_id";
+            var articleTagsSql = "SELECT * FROM tags t " +
+                                 "JOIN article_tags at " +
+                                 "ON at.tag_id = t.id " +
+                                 "WHERE at.article_id = @article_id " +
+                                 "ORDER BY t.tag";
             var articleTagsArguments = new { article_id = articleId };
             var articleTags = _connection.Query<TagEntity>(articleTagsSql, articleTagsArguments).ToList();
             return Task.FromResult(articleTags);
