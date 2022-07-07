@@ -107,7 +107,7 @@ namespace Application.Content.Domain.Infrastructure.Repositories
             return articles;
         }
         
-        public async Task<IEnumerable<ArticleEntity>> GetByFilters(string authorUsername, string favoritedByUsername, string tag)
+        public async Task<IEnumerable<ArticleEntity>> GetByFilters(string authorUsername, string favoritedByUsername, string tag, int limit, int offset)
         {
             string sql = "SELECT a.* FROM articles a " +
                          "JOIN users author ON author.user_id = a.user_id " +
@@ -117,13 +117,17 @@ namespace Application.Content.Domain.Infrastructure.Repositories
                          "LEFT JOIN users favoriter ON favoriter.user_id = af.user_id " +
                          "WHERE (@author_username IS NULL OR author.username = @author_username) " +
                          "AND (@favorited_by_username IS NULL OR favoriter.username = @favorited_by_username) " +
-                         "AND (@tag IS NULL OR t.tag = @tag)";
+                         "AND (@tag IS NULL OR t.tag = @tag) " +
+                         "LIMIT @limit " + //limit and offset is not efficient in SQLite
+                         "OFFSET @offset"; //limit and offset is not efficient in SQLite
             
             var arguments = new
             {
                 author_username = authorUsername,
                 favorited_by_username = favoritedByUsername,
-                tag = tag
+                tag = tag,
+                limit = limit,
+                offset = offset
             };
             
             var articles = _connection.Query<ArticleEntity>(sql, arguments).ToList();

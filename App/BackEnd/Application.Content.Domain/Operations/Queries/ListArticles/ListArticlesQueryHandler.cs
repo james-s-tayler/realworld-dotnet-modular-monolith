@@ -41,10 +41,16 @@ namespace Application.Content.Domain.Operations.Queries.ListArticles
             if (!string.IsNullOrEmpty(request.Tag) && !await _tagRepository.Exists(request.Tag))
                 return OperationResponseFactory.NotFound<ListArticlesQuery, OperationResponse<ListArticlesQueryResult>>(typeof(TagEntity), request.Tag);
             
-            var articles = await _articleRepository.GetByFilters(request.AuthorUsername, request.FavoritedByUsername, request.Tag);
+            var articles = await _articleRepository.GetByFilters(
+                request.AuthorUsername, 
+                request.FavoritedByUsername, 
+                request.Tag,
+                request.Limit,
+                request.Offset);
 
             var articleDtos = new List<SingleArticleDTO>();
 
+            //rather than looping some sort of bulk-get would be more performant
             foreach (var article in articles)
             {
                 var getProfileQueryResult = await _socialService.GetProfile(article.Author.Username);

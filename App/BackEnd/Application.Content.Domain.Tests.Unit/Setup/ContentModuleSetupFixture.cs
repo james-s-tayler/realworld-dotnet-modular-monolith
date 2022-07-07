@@ -155,7 +155,7 @@ namespace Application.Content.Domain.Tests.Unit.Setup
             
             var articleId = await ArticleRepository!.Create(article);
 
-            if (isFavorited)
+            if (UserContext.Object.IsAuthenticated && isFavorited)
             {
                 await ArticleRepository.FavoriteArticle(article.GetSlug());    
             }
@@ -165,7 +165,7 @@ namespace Application.Content.Domain.Tests.Unit.Setup
             
             UserArticles[author.Username].Add(createdArticle);
             
-            if (isFavorited)
+            if (UserContext.Object.IsAuthenticated && isFavorited)
             {
                 FavoritedArticles.Add(createdArticle);
             }

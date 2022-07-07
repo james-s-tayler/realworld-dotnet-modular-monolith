@@ -15,6 +15,7 @@ using Application.Content.Domain.Contracts.Operations.Commands.DeleteArticle;
 using Application.Content.Domain.Contracts.Operations.Commands.EditArticle;
 using Application.Content.Domain.Contracts.Operations.Commands.PublishArticle;
 using Application.Content.Domain.Contracts.Operations.Queries.GetSingleArticle;
+using Application.Content.Domain.Contracts.Operations.Queries.ListArticles;
 using Application.Core.PipelineBehaviors.OperationResponse;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -128,7 +129,28 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 200, type: typeof(MultipleArticlesResponse), description: "OK")]
         public virtual async Task<IActionResult> GetArticles([FromQuery (Name = "tag")]string tag, [FromQuery (Name = "author")]string author, [FromQuery (Name = "favorited")]string favorited, [FromQuery (Name = "limit")]int? limit, [FromQuery (Name = "offset")]int? offset)
         {
-            return StatusCode((int)HttpStatusCode.NotImplemented);
+            var listArticlesQuery = new ListArticlesQuery
+            {
+                Tag = tag,
+                AuthorUsername = author,
+                FavoritedByUsername = favorited
+            };
+            if (limit.HasValue)
+            {
+                listArticlesQuery.Limit = limit.Value;
+            }
+
+            if (offset.HasValue)
+            {
+                listArticlesQuery.Offset = offset.Value;
+            }
+            
+            var listArticlesResponse = await Mediator.Send(listArticlesQuery);
+            
+            if (listArticlesResponse.Result != OperationResult.Success)
+                return UnsuccessfulResponseResult(listArticlesResponse);
+
+            return Ok(listArticlesResponse.Response.Articles.ToMultipleArticlesResponse());
         }
 
         /// <summary>
