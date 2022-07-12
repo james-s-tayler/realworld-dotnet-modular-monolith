@@ -43,7 +43,6 @@
   <ItemGroup><!--<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.0" />-->
     <ProjectReference Include="..\Application.Content.Domain.Contracts\Application.Content.Domain.Contracts.csproj" />
     <ProjectReference Include="..\Application.Content.Domain\Application.Content.Domain.csproj" />
-    <ProjectReference Include="..\Application.Feed.Domain\Application.Feed.Domain.csproj" />
     <ProjectReference Include="..\Application.Social.Domain.Contracts\Application.Social.Domain.Contracts.csproj" />
     <ProjectReference Include="..\Application.Social.Domain\Application.Social.Domain.csproj" />
     <ProjectReference Include="..\Application.Users.Domain.Contracts\Application.Users.Domain.Contracts.csproj" />
