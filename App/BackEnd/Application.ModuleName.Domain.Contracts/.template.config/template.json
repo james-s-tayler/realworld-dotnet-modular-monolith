@@ -5,12 +5,13 @@
   "classifications": ["Common"],
   "description": "Creates a domain module contracts project.",
   "identity": "Application.ModuleName.Domain.Contracts.1.0",
-  "shortName": "domain-module-contracts",
+  "shortName": "module-contracts",
   "tags": {
     "language": "C#",
     "type": "project"
   },
   "sourceName": "ModuleName",
+  "preferNameDirectory" : false,
   "symbols": {
     "Framework": {
       "type": "parameter",

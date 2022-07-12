@@ -4,13 +4,14 @@
   "name": "Domain Module Unit Tests",
   "classifications": ["Common"],
   "description": "Creates a domain module unit test project.",
-  "identity": "Application.ModuleName.Domain.1.0",
-  "shortName": "module",
+  "identity": "Application.ModuleName.Domain.Tests.Unit.1.0",
+  "shortName": "module-unit-tests",
   "tags": {
     "language": "C#",
     "type": "project"
   },
   "sourceName": "ModuleName",
+  "preferNameDirectory" : false,
   "symbols": {
     "Framework": {
       "type": "parameter",

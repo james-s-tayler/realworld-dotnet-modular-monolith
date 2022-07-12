@@ -24,6 +24,8 @@
     <ItemGroup>
       <ProjectReference Include="..\Application.Content.Domain.Contracts\Application.Content.Domain.Contracts.csproj" />
       <ProjectReference Include="..\Application.Content.Domain\Application.Content.Domain.csproj" />
+      <ProjectReference Include="..\Application.Feed.Domain\Application.Feed.Domain.csproj" />
+      <ProjectReference Include="..\Application.Feed.Domain.Contracts\Application.Feed.Domain.Contracts.csproj" />
       <ProjectReference Include="..\Application.ModuleName.Domain.Contracts\Application.ModuleName.Domain.Contracts.csproj" />
       <ProjectReference Include="..\Application.ModuleName.Domain\Application.ModuleName.Domain.csproj" />
       <ProjectReference Include="..\Conduit.API\Conduit.API.csproj" />

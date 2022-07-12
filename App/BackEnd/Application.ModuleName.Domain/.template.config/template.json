@@ -5,12 +5,13 @@
   "classifications": ["Common"],
   "description": "Creates a domain module project.",
   "identity": "Application.ModuleName.Domain.1.0",
-  "shortName": "domain-module",
+  "shortName": "module-domain",
   "tags": {
     "language": "C#",
     "type": "project"
   },
   "sourceName": "ModuleName",
+  "preferNameDirectory" : false,
   "symbols": {
     "Framework": {
       "type": "parameter",

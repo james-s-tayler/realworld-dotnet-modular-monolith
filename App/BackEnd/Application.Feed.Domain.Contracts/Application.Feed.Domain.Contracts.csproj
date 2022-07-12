@@ -6,12 +6,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Application.Core\Application.Core.csproj" />
-      <ProjectReference Include="..\Application.Feed.Domain.Contracts\Application.Feed.Domain.Contracts.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Infrastructure\Services" />
-      <Folder Include="Setup\Configuration" />
     </ItemGroup>
 
 </Project>
