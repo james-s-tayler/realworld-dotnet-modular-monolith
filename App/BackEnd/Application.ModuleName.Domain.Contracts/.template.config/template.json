@@ -1,11 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/template",
   "author": "James Tayler",
-  "name": "Application Domain Module",
+  "name": "Domain Module Contracts",
   "classifications": ["Common"],
-  "description": "A project for creating a domain module.",
-  "identity": "Application.ModuleName.Domain.1.0",
-  "shortName": "module",
+  "description": "Creates a domain module contracts project.",
+  "identity": "Application.ModuleName.Domain.Contracts.1.0",
+  "shortName": "domain-module-contracts",
   "tags": {
     "language": "C#",
     "type": "project"

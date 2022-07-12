@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json.schemastore.org/template",
+  "author": "James Tayler",
+  "name": "Domain Module",
+  "classifications": ["Common"],
+  "description": "Creates a domain module project.",
+  "identity": "Application.ModuleName.Domain.1.0",
+  "shortName": "domain-module",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "ModuleName",
+  "symbols": {
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net5.0"
+        }
+      ],
+      "defaultValue": "net5.0"
+    }
+  }
+}
