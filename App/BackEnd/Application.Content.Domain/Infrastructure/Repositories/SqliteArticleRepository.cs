@@ -106,7 +106,37 @@ namespace Application.Content.Domain.Infrastructure.Repositories
             
             return articles;
         }
-        
+
+        public async Task<IEnumerable<ArticleEntity>> GetUserFeed(int limit, int offset)
+        {
+            string sql = "SELECT a.* FROM articles a " +
+                         "JOIN users author ON author.user_id = a.user_id " +
+                         "LEFT JOIN article_tags at ON at.article_id = a.id " +
+                         "LEFT JOIN tags t ON t.id = at.tag_id " +
+                         "LEFT JOIN article_favorites af ON af.article_id = a.id " +
+                         "LEFT JOIN users favoriter ON favoriter.user_id = af.user_id " +
+                         "WHERE (@author_username IS NULL OR author.username = @author_username) " +
+                         "AND (@favorited_by_username IS NULL OR favoriter.username = @favorited_by_username) " +
+                         "AND (@tag IS NULL OR t.tag = @tag) " +
+                         "LIMIT @limit " + //limit and offset is not efficient in SQLite
+                         "OFFSET @offset"; //limit and offset is not efficient in SQLite
+            
+            var arguments = new
+            {
+                limit = limit,
+                offset = offset
+            };
+            
+            var articles = _connection.Query<ArticleEntity>(sql, arguments).ToList();
+
+            foreach (var article in articles)
+            {
+                await EnrichArticle(article);
+            }
+            
+            return articles;
+        }
+
         public async Task<IEnumerable<ArticleEntity>> GetByFilters(string authorUsername, string favoritedByUsername, string tag, int limit, int offset)
         {
             string sql = "SELECT a.* FROM articles a " +
