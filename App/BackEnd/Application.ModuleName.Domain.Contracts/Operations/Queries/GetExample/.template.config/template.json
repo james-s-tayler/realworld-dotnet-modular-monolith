@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "James Tayler",
+  "classifications": [ "Common", "Code" ],
+  "identity": "Operation.Contract",
+  "name": "Domain Operation Contract",
+  "shortName": "operation-contract",
+  "tags": {
+    "language": "C#",
+    "type": "item"
+  },
+  "sourceName": "ModuleName",
+  "symbols":{
+    "operationName": {
+      "type": "parameter",
+      "defaultValue": "GetExample",
+      "replaces": "GetExample",
+      "fileRename": "GetExample"
+    }
+  }
+}

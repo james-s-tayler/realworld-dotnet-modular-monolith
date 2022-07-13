@@ -24,5 +24,19 @@
       ],
       "defaultValue": "net5.0"
     }
-  }
+  },
+  "primaryOutputs": [
+    {
+      "path": "Application.ModuleName.Domain.Contracts.csproj"
+    }
+  ],
+  "postActions": [{
+    "description": "Add projects to solution",
+    "manualInstructions": [ { "text": "Add generated project to solution manually." } ],
+    "args": {
+      "solutionFolder": "App"
+    },
+    "actionId": "D396686C-DE0E-4DE6-906D-291CD29FC5DE",
+    "continueOnError": true
+  }]
 }
