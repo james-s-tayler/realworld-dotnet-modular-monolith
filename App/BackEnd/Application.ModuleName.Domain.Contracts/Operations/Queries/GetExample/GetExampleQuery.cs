@@ -1,5 +1,5 @@
-using Application.Core.DataAccess;
-using Application.Core.PipelineBehaviors.OperationResponse;
+using App.Core.DataAccess;
+using App.Core.PipelineBehaviors.OperationResponse;
 using MediatR;
 
 namespace Application.ModuleName.Domain.Contracts.Operations.Queries.GetExample

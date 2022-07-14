@@ -1,4 +1,4 @@
-using Application.Core.DataAccess;
+using App.Core.DataAccess;
 using Application.ModuleName.Domain.Contracts.DTOs;
 
 namespace Application.ModuleName.Domain.Contracts.Operations.Queries.GetExample

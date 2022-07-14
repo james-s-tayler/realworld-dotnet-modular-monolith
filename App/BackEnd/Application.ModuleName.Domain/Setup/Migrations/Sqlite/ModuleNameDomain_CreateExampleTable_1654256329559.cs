@@ -1,4 +1,4 @@
-using Application.Core.SchemaManagement;
+using App.Core.SchemaManagement;
 using FluentMigrator;
 using JetBrains.Annotations;
 

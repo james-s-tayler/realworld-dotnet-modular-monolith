@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using Application.Core.PipelineBehaviors.OperationResponse;
-using Application.Core.Testing;
+using App.Core.PipelineBehaviors.OperationResponse;
+using App.Core.Testing;
 using Application.ModuleName.Domain.Contracts.Operations.Queries.GetExample;
 using Application.ModuleName.Domain.Tests.Unit.Setup;
 using FluentAssertions;

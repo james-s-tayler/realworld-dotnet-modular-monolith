@@ -1,4 +1,4 @@
-using Application.Core.DataAccess;
+using App.Core.DataAccess;
 using Application.ModuleName.Domain.Entities;
 
 namespace Application.ModuleName.Domain.Infrastructure.Repositories

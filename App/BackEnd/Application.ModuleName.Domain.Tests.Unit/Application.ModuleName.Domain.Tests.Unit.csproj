@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Application.Core.Testing\Application.Core.Testing.csproj" />
+      <ProjectReference Include="..\App.Core.Testing\App.Core.Testing.csproj" />
       <ProjectReference Include="..\Application.ModuleName.Domain\Application.ModuleName.Domain.csproj" />
     </ItemGroup>
 

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.0.123" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.0.1" />
+      <PackageReference Include="MediatR" Version="10.0.1" />
+      <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+      <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.8.0" />
+      <PackageReference Include="ScottBrady91.AspNetCore.Identity.BCryptPasswordHasher" Version="1.3.0" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\App.Core\App.Core.csproj" />
+      <ProjectReference Include="..\App.Social.Domain.Contracts\App.Social.Domain.Contracts.csproj" />
+      <ProjectReference Include="..\App.Users.Domain.Contracts\App.Users.Domain.Contracts.csproj" />
+    </ItemGroup>
+
+</Project>

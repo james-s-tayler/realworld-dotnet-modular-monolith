@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Application.Content.Domain.Contracts.DTOs;
+using App.Content.Domain.Contracts.DTOs;
 
 namespace Conduit.API.Models.Mappers
 {

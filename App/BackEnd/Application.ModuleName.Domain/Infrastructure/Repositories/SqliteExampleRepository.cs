@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
-using Application.Core.DataAccess;
+using App.Core.DataAccess;
 using Application.ModuleName.Domain.Entities;
 using Application.ModuleName.Domain.Setup.Module;
 using Dapper;

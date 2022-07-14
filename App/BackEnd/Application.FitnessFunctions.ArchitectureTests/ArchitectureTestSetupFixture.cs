@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Application.Core.Modules;
+using App.Core.Modules;
 using ArchUnitNET.Domain;
 using ArchUnitNET.Loader;
 using FluentMigrator;

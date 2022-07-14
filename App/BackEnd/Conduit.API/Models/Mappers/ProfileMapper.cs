@@ -1,5 +1,4 @@
-using Application.Social.Domain.Contracts;
-using Application.Social.Domain.Contracts.DTOs;
+using App.Social.Domain.Contracts.DTOs;
 
 namespace Conduit.API.Models.Mappers
 {

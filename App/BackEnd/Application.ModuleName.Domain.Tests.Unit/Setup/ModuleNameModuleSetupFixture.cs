@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Application.Core.Modules;
-using Application.Core.Testing;
+using App.Core.Modules;
+using App.Core.Testing;
 using Application.ModuleName.Domain.Setup.Module;
 using Microsoft.Extensions.DependencyInjection;
 

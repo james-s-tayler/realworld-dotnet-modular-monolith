@@ -11,10 +11,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
-using Application.Core.PipelineBehaviors.OperationResponse;
-using Application.Social.Domain.Contracts.Operations.Commands.FollowUser;
-using Application.Social.Domain.Contracts.Operations.Commands.UnfollowUser;
-using Application.Social.Domain.Contracts.Operations.Queries.GetProfile;
+using App.Core.PipelineBehaviors.OperationResponse;
+using App.Social.Domain.Contracts.Operations.Commands.FollowUser;
+using App.Social.Domain.Contracts.Operations.Commands.UnfollowUser;
+using App.Social.Domain.Contracts.Operations.Queries.GetProfile;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;

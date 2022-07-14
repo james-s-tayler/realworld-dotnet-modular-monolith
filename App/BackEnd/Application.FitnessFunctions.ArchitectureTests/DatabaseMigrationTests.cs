@@ -1,4 +1,4 @@
-using Application.Core.SchemaManagement;
+using App.Core.SchemaManagement;
 using ArchUnitNET.Domain.Extensions;
 using ArchUnitNET.Fluent.Conditions;
 using ArchUnitNET.xUnit;
@@ -27,7 +27,7 @@ namespace Application.FitnessFunctions.ArchitectureTests
                 {
                     var @namespace = databaseMigration.Namespace.FullName.Split(".");
                     var moduleName = @namespace[1];
-                    var dbMigrationPrefix = $"{moduleName}Domain_"; //e.g Application.Users.Domain.Migrations => UsersDomain_
+                    var dbMigrationPrefix = $"{moduleName}Domain_"; //e.g App.Users.Domain.Migrations => UsersDomain_
 
                     var pass = databaseMigration.NameStartsWith(dbMigrationPrefix);
                     

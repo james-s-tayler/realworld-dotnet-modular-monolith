@@ -10,9 +10,9 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Application.Content.Domain.Contracts.Operations.Commands.FavoriteArticle;
-using Application.Content.Domain.Contracts.Operations.Commands.UnfavoriteArticle;
-using Application.Core.PipelineBehaviors.OperationResponse;
+using App.Content.Domain.Contracts.Operations.Commands.FavoriteArticle;
+using App.Content.Domain.Contracts.Operations.Commands.UnfavoriteArticle;
+using App.Core.PipelineBehaviors.OperationResponse;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Conduit.API.Attributes;

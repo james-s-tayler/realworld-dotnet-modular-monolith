@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using Application.Core.DataAccess;
+using App.Core.DataAccess;
 
 namespace Application.ModuleName.Domain.Contracts
 {

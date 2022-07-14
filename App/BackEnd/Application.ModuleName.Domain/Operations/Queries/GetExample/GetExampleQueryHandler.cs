@@ -1,8 +1,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Core.Context;
-using Application.Core.PipelineBehaviors.OperationResponse;
+using App.Core.Context;
+using App.Core.PipelineBehaviors.OperationResponse;
 using Application.ModuleName.Domain.Contracts.Operations.Queries.GetExample;
 using Application.ModuleName.Domain.Entities;
 using Application.ModuleName.Domain.Infrastructure.Mappers;

@@ -1,8 +1,8 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Application.Core.DataAccess.Dapper.Sqlite;
-using Application.Core.Modules;
-using Application.Core.SchemaManagement;
+using App.Core.DataAccess.Dapper.Sqlite;
+using App.Core.Modules;
+using App.Core.SchemaManagement;
 using Application.ModuleName.Domain.Contracts;
 using Application.ModuleName.Domain.Infrastructure.Repositories;
 using Application.ModuleName.Domain.Setup.Module;

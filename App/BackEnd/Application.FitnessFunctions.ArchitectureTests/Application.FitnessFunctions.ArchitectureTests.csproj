@@ -22,18 +22,18 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Application.Content.Domain.Contracts\Application.Content.Domain.Contracts.csproj" />
-      <ProjectReference Include="..\Application.Content.Domain\Application.Content.Domain.csproj" />
-      <ProjectReference Include="..\Application.Feed.Domain\Application.Feed.Domain.csproj" />
-      <ProjectReference Include="..\Application.Feed.Domain.Contracts\Application.Feed.Domain.Contracts.csproj" />
+      <ProjectReference Include="..\App.Content.Domain.Contracts\App.Content.Domain.Contracts.csproj" />
+      <ProjectReference Include="..\App.Content.Domain\App.Content.Domain.csproj" />
+      <ProjectReference Include="..\App.Feed.Domain\App.Feed.Domain.csproj" />
+      <ProjectReference Include="..\App.Feed.Domain.Contracts\App.Feed.Domain.Contracts.csproj" />
       <ProjectReference Include="..\Application.ModuleName.Domain.Contracts\Application.ModuleName.Domain.Contracts.csproj" />
       <ProjectReference Include="..\Application.ModuleName.Domain\Application.ModuleName.Domain.csproj" />
       <ProjectReference Include="..\Conduit.API\Conduit.API.csproj" />
-      <ProjectReference Include="..\Application.Core\Application.Core.csproj" />
-      <ProjectReference Include="..\Application.Social.Domain\Application.Social.Domain.csproj" />
-      <ProjectReference Include="..\Application.Social.Domain.Contracts\Application.Social.Domain.Contracts.csproj" />
-      <ProjectReference Include="..\Application.Users.Domain.Contracts\Application.Users.Domain.Contracts.csproj" />
-      <ProjectReference Include="..\Application.Users.Domain\Application.Users.Domain.csproj" />
+      <ProjectReference Include="..\App.Core\App.Core.csproj" />
+      <ProjectReference Include="..\App.Social.Domain\App.Social.Domain.csproj" />
+      <ProjectReference Include="..\App.Social.Domain.Contracts\App.Social.Domain.Contracts.csproj" />
+      <ProjectReference Include="..\App.Users.Domain.Contracts\App.Users.Domain.Contracts.csproj" />
+      <ProjectReference Include="..\App.Users.Domain\App.Users.Domain.csproj" />
     </ItemGroup>
 
 </Project>

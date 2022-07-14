@@ -1,6 +1,6 @@
 using System.Linq;
-using Application.Core;
-using Application.Core.DataAccess;
+using App.Core;
+using App.Core.DataAccess;
 using ArchUnitNET.Domain.Dependencies;
 using ArchUnitNET.Domain.Extensions;
 using ArchUnitNET.Fluent.Conditions;

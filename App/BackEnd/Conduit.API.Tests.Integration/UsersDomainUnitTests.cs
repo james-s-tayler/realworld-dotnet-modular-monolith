@@ -1,7 +1,7 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Application.Core.Testing;
+using App.Core.Testing;
 using AutoFixture;
 using Conduit.API.Models;
 using Xunit;

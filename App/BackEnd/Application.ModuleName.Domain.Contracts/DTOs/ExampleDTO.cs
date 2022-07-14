@@ -1,4 +1,4 @@
-using Application.Core.DataAccess;
+using App.Core.DataAccess;
 using Destructurama.Attributed;
 
 namespace Application.ModuleName.Domain.Contracts.DTOs

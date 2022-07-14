@@ -1,6 +1,6 @@
 using System;
 using System.Net;
-using Application.Core.PipelineBehaviors.OperationResponse;
+using App.Core.PipelineBehaviors.OperationResponse;
 using Conduit.API.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;
