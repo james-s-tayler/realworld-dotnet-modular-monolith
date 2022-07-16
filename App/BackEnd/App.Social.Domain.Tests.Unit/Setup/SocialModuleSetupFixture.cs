@@ -45,7 +45,8 @@ namespace App.Social.Domain.Tests.Unit.Setup
                     Id = AuthenticatedUserId,
                     Bio = AuthenticatedUserBio,
                     Image = AuthenticatedUserImage,
-                    Username = AuthenticatedUserUsername
+                    Username = AuthenticatedUserUsername,
+                    Email = AuthenticatedUserEmail
                 }
             };
             
