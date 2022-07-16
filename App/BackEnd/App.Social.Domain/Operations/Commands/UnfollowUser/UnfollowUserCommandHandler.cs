@@ -2,12 +2,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Core.PipelineBehaviors.OperationResponse;
 using App.Social.Domain.Contracts.Operations.Commands.UnfollowUser;
-using Application.Social.Domain.Infrastructure.Mappers;
-using Application.Social.Domain.Infrastructure.Repositories;
+using App.Social.Domain.Infrastructure.Mappers;
+using App.Social.Domain.Infrastructure.Repositories;
 using JetBrains.Annotations;
 using MediatR;
 
-namespace Application.Social.Domain.Operations.Commands.UnfollowUser
+namespace App.Social.Domain.Operations.Commands.UnfollowUser
 {
     internal class UnfollowUserCommandHandler : IRequestHandler<UnfollowUserCommand, OperationResponse<UnfollowUserCommandResult>>
     {

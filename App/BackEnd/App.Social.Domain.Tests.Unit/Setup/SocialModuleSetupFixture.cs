@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using App.Core.Modules;
 using App.Core.Testing;
+using App.Social.Domain.Entities;
+using App.Social.Domain.Infrastructure.Repositories;
+using App.Social.Domain.Setup.Module;
 using App.Users.Domain.Contracts.DTOs;
 using App.Users.Domain.Contracts.Operations.Commands.RegisterUser;
-using Application.Social.Domain.Entities;
-using Application.Social.Domain.Infrastructure.Repositories;
-using Application.Social.Domain.Setup.Module;
 using AutoFixture;
 using Microsoft.Extensions.DependencyInjection;
 

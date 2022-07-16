@@ -119,7 +119,7 @@ namespace App.Content.Domain.Tests.Unit.Setup
 
             var getProfileQueryResult = new GetProfileQueryResult { Profile = existingUserProfile };
             
-            if (!UserContext.Object.IsAuthenticated)
+            if (!UserContext.IsAuthenticated)
             {
                 getProfileQueryResult.Profile.Following = false;
             }
@@ -177,7 +177,7 @@ namespace App.Content.Domain.Tests.Unit.Setup
             
             var articleId = await ArticleRepository!.Create(article);
 
-            if (UserContext.Object.IsAuthenticated && isFavorited)
+            if (UserContext.IsAuthenticated && isFavorited)
             {
                 await ArticleRepository.FavoriteArticle(article.GetSlug());    
             }
@@ -187,7 +187,7 @@ namespace App.Content.Domain.Tests.Unit.Setup
             
             UserArticles[author.Username].Add(createdArticle);
             
-            if (UserContext.Object.IsAuthenticated && isFavorited)
+            if (UserContext.IsAuthenticated && isFavorited)
             {
                 FavoritedArticles.Add(createdArticle);
             }

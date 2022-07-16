@@ -1,12 +1,12 @@
 using System.Threading;
 using System.Threading.Tasks;
+using App.Social.Domain.Infrastructure.Mappers;
+using App.Social.Domain.Infrastructure.Repositories;
 using App.Users.Domain.Contracts.Operations.Commands.UpdateUser;
-using Application.Social.Domain.Infrastructure.Mappers;
-using Application.Social.Domain.Infrastructure.Repositories;
 using JetBrains.Annotations;
 using MediatR;
 
-namespace Application.Social.Domain.Infrastructure.EventListeners
+namespace App.Social.Domain.Infrastructure.EventListeners
 {
     internal class UpdateUserCommandResultListener : INotificationHandler<UpdateUserCommandResult>
     {

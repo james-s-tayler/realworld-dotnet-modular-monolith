@@ -130,7 +130,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
         [Fact]
         public async Task GivenProfileNotFollowed_WhenGetComments_ThenNotFollowingCommenter()
         {
-            //arrange
+            //arrange 
             var existingUserProfile = new ProfileDTO
             {
                 Username = _module.AuthenticatedUserUsername,

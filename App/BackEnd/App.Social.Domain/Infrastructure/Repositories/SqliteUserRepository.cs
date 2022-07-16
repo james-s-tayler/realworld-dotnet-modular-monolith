@@ -3,12 +3,12 @@ using System.Data.Common;
 using System.Threading.Tasks;
 using App.Core.Context;
 using App.Core.DataAccess;
-using Application.Social.Domain.Entities;
-using Application.Social.Domain.Setup.Module;
+using App.Social.Domain.Entities;
+using App.Social.Domain.Setup.Module;
 using Dapper;
 using JetBrains.Annotations;
 
-namespace Application.Social.Domain.Infrastructure.Repositories
+namespace App.Social.Domain.Infrastructure.Repositories
 {
     internal class SqliteUserRepository : IUserRepository
     {

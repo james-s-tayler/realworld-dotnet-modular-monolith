@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using App.Core.DataAccess;
-using Application.Social.Domain.Entities;
+using App.Social.Domain.Entities;
 
-namespace Application.Social.Domain.Infrastructure.Repositories
+namespace App.Social.Domain.Infrastructure.Repositories
 {
     internal interface IUserRepository : ICrudRepository<UserEntity, int>
     {

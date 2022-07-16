@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Core.Testing", "App.Cor
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FitnessFunctions", "FitnessFunctions", "{CF744F7C-DF0D-4AD9-A19D-F08F418D41C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.FitnessFunctions.ArchitectureTests", "Application.FitnessFunctions.ArchitectureTests\Application.FitnessFunctions.ArchitectureTests.csproj", "{12DDDC0A-472B-42B9-BEF1-E78F35A3091A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.FitnessFunctions.ArchitectureTests", "App.FitnessFunctions.ArchitectureTests\App.FitnessFunctions.ArchitectureTests.csproj", "{12DDDC0A-472B-42B9-BEF1-E78F35A3091A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{47341F65-D512-421C-809D-6BB36CE52C53}"
 	ProjectSection(SolutionItems) = preProject
@@ -40,8 +40,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{21BB14
 		Conduit.API\Dockerfile = Conduit.API\Dockerfile
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.FitnessFunctions.MemoryTests", "Application.FitnessFunctions.MemoryTests\Application.FitnessFunctions.MemoryTests.csproj", "{647BF5D4-B836-44F3-AB2F-26254E6B97CA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Social.Domain.Contracts", "App.Social.Domain.Contracts\App.Social.Domain.Contracts.csproj", "{0D1E9E45-1139-42B1-945C-157B6C80D526}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Social.Domain.Tests.Unit", "App.Social.Domain.Tests.Unit\App.Social.Domain.Tests.Unit.csproj", "{B1D08C3F-8FA3-4959-8EF0-2F9F7F46DC3A}"
@@ -56,26 +54,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Content.Domain.Contract
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Content.Domain", "App.Content.Domain\App.Content.Domain.csproj", "{F986C723-4638-4800-BFF0-DA59B5CF3CB9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{E45F48CE-79F9-4BB5-BB71-A7CFEBF7CBA3}"
-	ProjectSection(SolutionItems) = preProject
-		Application.ModuleName.Domain\.template.config\template.json = Application.ModuleName.Domain\.template.config\template.json
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.ModuleName.Domain.Contracts", "App.ModuleName.Domain.Contracts\App.ModuleName.Domain.Contracts.csproj", "{BBE60FAC-3CD6-4A32-87C7-305C5E78D7AB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contracts", "Contracts", "{3A758329-28EE-40C1-9B6F-A7D76D19BE71}"
-	ProjectSection(SolutionItems) = preProject
-		Application.ModuleName.Domain.Contracts\.template.config\template.json = Application.ModuleName.Domain.Contracts\.template.config\template.json
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.ModuleName.Domain", "App.ModuleName.Domain\App.ModuleName.Domain.csproj", "{53E2C3FA-E6AA-44F0-9D6B-959D6FD84AEA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1C0F3CCC-019B-473D-A1DC-1877D64320BE}"
-	ProjectSection(SolutionItems) = preProject
-		Application.ModuleName.Domain.Tests.Unit\.template.config\template.json = Application.ModuleName.Domain.Tests.Unit\.template.config\template.json
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.ModuleName.Domain.Contracts", "Application.ModuleName.Domain.Contracts\Application.ModuleName.Domain.Contracts.csproj", "{BBE60FAC-3CD6-4A32-87C7-305C5E78D7AB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.ModuleName.Domain", "Application.ModuleName.Domain\Application.ModuleName.Domain.csproj", "{53E2C3FA-E6AA-44F0-9D6B-959D6FD84AEA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.ModuleName.Domain.Tests.Unit", "Application.ModuleName.Domain.Tests.Unit\Application.ModuleName.Domain.Tests.Unit.csproj", "{4ABD71E0-D56C-4665-A5CC-47F2A119B724}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.ModuleName.Domain.Tests.Unit", "App.ModuleName.Domain.Tests.Unit\App.ModuleName.Domain.Tests.Unit.csproj", "{4ABD71E0-D56C-4665-A5CC-47F2A119B724}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Feed.Domain.Contracts", "App.Feed.Domain.Contracts\App.Feed.Domain.Contracts.csproj", "{40E787AE-C51D-4203-8586-F528EABAC849}"
 EndProject
@@ -169,10 +152,6 @@ Global
 		{12DDDC0A-472B-42B9-BEF1-E78F35A3091A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12DDDC0A-472B-42B9-BEF1-E78F35A3091A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12DDDC0A-472B-42B9-BEF1-E78F35A3091A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{647BF5D4-B836-44F3-AB2F-26254E6B97CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{647BF5D4-B836-44F3-AB2F-26254E6B97CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{647BF5D4-B836-44F3-AB2F-26254E6B97CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{647BF5D4-B836-44F3-AB2F-26254E6B97CA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0D1E9E45-1139-42B1-945C-157B6C80D526}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0D1E9E45-1139-42B1-945C-157B6C80D526}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D1E9E45-1139-42B1-945C-157B6C80D526}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -223,14 +202,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{12DDDC0A-472B-42B9-BEF1-E78F35A3091A} = {CF744F7C-DF0D-4AD9-A19D-F08F418D41C7}
-		{647BF5D4-B836-44F3-AB2F-26254E6B97CA} = {CF744F7C-DF0D-4AD9-A19D-F08F418D41C7}
 		{69E5A151-D135-47D9-AF4D-26F8BC2A2CA9} = {6FC2BBD5-038B-42CC-8851-98D417A6BEF3}
-		{E45F48CE-79F9-4BB5-BB71-A7CFEBF7CBA3} = {69E5A151-D135-47D9-AF4D-26F8BC2A2CA9}
-		{3A758329-28EE-40C1-9B6F-A7D76D19BE71} = {69E5A151-D135-47D9-AF4D-26F8BC2A2CA9}
-		{1C0F3CCC-019B-473D-A1DC-1877D64320BE} = {69E5A151-D135-47D9-AF4D-26F8BC2A2CA9}
-		{BBE60FAC-3CD6-4A32-87C7-305C5E78D7AB} = {3A758329-28EE-40C1-9B6F-A7D76D19BE71}
-		{53E2C3FA-E6AA-44F0-9D6B-959D6FD84AEA} = {E45F48CE-79F9-4BB5-BB71-A7CFEBF7CBA3}
-		{4ABD71E0-D56C-4665-A5CC-47F2A119B724} = {1C0F3CCC-019B-473D-A1DC-1877D64320BE}
 		{9A4A1AF0-FB3D-41DA-88B0-48E7D38F5986} = {15829510-7835-4630-BA28-B7955FC6108F}
 		{10BFD663-3031-4822-8A5B-B66941215E4B} = {15829510-7835-4630-BA28-B7955FC6108F}
 		{E68632B6-A3DE-460B-AB95-229AA2334BEA} = {15829510-7835-4630-BA28-B7955FC6108F}
@@ -257,5 +229,8 @@ Global
 		{5498CD4B-C15A-47F1-A85B-917C4BACB335} = {D351458F-B08A-42A4-9241-7D6D07737999}
 		{3B8A620A-56F2-422A-81CA-93A94426E7CA} = {D351458F-B08A-42A4-9241-7D6D07737999}
 		{3BBBCD3C-A851-4117-9F13-FC2CA43BA9CB} = {D351458F-B08A-42A4-9241-7D6D07737999}
+		{BBE60FAC-3CD6-4A32-87C7-305C5E78D7AB} = {69E5A151-D135-47D9-AF4D-26F8BC2A2CA9}
+		{53E2C3FA-E6AA-44F0-9D6B-959D6FD84AEA} = {69E5A151-D135-47D9-AF4D-26F8BC2A2CA9}
+		{4ABD71E0-D56C-4665-A5CC-47F2A119B724} = {69E5A151-D135-47D9-AF4D-26F8BC2A2CA9}
 	EndGlobalSection
 EndGlobal

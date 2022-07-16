@@ -1,4 +1,4 @@
-namespace Application.Social.Domain.Entities
+namespace App.Social.Domain.Entities
 {
     internal class UserEntity
     {

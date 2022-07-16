@@ -2,12 +2,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Core.PipelineBehaviors.OperationResponse;
 using App.Social.Domain.Contracts.Operations.Commands.FollowUser;
-using Application.Social.Domain.Infrastructure.Mappers;
-using Application.Social.Domain.Infrastructure.Repositories;
+using App.Social.Domain.Infrastructure.Mappers;
+using App.Social.Domain.Infrastructure.Repositories;
 using JetBrains.Annotations;
 using MediatR;
 
-namespace Application.Social.Domain.Operations.Commands.FollowUser
+namespace App.Social.Domain.Operations.Commands.FollowUser
 {
     internal class FollowUserCommandHandler : IRequestHandler<FollowUserCommand, OperationResponse<FollowUserCommandResult>>
     {

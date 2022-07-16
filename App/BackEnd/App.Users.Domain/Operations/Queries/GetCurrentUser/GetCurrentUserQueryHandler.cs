@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 using App.Core.Context;
 using App.Core.PipelineBehaviors.OperationResponse;
 using App.Users.Domain.Contracts.Operations.Queries.GetCurrentUser;
+using App.Users.Domain.Entities;
 using App.Users.Domain.Infrastructure.Mappers;
 using App.Users.Domain.Infrastructure.Repositories;
+using JetBrains.Annotations;
 using MediatR;
 
 namespace App.Users.Domain.Operations.Queries.GetCurrentUser
@@ -15,8 +17,8 @@ namespace App.Users.Domain.Operations.Queries.GetCurrentUser
         private readonly IUserContext _userContext;
         private readonly IUserRepository _userRepository;
 
-        public GetCurrentUserQueryHandler(IUserContext userContext, 
-            IUserRepository userRepository)
+        public GetCurrentUserQueryHandler([NotNull] IUserContext userContext,
+            [NotNull] IUserRepository userRepository)
         {
             _userContext = userContext;
             _userRepository = userRepository;
@@ -26,7 +28,7 @@ namespace App.Users.Domain.Operations.Queries.GetCurrentUser
         {
             var user = await _userRepository.GetById(_userContext.UserId);
             if (user == null)
-                throw new ArgumentNullException(nameof(user));
+                return OperationResponseFactory.NotFound<GetCurrentUserQuery, OperationResponse<GetCurrentUserQueryResult>>(typeof(UserEntity), _userContext.UserId);
             
             return new OperationResponse<GetCurrentUserQueryResult>(new GetCurrentUserQueryResult
             {

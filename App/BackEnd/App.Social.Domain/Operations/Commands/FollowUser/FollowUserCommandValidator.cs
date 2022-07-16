@@ -1,11 +1,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using App.Social.Domain.Contracts.Operations.Commands.FollowUser;
-using Application.Social.Domain.Infrastructure.Repositories;
+using App.Social.Domain.Infrastructure.Repositories;
 using FluentValidation;
 using JetBrains.Annotations;
 
-namespace Application.Social.Domain.Operations.Commands.FollowUser
+namespace App.Social.Domain.Operations.Commands.FollowUser
 {
     internal class FollowUserCommandValidator : AbstractValidator<FollowUserCommand>
     {

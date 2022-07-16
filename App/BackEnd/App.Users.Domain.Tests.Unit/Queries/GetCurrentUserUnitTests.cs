@@ -54,7 +54,7 @@ namespace App.Users.Domain.Tests.Unit.Queries
         }
         
         [Fact]
-        public async Task GivenNonExistentUser_WhenGetCurrentUser_ThenFailsValidation()
+        public async Task GivenNonExistentUser_WhenGetCurrentUser_ThenNotFound()
         {
             //arrange
             _module.WithAuthenticatedUserContext();
@@ -63,7 +63,7 @@ namespace App.Users.Domain.Tests.Unit.Queries
             var result = await _module.Mediator.Send(_getCurrentUserQuery);
             
             //assert
-            result.Result.Should().Be(OperationResult.ValidationError);
+            result.Result.Should().Be(OperationResult.NotFound);
             result.Response.Should().BeNull();
         }
     }

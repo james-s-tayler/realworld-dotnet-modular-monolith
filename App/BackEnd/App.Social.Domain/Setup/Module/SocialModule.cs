@@ -4,8 +4,8 @@ using App.Core.DataAccess.Dapper.Sqlite;
 using App.Core.Modules;
 using App.Core.SchemaManagement;
 using App.Social.Domain.Contracts;
-using Application.Social.Domain.Infrastructure.Repositories;
-using Application.Social.Domain.Setup.Module;
+using App.Social.Domain.Infrastructure.Repositories;
+using App.Social.Domain.Setup.Module;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +14,7 @@ using Microsoft.Extensions.Hosting;
 //would be epic to add this in via Fody!
 [assembly: HostingStartup(typeof(SocialModule))]
 [assembly: InternalsVisibleTo("App.Social.Domain.Tests.Unit")]
-namespace Application.Social.Domain.Setup.Module
+namespace App.Social.Domain.Setup.Module
 {
     internal class SocialModule : AbstractModule
     {

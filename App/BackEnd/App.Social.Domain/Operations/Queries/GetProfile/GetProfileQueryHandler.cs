@@ -1,14 +1,13 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Core.PipelineBehaviors.OperationResponse;
 using App.Social.Domain.Contracts.Operations.Queries.GetProfile;
-using Application.Social.Domain.Entities;
-using Application.Social.Domain.Infrastructure.Mappers;
-using Application.Social.Domain.Infrastructure.Repositories;
+using App.Social.Domain.Entities;
+using App.Social.Domain.Infrastructure.Mappers;
+using App.Social.Domain.Infrastructure.Repositories;
 using MediatR;
 
-namespace Application.Social.Domain.Operations.Queries.GetProfile
+namespace App.Social.Domain.Operations.Queries.GetProfile
 {
     internal class GetProfileQueryHandler : IRequestHandler<GetProfileQuery, OperationResponse<GetProfileQueryResult>>
     {

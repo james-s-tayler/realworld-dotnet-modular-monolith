@@ -59,11 +59,18 @@ namespace App.Content.Domain.Infrastructure.Repositories
             {
                 article.Author = await _userRepository.GetByArticleId(article.Id); 
                 article.TagList = await _tagRepository.GetByArticleId(article.Id);
-                
-                var favoritedSql = "SELECT EXISTS(SELECT 1 FROM article_favorites WHERE article_id=@article_id AND user_id=@user_id)";
-                var favoritedArguments = new { article_id = article.Id, user_id = _userContext.UserId };
-                article.Favorited = _connection.ExecuteScalar<bool>(favoritedSql, favoritedArguments);
 
+                if (_userContext.IsAuthenticated)
+                {
+                    var favoritedSql = "SELECT EXISTS(SELECT 1 FROM article_favorites WHERE article_id=@article_id AND user_id=@user_id)";
+                    var favoritedArguments = new { article_id = article.Id, user_id = _userContext.UserId };
+                    article.Favorited = _connection.ExecuteScalar<bool>(favoritedSql, favoritedArguments);    
+                }
+                else
+                {
+                    article.Favorited = false;
+                }
+                
                 var favoritesCountSql = "SELECT COUNT(*) FROM article_favorites WHERE article_id=@article_id AND user_id=@user_id";
                 var favoritesCountArguments = new { article_id = article.Id, user_id = article.Author.UserId };
                 article.FavoritesCount = _connection.ExecuteScalar<int>(favoritesCountSql, favoritesCountArguments);

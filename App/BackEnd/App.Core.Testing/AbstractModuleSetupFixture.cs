@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Security.Claims;
 using App.Core.Context;
 using App.Core.DataAccess;
 using App.Core.Modules;
 using AutoFixture;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,13 +25,15 @@ namespace App.Core.Testing
         public string AuthenticatedUserImage { get; private set; }
         
         public Fixture AutoFixture { get; } = new ();
-        public IMediator Mediator { get; set; }
+        public IMediator Mediator { get; }
         public AbstractModule Module { get; }
         public IServiceCollection Services { get; }
         public ConfigurationBuilder Configuration { get; }
         public Mock<IHostEnvironment> _hostEnvironment;
         
-        public Mock<IUserContext> UserContext { get; } = new ();
+        public IUserContext UserContext { get; }
+        public Mock<IRequestClaimsPrincipalProvider> RequestClaimsPrincipalProvider { get; } = new();
+        public Mock<IRequestAuthorizationProvider> RequestAuthorizationProvider { get; } = new();
 
         public IModuleDbConnection ModuleDbConnection { get; }
         
@@ -57,12 +61,14 @@ namespace App.Core.Testing
             });
             
             Module.InitializeModule(Configuration.Build(), _hostEnvironment.Object, Services);
-            Module.ReplaceTransient(UserContext.Object);
+            Module.ReplaceTransient(RequestClaimsPrincipalProvider.Object);
+            Module.ReplaceTransient(RequestAuthorizationProvider.Object);
             ReplaceServices(Module);
 
             var provider = Services.BuildServiceProvider();
             Mediator = provider.GetRequiredService<IMediator>();
             ModuleDbConnection = provider.GetRequiredService<IModuleDbConnection>();
+            UserContext = provider.GetRequiredService<IUserContext>();
             SetupPostProcess(provider);
         }
         
@@ -91,8 +97,10 @@ namespace App.Core.Testing
 
         public void WithUnauthenticatedUserContext()
         {
-            UserContext.Reset();
-            UserContext.SetupGet(context => context.IsAuthenticated).Returns(false);
+            RequestClaimsPrincipalProvider.Reset();
+            RequestAuthorizationProvider.Reset();
+            RequestClaimsPrincipalProvider.Setup(provider => provider.GetClaimsPrincipal()).Returns(new ClaimsPrincipal());
+            RequestAuthorizationProvider.Setup(provider => provider.GetRequestAuthorization()).Returns((string)null);
         }
 
         public void WithAuthenticatedUserContext()
@@ -103,17 +111,26 @@ namespace App.Core.Testing
             AuthenticatedUserToken = AutoFixture.Create<string>();
             AuthenticatedUserImage = AutoFixture.Create<string>();
             AuthenticatedUserBio = AutoFixture.Create<string>();
-            WithUserContextReturning(true, AuthenticatedUserId, AuthenticatedUserUsername, AuthenticatedUserEmail, AuthenticatedUserToken);
+            WithUserContextReturning(AuthenticatedUserId, AuthenticatedUserUsername, AuthenticatedUserEmail, AuthenticatedUserToken);
         }
         
-        public void WithUserContextReturning(bool isAuthenticated, int userId, string username, string email, string token)
+        public void WithUserContextReturning(int userId, string username, string email, string token)
         {
-            UserContext.Reset();
-            UserContext.SetupGet(context => context.IsAuthenticated).Returns(isAuthenticated);
-            UserContext.SetupGet(context => context.UserId).Returns(userId);
-            UserContext.SetupGet(context => context.Username).Returns(username);
-            UserContext.SetupGet(context => context.Email).Returns(email);
-            UserContext.SetupGet(context => context.Token).Returns(token);
+            
+            RequestClaimsPrincipalProvider.Reset();
+            RequestAuthorizationProvider.Reset();
+            
+            var identity = new ClaimsIdentity(new Claim[]
+            {
+                new Claim("user_id", userId.ToString()),
+                new Claim("username", username),
+                new Claim("email", email)
+            }, "Basic");
+      
+            var principal = new ClaimsPrincipal(identity);
+            
+            RequestClaimsPrincipalProvider.Setup(provider => provider.GetClaimsPrincipal()).Returns(principal);
+            RequestAuthorizationProvider.Setup(provider => provider.GetRequestAuthorization()).Returns(token);
         }
     }
 }

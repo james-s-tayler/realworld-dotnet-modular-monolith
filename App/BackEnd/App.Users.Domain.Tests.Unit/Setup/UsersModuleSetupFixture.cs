@@ -61,9 +61,7 @@ namespace App.Users.Domain.Tests.Unit.Setup
             //in all of the other modules we can get away with letting the base class call this before the call to PerTestSetup,
             //but that's because the other modules users table allows us to insert the randomly generated id directly into the table
             //whereas UserRepository.Create() returns the Id of the created user whose info we then need to populated into the UserContext 
-            WithUserContextReturning(
-                true,
-                ExistingUserEntity.Id,
+            WithUserContextReturning(ExistingUserEntity.Id,
                 ExistingUserEntity.Username,
                 ExistingUserEntity.Email,
                 AutoFixture.Create<string>());

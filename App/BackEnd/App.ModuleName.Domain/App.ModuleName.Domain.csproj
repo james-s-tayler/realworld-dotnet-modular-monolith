@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\App.Core\App.Core.csproj" />
+      <ProjectReference Include="..\App.ModuleName.Domain.Contracts\App.ModuleName.Domain.Contracts.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Infrastructure\Services" />
+      <Folder Include="Setup\Configuration" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include=".template.config\template.json" />
+    </ItemGroup>
+
+</Project>

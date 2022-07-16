@@ -2,11 +2,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Core.Context;
 using App.Social.Domain.Contracts.Operations.Queries.GetProfile;
-using Application.Social.Domain.Infrastructure.Repositories;
+using App.Social.Domain.Infrastructure.Repositories;
 using FluentValidation;
 using JetBrains.Annotations;
 
-namespace Application.Social.Domain.Operations.Queries.GetProfile
+namespace App.Social.Domain.Operations.Queries.GetProfile
 {
     internal class GetProfileQueryValidator : AbstractValidator<GetProfileQuery>
     {
@@ -19,7 +19,7 @@ namespace Application.Social.Domain.Operations.Queries.GetProfile
             _userContext = userContext;
             _userRepository = userRepository;
 
-            RuleFor(query => query).MustAsync(UserMustExist).WithMessage($"User {_userContext.Username} was not found.");
+            RuleFor(query => query).MustAsync(UserMustExist).WithMessage(query => $"User {query.Username} was not found.");
         }
         
         private async Task<bool> UserMustExist(GetProfileQuery query, CancellationToken cancellationToken)

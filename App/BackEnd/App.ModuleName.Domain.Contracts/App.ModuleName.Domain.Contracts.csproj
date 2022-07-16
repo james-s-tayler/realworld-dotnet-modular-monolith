@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\App.Core\App.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include=".template.config\template.json" />
+    </ItemGroup>
+
+</Project>

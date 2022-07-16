@@ -1,8 +1,8 @@
 using App.Social.Domain.Contracts.DTOs;
+using App.Social.Domain.Entities;
 using App.Users.Domain.Contracts.DTOs;
-using Application.Social.Domain.Entities;
 
-namespace Application.Social.Domain.Infrastructure.Mappers
+namespace App.Social.Domain.Infrastructure.Mappers
 {
     internal static class UserMapper
     {

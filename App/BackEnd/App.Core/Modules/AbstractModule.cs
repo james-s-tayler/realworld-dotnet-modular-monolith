@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using AppContext = App.Core.Context.AppContext;
 
 namespace App.Core.Modules
 {
@@ -59,8 +60,12 @@ namespace App.Core.Modules
 
         private void AddModuleUseCases(IServiceCollection services)
         {
-            services.AddHttpContextAccessor(); //dubious about web specific assemblies leaking into here...
-            services.TryAddTransient<IUserContext, ApiContext>();
+            //dubious about web specific stuff leaking into here but will forgo too much speculative generality 
+            services.AddHttpContextAccessor();
+            services.TryAddTransient<IRequestClaimsPrincipalProvider, HttpContextRequestClaimsPrincipalProvider>();
+            services.TryAddTransient<IRequestAuthorizationProvider, HttpContextRequestAuthorizationProvider>();
+            
+            services.TryAddTransient<IUserContext, AppContext>();
             services.TryAddTransient<UserContextEnricher>();
             services.TryAddTransient<IDataAnnotationsValidator, DataAnnotationsValidator>();
             services.TryAddTransient<IInputContractValidator, InputContractValidator>();

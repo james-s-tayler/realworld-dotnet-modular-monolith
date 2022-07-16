@@ -10,6 +10,7 @@
     <!-- the jetbrains annotations (which contain [NotNull]) are conditionally compiled into the code if the JETBRAINS_ANNOTATIONS symbol is defined
          and the NullGuard Fody weaver requires them to be present in order to work. They can also be stripped out after by using JetBrainsAnnotations.Fody -->
     <DefineConstants>JETBRAINS_ANNOTATIONS</DefineConstants>
+    <DisableFody>true</DisableFody>
     <WeaverConfiguration>
       <Weavers>
         <NullGuard IncludeDebugAssert="false" Mode="Explicit" />
