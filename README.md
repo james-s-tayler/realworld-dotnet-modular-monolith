@@ -1,1 +1,1 @@
-[Grug](https://grugbrain.dev/) say big brain developer hurt grug brain. Grug very tempted to reach for club but grug stop because modular monolith shaman only attempting to build ultimate complexity demon trap crystal fortress. Mortal enemy only grow stronger. Many times seen.
+[Grug](https://grugbrain.dev/) say big brain developer hurt grug brain. Grug very tempted to reach for club but grug stop because modular monolith shaman only try build ultimate complexity demon trap crystal fortress. Mortal enemy only grow stronger. Many times seen.
