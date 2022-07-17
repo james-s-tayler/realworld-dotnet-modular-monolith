@@ -32,7 +32,7 @@ namespace App.Content.Domain.Operations.Commands.UnfavoriteArticle
             if (!await _articleRepository.ExistsBySlug(request.Slug))
                 return OperationResponseFactory.NotFound<UnfavoriteArticleCommand, OperationResponse<UnfavoriteArticleCommandResult>>(typeof(ArticleEntity), request.Slug);
 
-            await _articleRepository.UnfavoriteArticle(request.Slug);
+            await _articleRepository.UnfavoriteArticle(request.Slug, _userContext.UserId);
             var article = await _articleRepository.GetBySlug(request.Slug, _userContext.UserId);
 
             var getProfileQueryResult = await _socialService.GetProfile(article.Author.Username);

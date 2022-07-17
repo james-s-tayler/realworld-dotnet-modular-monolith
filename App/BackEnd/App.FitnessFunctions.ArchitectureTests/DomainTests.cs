@@ -1,4 +1,3 @@
-using System.Data.Common;
 using System.Security.Claims;
 using App.Core.Context;
 using ArchUnitNET.Domain.Extensions;

@@ -184,7 +184,7 @@ namespace App.Content.Domain.Tests.Unit.Setup
 
             if (UserContext.IsAuthenticated && isFavorited)
             {
-                await ArticleRepository.FavoriteArticle(article.GetSlug());
+                await ArticleRepository.FavoriteArticle(article.GetSlug(), AuthenticatedUserId);
             }
 
             var author = await UserRepository.GetById(authorId);

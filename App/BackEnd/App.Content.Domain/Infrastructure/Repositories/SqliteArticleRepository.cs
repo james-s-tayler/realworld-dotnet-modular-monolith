@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using App.Content.Domain.Entities;
 using App.Content.Domain.Setup.Module;
-using App.Core.Context;
 using App.Core.DataAccess;
 using Dapper;
 using JetBrains.Annotations;
@@ -14,19 +13,16 @@ namespace App.Content.Domain.Infrastructure.Repositories
 {
     internal class SqliteArticleRepository : IArticleRepository
     {
-        private readonly IUserContext _userContext;
         private readonly ITagRepository _tagRepository;
         private readonly IUserRepository _userRepository;
         private readonly DbConnection _connection;
 
         public SqliteArticleRepository([NotNull] ModuleDbConnectionWrapper<ContentModule> connectionWrapper, 
             [NotNull] ITagRepository tagRepository,
-            [NotNull] IUserRepository userRepository, 
-            [NotNull] IUserContext userContext)
+            [NotNull] IUserRepository userRepository)
         {
             _tagRepository = tagRepository;
             _userRepository = userRepository;
-            _userContext = userContext;
             _connection = connectionWrapper.Connection;
         }
 
@@ -187,19 +183,19 @@ namespace App.Content.Domain.Infrastructure.Repositories
             return articles;
         }
         
-        public Task FavoriteArticle(string slug)
+        public Task FavoriteArticle(string slug, int userId)
         {
             var sql = "INSERT OR IGNORE INTO article_favorites (article_id, user_id) VALUES ((SELECT id FROM articles WHERE slug=@slug), @user_id)";
-            var arguments = new { slug, user_id = _userContext.UserId };
+            var arguments = new { slug, user_id = userId };
             _connection.Execute(sql, arguments);
             
             return Task.CompletedTask;
         }
 
-        public Task UnfavoriteArticle(string slug)
+        public Task UnfavoriteArticle(string slug, int userId)
         {
             var sql = "DELETE FROM article_favorites WHERE article_id=(SELECT id FROM articles WHERE slug=@slug) AND user_id=@user_id";
-            var arguments = new { slug, user_id = _userContext.UserId };
+            var arguments = new { slug, user_id = userId };
             _connection.Execute(sql, arguments);
             
             return Task.CompletedTask;

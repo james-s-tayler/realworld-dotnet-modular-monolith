@@ -32,7 +32,7 @@ namespace App.Content.Domain.Operations.Commands.FavoriteArticle
             if (!await _articleRepository.ExistsBySlug(request.Slug))
                 return OperationResponseFactory.NotFound<FavoriteArticleCommand, OperationResponse<FavoriteArticleCommandResult>>(typeof(ArticleEntity), request.Slug);
 
-            await _articleRepository.FavoriteArticle(request.Slug);
+            await _articleRepository.FavoriteArticle(request.Slug, _userContext.UserId);
             var article = await _articleRepository.GetBySlug(request.Slug, _userContext.UserId);
 
             var getProfileQueryResult = await _socialService.GetProfile(article.Author.Username);

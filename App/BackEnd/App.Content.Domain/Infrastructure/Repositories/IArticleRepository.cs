@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Content.Domain.Entities;
-using App.Core.DataAccess;
 
 namespace App.Content.Domain.Infrastructure.Repositories
 {
-    internal interface IArticleRepository : ICrudRepository<ArticleEntity, int>
+    internal interface IArticleRepository
     {
         Task<IEnumerable<ArticleEntity>> GetUserFeed(int limit, int offset, int userId);
         Task<IEnumerable<ArticleEntity>> GetByFilters(string authorUsername, string favoritedByUsername, string tag, int limit, int offset, int? userId);
@@ -15,7 +14,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
         Task<ArticleEntity> GetBySlug(string slug, int? userId);
         Task<IEnumerable<ArticleEntity>> GetAll(int? userId);
         Task Delete(int userId, string slug);
-        Task FavoriteArticle(string slug);
-        Task UnfavoriteArticle(string slug);
+        Task FavoriteArticle(string slug, int userId);
+        Task UnfavoriteArticle(string slug, int userId);
     }
 }
