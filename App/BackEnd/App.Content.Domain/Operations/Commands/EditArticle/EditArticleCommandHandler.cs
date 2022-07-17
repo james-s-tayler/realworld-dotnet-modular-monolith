@@ -29,7 +29,7 @@ namespace App.Content.Domain.Operations.Commands.EditArticle
 
         public async Task<OperationResponse<EditArticleCommandResult>> Handle(EditArticleCommand request, CancellationToken cancellationToken)
         {
-            var article = await _articleRepository.GetBySlug(request.Slug);
+            var article = await _articleRepository.GetBySlug(request.Slug, _userContext.UserId);
             if(article == null)
                 return OperationResponseFactory.NotFound<EditArticleCommand, OperationResponse<EditArticleCommandResult>>(typeof(ArticleEntity), request.Slug);
 
@@ -38,7 +38,7 @@ namespace App.Content.Domain.Operations.Commands.EditArticle
             article.Body = !string.IsNullOrEmpty(request.UpdatedArticle.Body) ? request.UpdatedArticle.Body : article.Body;
 
             await _articleRepository.Update(article);
-            article = await _articleRepository.GetById(article.Id);
+            article = await _articleRepository.GetById(article.Id, _userContext.UserId);
             
             var getProfileQueryResult = await _socialService.GetProfile(article.Author.Username);
             var authorProfile = getProfileQueryResult.Response.Profile;

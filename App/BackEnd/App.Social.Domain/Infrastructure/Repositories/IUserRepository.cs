@@ -8,8 +8,9 @@ namespace App.Social.Domain.Infrastructure.Repositories
     {
         Task<UserEntity> GetByUsername(string username);
         Task<bool> ExistsByUsername(string username);
-        Task<bool> IsFollowing(int followUserId);
-        Task FollowUser(int followUserId);
-        Task UnfollowUser(int followUserId);
+        Task<bool> IsFollowing(int userId, int followUserId);
+        Task FollowSelf(int userId);
+        Task FollowUser(int userId, int followUserId);
+        Task UnfollowUser(int userId, int followUserId);
     }
 }

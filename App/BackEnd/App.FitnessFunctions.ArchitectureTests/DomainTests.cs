@@ -111,11 +111,20 @@ namespace App.FitnessFunctions.ArchitectureTests
         [Fact]
         public void RepositoriesShouldNotDirectlyReferenceUserContext()
         {
-            Classes().That().Are(_application.DomainClasses)
-                .And().DependOnAny(typeof(DbConnection))
+            Classes().That().Are(_application.Repositories)
                 .Should()
                 .NotDependOnAny(typeof(IUserContext))
                 .Because("repositories should be passed all the data they are expected to persist/query. This makes testing more flexible and requires less mocking when you want to test behavior that differs between authenticated and unauthenticated users.")
+                .Check(_application.Architecture);
+        }
+        
+        [Fact]
+        public void DomainClassesShouldNotThrowNotImplementedException()
+        {
+            Classes().That().Are(_application.DomainClasses)
+                .Should()
+                .NotCallAny("NotImplementedException", true)
+                .Because("we don't lie about semantics in this family. If you say a method is available and with these semantics then you must always mean it. To not do so is more dangerous than squid game.")
                 .Check(_application.Architecture);
         }
     }

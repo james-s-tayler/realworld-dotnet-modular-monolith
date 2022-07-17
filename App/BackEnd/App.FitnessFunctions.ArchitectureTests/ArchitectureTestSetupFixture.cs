@@ -1,4 +1,5 @@
 using System;
+using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -19,6 +20,7 @@ namespace App.FitnessFunctions.ArchitectureTests
         public IObjectProvider<Class> DomainOperationHandlers { get; private set; }
         public IObjectProvider<Class> DomainModules { get; private set; }
         public IObjectProvider<Class> DomainClasses { get; private set; }
+        public IObjectProvider<Class> Repositories { get; private set; }
         public IObjectProvider<Class> Entities { get; private set; }
         public IObjectProvider<Class> Commands { get; private set; }
         public IObjectProvider<Class> CommandHandlers { get; private set; }
@@ -50,8 +52,16 @@ namespace App.FitnessFunctions.ArchitectureTests
             SetupOperationHandlers();
             SetupCommandHandlers();
             SetupQueryHandlers();
+            SetupRepositories();
         }
 
+        private void SetupRepositories()
+        {
+            Repositories = Classes().That().Are(DomainClasses)
+                .And().DependOnAny(typeof(DbConnection))
+                .As("Repositories");
+        }
+        
         private void SetupDomainClasses()
         {
             DomainClasses = Classes().That().ResideInAssembly("App.*.Domain", true)

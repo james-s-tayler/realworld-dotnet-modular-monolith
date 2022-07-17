@@ -161,7 +161,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             };
             var previousResult = await _module.Mediator.Send(listArticlesQuery);
             
-            for (var i = 1; i < (await _module.ArticleRepository.GetAll()).Count(); i++)
+            for (var i = 1; i < (await _module.ArticleRepository.GetAll(null)).Count(); i++)
             {
                 listArticlesQuery.Offset = i;
                 
@@ -186,7 +186,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
         public async Task GivenFilterByOffsetOutOfBounds_WhenListArticles_Then()
         {
             //arrange
-            var outOfBoundsOffset = (await _module.ArticleRepository.GetAll()).Count() + 1;
+            var outOfBoundsOffset = (await _module.ArticleRepository.GetAll(null)).Count() + 1;
             
             var listArticlesQuery = new ListArticlesQuery
             {
@@ -249,7 +249,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             //assert
             result.Result.Should().Be(OperationResult.Success);
             result.Response.Should().NotBeNull();
-            result.Response.Articles.Count.Should().Be((await _module.ArticleRepository.GetAll()).Count());
+            result.Response.Articles.Count.Should().Be((await _module.ArticleRepository.GetAll(null)).Count());
             result.Response.Articles.Should().AllSatisfy(article => article.Favorited.Should().BeFalse());
             result.Response.Articles.Should().AllSatisfy(article => article.Author.Following.Should().BeFalse());
         }

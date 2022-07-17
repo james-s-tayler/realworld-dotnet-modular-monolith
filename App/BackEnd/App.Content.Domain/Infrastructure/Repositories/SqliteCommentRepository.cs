@@ -14,13 +14,10 @@ namespace App.Content.Domain.Infrastructure.Repositories
 {
     internal class SqliteCommentRepository : ICommentRepository
     {
-        private readonly IUserContext _userContext;
         private readonly DbConnection _connection;
 
-        public SqliteCommentRepository([NotNull] ModuleDbConnectionWrapper<ContentModule> connectionWrapper,
-            [NotNull] IUserContext userContext)
+        public SqliteCommentRepository([NotNull] ModuleDbConnectionWrapper<ContentModule> connectionWrapper)
         {
-            _userContext = userContext;
             _connection = connectionWrapper.Connection;
         }
 
@@ -35,7 +32,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
             return Task.FromResult(_connection.ExecuteScalar<bool>(sql, arguments));
         }
 
-        public Task<CommentEntity> PostComment(CommentEntity comment)
+        public Task<CommentEntity> PostComment(UserEntity commentAuthor, CommentEntity comment)
         {
             string sql = "INSERT INTO comments (user_id, article_id, body, created_at, updated_at) VALUES (@user_id, @article_id, @body, @created_at, @updated_at) RETURNING *";
 
@@ -43,7 +40,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
             
             var arguments = new
             {
-                user_id = _userContext.UserId,
+                user_id = commentAuthor.UserId,
                 article_id = comment.ArticleId,
                 body = comment.Body,
                 created_at = now,
@@ -51,11 +48,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
             };
 
             comment = _connection.QuerySingle<CommentEntity>(sql, arguments);
-            comment.Author = new UserEntity
-            {
-                UserId = _userContext.UserId,
-                Username = _userContext.Username
-            };
+            comment.Author = commentAuthor;
             
             return Task.FromResult(comment);
         }
@@ -77,14 +70,15 @@ namespace App.Content.Domain.Infrastructure.Repositories
             return Task.CompletedTask;
         }
 
-        public Task<List<CommentEntity>> GetCommentsByArticleId(int articleId)
+        public Task<List<CommentEntity>> GetCommentsByArticleSlug(string slug)
         {
             var sql = "SELECT comment.*, user.* " +
-                         "FROM comments comment " +
-                         "JOIN users user ON user.user_id = comment.user_id " +
-                         "WHERE comment.article_id=@article_id";
+                      "FROM comments comment " +
+                      "JOIN users user ON user.user_id = comment.user_id " +
+                      "JOIN articles article ON article.id = comment.article_id " +
+                      "WHERE article.slug=@slug";
 
-            var arguments = new { article_id = articleId };
+            var arguments = new { slug };
 
             var comments = _connection.Query<CommentEntity, UserEntity, CommentEntity>(sql,
                 (comment, user) =>

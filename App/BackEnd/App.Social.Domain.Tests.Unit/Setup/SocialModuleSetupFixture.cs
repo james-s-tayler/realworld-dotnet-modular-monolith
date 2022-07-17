@@ -56,7 +56,7 @@ namespace App.Social.Domain.Tests.Unit.Setup
             var registerFollowedUser = AutoFixture.Create<RegisterUserCommandResult>();
             registerFollowedUser.RegisteredUser.Email = $"{AutoFixture.Create<string>()}@{AutoFixture.Create<string>()}.com";
             Mediator.Publish(registerFollowedUser).GetAwaiter().GetResult();
-            UserRepository.FollowUser(registerFollowedUser.RegisteredUser.Id).GetAwaiter().GetResult();
+            UserRepository.FollowUser(AuthenticatedUserId, registerFollowedUser.RegisteredUser.Id).GetAwaiter().GetResult();
             FollowedUser = UserRepository.GetByUsername(registerFollowedUser.RegisteredUser.Username).GetAwaiter().GetResult();
             
             var registerUnfollowedUser = AutoFixture.Create<RegisterUserCommandResult>();

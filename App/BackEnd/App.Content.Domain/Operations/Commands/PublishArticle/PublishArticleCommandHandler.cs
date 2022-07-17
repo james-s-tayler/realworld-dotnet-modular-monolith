@@ -32,7 +32,7 @@ namespace App.Content.Domain.Operations.Commands.PublishArticle
             var userEntity = new UserEntity { UserId = _userContext.UserId, Username = _userContext.Username };
             var articleId = await _articleRepository.Create(request.NewArticle.ToArticleEntity(userEntity));
             
-            var article = await _articleRepository.GetById(articleId);
+            var article = await _articleRepository.GetById(articleId, _userContext.UserId);
             var getProfileQueryResult = await _socialService.GetProfile(article.Author.Username);
             var authorProfile = getProfileQueryResult.Response.Profile;
 

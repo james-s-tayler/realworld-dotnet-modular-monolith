@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
-using App.Core.Context;
 using App.Core.DataAccess;
 using App.Social.Domain.Entities;
 using App.Social.Domain.Setup.Module;
@@ -13,12 +12,9 @@ namespace App.Social.Domain.Infrastructure.Repositories
     internal class SqliteUserRepository : IUserRepository
     {
         private readonly DbConnection _connection;
-        private readonly IUserContext _userContext;
 
-        public SqliteUserRepository([NotNull] ModuleDbConnectionWrapper<SocialModule> connectionWrapper, 
-            [NotNull] IUserContext userContext)
+        public SqliteUserRepository([NotNull] ModuleDbConnectionWrapper<SocialModule> connectionWrapper)
         {
-            _userContext = userContext;
             _connection = connectionWrapper.Connection;
         }
         
@@ -109,34 +105,39 @@ namespace App.Social.Domain.Infrastructure.Repositories
             return Task.FromResult(_connection.ExecuteScalar<bool>(sql, arguments));
         }
 
-        public Task<bool> IsFollowing(int followUserId)
+        public Task<bool> IsFollowing(int userId, int followUserId)
         {
             var sql = "SELECT EXISTS(SELECT 1 FROM followers WHERE user_id=@user_id AND follow_user_id=@follow_user_id)";
-            var arguments = new { user_id = _userContext.UserId, follow_user_id = followUserId };
+            var arguments = new { user_id = userId, follow_user_id = followUserId };
 
             var isFollowing = _connection.ExecuteScalar<bool>(sql, arguments);
 
             return Task.FromResult(isFollowing);
         }
 
-        public Task FollowUser(int followUserId)
+        public async Task FollowSelf(int userId)
+        {
+            await FollowUser(userId, userId);
+        }
+        
+        public Task FollowUser(int userId, int followUserId)
         {
             var sql = "INSERT OR IGNORE INTO followers(user_id, follow_user_id) VALUES(@user_id, @follow_user_id)";
             var arguments = new
             {
-                user_id = _userContext.UserId,
+                user_id = userId,
                 follow_user_id = followUserId
             };
             
             return Task.FromResult(_connection.Execute(sql, arguments));
         }
 
-        public Task UnfollowUser(int followUserId)
+        public Task UnfollowUser(int userId, int followUserId)
         {
             var sql = "DELETE FROM followers WHERE user_id=@user_id AND follow_user_id=@follow_user_id";
             var arguments = new
             {
-                user_id = _userContext.UserId,
+                user_id = userId,
                 follow_user_id = followUserId
             };
 

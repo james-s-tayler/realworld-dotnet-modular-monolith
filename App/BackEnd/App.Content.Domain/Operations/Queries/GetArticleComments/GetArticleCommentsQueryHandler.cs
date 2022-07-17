@@ -36,9 +36,8 @@ namespace App.Content.Domain.Operations.Queries.GetArticleComments
                     Comments = new List<SingleCommentDTO>()
                 });
             }
-
-            var article = await _articleRepository.GetBySlug(request.Slug);
-            var comments = await _commentRepository.GetCommentsByArticleId(article.Id);
+            
+            var comments = await _commentRepository.GetCommentsByArticleSlug(request.Slug);
 
             var commentDtos = new List<SingleCommentDTO>();
 

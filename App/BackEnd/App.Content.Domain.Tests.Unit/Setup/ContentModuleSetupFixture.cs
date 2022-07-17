@@ -153,7 +153,12 @@ namespace App.Content.Domain.Tests.Unit.Setup
                 ArticleId = CommentedOnArticleEntity.Id,
                 Body = AutoFixture.Create<string>()
             };
-            CommentEntity = await CommentRepository.PostComment(comment);
+            var commentAuthor = new UserEntity
+            {
+                UserId = AuthenticatedUserId,
+                Username = AuthenticatedUserUsername
+            };
+            CommentEntity = await CommentRepository.PostComment(commentAuthor, comment);
         }
 
         internal async Task<ArticleEntity> WithArticle(bool isFavorited, int authorId, string[] tags = default)
@@ -179,11 +184,11 @@ namespace App.Content.Domain.Tests.Unit.Setup
 
             if (UserContext.IsAuthenticated && isFavorited)
             {
-                await ArticleRepository.FavoriteArticle(article.GetSlug());    
+                await ArticleRepository.FavoriteArticle(article.GetSlug());
             }
 
             var author = await UserRepository.GetById(authorId);
-            var createdArticle = await ArticleRepository.GetById(articleId);
+            var createdArticle = await ArticleRepository.GetById(articleId, AuthenticatedUserId);
             
             UserArticles[author.Username].Add(createdArticle);
             

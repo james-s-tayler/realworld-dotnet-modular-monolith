@@ -5,6 +5,7 @@ using App.Content.Domain.Entities;
 using App.Content.Domain.Infrastructure.Mappers;
 using App.Content.Domain.Infrastructure.Repositories;
 using App.Content.Domain.Infrastructure.Services;
+using App.Core.Context;
 using App.Core.PipelineBehaviors.OperationResponse;
 using JetBrains.Annotations;
 using MediatR;
@@ -15,12 +16,15 @@ namespace App.Content.Domain.Operations.Commands.FavoriteArticle
     {
         private readonly ISocialService _socialService;
         private readonly IArticleRepository _articleRepository;
+        private readonly IUserContext _userContext;
 
         public FavoriteArticleCommandHandler([NotNull] IArticleRepository articleRepository, 
-            [NotNull] ISocialService socialService)
+            [NotNull] ISocialService socialService, 
+            [NotNull] IUserContext userContext)
         {
             _articleRepository = articleRepository;
             _socialService = socialService;
+            _userContext = userContext;
         }
 
         public async Task<OperationResponse<FavoriteArticleCommandResult>> Handle(FavoriteArticleCommand request, CancellationToken cancellationToken)
@@ -29,7 +33,7 @@ namespace App.Content.Domain.Operations.Commands.FavoriteArticle
                 return OperationResponseFactory.NotFound<FavoriteArticleCommand, OperationResponse<FavoriteArticleCommandResult>>(typeof(ArticleEntity), request.Slug);
 
             await _articleRepository.FavoriteArticle(request.Slug);
-            var article = await _articleRepository.GetBySlug(request.Slug);
+            var article = await _articleRepository.GetBySlug(request.Slug, _userContext.UserId);
 
             var getProfileQueryResult = await _socialService.GetProfile(article.Author.Username);
             var authorProfile = getProfileQueryResult.Response.Profile;

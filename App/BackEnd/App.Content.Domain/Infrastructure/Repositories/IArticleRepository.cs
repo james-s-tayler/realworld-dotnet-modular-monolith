@@ -7,10 +7,14 @@ namespace App.Content.Domain.Infrastructure.Repositories
 {
     internal interface IArticleRepository : ICrudRepository<ArticleEntity, int>
     {
-        Task<IEnumerable<ArticleEntity>> GetUserFeed(int limit, int offset);
-        Task<IEnumerable<ArticleEntity>> GetByFilters(string authorUsername, string favoritedByUsername, string tag, int limit, int offset);
+        Task<IEnumerable<ArticleEntity>> GetUserFeed(int limit, int offset, int userId);
+        Task<IEnumerable<ArticleEntity>> GetByFilters(string authorUsername, string favoritedByUsername, string tag, int limit, int offset, int? userId);
         Task<bool> ExistsBySlug(string slug);
-        Task<ArticleEntity> GetBySlug(string slug);
+
+        Task<ArticleEntity> GetById(int id, int? userId);
+        Task<ArticleEntity> GetBySlug(string slug, int? userId);
+        Task<IEnumerable<ArticleEntity>> GetAll(int? userId);
+        Task Delete(int userId, string slug);
         Task FavoriteArticle(string slug);
         Task UnfavoriteArticle(string slug);
     }

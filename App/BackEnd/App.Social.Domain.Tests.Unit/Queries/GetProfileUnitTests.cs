@@ -56,7 +56,7 @@ namespace App.Social.Domain.Tests.Unit.Queries
             var getUnfollowedProfileResult = await _module.Mediator.Send(getUnfollowedProfileRequest);
             
             //assert
-            AssertFollowingUser(getUnfollowedProfileResult, _module.UnfollowedUser, true);
+            AssertFollowingUser(getUnfollowedProfileResult, _module.UnfollowedUser, false);
         }
         
         [Fact]

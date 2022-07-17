@@ -14,26 +14,26 @@ namespace App.Social.Domain.Operations.Queries.GetProfile
     internal class GetProfileQueryHandler : IRequestHandler<GetProfileQuery, OperationResponse<GetProfileQueryResult>>
     {
         private readonly IUserRepository _userRepository;
-        private readonly IUserContext _context;
+        private readonly IUserContext _userContext;
 
         public GetProfileQueryHandler([NotNull] IUserRepository userRepository, 
-            [NotNull] IUserContext context)
+            [NotNull] IUserContext userContext)
         {
             _userRepository = userRepository;
-            _context = context;
+            _userContext = userContext;
         }
 
         public async Task<OperationResponse<GetProfileQueryResult>> Handle(GetProfileQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByUsername(request.Username);
-            if(user == null)
+            var followingUser = await _userRepository.GetByUsername(request.Username);
+            if(followingUser == null)
                 return OperationResponseFactory.NotFound<GetProfileQuery, OperationResponse<GetProfileQueryResult>>(typeof(UserEntity), request.Username);
             
-            var isFollowing = _context.IsAuthenticated && await _userRepository.IsFollowing(user.Id);
+            var isFollowing = _userContext.IsAuthenticated && await _userRepository.IsFollowing(_userContext.UserId, followingUser.Id);
 
             return new OperationResponse<GetProfileQueryResult>(new GetProfileQueryResult
             {
-                Profile = user.ToProfileDTO(isFollowing)
+                Profile = followingUser.ToProfileDTO(isFollowing)
             });
         }
     }

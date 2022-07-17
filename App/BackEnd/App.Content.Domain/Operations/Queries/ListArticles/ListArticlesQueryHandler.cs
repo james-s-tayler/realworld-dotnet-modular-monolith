@@ -6,7 +6,9 @@ using App.Content.Domain.Contracts.Operations.Queries.ListArticles;
 using App.Content.Domain.Infrastructure.Mappers;
 using App.Content.Domain.Infrastructure.Repositories;
 using App.Content.Domain.Infrastructure.Services;
+using App.Core.Context;
 using App.Core.PipelineBehaviors.OperationResponse;
+using JetBrains.Annotations;
 using MediatR;
 
 namespace App.Content.Domain.Operations.Queries.ListArticles
@@ -17,16 +19,19 @@ namespace App.Content.Domain.Operations.Queries.ListArticles
         private readonly ISocialService _socialService;
         private readonly IUserRepository _userRepository;
         private readonly ITagRepository _tagRepository;
+        private readonly IUserContext _userContext;
 
-        public ListArticlesQueryHandler(IArticleRepository articleRepository,
-            ISocialService socialService, 
-            IUserRepository userRepository, 
-            ITagRepository tagRepository)
+        public ListArticlesQueryHandler([NotNull] IArticleRepository articleRepository,
+            [NotNull] ISocialService socialService, 
+            [NotNull] IUserRepository userRepository, 
+            [NotNull] ITagRepository tagRepository, 
+            [NotNull] IUserContext userContext)
         {
             _articleRepository = articleRepository;
             _socialService = socialService;
             _userRepository = userRepository;
             _tagRepository = tagRepository;
+            _userContext = userContext;
         }
 
         public async Task<OperationResponse<ListArticlesQueryResult>> Handle(ListArticlesQuery request, CancellationToken cancellationToken)
@@ -46,7 +51,8 @@ namespace App.Content.Domain.Operations.Queries.ListArticles
                 request.FavoritedByUsername, 
                 request.Tag,
                 request.Limit,
-                request.Offset);
+                request.Offset,
+                _userContext.IsAuthenticated ? _userContext.UserId : null);
 
             var articleDtos = new List<SingleArticleDTO>();
 

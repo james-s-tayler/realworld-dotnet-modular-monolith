@@ -20,7 +20,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
         private readonly DbConnection _connection;
 
         public SqliteArticleRepository([NotNull] ModuleDbConnectionWrapper<ContentModule> connectionWrapper, 
-            [NotNull] ITagRepository tagRepository, 
+            [NotNull] ITagRepository tagRepository,
             [NotNull] IUserRepository userRepository, 
             [NotNull] IUserContext userContext)
         {
@@ -41,6 +41,11 @@ namespace App.Content.Domain.Infrastructure.Repositories
             return Task.FromResult(exists);
         }
 
+        public Task<ArticleEntity> GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<bool> ExistsBySlug(string slug)
         {
             string sql = "SELECT EXISTS(SELECT 1 FROM articles WHERE slug=@slug)";
@@ -52,18 +57,18 @@ namespace App.Content.Domain.Infrastructure.Repositories
             return Task.FromResult(exists);
         }
 
-        private async Task EnrichArticle(ArticleEntity article)
+        private async Task EnrichArticle(ArticleEntity article, int? userId)
         {
             //un-optimized n+1 query
             if (article != null)
             {
-                article.Author = await _userRepository.GetByArticleId(article.Id); 
+                article.Author = await _userRepository.GetByArticleId(article.Id);
                 article.TagList = await _tagRepository.GetByArticleId(article.Id);
 
-                if (_userContext.IsAuthenticated)
+                if (userId.HasValue)
                 {
                     var favoritedSql = "SELECT EXISTS(SELECT 1 FROM article_favorites WHERE article_id=@article_id AND user_id=@user_id)";
-                    var favoritedArguments = new { article_id = article.Id, user_id = _userContext.UserId };
+                    var favoritedArguments = new { article_id = article.Id, user_id = userId };
                     article.Favorited = _connection.ExecuteScalar<bool>(favoritedSql, favoritedArguments);    
                 }
                 else
@@ -77,44 +82,49 @@ namespace App.Content.Domain.Infrastructure.Repositories
             }
         }
 
-        public async Task<ArticleEntity> GetBySlug(string slug)
+        public async Task<ArticleEntity> GetBySlug(string slug, int? userId)
         {
             string sql = "SELECT * FROM articles a WHERE slug=@slug";
 
             var arguments = new { slug };
 
             var article = _connection.QuerySingleOrDefault<ArticleEntity>(sql, arguments);
-            await EnrichArticle(article);
+            await EnrichArticle(article, userId);
 
             return article;
         }
 
-        public async Task<ArticleEntity> GetById(int id)
+        public async Task<ArticleEntity> GetById(int id, int? userId)
         {
             string sql = "SELECT * FROM articles WHERE id=@id";
 
             var arguments = new { id };
 
             var article = _connection.QuerySingleOrDefault<ArticleEntity>(sql, arguments);
-            await EnrichArticle(article);
+            await EnrichArticle(article, userId);
 
             return article;
         }
 
         public async Task<IEnumerable<ArticleEntity>> GetAll()
         {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<ArticleEntity>> GetAll(int? userId)
+        {
             string sql = "SELECT * FROM articles";
             var articles = _connection.Query<ArticleEntity>(sql).ToList();
 
             foreach (var article in articles)
             {
-                await EnrichArticle(article);
+                await EnrichArticle(article, userId);
             }
             
             return articles;
         }
 
-        public async Task<IEnumerable<ArticleEntity>> GetUserFeed(int limit, int offset)
+        public async Task<IEnumerable<ArticleEntity>> GetUserFeed(int limit, int offset, int userId)
         {
             string sql = "SELECT a.* FROM articles a " +
                          "JOIN users author ON author.user_id = a.user_id " +
@@ -138,13 +148,13 @@ namespace App.Content.Domain.Infrastructure.Repositories
 
             foreach (var article in articles)
             {
-                await EnrichArticle(article);
+                await EnrichArticle(article, userId);
             }
             
             return articles;
         }
 
-        public async Task<IEnumerable<ArticleEntity>> GetByFilters(string authorUsername, string favoritedByUsername, string tag, int limit, int offset)
+        public async Task<IEnumerable<ArticleEntity>> GetByFilters(string authorUsername, string favoritedByUsername, string tag, int limit, int offset, int? userId)
         {
             string sql = "SELECT a.* FROM articles a " +
                          "JOIN users author ON author.user_id = a.user_id " +
@@ -171,7 +181,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
 
             foreach (var article in articles)
             {
-                await EnrichArticle(article);
+                await EnrichArticle(article, userId);
             }
             
             return articles;
@@ -255,15 +265,24 @@ namespace App.Content.Domain.Infrastructure.Repositories
 
         public Task Delete(int id)
         {
+            throw new NotImplementedException();
+        }
+        
+        public Task Delete(int userId, string slug)
+        {
+            //should add on delete cascade https://stackoverflow.com/questions/39397417/sqlite-query-to-delete-from-multiple-tables - complexity demon trap crystal
+            var selectArticleIdSql = "SELECT id FROM articles WHERE slug=@slug";
+            var selectArticleIdArguments = new { slug };
+            var id = _connection.ExecuteScalar<int>(selectArticleIdSql, selectArticleIdArguments);
+            
             var deleteArticleTagsSql = "DELETE FROM article_tags WHERE article_id = @article_id";
             var deleteArticleTagsArguments = new { article_id = id };
             _connection.Execute(deleteArticleTagsSql, deleteArticleTagsArguments);
             
             var deleteArticleFavoritesSql = "DELETE FROM article_favorites WHERE article_id = @article_id AND user_id=@user_id";
-            var deleteArticleFavoritesArguments = new { article_id = id, user_id = _userContext.UserId };
+            var deleteArticleFavoritesArguments = new { article_id = id, user_id = userId };
             _connection.Execute(deleteArticleFavoritesSql, deleteArticleFavoritesArguments);
 
-            
             var sql = "DELETE FROM articles WHERE id = @id";
             var arguments = new { id };
             _connection.Execute(sql, arguments);
