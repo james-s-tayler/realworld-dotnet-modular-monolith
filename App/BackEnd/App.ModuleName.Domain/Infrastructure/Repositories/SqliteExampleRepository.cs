@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
 using System.Threading.Tasks;
 using App.Core.DataAccess;
-using Application.ModuleName.Domain.Entities;
-using Application.ModuleName.Domain.Setup.Module;
+using App.ModuleName.Domain.Entities;
+using App.ModuleName.Domain.Setup.Module;
 using Dapper;
 using JetBrains.Annotations;
 
-namespace Application.ModuleName.Domain.Infrastructure.Repositories
+namespace App.ModuleName.Domain.Infrastructure.Repositories
 {
     internal class SqliteExampleRepository : IExampleRepository
     {

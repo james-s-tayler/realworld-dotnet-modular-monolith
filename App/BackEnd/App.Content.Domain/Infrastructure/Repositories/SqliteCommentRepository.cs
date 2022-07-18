@@ -55,12 +55,27 @@ namespace App.Content.Domain.Infrastructure.Repositories
 
         public Task DeleteComment(string articleSlug, int commentId)
         {
-            string sql = "DELETE FROM comments comment " +
+            /*DELETE FROM TR_ContactResultRecord
+              WHERE ROWID IN (
+                SELECT a.ROWID FROM TR_ContactResultRecord a
+                INNER JOIN TR_Case b
+                  ON (a.FireStationCode=b.FireStationCode and a.CaseNo=b.CaseCode )
+                WHERE b.Update_DateTime <=20140628134416
+              );*/
+            /*string sql = "DELETE FROM comments comment " +
                          "JOIN articles article ON article.id = comment.article_id " +
                          "WHERE article.slug=@article_slug " +
-                         "AND comment.id = @comment_id";
+                         "AND comment.id = @comment_id";*/
 
-            var arguments = new
+            string sql = "DELETE FROM comments " +
+                         "WHERE ROWID IN (" +
+                           "SELECT comment.ROWID from comments comment " +
+                           "JOIN articles article ON article.id = comment.article_id " +
+                           "WHERE article.slug=@article_slug " +
+                           "AND comment.id = @comment_id" +
+                         ")";
+
+            var arguments = new             
             {
                 article_slug = articleSlug,
                 comment_id = commentId

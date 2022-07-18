@@ -1,15 +1,14 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Core.Context;
 using App.Core.PipelineBehaviors.OperationResponse;
 using App.ModuleName.Domain.Contracts.Operations.Commands.UpdateExample;
-using Application.ModuleName.Domain.Infrastructure.Mappers;
-using Application.ModuleName.Domain.Infrastructure.Repositories;
+using App.ModuleName.Domain.Infrastructure.Mappers;
+using App.ModuleName.Domain.Infrastructure.Repositories;
 using JetBrains.Annotations;
 using MediatR;
 
-namespace Application.ModuleName.Domain.Operations.Commands.UpdateExample
+namespace App.ModuleName.Domain.Operations.Commands.UpdateExample
 {
     internal class UpdateExampleCommandHandler : IRequestHandler<UpdateExampleCommand, OperationResponse<UpdateExampleCommandResult>>
     {

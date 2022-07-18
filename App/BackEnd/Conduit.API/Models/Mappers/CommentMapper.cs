@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using App.Content.Domain.Contracts.DTOs;
 
 namespace Conduit.API.Models.Mappers
@@ -33,6 +32,7 @@ namespace Conduit.API.Models.Mappers
         {
             return new Comment
             {
+                Id = commentDto.Id,
                 Author = commentDto.Author.ToProfileResponse().Profile,
                 Body = commentDto.Body,
                 CreatedAt = commentDto.CreatedAt,

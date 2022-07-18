@@ -1,11 +1,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using App.ModuleName.Domain.Contracts.Operations.Commands.UpdateExample;
-using Application.ModuleName.Domain.Infrastructure.Repositories;
+using App.ModuleName.Domain.Infrastructure.Repositories;
 using FluentValidation;
 using JetBrains.Annotations;
 
-namespace Application.ModuleName.Domain.Operations.Commands.UpdateExample
+namespace App.ModuleName.Domain.Operations.Commands.UpdateExample
 {
     internal class UpdateExampleCommandValidator : AbstractValidator<UpdateExampleCommand>
     {

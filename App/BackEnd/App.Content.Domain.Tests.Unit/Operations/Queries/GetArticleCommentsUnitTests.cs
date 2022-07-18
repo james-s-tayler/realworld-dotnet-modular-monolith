@@ -82,7 +82,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             result.Response.Comments.Should().NotBeNull();
             result.Response.Comments.Should().NotBeEmpty();
             result.Response.Comments.Count.Should().Be(1);
-            result.Response.Comments[0].Id.Should().Be(_module.CommentEntity.Id);
+            result.Response.Comments[0].Id.Should().Be(_module.CommentEntity.Id).And.BePositive();
             result.Response.Comments[0].Body.Should().Be(_module.CommentEntity.Body);
             result.Response.Comments[0].CreatedAt.Should().BeBefore(testStartTime);
             result.Response.Comments[0].UpdatedAt.Should().BeBefore(testStartTime);

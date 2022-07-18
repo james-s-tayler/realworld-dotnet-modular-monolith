@@ -26,22 +26,6 @@ namespace App.Content.Domain.Infrastructure.Repositories
             _connection = connectionWrapper.Connection;
         }
 
-        public Task<bool> Exists(int id)
-        {
-            string sql = "SELECT EXISTS(SELECT 1 FROM articles WHERE id=@id)";
-
-            var arguments = new { id };
-
-            var exists = _connection.ExecuteScalar<bool>(sql, arguments);
-
-            return Task.FromResult(exists);
-        }
-
-        public Task<ArticleEntity> GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<bool> ExistsBySlug(string slug)
         {
             string sql = "SELECT EXISTS(SELECT 1 FROM articles WHERE slug=@slug)";
@@ -101,12 +85,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
 
             return article;
         }
-
-        public async Task<IEnumerable<ArticleEntity>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public async Task<IEnumerable<ArticleEntity>> GetAll(int? userId)
         {
             string sql = "SELECT * FROM articles";
@@ -259,14 +238,8 @@ namespace App.Content.Domain.Infrastructure.Repositories
             return Task.CompletedTask;
         }
 
-        public Task Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-        
         public Task Delete(int userId, string slug)
         {
-            //should add on delete cascade https://stackoverflow.com/questions/39397417/sqlite-query-to-delete-from-multiple-tables - complexity demon trap crystal
             var selectArticleIdSql = "SELECT id FROM articles WHERE slug=@slug";
             var selectArticleIdArguments = new { slug };
             var id = _connection.ExecuteScalar<int>(selectArticleIdSql, selectArticleIdArguments);
@@ -284,18 +257,6 @@ namespace App.Content.Domain.Infrastructure.Repositories
             _connection.Execute(sql, arguments);
             
             return Task.CompletedTask;
-        }
-
-        public Task<int> DeleteAll()
-        {
-            var articleTagsSql = "DELETE FROM article_tags";
-            _connection.Execute(articleTagsSql);
-            
-            var articleFavoritesSql = "DELETE FROM article_favorites";
-            _connection.Execute(articleFavoritesSql);
-            
-            var sql = "DELETE FROM articles";
-            return Task.FromResult(_connection.Execute(sql));
         }
     }
 }

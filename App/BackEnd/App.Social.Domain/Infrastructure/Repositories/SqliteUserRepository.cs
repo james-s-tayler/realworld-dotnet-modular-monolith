@@ -36,11 +36,6 @@ namespace App.Social.Domain.Infrastructure.Repositories
             return Task.FromResult(_connection.QuerySingle<UserEntity>(sql, arguments));
         }
 
-        public Task<IEnumerable<UserEntity>> GetAll()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public Task<int> Create(UserEntity userEntity)
         {
             var sql = "INSERT INTO users (id, username, image, bio) VALUES (@id, @username, @image, @bio) RETURNING *";
@@ -69,22 +64,6 @@ namespace App.Social.Domain.Infrastructure.Repositories
             };
 
             return Task.FromResult(_connection.Execute(sql, arguments));
-        }
-
-        public Task Delete(int id)
-        {
-            var sql = "DELETE FROM users WHERE id=@id";
-            var arguments = new { id };
-            return Task.FromResult(_connection.Execute(sql, arguments));
-        }
-
-        public Task<int> DeleteAll()
-        {
-            var sql = "DELETE FROM users";
-            _connection.Execute(sql);
-
-            sql = "DELETE FROM followers";
-            return Task.FromResult(_connection.Execute(sql));
         }
 
         public Task<UserEntity> GetByUsername(string username)

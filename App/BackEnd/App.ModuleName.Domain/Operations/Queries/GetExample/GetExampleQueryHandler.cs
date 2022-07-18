@@ -1,15 +1,14 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Core.Context;
 using App.Core.PipelineBehaviors.OperationResponse;
 using App.ModuleName.Domain.Contracts.Operations.Queries.GetExample;
-using Application.ModuleName.Domain.Entities;
-using Application.ModuleName.Domain.Infrastructure.Mappers;
-using Application.ModuleName.Domain.Infrastructure.Repositories;
+using App.ModuleName.Domain.Entities;
+using App.ModuleName.Domain.Infrastructure.Mappers;
+using App.ModuleName.Domain.Infrastructure.Repositories;
 using MediatR;
 
-namespace Application.ModuleName.Domain.Operations.Queries.GetExample
+namespace App.ModuleName.Domain.Operations.Queries.GetExample
 {
     internal class GetExampleQueryHandler : IRequestHandler<GetExampleQuery, OperationResponse<GetExampleQueryResult>>
     {

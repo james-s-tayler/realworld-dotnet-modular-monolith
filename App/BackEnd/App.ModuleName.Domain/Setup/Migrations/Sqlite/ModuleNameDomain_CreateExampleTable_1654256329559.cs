@@ -2,7 +2,7 @@ using App.Core.SchemaManagement;
 using FluentMigrator;
 using JetBrains.Annotations;
 
-namespace Application.ModuleName.Domain.Setup.Migrations.Sqlite
+namespace App.ModuleName.Domain.Setup.Migrations.Sqlite
 {
     [Tags(DbConstants.SQLite)]
     [Migration(1654256329559)]

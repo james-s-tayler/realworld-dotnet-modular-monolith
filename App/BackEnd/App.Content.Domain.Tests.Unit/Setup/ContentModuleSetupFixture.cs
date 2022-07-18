@@ -177,7 +177,7 @@ namespace App.Content.Domain.Tests.Unit.Setup
                 foreach (var tag in tags)
                 {
                     article.TagList.Add(new TagEntity { Tag = tag });
-                }    
+                }
             }
             
             var articleId = await ArticleRepository!.Create(article);

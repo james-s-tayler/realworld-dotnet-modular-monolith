@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using App.Core.Modules;
 using App.Core.Testing;
-using Application.ModuleName.Domain.Setup.Module;
+using App.ModuleName.Domain.Setup.Module;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace App.ModuleName.Domain.Tests.Unit.Setup

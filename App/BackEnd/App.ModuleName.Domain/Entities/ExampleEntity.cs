@@ -1,4 +1,4 @@
-namespace Application.ModuleName.Domain.Entities
+namespace App.ModuleName.Domain.Entities
 {
     internal class ExampleEntity
     {

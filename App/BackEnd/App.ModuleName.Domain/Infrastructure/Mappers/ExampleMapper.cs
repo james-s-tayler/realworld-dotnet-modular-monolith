@@ -1,7 +1,7 @@
 using App.ModuleName.Domain.Contracts.DTOs;
-using Application.ModuleName.Domain.Entities;
+using App.ModuleName.Domain.Entities;
 
-namespace Application.ModuleName.Domain.Infrastructure.Mappers
+namespace App.ModuleName.Domain.Infrastructure.Mappers
 {
     internal static class ExampleMapper
     {
