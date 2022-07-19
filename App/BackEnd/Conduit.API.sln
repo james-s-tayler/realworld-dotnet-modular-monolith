@@ -87,12 +87,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Operation", "Operation", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contract", "Contract", "{3536CDE7-4380-4CDA-908F-B9466D6E2F5E}"
 	ProjectSection(SolutionItems) = preProject
-		Application.ModuleName.Domain.Contracts\Operations\Queries\GetExample\GetExampleQuery.cs = Application.ModuleName.Domain.Contracts\Operations\Queries\GetExample\GetExampleQuery.cs
-		Application.ModuleName.Domain.Contracts\Operations\Queries\GetExample\GetExampleQueryResult.cs = Application.ModuleName.Domain.Contracts\Operations\Queries\GetExample\GetExampleQueryResult.cs
-		Application.ModuleName.Domain.Contracts\Operations\Queries\GetExample\.template.config\template.json = Application.ModuleName.Domain.Contracts\Operations\Queries\GetExample\.template.config\template.json
+		App.ModuleName.Domain.Contracts\Operations\Commands\UpdateExample\.template.config\template.json = App.ModuleName.Domain.Contracts\Operations\Commands\UpdateExample\.template.config\template.json
+		App.ModuleName.Domain.Contracts\Operations\Commands\UpdateExample\UpdateExampleCommand.cs = App.ModuleName.Domain.Contracts\Operations\Commands\UpdateExample\UpdateExampleCommand.cs
+		App.ModuleName.Domain.Contracts\Operations\Commands\UpdateExample\UpdateExampleCommandResult.cs = App.ModuleName.Domain.Contracts\Operations\Commands\UpdateExample\UpdateExampleCommandResult.cs
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Implementation", "Implementation", "{13364BF9-85BD-4B27-9F16-5D4866D1800E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Body", "Body", "{13364BF9-85BD-4B27-9F16-5D4866D1800E}"
+	ProjectSection(SolutionItems) = preProject
+		App.ModuleName.Domain\Operations\Commands\UpdateExample\.template.config\template.json = App.ModuleName.Domain\Operations\Commands\UpdateExample\.template.config\template.json
+		App.ModuleName.Domain\Operations\Commands\UpdateExample\UpdateExampleCommandHandler.cs = App.ModuleName.Domain\Operations\Commands\UpdateExample\UpdateExampleCommandHandler.cs
+		App.ModuleName.Domain\Operations\Commands\UpdateExample\UpdateExampleCommandValidator.cs = App.ModuleName.Domain\Operations\Commands\UpdateExample\UpdateExampleCommandValidator.cs
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{D351458F-B08A-42A4-9241-7D6D07737999}"
 EndProject

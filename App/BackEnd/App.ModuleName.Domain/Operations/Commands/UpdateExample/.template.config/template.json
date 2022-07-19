@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "James Tayler",
+  "classifications": [ "Common", "Code" ],
+  "identity": "Operation.Body",
+  "name": "Domain Operation Body",
+  "shortName": "operation-body",
+  "tags": {
+    "language": "C#",
+    "type": "item"
+  },
+  "sourceName": "ModuleName",
+  "symbols":{
+    "operationName": {
+      "type": "parameter",
+      "defaultValue": "UpdateExample",
+      "replaces": "UpdateExample",
+      "fileRename": "UpdateExample"
+    }
+  }
+}

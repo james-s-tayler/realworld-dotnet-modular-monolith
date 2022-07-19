@@ -13,9 +13,9 @@
   "symbols":{
     "operationName": {
       "type": "parameter",
-      "defaultValue": "GetExample",
-      "replaces": "GetExample",
-      "fileRename": "GetExample"
+      "defaultValue": "UpdateExample",
+      "replaces": "UpdateExample",
+      "fileRename": "UpdateExample"
     }
   }
 }
