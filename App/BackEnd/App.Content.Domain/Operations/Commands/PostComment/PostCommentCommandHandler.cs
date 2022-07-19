@@ -17,16 +17,16 @@ namespace App.Content.Domain.Operations.Commands.PostComment
         private readonly ICommentRepository _commentRepository;
         private readonly IArticleRepository _articleRepository;
         private readonly IUserContext _userContext;
-        private readonly ISocialService _socialService;
+        private readonly IUsersService _usersService;
         
 
         public PostCommentCommandHandler([NotNull] IArticleRepository articleRepository, 
-            [NotNull] ISocialService socialService, 
+            [NotNull] IUsersService usersService, 
             [NotNull] ICommentRepository commentRepository, 
             [NotNull] IUserContext userContext)
         {
             _articleRepository = articleRepository;
-            _socialService = socialService;
+            _usersService = usersService;
             _commentRepository = commentRepository;
             _userContext = userContext;
         }
@@ -37,7 +37,7 @@ namespace App.Content.Domain.Operations.Commands.PostComment
             var commentAuthor = new UserEntity { UserId = _userContext.UserId, Username = _userContext.Username };
             
             var commentEntity = await _commentRepository.PostComment(commentAuthor, request.NewComment.ToComment(article));
-            var getProfileQueryResult = await _socialService.GetProfile(commentEntity.Author.Username);
+            var getProfileQueryResult = await _usersService.GetProfile(commentEntity.Author.Username);
             var commenterProfile = getProfileQueryResult.Response.Profile;
 
             return OperationResponseFactory.Success(new PostCommentCommandResult

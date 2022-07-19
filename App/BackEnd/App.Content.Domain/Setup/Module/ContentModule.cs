@@ -48,7 +48,7 @@ namespace App.Content.Domain.Setup.Module
             services.AddTransient<IArticleRepository, SqliteArticleRepository>();
             services.AddTransient<IUserRepository, SqliteUserRepository>();
             services.AddTransient<ITagRepository, SqliteTagRepository>();
-            services.AddTransient<ISocialService, SocialService>();
+            services.AddTransient<IUsersService, UsersService>();
         }
     }
 }

@@ -15,15 +15,15 @@ namespace App.Content.Domain.Operations.Commands.EditArticle
     internal class EditArticleCommandHandler : IRequestHandler<EditArticleCommand, OperationResponse<EditArticleCommandResult>>
     {
         private readonly IUserContext _userContext;
-        private readonly ISocialService _socialService;
+        private readonly IUsersService _usersService;
         private readonly IArticleRepository _articleRepository;
 
         public EditArticleCommandHandler([NotNull] IArticleRepository articleRepository, 
-            [NotNull] ISocialService socialService, 
+            [NotNull] IUsersService usersService, 
             [NotNull] IUserContext userContext)
         {
             _articleRepository = articleRepository;
-            _socialService = socialService;
+            _usersService = usersService;
             _userContext = userContext;
         }
 
@@ -40,7 +40,7 @@ namespace App.Content.Domain.Operations.Commands.EditArticle
             await _articleRepository.Update(article);
             article = await _articleRepository.GetById(article.Id, _userContext.UserId);
             
-            var getProfileQueryResult = await _socialService.GetProfile(article.Author.Username);
+            var getProfileQueryResult = await _usersService.GetProfile(article.Author.Username);
             var authorProfile = getProfileQueryResult.Response.Profile;
 
             return OperationResponseFactory.Success(new EditArticleCommandResult

@@ -15,15 +15,15 @@ namespace App.Content.Domain.Operations.Queries.GetSingleArticle
     internal class GetSingleArticleQueryHandler : IRequestHandler<GetSingleArticleQuery, OperationResponse<GetSingleArticleQueryResult>>
     {
         private readonly IArticleRepository _articleRepository;
-        private readonly ISocialService _socialService;
+        private readonly IUsersService _usersService;
         private readonly IUserContext _userContext;
 
         public GetSingleArticleQueryHandler([NotNull] IArticleRepository articleRepository,
-            [NotNull] ISocialService socialService, 
+            [NotNull] IUsersService usersService, 
             [NotNull] IUserContext userContext)
         {
             _articleRepository = articleRepository;
-            _socialService = socialService;
+            _usersService = usersService;
             _userContext = userContext;
         }
 
@@ -34,7 +34,7 @@ namespace App.Content.Domain.Operations.Queries.GetSingleArticle
                 return OperationResponseFactory.NotFound<GetSingleArticleQuery, OperationResponse<GetSingleArticleQueryResult>>(typeof(ArticleEntity), request.Slug);
 
             //what if this operation fails???
-            var getProfileQueryResult = await _socialService.GetProfile(article.Author.Username);
+            var getProfileQueryResult = await _usersService.GetProfile(article.Author.Username);
             var authorProfile = getProfileQueryResult.Response.Profile;
             
             return OperationResponseFactory.Success(new GetSingleArticleQueryResult

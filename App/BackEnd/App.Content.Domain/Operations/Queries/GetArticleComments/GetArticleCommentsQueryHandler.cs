@@ -15,15 +15,15 @@ namespace App.Content.Domain.Operations.Queries.GetArticleComments
     internal class GetArticleCommentsQueryHandler : IRequestHandler<GetArticleCommentsQuery, OperationResponse<GetArticleCommentsQueryResult>>
     {
         private readonly IArticleRepository _articleRepository;
-        private readonly ISocialService _socialService;
+        private readonly IUsersService _usersService;
         private readonly ICommentRepository _commentRepository;
 
         public GetArticleCommentsQueryHandler([NotNull] IArticleRepository articleRepository,
-            [NotNull] ISocialService socialService,
+            [NotNull] IUsersService usersService,
             [NotNull] ICommentRepository commentRepository)
         {
             _articleRepository = articleRepository;
-            _socialService = socialService;
+            _usersService = usersService;
             _commentRepository = commentRepository;
         }
 
@@ -44,7 +44,7 @@ namespace App.Content.Domain.Operations.Queries.GetArticleComments
             //rather than looping some sort of bulk-get would be more performant
             foreach (var comment in comments)
             {
-                var getProfileQueryResult = await _socialService.GetProfile(comment.Author.Username);
+                var getProfileQueryResult = await _usersService.GetProfile(comment.Author.Username);
                 commentDtos.Add(comment.ToCommentDTO(getProfileQueryResult.Response.Profile));
             }
             

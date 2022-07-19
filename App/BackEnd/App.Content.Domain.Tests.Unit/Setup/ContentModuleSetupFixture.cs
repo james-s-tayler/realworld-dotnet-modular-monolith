@@ -32,7 +32,7 @@ namespace App.Content.Domain.Tests.Unit.Setup
         internal IUserRepository UserRepository { get; private set; }
         internal IArticleRepository ArticleRepository { get; private set; }
         internal ICommentRepository CommentRepository { get; private set; }
-        internal Mock<ISocialService> SocialService { get; } = new ();
+        internal Mock<IUsersService> SocialService { get; } = new ();
         
         public ContentModuleSetupFixture() : base(new ContentModule())
         {

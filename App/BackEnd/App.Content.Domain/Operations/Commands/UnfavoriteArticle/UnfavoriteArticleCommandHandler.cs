@@ -14,16 +14,16 @@ namespace App.Content.Domain.Operations.Commands.UnfavoriteArticle
 {
     internal class UnfavoriteArticleCommandHandler : IRequestHandler<UnfavoriteArticleCommand, OperationResponse<UnfavoriteArticleCommandResult>>
     {
-        private readonly ISocialService _socialService;
+        private readonly IUsersService _usersService;
         private readonly IArticleRepository _articleRepository;
         private readonly IUserContext _userContext;
 
         public UnfavoriteArticleCommandHandler([NotNull] IArticleRepository articleRepository, 
-            [NotNull] ISocialService socialService, 
+            [NotNull] IUsersService usersService, 
             [NotNull] IUserContext userContext)
         {
             _articleRepository = articleRepository;
-            _socialService = socialService;
+            _usersService = usersService;
             _userContext = userContext;
         }
 
@@ -35,7 +35,7 @@ namespace App.Content.Domain.Operations.Commands.UnfavoriteArticle
             await _articleRepository.UnfavoriteArticle(request.Slug, _userContext.UserId);
             var article = await _articleRepository.GetBySlug(request.Slug, _userContext.UserId);
 
-            var getProfileQueryResult = await _socialService.GetProfile(article.Author.Username);
+            var getProfileQueryResult = await _usersService.GetProfile(article.Author.Username);
             var authorProfile = getProfileQueryResult.Response.Profile;
 
             return OperationResponseFactory.Success(new UnfavoriteArticleCommandResult
