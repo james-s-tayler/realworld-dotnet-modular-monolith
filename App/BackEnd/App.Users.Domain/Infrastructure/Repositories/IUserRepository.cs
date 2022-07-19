@@ -17,5 +17,9 @@ namespace App.Users.Domain.Infrastructure.Repositories
         Task<UserEntity> GetByUsername(string username);
         Task<bool> ExistsByUsername(string username);
         Task<bool> ExistsByEmail(string email);
+        Task<bool> IsFollowing(int userId, int followUserId);
+        Task FollowSelf(int userId);
+        Task FollowUser(int userId, int followUserId);
+        Task UnfollowUser(int userId, int followUserId);
     }
 }

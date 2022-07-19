@@ -1,6 +1,7 @@
 using System;
 using App.Core.DataAccess;
-using App.Social.Domain.Contracts.DTOs;
+using App.Users.Domain.Contracts;
+using App.Users.Domain.Contracts.DTOs;
 
 namespace App.Content.Domain.Contracts.DTOs
 {

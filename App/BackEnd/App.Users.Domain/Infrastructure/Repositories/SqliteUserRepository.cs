@@ -55,7 +55,7 @@ namespace App.Users.Domain.Infrastructure.Repositories
             return Task.FromResult(_connection.Query<UserEntity>(sql));
         }
 
-        public Task<int> Create([NotNull] UserEntity userEntity)
+        public async Task<int> Create([NotNull] UserEntity userEntity)
         {
             var sql = "INSERT INTO users (username, email, password, image, bio) VALUES (@username, @email, @password, @image, @bio) RETURNING *";
 
@@ -70,7 +70,9 @@ namespace App.Users.Domain.Infrastructure.Repositories
             
             var insertedUser = _connection.QuerySingle<UserEntity>(sql, arguments);
             
-            return Task.FromResult(insertedUser.Id);
+            await FollowSelf(insertedUser.Id);
+            
+            return insertedUser.Id;
         }
 
         public Task Update([NotNull] UserEntity userEntity)
@@ -144,6 +146,45 @@ namespace App.Users.Domain.Infrastructure.Repositories
             var arguments = new { email };
             
             return Task.FromResult(_connection.ExecuteScalar<bool>(sql, arguments));
+        }
+        
+        public Task<bool> IsFollowing(int userId, int followUserId)
+        {
+            var sql = "SELECT EXISTS(SELECT 1 FROM followers WHERE user_id=@user_id AND follow_user_id=@follow_user_id)";
+            var arguments = new { user_id = userId, follow_user_id = followUserId };
+
+            var isFollowing = _connection.ExecuteScalar<bool>(sql, arguments);
+
+            return Task.FromResult(isFollowing);
+        }
+
+        public async Task FollowSelf(int userId)
+        {
+            await FollowUser(userId, userId);
+        }
+        
+        public Task FollowUser(int userId, int followUserId)
+        {
+            var sql = "INSERT OR IGNORE INTO followers(user_id, follow_user_id) VALUES(@user_id, @follow_user_id)";
+            var arguments = new
+            {
+                user_id = userId,
+                follow_user_id = followUserId
+            };
+            
+            return Task.FromResult(_connection.Execute(sql, arguments));
+        }
+
+        public Task UnfollowUser(int userId, int followUserId)
+        {
+            var sql = "DELETE FROM followers WHERE user_id=@user_id AND follow_user_id=@follow_user_id";
+            var arguments = new
+            {
+                user_id = userId,
+                follow_user_id = followUserId
+            };
+
+            return Task.FromResult(_connection.Execute(sql, arguments));
         }
     }
 }

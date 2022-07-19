@@ -1,6 +1,7 @@
 using App.Content.Domain.Contracts.DTOs;
 using App.Content.Domain.Entities;
-using App.Social.Domain.Contracts.DTOs;
+using App.Users.Domain.Contracts;
+using App.Users.Domain.Contracts.DTOs;
 
 namespace App.Content.Domain.Infrastructure.Mappers
 {

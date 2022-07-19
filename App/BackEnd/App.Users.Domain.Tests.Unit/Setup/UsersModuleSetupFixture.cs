@@ -21,6 +21,9 @@ namespace App.Users.Domain.Tests.Unit.Setup
         internal UserEntity ExistingUserEntity { get; private set; }
         internal UserEntity ExistingUser2 { get; private set; }
         
+        internal UserEntity FollowedUser { get; private set; }
+        internal UserEntity UnfollowedUser { get; private set; }
+        
         internal IUserRepository UserRepository { get; private set; }
 
         public UsersModuleSetupFixture() : base(new UsersModule())
@@ -71,6 +74,19 @@ namespace App.Users.Domain.Tests.Unit.Setup
             existingUser2.Password = HashedPassword;
             UserRepository.Create(existingUser2).GetAwaiter().GetResult();
             ExistingUser2 = UserRepository.GetByUsername(existingUser2.Username).GetAwaiter().GetResult();
+            
+            var followedUser = AutoFixture.Create<UserEntity>();
+            followedUser.Email = $"{AutoFixture.Create<string>()}@{AutoFixture.Create<string>()}.com";
+            followedUser.Password = HashedPassword;
+            var followedUserId = UserRepository.Create(followedUser).GetAwaiter().GetResult();
+            FollowedUser = UserRepository.GetByUsername(followedUser.Username).GetAwaiter().GetResult();
+            UserRepository.FollowUser(ExistingUserEntity.Id, followedUserId).GetAwaiter().GetResult();
+            
+            var unfollowedUser = AutoFixture.Create<UserEntity>();
+            unfollowedUser.Email = $"{AutoFixture.Create<string>()}@{AutoFixture.Create<string>()}.com";
+            unfollowedUser.Password = HashedPassword;
+            UserRepository.Create(unfollowedUser).GetAwaiter().GetResult();
+            UnfollowedUser = UserRepository.GetByUsername(unfollowedUser.Username).GetAwaiter().GetResult();
         }
     }
 }

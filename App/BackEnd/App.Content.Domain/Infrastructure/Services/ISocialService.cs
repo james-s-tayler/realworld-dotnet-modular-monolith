@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using App.Core.PipelineBehaviors.OperationResponse;
-using App.Social.Domain.Contracts.Operations.Queries.GetProfile;
+using App.Users.Domain.Contracts;
+using App.Users.Domain.Contracts.Operations.Queries.GetProfile;
 using JetBrains.Annotations;
 
 namespace App.Content.Domain.Infrastructure.Services

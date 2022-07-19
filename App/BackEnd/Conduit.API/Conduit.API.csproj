@@ -45,8 +45,6 @@
     <ProjectReference Include="..\App.Content.Domain\App.Content.Domain.csproj" />
     <ProjectReference Include="..\App.Feed.Domain.Contracts\App.Feed.Domain.Contracts.csproj" />
     <ProjectReference Include="..\App.Feed.Domain\App.Feed.Domain.csproj" />
-    <ProjectReference Include="..\App.Social.Domain.Contracts\App.Social.Domain.Contracts.csproj" />
-    <ProjectReference Include="..\App.Social.Domain\App.Social.Domain.csproj" />
     <ProjectReference Include="..\App.Users.Domain.Contracts\App.Users.Domain.Contracts.csproj" />
     <ProjectReference Include="..\App.Users.Domain\App.Users.Domain.csproj" />
   </ItemGroup>

@@ -45,7 +45,7 @@ namespace App.Users.Domain.Tests.Unit.Commands
             result.Response.Should().NotBeNull();
             result.Response.RegisteredUser.Should().NotBeNull();
             var registeredUser = result.Response.RegisteredUser;
-            registeredUser.Id.Should().Be(3);
+            registeredUser.Id.Should().BeGreaterThan(0);
             registeredUser.Email.Should().Be(_registerUserCommand.NewUser.Email);
             registeredUser.Username.Should().Be(_registerUserCommand.NewUser.Username);
             registeredUser.Token.Should().NotBeNull();

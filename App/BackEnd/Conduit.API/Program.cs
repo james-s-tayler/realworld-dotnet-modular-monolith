@@ -32,7 +32,6 @@ namespace Conduit.API
                 {
                     webBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, 
                         "App.Users.Domain;" +
-                        "App.Social.Domain;" +
                         "App.Content.Domain;" +
                         "App.Feed.Domain");
                     webBuilder.UseStartup<Startup>();
