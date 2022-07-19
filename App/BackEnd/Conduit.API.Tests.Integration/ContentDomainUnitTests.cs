@@ -14,15 +14,16 @@ namespace Conduit.API.Tests.Integration
     [Collection(nameof(IntegrationTestCollection))]
     public class ContentDomainUnitTests : IntegrationTestBase
     {
-        private IConduitApiClient _unauthenticatedApiClient;
-        private IConduitApiClient _authenticatedApiClient;
+        private readonly IConduitApiClient _unauthenticatedApiClient;
+        private readonly IConduitApiClient _authenticatedApiClient;
         private readonly Fixture _autoFixture = new ();
         private readonly NewUser _newUser;
         private string _token;
         
         public ContentDomainUnitTests(WebApplicationFactory<Program> applicationFactory, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
-            _unauthenticatedApiClient = RestService.For<IConduitApiClient>(applicationFactory.CreateClient());
+            var httpClient = applicationFactory.CreateClient();
+            _unauthenticatedApiClient = RestService.For<IConduitApiClient>(httpClient);
             applicationFactory.ClearDatabaseTables();
 
             _newUser = new NewUser

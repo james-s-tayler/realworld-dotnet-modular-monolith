@@ -94,8 +94,15 @@ namespace App.Core.DataAccess.Dapper.Sqlite
             
                 // Enable write-ahead logging - https://docs.microsoft.com/en-us/dotnet/standard/data/sqlite/async
                 var walCommand = sqliteConnection.CreateCommand();
-                walCommand.CommandText = @"PRAGMA journal_mode=WAL"; //can potentially speed up tests with ;PRAGMA synchronous=OFF 
+                walCommand.CommandText = @"PRAGMA journal_mode=WAL"; 
                 walCommand.ExecuteNonQuery();
+
+                if (hostEnvironment.IsDevelopment() || hostEnvironment.Equals("Test"))
+                {
+                    var synchronousOffCommand = sqliteConnection.CreateCommand();
+                    synchronousOffCommand.CommandText = @"PRAGMA synchronous=OFF"; //speeds up tests 
+                    synchronousOffCommand.ExecuteNonQuery();
+                }
 
                 return sqliteConnection;
             });

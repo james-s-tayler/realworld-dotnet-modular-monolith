@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Security.Claims;
 using App.Core.Context;
 using App.Core.DataAccess;
@@ -85,7 +86,10 @@ namespace App.Core.Testing
 
         public virtual void SetDefaultUserContext()
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
             WithAuthenticatedUserContext();
+            Log.Information("WithAuthenticatedUserContext elapsed: {0}ms", stopwatch.ElapsedMilliseconds);
         }
         
         public abstract void PerTestSetup();

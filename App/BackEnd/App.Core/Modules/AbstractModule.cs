@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using App.Core.Context;
 using App.Core.Logging;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using AppContext = App.Core.Context.AppContext;
 
 namespace App.Core.Modules
@@ -25,29 +27,28 @@ namespace App.Core.Modules
 
         public void Configure(IWebHostBuilder builder)
         {
-            Console.WriteLine($"Registering Module: {GetModuleName()}");
             builder.ConfigureServices((context, services) =>
             {
+                var stopWatch = new Stopwatch();
+                stopWatch.Start();
                 InitializeModule(context.Configuration, context.HostingEnvironment, services);
+                Log.Information("Registered Module: {0} in {1}ms", GetModuleName(), stopWatch.ElapsedMilliseconds);
             });
         }
 
-        public void InitializeModule(IConfiguration configuration, IHostEnvironment hostEnvironment,
-            IServiceCollection services)
+        public void InitializeModule(IConfiguration configuration, IHostEnvironment hostEnvironment, IServiceCollection services)
         {
             AddServices(configuration, services);
             AddModuleDatabase(configuration, hostEnvironment, services);
         }
 
-        private void AddModuleDatabase(IConfiguration configuration, IHostEnvironment hostEnvironment,
-            IServiceCollection services)
+        private void AddModuleDatabase(IConfiguration configuration, IHostEnvironment hostEnvironment, IServiceCollection services)
         {
             AddDbConnectionFactory(services, configuration, hostEnvironment);
             RunModuleDatabaseMigrations(new SchemaManager(configuration, hostEnvironment, GetModuleAssembly()));
         }
 
-        protected abstract void AddDbConnectionFactory(IServiceCollection services, IConfiguration configuration,
-            IHostEnvironment hostEnvironment);
+        protected abstract void AddDbConnectionFactory(IServiceCollection services, IConfiguration configuration, IHostEnvironment hostEnvironment);
 
         protected abstract void RunModuleDatabaseMigrations(SchemaManager schemaManager);
 

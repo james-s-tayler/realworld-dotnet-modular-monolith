@@ -10,8 +10,4 @@
         <ProjectReference Include="..\App.Social.Domain.Contracts\App.Social.Domain.Contracts.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Enums" />
-    </ItemGroup>
-
 </Project>
