@@ -41,6 +41,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppTemplates", "AppTemplates", "{6FC2BBD5-038B-42CC-8851-98D417A6BEF3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Module", "Module", "{69E5A151-D135-47D9-AF4D-26F8BC2A2CA9}"
+	ProjectSection(SolutionItems) = preProject
+		generate_module.sh = generate_module.sh
+		generate_module_contracts_project.sh = generate_module_contracts_project.sh
+		generate_module_domain_project.sh = generate_module_domain_project.sh
+		generate_module_unit_test_project.sh = generate_module_unit_test_project.sh
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Content.Domain.Tests.Unit", "App.Content.Domain.Tests.Unit\App.Content.Domain.Tests.Unit.csproj", "{76A4D29F-106D-48CC-A90E-237B9A380CED}"
 EndProject
@@ -74,16 +80,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{10BFD663-3
 		..\..\run-api-tests.sh = ..\..\run-api-tests.sh
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{E68632B6-A3DE-460B-AB95-229AA2334BEA}"
-	ProjectSection(SolutionItems) = preProject
-		install-templates.sh = install-templates.sh
-		generate_module.sh = generate_module.sh
-		generate_module_contracts_project.sh = generate_module_contracts_project.sh
-		generate_module_domain_project.sh = generate_module_domain_project.sh
-		generate_module_unit_test_project.sh = generate_module_unit_test_project.sh
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Operation", "Operation", "{3A609C99-32B3-4B28-8B65-1E58BC0A86D3}"
+	ProjectSection(SolutionItems) = preProject
+		generate_operation.sh = generate_operation.sh
+		generate_operation_command.sh = generate_operation_command.sh
+		generate_operation_query.sh = generate_operation_query.sh
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contract", "Contract", "{3536CDE7-4380-4CDA-908F-B9466D6E2F5E}"
 	ProjectSection(SolutionItems) = preProject
@@ -192,7 +194,6 @@ Global
 		{69E5A151-D135-47D9-AF4D-26F8BC2A2CA9} = {6FC2BBD5-038B-42CC-8851-98D417A6BEF3}
 		{9A4A1AF0-FB3D-41DA-88B0-48E7D38F5986} = {15829510-7835-4630-BA28-B7955FC6108F}
 		{10BFD663-3031-4822-8A5B-B66941215E4B} = {15829510-7835-4630-BA28-B7955FC6108F}
-		{E68632B6-A3DE-460B-AB95-229AA2334BEA} = {15829510-7835-4630-BA28-B7955FC6108F}
 		{3A609C99-32B3-4B28-8B65-1E58BC0A86D3} = {6FC2BBD5-038B-42CC-8851-98D417A6BEF3}
 		{3536CDE7-4380-4CDA-908F-B9466D6E2F5E} = {3A609C99-32B3-4B28-8B65-1E58BC0A86D3}
 		{13364BF9-85BD-4B27-9F16-5D4866D1800E} = {3A609C99-32B3-4B28-8B65-1E58BC0A86D3}
