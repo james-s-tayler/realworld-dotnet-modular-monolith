@@ -2,9 +2,9 @@
   "$schema": "http://json.schemastore.org/template",
   "author": "James Tayler",
   "classifications": [ "Common", "Code" ],
-  "identity": "Operation.Body",
-  "name": "Domain Operation Body",
-  "shortName": "operation-body",
+  "identity": "Operation.UnitTest",
+  "name": "Domain Operation Unit Tests",
+  "shortName": "operation-unit-tests",
   "tags": {
     "language": "C#",
     "type": "item"

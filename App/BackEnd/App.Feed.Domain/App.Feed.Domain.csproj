@@ -11,6 +11,8 @@
 
     <ItemGroup>
       <Folder Include="Infrastructure\Services" />
+      <Folder Include="Operations\Commands" />
+      <Folder Include="Operations\Queries" />
       <Folder Include="Setup\Configuration" />
     </ItemGroup>
 

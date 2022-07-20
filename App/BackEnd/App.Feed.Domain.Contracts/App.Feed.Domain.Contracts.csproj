@@ -8,4 +8,9 @@
       <ProjectReference Include="..\App.Core\App.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Operations\Commands" />
+      <Folder Include="Operations\Queries" />
+    </ItemGroup>
+
 </Project>

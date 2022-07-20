@@ -23,8 +23,4 @@
       <ProjectReference Include="..\App.ModuleName.Domain\App.ModuleName.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Operations\Commands" />
-    </ItemGroup>
-
 </Project>

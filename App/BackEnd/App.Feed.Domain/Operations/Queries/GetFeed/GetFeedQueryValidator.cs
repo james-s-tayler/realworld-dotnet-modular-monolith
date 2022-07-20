@@ -1,16 +1,16 @@
 using System.Threading;
 using System.Threading.Tasks;
-using App.Feed.Domain.Contracts.Operations.Commands.UpdateExample;
+using App.Feed.Domain.Contracts.Operations.Queries.GetFeed;
 using App.Feed.Domain.Infrastructure.Repositories;
 using FluentValidation;
 using JetBrains.Annotations;
 
-namespace App.Feed.Domain.Operations.Commands.UpdateExample
+namespace App.Feed.Domain.Operations.Queries.GetFeed
 {
-    internal class UpdateExampleCommandValidator : AbstractValidator<UpdateExampleCommand>
+    internal class GetFeedQueryValidator : AbstractValidator<GetFeedQuery>
     {
         private readonly IExampleRepository _exampleRepository;
-        public UpdateExampleCommandValidator([NotNull] IExampleRepository exampleRepository)
+        public GetFeedQueryValidator([NotNull] IExampleRepository exampleRepository)
         {
             _exampleRepository = exampleRepository;
 
@@ -19,7 +19,7 @@ namespace App.Feed.Domain.Operations.Commands.UpdateExample
                 .WithMessage(command => $"Example {command.ExampleInput.Id} not found");
         }
 
-        private async Task<bool> ExampleMustExist(UpdateExampleCommand command, CancellationToken cancellationToken)
+        private async Task<bool> ExampleMustExist(GetFeedQuery command, CancellationToken cancellationToken)
         {
             return await _exampleRepository.Exists(command.ExampleInput.Id);
         }

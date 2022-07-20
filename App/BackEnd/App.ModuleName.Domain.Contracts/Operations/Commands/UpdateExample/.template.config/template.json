@@ -16,6 +16,17 @@
       "defaultValue": "UpdateExample",
       "replaces": "UpdateExample",
       "fileRename": "UpdateExample"
+    },
+    "operationTypeSingular": {
+      "type": "parameter",
+      "defaultValue": "Command",
+      "replaces": "Command",
+      "fileRename": "Command"
+    },
+    "operationTypePlural": {
+      "type": "parameter",
+      "defaultValue": ".Commands",
+      "replaces": ".Commands"
     }
   }
 }
