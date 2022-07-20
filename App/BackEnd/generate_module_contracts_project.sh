@@ -7,9 +7,9 @@ if [ -z "$1" ]
 fi
 
 echo "installing / updating dotnet new module-contracts template"
-dotnet new --install ./Application.ModuleName.Domain.Contracts | grep "module-contracts"
+dotnet new --install ./App.ModuleName.Domain.Contracts | grep "module-contracts"
 echo
 module_name=$1
-echo "generating Application.${module_name}.Domain.Contracts"
-dotnet new module-contracts --name ${module_name} --output Application.${module_name}.Domain.Contracts
+echo "generating App.${module_name}.Domain.Contracts"
+dotnet new module-contracts --name ${module_name} --output App.${module_name}.Domain.Contracts
 echo
