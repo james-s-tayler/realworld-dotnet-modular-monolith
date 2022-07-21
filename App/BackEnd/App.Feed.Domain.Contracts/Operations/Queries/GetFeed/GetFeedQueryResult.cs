@@ -1,11 +1,12 @@
+using System.Collections.Generic;
+using App.Content.Domain.Contracts.DTOs;
 using App.Core.DataAccess;
-using App.Feed.Domain.Contracts.DTOs;
 using MediatR;
 
 namespace App.Feed.Domain.Contracts.Operations.Queries.GetFeed
 {
     public class GetFeedQueryResult : ContractModel, INotification
     {
-        public ExampleDTO ExampleOutput { get; set; }
+        public List<SingleArticleDTO> FeedArticles { get; set; }
     }
 }

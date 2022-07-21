@@ -30,6 +30,8 @@ namespace App.Users.Domain.Operations.Commands.FollowUser
 
             return new OperationResponse<FollowUserCommandResult>(new FollowUserCommandResult
             {
+                UserId = _userContext.UserId,
+                FollowingUserId = followUser.Id,
                 FollowedProfile = UserMapper.ToProfileDTO(followUser, true)
             });
         }

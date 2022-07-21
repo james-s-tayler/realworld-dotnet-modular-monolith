@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using App.Core.Modules;
 using App.Core.Testing;
+using App.Feed.Domain.Infrastructure.Repositories;
 using App.Feed.Domain.Setup.Module;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,6 +9,8 @@ namespace App.Feed.Domain.Tests.Unit.Setup
 {
     public class FeedModuleSetupFixture : AbstractModuleSetupFixture
     {
+        internal IFollowRepository FollowRepository { get; set; } 
+        
         protected override void AddConfiguration(IDictionary<string, string> configuration)
         {
             
@@ -20,7 +23,7 @@ namespace App.Feed.Domain.Tests.Unit.Setup
         
         protected override void SetupPostProcess(ServiceProvider provider)
         {
-            
+            FollowRepository = provider.GetService<IFollowRepository>();
         }
 
         public override void PerTestSetup()

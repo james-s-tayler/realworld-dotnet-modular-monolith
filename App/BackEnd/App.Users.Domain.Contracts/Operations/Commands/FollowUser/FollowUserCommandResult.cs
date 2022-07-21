@@ -6,6 +6,8 @@ namespace App.Users.Domain.Contracts.Operations.Commands.FollowUser
 {
     public class FollowUserCommandResult : ContractModel, INotification
     {
+        public int UserId { get; set; }
+        public int FollowingUserId { get; set; }
         public ProfileDTO FollowedProfile { get; set; }
     }
 }

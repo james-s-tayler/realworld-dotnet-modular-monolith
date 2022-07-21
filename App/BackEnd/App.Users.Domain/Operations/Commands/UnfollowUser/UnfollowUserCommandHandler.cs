@@ -25,12 +25,14 @@ namespace App.Users.Domain.Operations.Commands.UnfollowUser
 
         public async Task<OperationResponse<UnfollowUserCommandResult>> Handle(UnfollowUserCommand unfollowUserCommand, CancellationToken cancellationToken)
         {
-            var unfollowUserId = await _userRepository.GetByUsername(unfollowUserCommand.Username);
-            await _userRepository.UnfollowUser(_userContext.UserId, unfollowUserId.Id);
+            var unfollowUser = await _userRepository.GetByUsername(unfollowUserCommand.Username);
+            await _userRepository.UnfollowUser(_userContext.UserId, unfollowUser.Id);
 
             return new OperationResponse<UnfollowUserCommandResult>(new UnfollowUserCommandResult
             {
-                UnfollowedProfile = UserMapper.ToProfileDTO(unfollowUserId, false)
+                UserId = _userContext.UserId,
+                FollowingUserId = unfollowUser.Id,
+                UnfollowedProfile = UserMapper.ToProfileDTO(unfollowUser, false)
             });
         }
     }

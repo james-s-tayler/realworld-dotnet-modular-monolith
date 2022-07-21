@@ -5,13 +5,9 @@ namespace App.Feed.Domain.Infrastructure.Mappers
 {
     internal static class ExampleMapper
     {
-        internal static ExampleDTO ToExampleDTO(this ExampleEntity exampleEntity)
+        internal static void ToExampleDTO()
         {
-            return new ExampleDTO
-            {
-                Id = exampleEntity.Id,
-                SensitiveValue = exampleEntity.Something
-            };
+            
         }
     }
 }

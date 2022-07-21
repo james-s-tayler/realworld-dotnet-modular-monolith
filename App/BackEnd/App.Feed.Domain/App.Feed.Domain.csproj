@@ -5,12 +5,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\App.Content.Domain.Contracts\App.Content.Domain.Contracts.csproj" />
       <ProjectReference Include="..\App.Core\App.Core.csproj" />
       <ProjectReference Include="..\App.Feed.Domain.Contracts\App.Feed.Domain.Contracts.csproj" />
+      <ProjectReference Include="..\App.Users.Domain.Contracts\App.Users.Domain.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Infrastructure\Services" />
       <Folder Include="Operations\Commands" />
       <Folder Include="Operations\Queries" />
       <Folder Include="Setup\Configuration" />
