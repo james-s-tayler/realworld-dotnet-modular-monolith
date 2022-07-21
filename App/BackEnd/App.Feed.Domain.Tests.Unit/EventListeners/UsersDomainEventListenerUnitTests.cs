@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using App.Core.Testing;
 using App.Feed.Domain.Entities;
@@ -50,16 +51,10 @@ namespace App.Feed.Domain.Tests.Unit.EventListeners
             var unfollowUserEvent = new UnfollowUserCommandResult
             {
                 UserId = _module.AuthenticatedUserId,
-                FollowingUserId = _module.AutoFixture.Create<int>(),
+                FollowingUserId = _module.Follows.First(follow => follow.FollowingUserId != _module.AuthenticatedUserId).FollowingUserId,
                 UnfollowedProfile = _module.AutoFixture.Create<ProfileDTO>()
             };
-            var followEntity = new FollowEntity
-            {
-                UserId = unfollowUserEvent.UserId,
-                FollowingUserId = unfollowUserEvent.FollowingUserId
-            };
-            await _module.FollowRepository.Follow(followEntity);
-            
+
             //act
             await _module.Mediator.Publish(unfollowUserEvent);
 

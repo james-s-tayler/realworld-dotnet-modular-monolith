@@ -8,7 +8,6 @@ namespace App.Content.Domain.Infrastructure.Repositories
     {
         Task Update(ArticleEntity articleEntity);
         Task<int> Create(ArticleEntity articleEntity);
-        Task<IEnumerable<ArticleEntity>> GetUserFeed(int limit, int offset, int userId);
         Task<IEnumerable<ArticleEntity>> GetByFilters(string authorUsername, string favoritedByUsername, string tag, int limit, int offset, int? userId);
         Task<bool> ExistsBySlug(string slug);
 

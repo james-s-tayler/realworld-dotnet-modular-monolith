@@ -1,10 +1,8 @@
 using System.Threading.Tasks;
 using App.Core.PipelineBehaviors.OperationResponse;
 using App.Core.Testing;
-using App.Feed.Domain.Contracts.DTOs;
 using App.Feed.Domain.Contracts.Operations.Queries.GetFeed;
 using App.Feed.Domain.Tests.Unit.Setup;
-using AutoFixture;
 using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
@@ -21,17 +19,45 @@ namespace App.Feed.Domain.Tests.Unit.Operations.Queries
             _module = module;
         }
 
-        [Fact]
-        public async Task GivenNoExample_WhenGetFeed_ThenValidationError()
+        [Theory]
+        [InlineData(0)]
+        [InlineData(101)]
+        public async Task GivenOutOfRangeLimit_WhenGetFeed_ThenInvalidRequest(int limit)
         {
             //arrange
-            var updateExampleQuery = new GetFeedQuery { ExampleInput = null };
+            var getFeedQuery = new GetFeedQuery { Limit = limit };
             
             //act
-            var result = await _module.Mediator.Send(updateExampleQuery);
+            var result = await _module.Mediator.Send(getFeedQuery);
             
             //assert
             result.Result.Should().Be(OperationResult.InvalidRequest);
+        }
+        
+        [Fact]
+        public async Task GivenOutOfRangeOffset_WhenGetFeed_ThenInvalidRequest()
+        {
+            //arrange
+            var getFeedQuery = new GetFeedQuery { Offset = -1 };
+            
+            //act
+            var result = await _module.Mediator.Send(getFeedQuery);
+            
+            //assert
+            result.Result.Should().Be(OperationResult.InvalidRequest);
+        }
+        
+        [Fact]
+        public async Task GivenNotFollowingAnyUsers_WhenGetFeed_ThenEmptyFeed()
+        {
+            //arrange
+            var getFeedQuery = new GetFeedQuery();
+            
+            //act
+            var result = await _module.Mediator.Send(getFeedQuery);
+            
+            //assert
+            result.Result.Should().Be(OperationResult.Success);
         }
     }
 }
