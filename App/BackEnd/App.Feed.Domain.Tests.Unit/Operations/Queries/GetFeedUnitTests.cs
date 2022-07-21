@@ -22,19 +22,6 @@ namespace App.Feed.Domain.Tests.Unit.Operations.Queries
         }
 
         [Fact]
-        public async Task GivenUpdateNonExistentExample_WhenGetFeed_ThenValidationError()
-        {
-            //arrange
-            var updateExampleQuery = new GetFeedQuery { ExampleInput = _module.AutoFixture.Create<ExampleDTO>() };
-            
-            //act
-            var result = await _module.Mediator.Send(updateExampleQuery);
-            
-            //assert
-            result.Result.Should().Be(OperationResult.ValidationError);
-        }
-        
-        [Fact]
         public async Task GivenNoExample_WhenGetFeed_ThenValidationError()
         {
             //arrange

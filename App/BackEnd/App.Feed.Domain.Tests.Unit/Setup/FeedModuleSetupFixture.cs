@@ -9,8 +9,9 @@ namespace App.Feed.Domain.Tests.Unit.Setup
 {
     public class FeedModuleSetupFixture : AbstractModuleSetupFixture
     {
-        internal IFollowRepository FollowRepository { get; set; } 
-        
+        internal IFollowRepository FollowRepository { get; private set; }
+        internal IArticleRepository ArticleRepository { get; private set; }
+
         protected override void AddConfiguration(IDictionary<string, string> configuration)
         {
             
@@ -24,6 +25,7 @@ namespace App.Feed.Domain.Tests.Unit.Setup
         protected override void SetupPostProcess(ServiceProvider provider)
         {
             FollowRepository = provider.GetService<IFollowRepository>();
+            ArticleRepository = provider.GetService<IArticleRepository>();
         }
 
         public override void PerTestSetup()

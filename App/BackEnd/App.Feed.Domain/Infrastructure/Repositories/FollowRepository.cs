@@ -8,11 +8,11 @@ using JetBrains.Annotations;
 
 namespace App.Feed.Domain.Infrastructure.Repositories
 {
-    internal class SqliteFollowRepository : IFollowRepository
+    internal class FollowRepository : IFollowRepository
     {
         private readonly DbConnection _connection;
 
-        public SqliteFollowRepository([NotNull] ModuleDbConnectionWrapper<FeedModule> connectionWrapper)
+        public FollowRepository([NotNull] ModuleDbConnectionWrapper<FeedModule> connectionWrapper)
         {
             _connection = connectionWrapper.Connection;
         }

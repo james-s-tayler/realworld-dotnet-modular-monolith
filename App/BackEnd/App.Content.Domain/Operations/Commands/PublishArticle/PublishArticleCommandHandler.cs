@@ -38,6 +38,8 @@ namespace App.Content.Domain.Operations.Commands.PublishArticle
 
             return OperationResponseFactory.Success(new PublishArticleCommandResult
             {
+                ArticleId = articleId,
+                UserId = _userContext.UserId,
                 Article = article.ToArticleDTO(authorProfile)
             });
         }

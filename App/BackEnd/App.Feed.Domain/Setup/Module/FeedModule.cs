@@ -41,7 +41,8 @@ namespace App.Feed.Domain.Setup.Module
 
         protected override void AddModuleServices(IConfiguration configuration, IServiceCollection services)
         {
-            services.AddTransient<IFollowRepository, SqliteFollowRepository>();
+            services.AddTransient<IFollowRepository, FollowRepository>();
+            services.AddTransient<IArticleRepository, FeedArticleRepository>();
         }
     }
 }
