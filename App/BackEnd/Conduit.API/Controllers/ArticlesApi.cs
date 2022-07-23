@@ -14,9 +14,10 @@ using System.Threading.Tasks;
 using App.Content.Domain.Contracts.Operations.Commands.DeleteArticle;
 using App.Content.Domain.Contracts.Operations.Commands.EditArticle;
 using App.Content.Domain.Contracts.Operations.Commands.PublishArticle;
-using App.Content.Domain.Contracts.Operations.Queries.GetSingleArticle;
+using App.Content.Domain.Contracts.Operations.Queries.GetArticleBySlug;
 using App.Content.Domain.Contracts.Operations.Queries.ListArticles;
 using App.Core.PipelineBehaviors.OperationResponse;
+using App.Feed.Domain.Contracts.Operations.Queries.GetFeed;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -101,7 +102,7 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 200, type: typeof(SingleArticleResponse), description: "OK")]
         public virtual async Task<IActionResult> GetArticle([FromRoute (Name = "slug")][Required]string slug)
         {
-            var followUserResponse = await Mediator.Send(new GetSingleArticleQuery { Slug = slug });
+            var followUserResponse = await Mediator.Send(new GetArticleBySlugQuery { Slug = slug });
             
             if (followUserResponse.Result != OperationResult.Success)
                 return UnsuccessfulResponseResult(followUserResponse);
@@ -169,7 +170,22 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 200, type: typeof(MultipleArticlesResponse), description: "OK")]
         public virtual async Task<IActionResult> GetArticlesFeed([FromQuery (Name = "limit")]int? limit, [FromQuery (Name = "offset")]int? offset)
         {
-            return StatusCode((int)HttpStatusCode.NotImplemented);
+            var getFeedQuery = new GetFeedQuery();
+            if (limit.HasValue)
+            {
+                getFeedQuery.Limit = limit.Value;
+            }
+            if (offset.HasValue)
+            {
+                getFeedQuery.Offset = offset.Value;
+            }
+            
+            var getFeedResponse = await Mediator.Send(getFeedQuery);
+            
+            if (getFeedResponse.Result != OperationResult.Success)
+                return UnsuccessfulResponseResult(getFeedResponse);
+
+            return Ok(getFeedResponse.Response.FeedArticles.ToMultipleArticlesResponse());
         }
 
         /// <summary>

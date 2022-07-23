@@ -1,12 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using App.Content.Domain.Contracts.DTOs;
+using App.Content.Domain.Contracts.Operations.Queries.GetArticleById;
 using App.Core.Modules;
+using App.Core.PipelineBehaviors.OperationResponse;
 using App.Core.Testing;
 using App.Feed.Domain.Entities;
 using App.Feed.Domain.Infrastructure.Repositories;
+using App.Feed.Domain.Infrastructure.Services;
 using App.Feed.Domain.Setup.Module;
 using Microsoft.Extensions.DependencyInjection;
 using AutoFixture;
+using Moq;
 
 namespace App.Feed.Domain.Tests.Unit.Setup
 {
@@ -14,6 +20,7 @@ namespace App.Feed.Domain.Tests.Unit.Setup
     {
         internal IFollowRepository FollowRepository { get; private set; }
         internal IArticleRepository ArticleRepository { get; private set; }
+        private readonly Mock<IContentDomainClient> _contentDomainClient = new ();
 
         internal List<FollowEntity> Follows { get; private set; }
         internal List<ArticleEntity> FollowedUserArticles { get; private set; }
@@ -28,7 +35,7 @@ namespace App.Feed.Domain.Tests.Unit.Setup
         
         protected override void ReplaceServices(AbstractModule module)
         {
-            
+            module.ReplaceTransient(_contentDomainClient.Object);
         }
         
         protected override void SetupPostProcess(ServiceProvider provider)
@@ -42,6 +49,7 @@ namespace App.Feed.Domain.Tests.Unit.Setup
             Follows = new List<FollowEntity>();
             FollowedUserArticles = new List<ArticleEntity>();
             NonFollowedUserArticles = new List<ArticleEntity>();
+            _contentDomainClient.Reset();
 
             WithUserAndArticles(AuthenticatedUserId, true); //self
             WithUserAndArticles(AutoFixture.Create<int>(), true);
@@ -77,6 +85,19 @@ namespace App.Feed.Domain.Tests.Unit.Setup
                 {
                     NonFollowedUserArticles.Add(article);
                 }
+
+                var mockArticle = new GetArticleByIdQueryResult
+                {
+                    Article = AutoFixture.Create<SingleArticleDTO>()
+                };
+                mockArticle.Article.CreatedAt = article.CreatedAt;
+                mockArticle.Article.Author.Following = following;
+                mockArticle.Article.Author.Username = followingUserId.ToString();
+                
+                _contentDomainClient.Setup(client =>
+                        client.GetArticleById(It.Is<GetArticleByIdQuery>(query =>
+                            query.ArticleId == article.ArticleId)))
+                    .ReturnsAsync(OperationResponseFactory.Success(mockArticle));
             }
         }
     }

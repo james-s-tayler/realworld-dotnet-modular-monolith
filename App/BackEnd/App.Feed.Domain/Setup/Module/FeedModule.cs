@@ -5,6 +5,7 @@ using App.Core.Modules;
 using App.Core.SchemaManagement;
 using App.Feed.Domain.Contracts;
 using App.Feed.Domain.Infrastructure.Repositories;
+using App.Feed.Domain.Infrastructure.Services;
 using App.Feed.Domain.Setup.Module;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -43,6 +44,7 @@ namespace App.Feed.Domain.Setup.Module
         {
             services.AddTransient<IFollowRepository, FollowRepository>();
             services.AddTransient<IArticleRepository, FeedArticleRepository>();
+            services.AddTransient<IContentDomainClient, ContentDomainClient>();
         }
     }
 }

@@ -110,6 +110,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
                          "WHERE (@author_username IS NULL OR author.username = @author_username) " +
                          "AND (@favorited_by_username IS NULL OR favoriter.username = @favorited_by_username) " +
                          "AND (@tag IS NULL OR t.tag = @tag) " +
+                         "ORDER BY a.created_at DESC " +
                          "LIMIT @limit " + //limit and offset is not efficient in SQLite
                          "OFFSET @offset"; //limit and offset is not efficient in SQLite
             

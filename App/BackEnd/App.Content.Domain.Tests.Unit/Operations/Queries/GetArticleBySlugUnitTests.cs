@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using App.Content.Domain.Contracts.Operations.Queries.GetSingleArticle;
+using App.Content.Domain.Contracts.Operations.Queries.GetArticleBySlug;
 using App.Content.Domain.Tests.Unit.Setup;
 using App.Core.PipelineBehaviors.OperationResponse;
 using App.Core.Testing;
@@ -11,11 +11,11 @@ using Xunit.Abstractions;
 namespace App.Content.Domain.Tests.Unit.Operations.Queries
 {
     [Collection(nameof(ContentModuleTestCollection))]
-    public class GetSingleArticleUnitTests : UnitTestBase
+    public class GetArticleBySlugUnitTests : UnitTestBase
     {
         private readonly ContentModuleSetupFixture _module;
 
-        public GetSingleArticleUnitTests(ContentModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
+        public GetArticleBySlugUnitTests(ContentModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
             _module = module;
         }
@@ -24,7 +24,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
         public async Task GivenNoArticle_WhenGetArticle_ThenNotFound()
         {
             //arrange
-            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = "some-non-existent-article" };
+            var getSingleArticleQuery = new GetArticleBySlugQuery { Slug = "some-non-existent-article" };
 
             //act
             var result = await _module.Mediator.Send(getSingleArticleQuery);
@@ -38,7 +38,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
         {
             //arrange
             var testStartTime = DateTime.UtcNow;
-            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.NonFavoritedArticleEntity.GetSlug() };
+            var getSingleArticleQuery = new GetArticleBySlugQuery { Slug = _module.NonFavoritedArticleEntity.GetSlug() };
 
             //act
             var result = await _module.Mediator.Send(getSingleArticleQuery);
@@ -59,7 +59,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
         public async Task GivenAnArticle_WhenGetArticleBySlug_ThenArticleContainsTags()
         {
             //arrange
-            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.NonFavoritedArticleEntity.GetSlug() };
+            var getSingleArticleQuery = new GetArticleBySlugQuery { Slug = _module.NonFavoritedArticleEntity.GetSlug() };
 
             //act
             var result = await _module.Mediator.Send(getSingleArticleQuery);
@@ -72,7 +72,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
         public async Task GivenAnArticle_WhenGetArticleBySlug_ThenArticleContainsAuthorProfile()
         {
             //arrange
-            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.NonFavoritedArticleEntity.GetSlug() };
+            var getSingleArticleQuery = new GetArticleBySlugQuery { Slug = _module.NonFavoritedArticleEntity.GetSlug() };
 
             //act
             var result = await _module.Mediator.Send(getSingleArticleQuery);
@@ -88,7 +88,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
         public async Task GivenAFavoritedArticle_WhenGetArticleBySlug_ThenArticleIsFavorited()
         {
             //arrange
-            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.FavoritedArticleEntity.GetSlug() };
+            var getSingleArticleQuery = new GetArticleBySlugQuery { Slug = _module.FavoritedArticleEntity.GetSlug() };
 
             //act
             var result = await _module.Mediator.Send(getSingleArticleQuery);
@@ -102,7 +102,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
         public async Task GivenANonFavoritedArticle_WhenGetArticleBySlug_ThenArticleIsNotFavorited()
         {
             //arrange
-            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = _module.NonFavoritedArticleEntity.GetSlug() };
+            var getSingleArticleQuery = new GetArticleBySlugQuery { Slug = _module.NonFavoritedArticleEntity.GetSlug() };
 
             //act
             var result = await _module.Mediator.Send(getSingleArticleQuery);
@@ -116,7 +116,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
         public async Task GivenNoSlug_WhenGetArticle_ThenInvalidRequest()
         {
             //arrange
-            var getSingleArticleQuery = new GetSingleArticleQuery { Slug = null };
+            var getSingleArticleQuery = new GetArticleBySlugQuery { Slug = null };
 
             //act
             var result = await _module.Mediator.Send(getSingleArticleQuery);

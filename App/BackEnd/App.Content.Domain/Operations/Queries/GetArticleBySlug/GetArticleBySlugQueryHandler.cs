@@ -1,6 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using App.Content.Domain.Contracts.Operations.Queries.GetSingleArticle;
+using App.Content.Domain.Contracts.Operations.Queries.GetArticleBySlug;
 using App.Content.Domain.Entities;
 using App.Content.Domain.Infrastructure.Mappers;
 using App.Content.Domain.Infrastructure.Repositories;
@@ -10,15 +10,15 @@ using App.Core.PipelineBehaviors.OperationResponse;
 using JetBrains.Annotations;
 using MediatR;
 
-namespace App.Content.Domain.Operations.Queries.GetSingleArticle
+namespace App.Content.Domain.Operations.Queries.GetArticleBySlug
 {
-    internal class GetSingleArticleQueryHandler : IRequestHandler<GetSingleArticleQuery, OperationResponse<GetSingleArticleQueryResult>>
+    internal class GetArticleBySlugQueryHandler : IRequestHandler<GetArticleBySlugQuery, OperationResponse<GetArticleBySlugQueryResult>>
     {
         private readonly IArticleRepository _articleRepository;
         private readonly IUsersService _usersService;
         private readonly IUserContext _userContext;
 
-        public GetSingleArticleQueryHandler([NotNull] IArticleRepository articleRepository,
+        public GetArticleBySlugQueryHandler([NotNull] IArticleRepository articleRepository,
             [NotNull] IUsersService usersService, 
             [NotNull] IUserContext userContext)
         {
@@ -27,17 +27,17 @@ namespace App.Content.Domain.Operations.Queries.GetSingleArticle
             _userContext = userContext;
         }
 
-        public async Task<OperationResponse<GetSingleArticleQueryResult>> Handle(GetSingleArticleQuery request, CancellationToken cancellationToken)
+        public async Task<OperationResponse<GetArticleBySlugQueryResult>> Handle(GetArticleBySlugQuery request, CancellationToken cancellationToken)
         {
             var article = await _articleRepository.GetBySlug(request.Slug, _userContext.UserId);
             if (article == null)
-                return OperationResponseFactory.NotFound<GetSingleArticleQuery, OperationResponse<GetSingleArticleQueryResult>>(typeof(ArticleEntity), request.Slug);
+                return OperationResponseFactory.NotFound<GetArticleBySlugQuery, OperationResponse<GetArticleBySlugQueryResult>>(typeof(ArticleEntity), request.Slug);
 
             //what if this operation fails???
             var getProfileQueryResult = await _usersService.GetProfile(article.Author.Username);
             var authorProfile = getProfileQueryResult.Response.Profile;
             
-            return OperationResponseFactory.Success(new GetSingleArticleQueryResult
+            return OperationResponseFactory.Success(new GetArticleBySlugQueryResult
             {
                 Article = article.ToArticleDTO(authorProfile)
             });

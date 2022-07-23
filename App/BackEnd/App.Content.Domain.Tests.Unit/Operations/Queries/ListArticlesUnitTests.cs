@@ -176,14 +176,14 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
                 var previousArticle = previousResult.Response.Articles.Single();
                     
                 currentArticle.Title.Should().NotBe(previousArticle.Title);
-                currentArticle.CreatedAt.Should().BeAfter(previousArticle.CreatedAt);
+                currentArticle.CreatedAt.Should().BeBefore(previousArticle.CreatedAt);
                 
                 previousResult = result;
             }
         }
         
         [Fact]
-        public async Task GivenFilterByOffsetOutOfBounds_WhenListArticles_Then()
+        public async Task GivenFilterByOffsetOutOfBounds_WhenListArticles_ThenNoArticles()
         {
             //arrange
             var outOfBoundsOffset = (await _module.ArticleRepository.GetAll(null)).Count() + 1;

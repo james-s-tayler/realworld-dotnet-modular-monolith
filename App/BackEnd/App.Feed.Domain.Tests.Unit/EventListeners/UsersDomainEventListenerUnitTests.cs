@@ -1,13 +1,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using App.Core.Testing;
-using App.Feed.Domain.Entities;
 using App.Feed.Domain.Tests.Unit.Setup;
 using App.Users.Domain.Contracts.DTOs;
 using App.Users.Domain.Contracts.Operations.Commands.FollowUser;
-using App.Users.Domain.Contracts.Operations.Commands.RegisterUser;
 using App.Users.Domain.Contracts.Operations.Commands.UnfollowUser;
-using App.Users.Domain.Contracts.Operations.Commands.UpdateUser;
 using AutoFixture;
 using FluentAssertions;
 using Xunit;
