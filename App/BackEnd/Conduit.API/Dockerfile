@@ -23,8 +23,9 @@ RUN dotnet restore Conduit.API --runtime linux-musl-x64
 
 FROM base AS tests
 COPY . .
-RUN dotnet build Conduit.API -c Release -o output --no-restore --runtime linux-musl-x64
-RUN echo '#!/bin/sh\ndotnet test --no-restore --no-build -c Release -o output' > /app/run-tests.sh && chmod +x /app/run-tests.sh 
+RUN echo -e "#! /bin/sh \n \
+dotnet test Conduit.API.sln --runtime linux-musl-x64" \
+    > /app/run-tests.sh && chmod +x /app/run-tests.sh
 
 FROM base AS publish
 #programmatically strip out the tests from the sln before building

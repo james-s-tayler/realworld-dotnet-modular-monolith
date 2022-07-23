@@ -16,9 +16,11 @@ services:
       context: App/BackEnd/
       dockerfile: Conduit.API/Dockerfile
       target: tests
-    command: /bin/sh -c "/app/run-tests.sh"
+    command: /bin/sh "./run-tests.sh"
     networks:
      - conduit-api
+    volumes:
+      - ./sqlite:/sqlite
 
 networks:
   conduit-api:

@@ -203,7 +203,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
         }
         
         [Fact]
-        public async Task GivenDefaultFilter_WhenListArticles_ThenReturnsMostRecentArticlesOrderedByDate()
+        public async Task GivenDefaultFilter_WhenListArticles_ThenReturnsMostRecentArticlesOrderedByDateDesc()
         {
             //arrange
             var listArticlesQuery = new ListArticlesQuery();
@@ -221,7 +221,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             for (var i = 1; i < result.Response.Articles.Count; i++)
             {
                 var currentArticle = result.Response.Articles[i];
-                currentArticle.CreatedAt.Should().BeAfter(previousArticle.CreatedAt);
+                currentArticle.CreatedAt.Should().BeBefore(previousArticle.CreatedAt);
 
                 previousArticle = currentArticle;
             }
