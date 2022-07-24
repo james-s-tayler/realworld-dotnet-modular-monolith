@@ -1,6 +1,10 @@
-name: Pipeline
+name: PR Builder
 
-on: [push]
+on:
+  push:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -23,5 +27,5 @@ jobs:
           path: .batect/caches
           key: batect-${{ hashFiles('batect') }}
 
-      - name: Build application
+      - name: dotnet test
         run: ./batect dotnet-test
