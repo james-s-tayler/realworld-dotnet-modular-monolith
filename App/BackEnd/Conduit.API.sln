@@ -120,7 +120,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Batect", "Batect", "{0D1D87
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHubActions", "GitHubActions", "{759A2128-1826-42F8-899E-98B274F2B56A}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\.github\workflows\pr-builder.yml = ..\..\.github\workflows\pr-builder.yml
+		..\..\.github\workflows\pull-request-builder.yml = ..\..\.github\workflows\pull-request-builder.yml
+		..\..\.github\workflows\continuous-deployment-pipeline.yml = ..\..\.github\workflows\continuous-deployment-pipeline.yml
 	EndProjectSection
 EndProject
 Global
