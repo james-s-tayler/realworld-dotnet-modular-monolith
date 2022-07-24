@@ -1,0 +1,76 @@
+tasks:
+  build:
+    description: build
+    run:
+      container: build-env
+      command: dotnet build
+  ls:
+    description: ls
+    run:
+      container: build-env
+      command: ls -ltr
+containers:
+  build-env:
+    image: mcr.microsoft.com/dotnet/sdk:5.0
+    working_directory: /App/BackEnd
+    volumes:
+      - local: ./App/BackEnd
+        container: /App/BackEnd
+      - type: cache
+        name: nuget-cache
+        container: /root/.nuget/packages
+      # Repeat this cache for each project in your codebase (make sure each one has a unique name):
+      - type: cache
+        name: app-content-domain-obj
+        container: /App/BackEnd/App.Content.Domain/obj
+      - type: cache
+        name: app-content-domain-contracts-obj
+        container: /App/BackEnd/App.Content.Domain.Contracts/obj
+      - type: cache
+        name: app-content-domain-tests-unit-obj
+        container: /App/BackEnd/App.Content.Domain.Tests.Unit/obj
+      - type: cache
+        name: app-core-obj
+        container: /App/BackEnd/App.Core/obj
+      - type: cache
+        name: app-core-testing-obj
+        container: /App/BackEnd/App.Core.Testing/obj
+      - type: cache
+        name: app-core-tests-unit-obj
+        container: /App/BackEnd/App.Core.Tests.Unit/obj
+      - type: cache
+        name: app-feed-domain-obj
+        container: /App/BackEnd/App.Feed.Domain/obj
+      - type: cache
+        name: app-feed-domain-contracts-obj
+        container: /App/BackEnd/App.Feed.Domain.Contracts/obj
+      - type: cache
+        name: app-feed-domain-tests-unit-obj
+        container: /App/BackEnd/App.Feed.Domain.Tests.Unit/obj
+      - type: cache
+        name: app-fitnessfunctions-architecturetests-obj
+        container: /App/BackEnd/App.FitnessFunctions.ArchitectureTests/obj
+      - type: cache
+        name: app-modulename-domain-obj
+        container: /App/BackEnd/App.ModuleName.Domain/obj
+      - type: cache
+        name: app-modulename-domain-contracts-obj
+        container: /App/BackEnd/App.ModuleName.Domain.Contracts/obj
+      - type: cache
+        name: app-modulename-domain-tests-unit-obj
+        container: /App/BackEnd/App.ModuleName.Domain.Tests.Unit/obj
+      - type: cache
+        name: app-users-domain-obj
+        container: /App/BackEnd/App.Users.Domain/obj
+      - type: cache
+        name: app-users-domain-contracts-obj
+        container: /App/BackEnd/App.Users.Domain.Contracts/obj
+      - type: cache
+        name: app-users-domain-tests-unit-obj
+        container: /App/BackEnd/App.Users.Domain.Tests.Unit/obj
+      - type: cache
+        name: conduit-api-obj
+        container: /App/BackEnd/Conduit.API/obj
+      - type: cache
+        name: conduit-api-tests-integration-obj
+        container: /App/BackEnd/Conduit.API.Tests.Integration/obj
