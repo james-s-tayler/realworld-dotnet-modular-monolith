@@ -118,6 +118,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Batect", "Batect", "{0D1D87
 		..\..\batect.yml = ..\..\batect.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHubActions", "GitHubActions", "{759A2128-1826-42F8-899E-98B274F2B56A}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\.github\workflows\pipeline.yml = ..\..\.github\workflows\pipeline.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -230,5 +235,6 @@ Global
 		{4ABD71E0-D56C-4665-A5CC-47F2A119B724} = {69E5A151-D135-47D9-AF4D-26F8BC2A2CA9}
 		{DF6F4B95-7760-49B8-AF3F-4AAE0C3B7F24} = {3A609C99-32B3-4B28-8B65-1E58BC0A86D3}
 		{0D1D87FD-A9D8-4567-9C19-95DFD9D62922} = {15829510-7835-4630-BA28-B7955FC6108F}
+		{759A2128-1826-42F8-899E-98B274F2B56A} = {15829510-7835-4630-BA28-B7955FC6108F}
 	EndGlobalSection
 EndGlobal
