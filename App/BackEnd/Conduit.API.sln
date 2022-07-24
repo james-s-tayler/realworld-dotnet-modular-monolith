@@ -122,6 +122,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHubActions", "GitHubActi
 	ProjectSection(SolutionItems) = preProject
 		..\..\.github\workflows\pull-request-builder.yml = ..\..\.github\workflows\pull-request-builder.yml
 		..\..\.github\workflows\continuous-deployment-pipeline.yml = ..\..\.github\workflows\continuous-deployment-pipeline.yml
+		..\..\.github\workflows\pull-request-reviewdog.yml = ..\..\.github\workflows\pull-request-reviewdog.yml
 	EndProjectSection
 EndProject
 Global
