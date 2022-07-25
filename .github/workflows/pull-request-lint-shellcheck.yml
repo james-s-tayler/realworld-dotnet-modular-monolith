@@ -1,7 +1,7 @@
 name: batect lint:shell
 on: [pull_request]
 jobs:
-  actionlint:
+  shellcheck:
     runs-on: ubuntu-latest
     env:
       TERM: xterm-256color

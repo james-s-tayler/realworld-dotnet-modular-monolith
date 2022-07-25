@@ -1,7 +1,7 @@
 name: batect lint:docker
 on: [pull_request]
 jobs:
-  actionlint:
+  hadolint:
     runs-on: ubuntu-latest
     env:
       TERM: xterm-256color
