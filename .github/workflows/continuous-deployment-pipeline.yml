@@ -1,7 +1,7 @@
 name: Continuous Deployment Pipeline
 
 on:
-eafaeoigkegia  push:
+  push:
     branches:
       - main
 
