@@ -1,5 +1,18 @@
+include:
+  - type: git
+    repo: https://github.com/batect/shellcheck-bundle.git
+    ref: 0.10.0
+  - type: git
+    repo: https://github.com/batect/hadolint-bundle.git
+    ref: 0.21.0
+
 tasks:
-  
+
+  lint:actionlint:
+    description: lint GitHub Actions workflows
+    group: Linting tasks
+    run:
+      container: actionlint
   dotnet-build:
     description: run dotnet build on the solution
     run:
@@ -23,6 +36,12 @@ tasks:
       - dotnet-restore
 
 containers:
+  actionlint:
+    image: rhysd/actionlint:latest
+    working_directory: /repo
+    volumes:
+      - local: ./
+        container: /repo
   dotnet-sdk:
     image: mcr.microsoft.com/dotnet/sdk:5.0-alpine
     working_directory: /App/BackEnd
