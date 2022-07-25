@@ -13,8 +13,10 @@ tasks:
     group: Linting tasks
     run:
       container: actionlint
+
   dotnet-build:
     description: run dotnet build on the solution
+    group: Build tasks
     run:
       container: dotnet-sdk
       command: dotnet build Conduit.API.sln --no-restore
@@ -23,12 +25,14 @@ tasks:
 
   dotnet-restore:
     description: run dotnet restore on the solution with --runtime linux-musl-x64
+    group: Build tasks
     run:
       container: dotnet-sdk
       command: dotnet restore Conduit.API.sln --runtime linux-musl-x64
 
   dotnet-test:
     description: run dotnet test on the solution
+    group: Build tasks
     run:
       container: dotnet-sdk
       command: dotnet test Conduit.API.sln --no-restore --runtime linux-musl-x64
