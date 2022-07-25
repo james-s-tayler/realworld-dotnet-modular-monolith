@@ -14,6 +14,20 @@ tasks:
     run:
       container: actionlint
 
+  lint:docker:wiki:
+    description: Open the hadolint wiki
+    group: Linting tasks
+    run:
+      container: dotnet-sdk
+      command: echo https://github.com/hadolint/hadolint/wiki
+
+  lint:shell:wiki:
+    description: Open the shellcheck wiki
+    group: Linting tasks
+    run:
+      container: dotnet-sdk
+      command: echo https://www.shellcheck.net/wiki
+
   dotnet-build:
     description: run dotnet build on the solution
     group: Build tasks

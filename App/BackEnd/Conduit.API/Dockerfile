@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS base
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 WORKDIR /app
 #dotnet restore only needs .sln and .csproj files in order to run, since these change infrequently and dotnet restore takes a long time to run
 #it's good to do COPY . . after this step so that dotnet restore can be effectively cached to speed up the docker image build
