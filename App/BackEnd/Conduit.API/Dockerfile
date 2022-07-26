@@ -24,13 +24,14 @@ RUN dotnet restore Conduit.API --runtime linux-musl-x64
 
 FROM base AS tests
 COPY . .
-RUN echo -e "#! /bin/sh \n \
+RUN echo "#! /bin/sh \n \
 dotnet test Conduit.API.sln --runtime linux-musl-x64" \
     > /app/run-tests.sh && chmod +x /app/run-tests.sh
 
 FROM base AS publish
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 #programmatically strip out the tests from the sln before building
-RUN for test_project in `dotnet sln Conduit.API.sln list | grep ".csproj" | grep "Tests"`; do dotnet sln Conduit.API.sln remove ${test_project}; done;
+RUN for test_project in $(dotnet sln Conduit.API.sln list | grep ".csproj" | grep "Tests"); do dotnet sln Conduit.API.sln remove "${test_project}"; done;
 
 COPY . .
 
