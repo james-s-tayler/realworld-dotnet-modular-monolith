@@ -24,7 +24,7 @@ RUN dotnet restore Conduit.API --runtime linux-musl-x64
 
 FROM base AS tests
 COPY . .
-RUN echo "#! /bin/sh \n \
+RUN printf "#! /bin/sh \n \
 dotnet test Conduit.API.sln --runtime linux-musl-x64" \
     > /app/run-tests.sh && chmod +x /app/run-tests.sh
 
