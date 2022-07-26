@@ -13,6 +13,7 @@ jobs:
       TERM: xterm-256color
       BATECT_CACHE_TYPE: directory
       BATECT_ENABLE_TELEMETRY: true
+      DOCKER_BUILDKIT: 1
 
     steps:
       - uses: actions/checkout@v3.0.2
@@ -27,4 +28,4 @@ jobs:
           key: batect-${{ hashFiles('batect') }}
 
       - name: dotnet test
-        run: ./batect dotnet-test
+        run: ./batect app:test:unit

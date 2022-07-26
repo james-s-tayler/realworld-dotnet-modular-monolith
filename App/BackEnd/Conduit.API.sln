@@ -35,7 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{21BB14
 		..\..\docker-compose.dev-dependencies.yml = ..\..\docker-compose.dev-dependencies.yml
 		..\..\docker-compose.tests.yml = ..\..\docker-compose.tests.yml
 		..\..\docker-compose.yml = ..\..\docker-compose.yml
-		Conduit.API\Dockerfile = Conduit.API\Dockerfile
+		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppTemplates", "AppTemplates", "{6FC2BBD5-038B-42CC-8851-98D417A6BEF3}"
