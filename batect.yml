@@ -27,6 +27,13 @@ tasks:
     run:
       container: tools
       command: echo https://www.shellcheck.net/wiki
+      
+  lint:commit:
+    description: Checks the commit message of HEAD has a JIRA reference
+    group: Linting tasks
+    run:
+      container: tools
+      command: /repo/DevOps/Tools/commit_lint.sh
 
   app:build:
     description: build the app
@@ -57,7 +64,14 @@ containers:
         container: /repo
   
   tools:
-    image: alpine:3.14
+    build_directory: ./DevOps/Tools
+    working_directory: /repo
+    volumes:
+      - local: ./
+        container: /repo
+        
+  git:
+    image: alpine/git:latest
     working_directory: /repo
     volumes:
       - local: ./
