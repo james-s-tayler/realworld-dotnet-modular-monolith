@@ -1,5 +1,2 @@
-FROM alpine:latest
-RUN apk update
-RUN apk add git
-RUN git config --global --add safe.directory /repo
-WORKDIR /repo
+FROM alpine:3.14.7
+RUN apk update && apk add git && git config --global --add safe.directory /repo

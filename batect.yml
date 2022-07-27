@@ -67,7 +67,7 @@ containers:
     build_directory: ./DevOps/Tools
     working_directory: /repo
     volumes:
-      - local: ./
+      - local: ${GITHUB_WORKSPACE:-./}
         container: /repo
         
   git:
