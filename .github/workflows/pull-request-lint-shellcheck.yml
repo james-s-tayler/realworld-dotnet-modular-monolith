@@ -1,20 +1,13 @@
-name: PR Builder
-
-on:
-  pull_request:
-    branches:
-      - main
-
+name: batect lint:shell
+on: [pull_request]
 jobs:
-  build:
-    name: "Build and Test"
+  shellcheck:
     runs-on: ubuntu-latest
     env:
       TERM: xterm-256color
       BATECT_CACHE_TYPE: directory
       BATECT_ENABLE_TELEMETRY: true
-      DOCKER_BUILDKIT: 1
-
+      
     steps:
       - uses: actions/checkout@v3.0.2
 
@@ -27,5 +20,5 @@ jobs:
           path: .batect/caches
           key: batect-${{ hashFiles('batect') }}
 
-      - name: dotnet test
-        run: ./batect app:test:unit
+      - name: batect lint:shell
+        run: ./batect lint:shell

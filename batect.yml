@@ -1,31 +1,204 @@
+include:
+  - type: git
+    repo: https://github.com/batect/shellcheck-bundle.git
+    ref: 0.10.0
+  - type: git
+    repo: https://github.com/batect/hadolint-bundle.git
+    ref: 0.21.0
+
 tasks:
-  
-  dotnet-build:
-    description: run dotnet build on the solution
-    run:
-      container: dotnet-sdk
-      command: dotnet build Conduit.API.sln --no-restore
-    prerequisites:
-      - dotnet-restore
 
-  dotnet-restore:
-    description: run dotnet restore on the solution with --runtime linux-musl-x64
+  lint:actionlint:
+    description: lint GitHub Actions workflows
+    group: Linting tasks
     run:
-      container: dotnet-sdk
-      command: dotnet restore Conduit.API.sln --runtime linux-musl-x64
+      container: actionlint
 
-  dotnet-test:
-    description: run dotnet test on the solution
+  lint:wiki:docker:
+    description: Open the hadolint wiki
+    group: Linting tasks
     run:
-      container: dotnet-sdk
-      command: dotnet test Conduit.API.sln --no-restore --runtime linux-musl-x64
-    prerequisites:
-      - dotnet-restore
+      container: tools
+      command: echo https://github.com/hadolint/hadolint/wiki
+
+  lint:wiki:shell:
+    description: Open the shellcheck wiki
+    group: Linting tasks
+    run:
+      container: tools
+      command: echo https://www.shellcheck.net/wiki
+
+  app:build:
+    description: build the app
+    group: Build tasks
+    run:
+      container: app-publish
+      command: echo 'build finished'
+
+  app:run:
+    description: run the app
+    group: Build tasks
+    run:
+      container: app-run
+      
+  app:test:unit:
+    description: run the unit tests
+    group: Build tasks
+    run:
+      container: app-test
+      command: /app/run-tests.sh
 
 containers:
-  dotnet-sdk:
-    image: mcr.microsoft.com/dotnet/sdk:5.0-alpine
-    working_directory: /App/BackEnd
+  actionlint:
+    image: rhysd/actionlint:latest
+    working_directory: /repo
+    volumes:
+      - local: ./
+        container: /repo
+  
+  tools:
+    image: alpine:3.14
+    working_directory: /repo
+    volumes:
+      - local: ./
+        container: /repo
+  
+  app-run:
+    build_directory: ./App/BackEnd
+    volumes:
+      - local: ./App/BackEnd
+        container: /App/BackEnd
+      - local: ./sqlite
+        container: /sqlite
+      - type: cache
+        name: nuget-cache
+        container: /root/.nuget/packages
+      # Repeat this cache for each project in your codebase (make sure each one has a unique name):
+      - type: cache
+        name: app-content-domain-obj
+        container: /App/BackEnd/App.Content.Domain/obj
+      - type: cache
+        name: app-content-domain-contracts-obj
+        container: /App/BackEnd/App.Content.Domain.Contracts/obj
+      - type: cache
+        name: app-content-domain-tests-unit-obj
+        container: /App/BackEnd/App.Content.Domain.Tests.Unit/obj
+      - type: cache
+        name: app-core-obj
+        container: /App/BackEnd/App.Core/obj
+      - type: cache
+        name: app-core-testing-obj
+        container: /App/BackEnd/App.Core.Testing/obj
+      - type: cache
+        name: app-core-tests-unit-obj
+        container: /App/BackEnd/App.Core.Tests.Unit/obj
+      - type: cache
+        name: app-feed-domain-obj
+        container: /App/BackEnd/App.Feed.Domain/obj
+      - type: cache
+        name: app-feed-domain-contracts-obj
+        container: /App/BackEnd/App.Feed.Domain.Contracts/obj
+      - type: cache
+        name: app-feed-domain-tests-unit-obj
+        container: /App/BackEnd/App.Feed.Domain.Tests.Unit/obj
+      - type: cache
+        name: app-fitnessfunctions-architecturetests-obj
+        container: /App/BackEnd/App.FitnessFunctions.ArchitectureTests/obj
+      - type: cache
+        name: app-modulename-domain-obj
+        container: /App/BackEnd/App.ModuleName.Domain/obj
+      - type: cache
+        name: app-modulename-domain-contracts-obj
+        container: /App/BackEnd/App.ModuleName.Domain.Contracts/obj
+      - type: cache
+        name: app-modulename-domain-tests-unit-obj
+        container: /App/BackEnd/App.ModuleName.Domain.Tests.Unit/obj
+      - type: cache
+        name: app-users-domain-obj
+        container: /App/BackEnd/App.Users.Domain/obj
+      - type: cache
+        name: app-users-domain-contracts-obj
+        container: /App/BackEnd/App.Users.Domain.Contracts/obj
+      - type: cache
+        name: app-users-domain-tests-unit-obj
+        container: /App/BackEnd/App.Users.Domain.Tests.Unit/obj
+      - type: cache
+        name: conduit-api-obj
+        container: /App/BackEnd/Conduit.API/obj
+      - type: cache
+        name: conduit-api-tests-integration-obj
+        container: /App/BackEnd/Conduit.API.Tests.Integration/obj
+  
+  app-publish:
+    build_directory: ./App/BackEnd
+    build_target: publish
+    volumes:
+      - local: ./App/BackEnd
+        container: /App/BackEnd
+      - local: ./sqlite
+        container: /sqlite
+      - type: cache
+        name: nuget-cache
+        container: /root/.nuget/packages
+      # Repeat this cache for each project in your codebase (make sure each one has a unique name):
+      - type: cache
+        name: app-content-domain-obj
+        container: /App/BackEnd/App.Content.Domain/obj
+      - type: cache
+        name: app-content-domain-contracts-obj
+        container: /App/BackEnd/App.Content.Domain.Contracts/obj
+      - type: cache
+        name: app-content-domain-tests-unit-obj
+        container: /App/BackEnd/App.Content.Domain.Tests.Unit/obj
+      - type: cache
+        name: app-core-obj
+        container: /App/BackEnd/App.Core/obj
+      - type: cache
+        name: app-core-testing-obj
+        container: /App/BackEnd/App.Core.Testing/obj
+      - type: cache
+        name: app-core-tests-unit-obj
+        container: /App/BackEnd/App.Core.Tests.Unit/obj
+      - type: cache
+        name: app-feed-domain-obj
+        container: /App/BackEnd/App.Feed.Domain/obj
+      - type: cache
+        name: app-feed-domain-contracts-obj
+        container: /App/BackEnd/App.Feed.Domain.Contracts/obj
+      - type: cache
+        name: app-feed-domain-tests-unit-obj
+        container: /App/BackEnd/App.Feed.Domain.Tests.Unit/obj
+      - type: cache
+        name: app-fitnessfunctions-architecturetests-obj
+        container: /App/BackEnd/App.FitnessFunctions.ArchitectureTests/obj
+      - type: cache
+        name: app-modulename-domain-obj
+        container: /App/BackEnd/App.ModuleName.Domain/obj
+      - type: cache
+        name: app-modulename-domain-contracts-obj
+        container: /App/BackEnd/App.ModuleName.Domain.Contracts/obj
+      - type: cache
+        name: app-modulename-domain-tests-unit-obj
+        container: /App/BackEnd/App.ModuleName.Domain.Tests.Unit/obj
+      - type: cache
+        name: app-users-domain-obj
+        container: /App/BackEnd/App.Users.Domain/obj
+      - type: cache
+        name: app-users-domain-contracts-obj
+        container: /App/BackEnd/App.Users.Domain.Contracts/obj
+      - type: cache
+        name: app-users-domain-tests-unit-obj
+        container: /App/BackEnd/App.Users.Domain.Tests.Unit/obj
+      - type: cache
+        name: conduit-api-obj
+        container: /App/BackEnd/Conduit.API/obj
+      - type: cache
+        name: conduit-api-tests-integration-obj
+        container: /App/BackEnd/Conduit.API.Tests.Integration/obj   
+    
+  app-test:
+    build_directory: ./App/BackEnd
+    build_target: tests
     volumes:
       - local: ./App/BackEnd
         container: /App/BackEnd

@@ -35,7 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{21BB14
 		..\..\docker-compose.dev-dependencies.yml = ..\..\docker-compose.dev-dependencies.yml
 		..\..\docker-compose.tests.yml = ..\..\docker-compose.tests.yml
 		..\..\docker-compose.yml = ..\..\docker-compose.yml
-		Conduit.API\Dockerfile = Conduit.API\Dockerfile
+		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppTemplates", "AppTemplates", "{6FC2BBD5-038B-42CC-8851-98D417A6BEF3}"
@@ -78,6 +78,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{10BFD663-3031-4822-8A5B-B66941215E4B}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\run-api-tests.sh = ..\..\run-api-tests.sh
+		..\..\sqlite\scrub-db.sh = ..\..\sqlite\scrub-db.sh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Operation", "Operation", "{3A609C99-32B3-4B28-8B65-1E58BC0A86D3}"
@@ -122,7 +123,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHubActions", "GitHubActi
 	ProjectSection(SolutionItems) = preProject
 		..\..\.github\workflows\pull-request-builder.yml = ..\..\.github\workflows\pull-request-builder.yml
 		..\..\.github\workflows\continuous-deployment-pipeline.yml = ..\..\.github\workflows\continuous-deployment-pipeline.yml
-		..\..\.github\workflows\pull-request-reviewdog.yml = ..\..\.github\workflows\pull-request-reviewdog.yml
+		..\..\.github\workflows\pull-request-lint-actionlint.yml = ..\..\.github\workflows\pull-request-lint-actionlint.yml
+		..\..\.github\workflows\pull-request-lint-dockerfile.yml = ..\..\.github\workflows\pull-request-lint-dockerfile.yml
+		..\..\.github\workflows\pull-request-lint-shellcheck.yml = ..\..\.github\workflows\pull-request-lint-shellcheck.yml
 	EndProjectSection
 EndProject
 Global
