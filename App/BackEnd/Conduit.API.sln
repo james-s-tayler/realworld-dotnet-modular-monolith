@@ -78,6 +78,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{10BFD663-3031-4822-8A5B-B66941215E4B}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\run-api-tests.sh = ..\..\run-api-tests.sh
+		..\..\sqlite\scrub-db.sh = ..\..\sqlite\scrub-db.sh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Operation", "Operation", "{3A609C99-32B3-4B28-8B65-1E58BC0A86D3}"
