@@ -8,6 +8,15 @@ include:
 
 tasks:
 
+  lint:
+    description: lint GitHub Actions workflows
+    group: Linting tasks
+    prerequisites: 
+      - lint:actionlint
+      - lint:docker
+      - lint:shell
+      - lint:commit
+
   lint:actionlint:
     description: lint GitHub Actions workflows
     group: Linting tasks
@@ -33,7 +42,7 @@ tasks:
     group: Linting tasks
     run:
       container: tools
-      command: /repo/DevOps/Tools/commit_lint.sh
+      command: sh -c '/repo/DevOps/Tools/commit_lint.sh ${GITHUB_WORKSPACE:-/repo}'
 
   app:build:
     description: build the app
