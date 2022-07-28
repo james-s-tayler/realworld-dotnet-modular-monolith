@@ -25,7 +25,7 @@ namespace App.Core.Tests.Unit
         
         private const string Logger = nameof(Logger);
 
-        [Fact]
+        [Fact(Skip = "This code isn't used, rather it's just here to remind me how to do this")]
         public async Task GivenPollyContextInjectedByDelegatingHandler_WhenRetryPolicyInvoked_ThenLogsRetryCount()
         {
             //arrange
