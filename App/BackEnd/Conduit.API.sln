@@ -26,6 +26,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{47341F65-D512-421C-809D-6BB36CE52C53}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
+		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{15829510-7835-4630-BA28-B7955FC6108F}"
@@ -35,7 +36,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{21BB14
 		..\..\docker-compose.dev-dependencies.yml = ..\..\docker-compose.dev-dependencies.yml
 		..\..\docker-compose.tests.yml = ..\..\docker-compose.tests.yml
 		..\..\docker-compose.yml = ..\..\docker-compose.yml
-		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppTemplates", "AppTemplates", "{6FC2BBD5-038B-42CC-8851-98D417A6BEF3}"
@@ -69,10 +69,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{9A4A1AF0-FB3D-41DA-88B0-48E7D38F5986}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\stop_dev_dependencies.sh = ..\..\stop_dev_dependencies.sh
-		..\..\stop_all.sh = ..\..\stop_all.sh
-		..\..\build_n_run_tests.sh = ..\..\build_n_run_tests.sh
 		..\..\build_n_run_dev_dependencies.sh = ..\..\build_n_run_dev_dependencies.sh
-		..\..\build_n_run_backend.sh = ..\..\build_n_run_backend.sh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{10BFD663-3031-4822-8A5B-B66941215E4B}"
@@ -126,6 +123,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHubActions", "GitHubActi
 		..\..\.github\workflows\pull-request-lint-actionlint.yml = ..\..\.github\workflows\pull-request-lint-actionlint.yml
 		..\..\.github\workflows\pull-request-lint-dockerfile.yml = ..\..\.github\workflows\pull-request-lint-dockerfile.yml
 		..\..\.github\workflows\pull-request-lint-shellcheck.yml = ..\..\.github\workflows\pull-request-lint-shellcheck.yml
+		..\..\.github\workflows\pull-request-lint-commit.yml = ..\..\.github\workflows\pull-request-lint-commit.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{4AF5FA7B-5229-4FCF-ACEF-A67BA70C43DB}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\DevOps\Tools\commit_lint.sh = ..\..\DevOps\Tools\commit_lint.sh
+		..\..\DevOps\Tools\Dockerfile = ..\..\DevOps\Tools\Dockerfile
 	EndProjectSection
 EndProject
 Global
@@ -241,5 +245,6 @@ Global
 		{DF6F4B95-7760-49B8-AF3F-4AAE0C3B7F24} = {3A609C99-32B3-4B28-8B65-1E58BC0A86D3}
 		{0D1D87FD-A9D8-4567-9C19-95DFD9D62922} = {15829510-7835-4630-BA28-B7955FC6108F}
 		{759A2128-1826-42F8-899E-98B274F2B56A} = {15829510-7835-4630-BA28-B7955FC6108F}
+		{4AF5FA7B-5229-4FCF-ACEF-A67BA70C43DB} = {0D1D87FD-A9D8-4567-9C19-95DFD9D62922}
 	EndGlobalSection
 EndGlobal
