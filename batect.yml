@@ -42,7 +42,7 @@ tasks:
     group: Linting tasks
     run:
       container: tools
-      command: sh -c '/repo/DevOps/Tools/commit_lint.sh ${GITHUB_WORKSPACE:-/repo}'
+      command: sh -c '/repo/DevOps/Batect/Tools/commit_lint.sh ${GITHUB_WORKSPACE:-/repo}'
 
   app:build:
     description: build the app
@@ -57,12 +57,38 @@ tasks:
     run:
       container: app-run
       
+      #container_name: conduit-api
+      #  ports:
+      #    - "5100:80"
+      #environment:
+      #  - ASPNETCORE_ENVIRONMENT=Docker
+      #  - JWTSETTINGS__SECRET=secretsecretsecretsecretsecretsecret
+      #  - OTEL_SERVICE_NAME=Conduit.API
+      #  - SEQ_URL=http://seq_logs:5341
+      #  - GIT_COMMIT_HASH=${GIT_COMMIT_HASH}
+      
   app:test:unit:
     description: run the unit tests
     group: Build tasks
     run:
       container: app-test
       command: /app/run-tests.sh
+      
+  app:test:api:
+    description: run the Postman collection API tests 
+    group: Build tasks
+    prerequisites:
+      - app:db:scrub
+      - app:run
+    run:
+      container: newman
+      
+  app:db:scrub:
+    description: wipe the database
+    group: Build tasks
+    run:
+      container: tools
+      command: sh -c '/repo/DevOps/Batect/Tools/scrub_db.sh'
 
 containers:
   actionlint:
@@ -73,14 +99,14 @@ containers:
         container: /repo
   
   tools:
-    build_directory: ./DevOps/Tools
+    build_directory: ./DevOps/Batect/Tools
     working_directory: /repo
     volumes:
       - local: ${GITHUB_WORKSPACE:-./}
         container: /repo
-        
-  git:
-    image: alpine/git:latest
+
+  newman:
+    image: postman/newman:alpine
     working_directory: /repo
     volumes:
       - local: ./

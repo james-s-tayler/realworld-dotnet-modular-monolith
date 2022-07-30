@@ -1,7 +1,7 @@
 #! /bin/bash
 set -x
 
-sudo ./sqlite/scrub-db.sh
+sudo ../Tools/scrub_db.sh
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
