@@ -57,16 +57,6 @@ tasks:
     run:
       container: app-run
       
-      #container_name: conduit-api
-      #  ports:
-      #    - "5100:80"
-      #environment:
-      #  - ASPNETCORE_ENVIRONMENT=Docker
-      #  - JWTSETTINGS__SECRET=secretsecretsecretsecretsecretsecret
-      #  - OTEL_SERVICE_NAME=Conduit.API
-      #  - SEQ_URL=http://seq_logs:5341
-      #  - GIT_COMMIT_HASH=${GIT_COMMIT_HASH}
-      
   app:test:unit:
     description: run the unit tests
     group: Build tasks
@@ -112,8 +102,51 @@ containers:
       - local: ./
         container: /repo
   
+  seq_logs:
+    image: datalust/seq:latest
+    additional_hostnames:
+      - seq_logs
+    ports:
+      - 5341:5341
+      - 8080:80
+    environment:
+      ACCEPT_EULA: Y
+    volumes:
+      - type: cache
+        name: seq_logs
+        container: /data
+  
+  jaeger:
+    image: jaegertracing/all-in-one:1.36
+    additional_hostnames: 
+      - jaeger
+    ports:
+      - 5775:5775/udp
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 5778:5778
+      - 16686:16686
+      - 14268:14268
+      - 14250:14250
+      - 9411:9411
+    environment:
+      COLLECTOR_ZIPKIN_HOST_PORT: 9411
+  
   app-run:
     build_directory: ./App/BackEnd
+    additional_hostnames:
+      - conduit-api
+    ports:
+      - 5100:80
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      JWTSETTINGS__SECRET: secretsecretsecretsecretsecretsecret
+      OTEL_SERVICE_NAME: Conduit.API
+      SEQ_URL: http://seq_logs:5341
+      GIT_COMMIT_HASH: ${GIT_COMMIT_HASH:-HEAD}
+    dependencies:
+      - seq_logs
+      - jaeger
     volumes:
       - local: ./App/BackEnd
         container: /App/BackEnd

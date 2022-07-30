@@ -1,0 +1,108 @@
+version: '3.4'
+
+services:
+
+  db:
+    image: postgres:latest
+    container_name: db
+    ports:
+      - "5432:5432"
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201"
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - conduit-api
+    depends_on:
+      - sqelf
+
+  sqelf:
+    image: datalust/sqelf:latest
+    container_name: sqelf
+    ports:
+      - "12201:12201/udp"
+    environment:
+      SEQ_ADDRESS: http://seq_logs:5341
+    restart: unless-stopped
+    networks:
+      - conduit-api
+    depends_on:
+      - seq_logs
+
+  seq_logs:
+    image: datalust/seq:latest
+    container_name: seq_logs
+    ports:
+      - "5341:5341"
+      - "8080:80"
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+    volumes:
+      - seq_logs:/data
+    networks:
+      - conduit-api
+
+  pgAdmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgAdmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@conduit.com
+      - PGADMIN_DEFAULT_PASSWORD=password
+    ports:
+      - "9080:80"
+    restart: unless-stopped
+    networks:
+      - conduit-api
+    depends_on:
+      - db
+
+  conduit-api-redis:
+    image: redis:latest
+    container_name: conduit-api-redis
+    ports:
+      - "6379:6379"
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201"
+    restart: unless-stopped
+    volumes:
+      - conduit-api-redis:/data
+    networks:
+      - conduit-api
+    depends_on:
+      - sqelf
+
+  jaeger:
+    container_name: jaeger
+    image: jaegertracing/all-in-one:1.33
+    ports:
+     - "5775:5775/udp"
+     - "6831:6831/udp"
+     - "6832:6832/udp"
+     - "5778:5778"
+     - "16686:16686"
+     - "14268:14268"
+     - "14250:14250"
+     - "9411:9411"
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201"
+    restart: unless-stopped
+    environment:
+     - COLLECTOR_ZIPKIN_HOST_PORT=:9411
+    networks:
+      - conduit-api
+    depends_on:
+      - sqelf
+
+volumes:
+  conduit-api-redis:
+  seq_logs:
+networks:
+  conduit-api:
