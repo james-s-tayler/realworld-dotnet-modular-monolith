@@ -9,7 +9,7 @@ include:
 tasks:
 
   lint:
-    description: lint GitHub Actions workflows
+    description: lint All-The-Things
     group: Linting tasks
     prerequisites: 
       - lint:actionlint
@@ -59,23 +59,23 @@ tasks:
       
   app:test:unit:
     description: run the unit tests
-    group: Build tasks
+    group: Testing tasks
     run:
       container: app-test
       command: /app/run-tests.sh
       
   app:test:api:
     description: run the Postman collection API tests 
-    group: Build tasks
+    group: Testing tasks
     prerequisites:
       - app:db:scrub
-      - app:run
     run:
       container: newman
+      command: run Conduit.postman_collection.json --delay-request 250 --global-var "APIURL=http://conduit-api/api" --global-var "USERNAME=soloyolo" --global-var "EMAIL=soloyolo@mail.com" --global-var "PASSWORD=password123" "$@"
       
   app:db:scrub:
     description: wipe the database
-    group: Build tasks
+    group: Database tasks
     run:
       container: tools
       command: sh -c '/repo/DevOps/Batect/Tools/scrub_db.sh'
@@ -97,10 +97,11 @@ containers:
 
   newman:
     image: postman/newman:alpine
-    working_directory: /repo
+    dependencies:
+      - app-run
     volumes:
-      - local: ./
-        container: /repo
+      - local: ./DevOps/Batect/ApiTests
+        container: /etc/newman
   
   seq_logs:
     image: datalust/seq:latest

@@ -114,7 +114,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiTests", "ApiTests", "{6A1B8860-E624-43D7-9228-29962AC30072}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\DevOps\Batect\ApiTests\Conduit.postman_collection.json = ..\..\DevOps\Batect\ApiTests\Conduit.postman_collection.json
-		..\..\DevOps\Batect\ApiTests\run-api-tests.sh = ..\..\DevOps\Batect\ApiTests\run-api-tests.sh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{A516B4C6-6A04-448C-BBE8-3A6D3B641C20}"
