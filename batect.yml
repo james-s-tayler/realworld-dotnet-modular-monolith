@@ -9,7 +9,7 @@ include:
 tasks:
 
   lint:
-    description: lint GitHub Actions workflows
+    description: lint All-The-Things
     group: Linting tasks
     prerequisites: 
       - lint:actionlint
@@ -42,7 +42,7 @@ tasks:
     group: Linting tasks
     run:
       container: tools
-      command: sh -c '/repo/DevOps/Tools/commit_lint.sh ${GITHUB_WORKSPACE:-/repo}'
+      command: sh -c '/repo/DevOps/Batect/Tools/commit_lint.sh ${GITHUB_WORKSPACE:-/repo}'
 
   app:build:
     description: build the app
@@ -59,10 +59,26 @@ tasks:
       
   app:test:unit:
     description: run the unit tests
-    group: Build tasks
+    group: Testing tasks
     run:
       container: app-test
       command: /app/run-tests.sh
+      
+  app:test:api:
+    description: run the Postman collection API tests 
+    group: Testing tasks
+    prerequisites:
+      - app:db:scrub
+    run:
+      container: newman
+      command: run Conduit.postman_collection.json --delay-request 250 --global-var "APIURL=http://conduit-api/api" --global-var "USERNAME=soloyolo" --global-var "EMAIL=soloyolo@mail.com" --global-var "PASSWORD=password123" "$@"
+      
+  app:db:scrub:
+    description: wipe the database
+    group: Database tasks
+    run:
+      container: tools
+      command: sh -c '/repo/DevOps/Batect/Tools/scrub_db.sh'
 
 containers:
   actionlint:
@@ -73,21 +89,65 @@ containers:
         container: /repo
   
   tools:
-    build_directory: ./DevOps/Tools
+    build_directory: ./DevOps/Batect/Tools
     working_directory: /repo
     volumes:
       - local: ${GITHUB_WORKSPACE:-./}
         container: /repo
-        
-  git:
-    image: alpine/git:latest
-    working_directory: /repo
+
+  newman:
+    image: postman/newman:alpine
+    dependencies:
+      - app-run
     volumes:
-      - local: ./
-        container: /repo
+      - local: ./DevOps/Batect/ApiTests
+        container: /etc/newman
+  
+  seq_logs:
+    image: datalust/seq:latest
+    additional_hostnames:
+      - seq_logs
+    ports:
+      - 5341:5341
+      - 8080:80
+    environment:
+      ACCEPT_EULA: Y
+    volumes:
+      - type: cache
+        name: seq_logs
+        container: /data
+  
+  jaeger:
+    image: jaegertracing/all-in-one:1.36
+    additional_hostnames: 
+      - jaeger
+    ports:
+      - 5775:5775/udp
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 5778:5778
+      - 16686:16686
+      - 14268:14268
+      - 14250:14250
+      - 9411:9411
+    environment:
+      COLLECTOR_ZIPKIN_HOST_PORT: 9411
   
   app-run:
     build_directory: ./App/BackEnd
+    additional_hostnames:
+      - conduit-api
+    ports:
+      - 5100:80
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      JWTSETTINGS__SECRET: secretsecretsecretsecretsecretsecret
+      OTEL_SERVICE_NAME: Conduit.API
+      SEQ_URL: http://seq_logs:5341
+      GIT_COMMIT_HASH: ${GIT_COMMIT_HASH:-HEAD}
+    dependencies:
+      - seq_logs
+      - jaeger
     volumes:
       - local: ./App/BackEnd
         container: /App/BackEnd

@@ -1,7 +1,7 @@
-#! /bin/bash
-
-shopt -s globstar nullglob
-for db in *.db
+#! /bin/sh
+echo "scrub-a-dub-dub"
+sqlite3 --version
+for db in ./sqlite/*.db
 do
   echo "Scrubbing ${db}"
   echo "============================="

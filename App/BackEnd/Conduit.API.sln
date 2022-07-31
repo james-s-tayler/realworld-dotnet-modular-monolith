@@ -29,14 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{47341F65-D51
 		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{15829510-7835-4630-BA28-B7955FC6108F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{21BB14D4-2021-4EFB-ABEA-31D8ED961492}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\docker-compose.dev-dependencies.yml = ..\..\docker-compose.dev-dependencies.yml
-		..\..\docker-compose.tests.yml = ..\..\docker-compose.tests.yml
-		..\..\docker-compose.yml = ..\..\docker-compose.yml
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevOps", "DevOps", "{15829510-7835-4630-BA28-B7955FC6108F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppTemplates", "AppTemplates", "{6FC2BBD5-038B-42CC-8851-98D417A6BEF3}"
 EndProject
@@ -65,18 +58,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Feed.Domain", "App.Feed.Domain\App.Feed.Domain.csproj", "{A37BD906-9420-44FA-ABFD-106710144DB7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Feed.Domain.Tests.Unit", "App.Feed.Domain.Tests.Unit\App.Feed.Domain.Tests.Unit.csproj", "{93AD7623-F2F0-4100-97A6-ED80D6919012}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{9A4A1AF0-FB3D-41DA-88B0-48E7D38F5986}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\stop_dev_dependencies.sh = ..\..\stop_dev_dependencies.sh
-		..\..\build_n_run_dev_dependencies.sh = ..\..\build_n_run_dev_dependencies.sh
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{10BFD663-3031-4822-8A5B-B66941215E4B}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\run-api-tests.sh = ..\..\run-api-tests.sh
-		..\..\sqlite\scrub-db.sh = ..\..\sqlite\scrub-db.sh
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Operation", "Operation", "{3A609C99-32B3-4B28-8B65-1E58BC0A86D3}"
 	ProjectSection(SolutionItems) = preProject
@@ -112,11 +93,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTest", "UnitTest", "{DF
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Batect", "Batect", "{0D1D87FD-A9D8-4567-9C19-95DFD9D62922}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\batect.yml = ..\..\batect.yml
-	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHubActions", "GitHubActions", "{759A2128-1826-42F8-899E-98B274F2B56A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{759A2128-1826-42F8-899E-98B274F2B56A}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\.github\workflows\pull-request-builder.yml = ..\..\.github\workflows\pull-request-builder.yml
 		..\..\.github\workflows\continuous-deployment-pipeline.yml = ..\..\.github\workflows\continuous-deployment-pipeline.yml
@@ -128,8 +106,36 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHubActions", "GitHubActi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{4AF5FA7B-5229-4FCF-ACEF-A67BA70C43DB}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\DevOps\Tools\commit_lint.sh = ..\..\DevOps\Tools\commit_lint.sh
-		..\..\DevOps\Tools\Dockerfile = ..\..\DevOps\Tools\Dockerfile
+		..\..\DevOps\Batect\Tools\commit_lint.sh = ..\..\DevOps\Batect\Tools\commit_lint.sh
+		..\..\DevOps\Batect\Tools\Dockerfile = ..\..\DevOps\Batect\Tools\Dockerfile
+		..\..\DevOps\Batect\Tools\scrub_db.sh = ..\..\DevOps\Batect\Tools\scrub_db.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiTests", "ApiTests", "{6A1B8860-E624-43D7-9228-29962AC30072}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\DevOps\Batect\ApiTests\Conduit.postman_collection.json = ..\..\DevOps\Batect\ApiTests\Conduit.postman_collection.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{A516B4C6-6A04-448C-BBE8-3A6D3B641C20}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".", ".", "{4585C59E-3947-458A-B981-39DBA50BF644}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\batect.yml = ..\..\batect.yml
+		..\..\README.md = ..\..\README.md
+		..\..\.gitignore = ..\..\.gitignore
+		..\..\batect.cmd = ..\..\batect.cmd
+		..\..\batect = ..\..\batect
+		..\..\docker-compose = ..\..\docker-compose
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sqlite", "sqlite", "{5787C468-D2B4-406B-83EA-7E14877FFC14}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\sqlite\content_development.db = ..\..\sqlite\content_development.db
+		..\..\sqlite\content_production.db = ..\..\sqlite\content_production.db
+		..\..\sqlite\feed_development.db = ..\..\sqlite\feed_development.db
+		..\..\sqlite\feed_production.db = ..\..\sqlite\feed_production.db
+		..\..\sqlite\users_development.db = ..\..\sqlite\users_development.db
+		..\..\sqlite\users_production.db = ..\..\sqlite\users_production.db
 	EndProjectSection
 EndProject
 Global
@@ -217,8 +223,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{12DDDC0A-472B-42B9-BEF1-E78F35A3091A} = {CF744F7C-DF0D-4AD9-A19D-F08F418D41C7}
 		{69E5A151-D135-47D9-AF4D-26F8BC2A2CA9} = {6FC2BBD5-038B-42CC-8851-98D417A6BEF3}
-		{9A4A1AF0-FB3D-41DA-88B0-48E7D38F5986} = {15829510-7835-4630-BA28-B7955FC6108F}
-		{10BFD663-3031-4822-8A5B-B66941215E4B} = {15829510-7835-4630-BA28-B7955FC6108F}
 		{3A609C99-32B3-4B28-8B65-1E58BC0A86D3} = {6FC2BBD5-038B-42CC-8851-98D417A6BEF3}
 		{3536CDE7-4380-4CDA-908F-B9466D6E2F5E} = {3A609C99-32B3-4B28-8B65-1E58BC0A86D3}
 		{13364BF9-85BD-4B27-9F16-5D4866D1800E} = {3A609C99-32B3-4B28-8B65-1E58BC0A86D3}
@@ -244,7 +248,10 @@ Global
 		{4ABD71E0-D56C-4665-A5CC-47F2A119B724} = {69E5A151-D135-47D9-AF4D-26F8BC2A2CA9}
 		{DF6F4B95-7760-49B8-AF3F-4AAE0C3B7F24} = {3A609C99-32B3-4B28-8B65-1E58BC0A86D3}
 		{0D1D87FD-A9D8-4567-9C19-95DFD9D62922} = {15829510-7835-4630-BA28-B7955FC6108F}
-		{759A2128-1826-42F8-899E-98B274F2B56A} = {15829510-7835-4630-BA28-B7955FC6108F}
 		{4AF5FA7B-5229-4FCF-ACEF-A67BA70C43DB} = {0D1D87FD-A9D8-4567-9C19-95DFD9D62922}
+		{6A1B8860-E624-43D7-9228-29962AC30072} = {0D1D87FD-A9D8-4567-9C19-95DFD9D62922}
+		{759A2128-1826-42F8-899E-98B274F2B56A} = {A516B4C6-6A04-448C-BBE8-3A6D3B641C20}
+		{6FC2BBD5-038B-42CC-8851-98D417A6BEF3} = {47341F65-D512-421C-809D-6BB36CE52C53}
+		{CF744F7C-DF0D-4AD9-A19D-F08F418D41C7} = {47341F65-D512-421C-809D-6BB36CE52C53}
 	EndGlobalSection
 EndGlobal
