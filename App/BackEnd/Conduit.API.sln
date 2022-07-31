@@ -125,7 +125,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".", ".", "{4585C59E-3947-45
 		..\..\.gitignore = ..\..\.gitignore
 		..\..\batect.cmd = ..\..\batect.cmd
 		..\..\batect = ..\..\batect
-		..\..\docker-compose = ..\..\docker-compose
+		..\..\renovate.json = ..\..\renovate.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sqlite", "sqlite", "{5787C468-D2B4-406B-83EA-7E14877FFC14}"
