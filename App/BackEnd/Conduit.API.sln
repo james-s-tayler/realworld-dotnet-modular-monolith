@@ -131,11 +131,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sqlite", "sqlite", "{5787C468-D2B4-406B-83EA-7E14877FFC14}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\sqlite\content_development.db = ..\..\sqlite\content_development.db
-		..\..\sqlite\content_production.db = ..\..\sqlite\content_production.db
 		..\..\sqlite\feed_development.db = ..\..\sqlite\feed_development.db
-		..\..\sqlite\feed_production.db = ..\..\sqlite\feed_production.db
 		..\..\sqlite\users_development.db = ..\..\sqlite\users_development.db
-		..\..\sqlite\users_production.db = ..\..\sqlite\users_production.db
 	EndProjectSection
 EndProject
 Global
