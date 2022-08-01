@@ -14,7 +14,20 @@
       ],
       "versioningTemplate": "loose",
       "datasourceTemplate": "repology",
-      "lookupNameTemplate": "alpine_3_14/{{depName}}"
+      "lookupNameTemplate": "alpine_3_16/{{depName}}"
+    }
+  ],
+  "packageRules": [
+    {
+      "datasources": [
+        "repology"
+      ],
+      "packagePatterns": [
+        "^alpine_3_16/"
+      ],
+      "separateMajorMinor": false,
+      "groupName": "alpine packages",
+      "groupSlug": "alpine"
     }
   ]
 }
