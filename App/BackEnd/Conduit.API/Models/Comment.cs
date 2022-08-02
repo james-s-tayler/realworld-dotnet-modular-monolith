@@ -117,12 +117,10 @@ namespace Conduit.API.Models
                 ) && 
                 (
                     CreatedAt == other.CreatedAt ||
-                    CreatedAt != null &&
                     CreatedAt.Equals(other.CreatedAt)
                 ) && 
                 (
                     UpdatedAt == other.UpdatedAt ||
-                    UpdatedAt != null &&
                     UpdatedAt.Equals(other.UpdatedAt)
                 ) && 
                 (
@@ -149,9 +147,7 @@ namespace Conduit.API.Models
                 // Suitable nullity checks etc, of course :)
                     
                     hashCode = hashCode * 59 + Id.GetHashCode();
-                    if (CreatedAt != null)
                     hashCode = hashCode * 59 + CreatedAt.GetHashCode();
-                    if (UpdatedAt != null)
                     hashCode = hashCode * 59 + UpdatedAt.GetHashCode();
                     if (Body != null)
                     hashCode = hashCode * 59 + Body.GetHashCode();

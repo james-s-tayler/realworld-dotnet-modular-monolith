@@ -124,7 +124,6 @@ namespace Conduit.API.Controllers
         /// Existing user login
         /// </summary>
         /// <remarks>Login for existing user</remarks>
-        /// <param name="body">Credentials to use</param>
         /// <response code="200">OK</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="422">Unexpected error</response>
