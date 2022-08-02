@@ -38,6 +38,10 @@ namespace Conduit.API.Controllers
     [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
     public class ArticlesApiController : OperationResponseController
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mediator"></param>
         public ArticlesApiController(IMediator mediator) : base(mediator)
         {
         }
