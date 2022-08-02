@@ -10,13 +10,13 @@ namespace App.Content.Domain.Operations.Commands.EditArticle
         public EditArticleCommandValidator()
         {
             RuleFor(command => command)
-                .MustAsync(ContainUpdate)
+                .Must(ContainUpdate)
                 .WithMessage(_ => "Must contain an update");
         }
 
-        private async Task<bool> ContainUpdate(EditArticleCommand command, CancellationToken cancellationToken)
+        private bool ContainUpdate(EditArticleCommand command)
         {
-            return command.UpdatedArticle.Title != null ||
+            return command.UpdatedArticle.Title != null || 
                    command.UpdatedArticle.Description != null ||
                    command.UpdatedArticle.Body != null;
         }
