@@ -6,10 +6,18 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Conduit.API.OpenApi
 {
-    public class SecurityRequirementsOperationFilter : IOperationFilter
+    /// <summary>
+    /// 
+    /// </summary>
+    public abstract class SecurityRequirementsOperationFilter : IOperationFilter
     {
         private readonly string _scheme = "Token";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <param name="context"></param>
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             if (!context

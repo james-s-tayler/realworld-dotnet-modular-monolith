@@ -8,15 +8,32 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Conduit.API.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class OperationResponseController : ControllerBase
     {
+        /// <summary>
+        /// 
+        /// </summary>
         protected IMediator Mediator { get; }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mediator"></param>
         public OperationResponseController(IMediator mediator)
         {
             Mediator = mediator;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="operationResponse"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         protected ObjectResult UnsuccessfulResponseResult<T>(OperationResponse<T> operationResponse) where T : class
         {
             if (operationResponse.Result == OperationResult.Success)

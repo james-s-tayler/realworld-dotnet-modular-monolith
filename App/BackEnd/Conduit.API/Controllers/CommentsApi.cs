@@ -37,6 +37,10 @@ namespace Conduit.API.Controllers
     [ApiController]
     public class CommentsApiController : OperationResponseController
     { 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mediator"></param>
         public CommentsApiController(IMediator mediator) : base(mediator)
         {
         }

@@ -2,8 +2,16 @@ using App.Users.Domain.Contracts.DTOs;
 
 namespace Conduit.API.Models.Mappers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class ProfileMapper
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="profileDto"></param>
+        /// <returns></returns>
         public static ProfileResponse ToProfileResponse(this ProfileDTO profileDto)
         {
             return new ProfileResponse

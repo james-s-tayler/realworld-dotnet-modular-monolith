@@ -34,6 +34,10 @@ namespace Conduit.API.Controllers
     [ApiController]
     public class DefaultApiController : OperationResponseController
     { 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mediator"></param>
         public DefaultApiController(IMediator mediator) : base(mediator)
         {
         }

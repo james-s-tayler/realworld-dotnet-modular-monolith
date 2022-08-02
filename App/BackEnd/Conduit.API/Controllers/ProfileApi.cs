@@ -33,6 +33,10 @@ namespace Conduit.API.Controllers
     public class ProfileApiController : OperationResponseController
     {
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mediator"></param>
         public ProfileApiController(IMediator mediator) : base(mediator) {}
         
         /// <summary>

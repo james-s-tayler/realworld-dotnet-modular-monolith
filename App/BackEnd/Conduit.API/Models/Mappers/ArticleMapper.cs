@@ -4,8 +4,16 @@ using App.Content.Domain.Contracts.DTOs;
 
 namespace Conduit.API.Models.Mappers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class ArticleMapper
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="article"></param>
+        /// <returns></returns>
         public static PublishArticleDTO ToPublishArticleDto(this NewArticle article)
         {
             return new PublishArticleDTO
@@ -17,6 +25,11 @@ namespace Conduit.API.Models.Mappers
             };
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="article"></param>
+        /// <returns></returns>
         public static EditArticleDTO ToEditArticleDto(this UpdateArticleRequest article)
         {
             return new EditArticleDTO
@@ -27,6 +40,11 @@ namespace Conduit.API.Models.Mappers
             };
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="articleDto"></param>
+        /// <returns></returns>
         public static SingleArticleResponse ToSingleArticleResponse(this SingleArticleDTO articleDto)
         {
             return new SingleArticleResponse

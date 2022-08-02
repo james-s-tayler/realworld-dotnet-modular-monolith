@@ -28,6 +28,10 @@ namespace Conduit.API.Controllers
     [ApiController]
     public class FavoritesApiController : OperationResponseController
     { 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mediator"></param>
         public FavoritesApiController(IMediator mediator) : base(mediator) {}
         
         /// <summary>

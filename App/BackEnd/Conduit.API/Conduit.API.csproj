@@ -15,6 +15,7 @@
     <DockerfileContext>..\..</DockerfileContext>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>CS1591</WarningsNotAsErrors>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MediatR" Version="10.0.1" />

@@ -34,6 +34,10 @@ namespace Conduit.API.Controllers
     [Consumes("application/json")]
     public class UserAndAuthenticationApiController : OperationResponseController
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mediator"></param>
         public UserAndAuthenticationApiController(IMediator mediator) : base(mediator) {}
 
         /// <summary>

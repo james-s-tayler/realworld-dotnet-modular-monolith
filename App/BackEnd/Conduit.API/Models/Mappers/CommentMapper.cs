@@ -3,8 +3,16 @@ using App.Content.Domain.Contracts.DTOs;
 
 namespace Conduit.API.Models.Mappers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class CommentMapper
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="commentDto"></param>
+        /// <returns></returns>
         public static SingleCommentResponse ToSingleCommentResponse(this SingleCommentDTO commentDto)
         {
             return new SingleCommentResponse
@@ -13,6 +21,11 @@ namespace Conduit.API.Models.Mappers
             };
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="commentDtos"></param>
+        /// <returns></returns>
         public static MultipleCommentsResponse ToMultipleCommentsResponse(this List<SingleCommentDTO> commentDtos)
         {
             var comments = new List<Comment>();
