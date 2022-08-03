@@ -13,7 +13,7 @@ using MediatR;
 namespace App.Content.Domain.Operations.Queries.GetArticleById
 {
     internal class GetArticleByIdQueryHandler : IRequestHandler<GetArticleByIdQuery, OperationResponse<GetArticleByIdQueryResult>>
-   gi {
+    {
         private readonly IUserContext _userContext;
         private readonly IUsersService _usersService;
         private readonly IArticleRepository _articleRepository;
