@@ -1,7 +1,7 @@
 name: batect lint:dotnet
 on: [pull_request]
 jobs:
-  shellcheck:
+  format:
     runs-on: ubuntu-latest
     env:
       TERM: xterm-256color
