@@ -126,7 +126,7 @@ containers:
         container: /data
   
   jaeger:
-    image: jaegertracing/all-in-one:1.36
+    image: jaegertracing/all-in-one:1.37
     additional_hostnames: 
       - jaeger
     ports:
