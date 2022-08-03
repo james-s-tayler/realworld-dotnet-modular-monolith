@@ -20,12 +20,12 @@ namespace Conduit.API.Attributes
         {
             // Per https://blog.markvincze.com/how-to-validate-action-parameters-with-dataannotation-attributes/
             var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
-            if (descriptor != null)
+            if ( descriptor != null )
             {
-                foreach (var parameter in descriptor.MethodInfo.GetParameters())
+                foreach ( var parameter in descriptor.MethodInfo.GetParameters() )
                 {
                     object args = null;
-                    if (context.ActionArguments.ContainsKey(parameter.Name))
+                    if ( context.ActionArguments.ContainsKey(parameter.Name) )
                     {
                         args = context.ActionArguments[parameter.Name];
                     }
@@ -34,7 +34,7 @@ namespace Conduit.API.Attributes
                 }
             }
 
-            if (!context.ModelState.IsValid)
+            if ( !context.ModelState.IsValid )
             {
                 context.Result = new BadRequestObjectResult(context.ModelState);
             }
@@ -42,15 +42,15 @@ namespace Conduit.API.Attributes
 
         private void ValidateAttributes(ParameterInfo parameter, object args, ModelStateDictionary modelState)
         {
-            foreach (var attributeData in parameter.CustomAttributes)
+            foreach ( var attributeData in parameter.CustomAttributes )
             {
                 var attributeInstance = parameter.GetCustomAttribute(attributeData.AttributeType);
 
                 var validationAttribute = attributeInstance as ValidationAttribute;
-                if (validationAttribute != null)
+                if ( validationAttribute != null )
                 {
                     var isValid = validationAttribute.IsValid(args);
-                    if (!isValid)
+                    if ( !isValid )
                     {
                         modelState.AddModelError(parameter.Name, validationAttribute.FormatErrorMessage(parameter.Name));
                     }

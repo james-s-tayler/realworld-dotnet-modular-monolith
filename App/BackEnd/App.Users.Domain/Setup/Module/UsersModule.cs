@@ -34,7 +34,7 @@ namespace App.Users.Domain.Setup.Module
         {
             schemaManager.RunSqliteMigrations();
         }
-        
+
         public override Assembly GetModuleAssembly()
         {
             return typeof(UsersModule).Assembly;

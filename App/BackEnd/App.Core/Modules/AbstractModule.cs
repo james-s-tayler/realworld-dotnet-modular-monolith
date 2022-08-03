@@ -65,7 +65,7 @@ namespace App.Core.Modules
             services.AddHttpContextAccessor();
             services.TryAddTransient<IRequestClaimsPrincipalProvider, HttpContextRequestClaimsPrincipalProvider>();
             services.TryAddTransient<IRequestAuthorizationProvider, HttpContextRequestAuthorizationProvider>();
-            
+
             services.TryAddTransient<IUserContext, AppContext>();
             services.TryAddTransient<UserContextEnricher>();
             services.TryAddTransient<IDataAnnotationsValidator, DataAnnotationsValidator>();
@@ -96,7 +96,7 @@ namespace App.Core.Modules
         }
 
         protected abstract void AddModuleServices(IConfiguration configuration, IServiceCollection services);
-        
+
         public void ReplaceSingleton<TImplementation>(TImplementation implementation) where TImplementation : class
         {
             _services.Replace(ServiceDescriptor.Singleton(_ => implementation));
@@ -106,7 +106,7 @@ namespace App.Core.Modules
         {
             _services.Replace(ServiceDescriptor.Singleton<TInterface, TImplementation>(_ => implementation));
         }
-        
+
         public void ReplaceScoped<TImplementation>(TImplementation implementation) where TImplementation : class
         {
             _services.Replace(ServiceDescriptor.Scoped(_ => implementation));
@@ -116,7 +116,7 @@ namespace App.Core.Modules
         {
             _services.Replace(ServiceDescriptor.Scoped<TInterface, TImplementation>(_ => implementation));
         }
-        
+
         public void ReplaceTransient<TImplementation>(TImplementation implementation) where TImplementation : class
         {
             _services.Replace(ServiceDescriptor.Transient(_ => implementation));

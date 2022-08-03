@@ -9,14 +9,14 @@ namespace App.Core.Context
         private readonly IRequestClaimsPrincipalProvider _requestClaimsPrincipalProvider;
         private readonly IRequestAuthorizationProvider _requestAuthorizationProvider;
 
-        public AppContext([NotNull] IRequestClaimsPrincipalProvider requestClaimsPrincipalProvider, 
+        public AppContext([NotNull] IRequestClaimsPrincipalProvider requestClaimsPrincipalProvider,
             [NotNull] IRequestAuthorizationProvider requestAuthorizationProvider)
         {
             _requestClaimsPrincipalProvider = requestClaimsPrincipalProvider;
             _requestAuthorizationProvider = requestAuthorizationProvider;
         }
 
-        public bool IsAuthenticated => _requestClaimsPrincipalProvider.GetClaimsPrincipal().Identity is {IsAuthenticated: true};
+        public bool IsAuthenticated => _requestClaimsPrincipalProvider.GetClaimsPrincipal().Identity is { IsAuthenticated: true };
 
         public int UserId => int.Parse(_requestClaimsPrincipalProvider.GetClaimsPrincipal().FindFirst("user_id")!.Value);
         public string Username => _requestClaimsPrincipalProvider.GetClaimsPrincipal().FindFirst("username")!.Value;

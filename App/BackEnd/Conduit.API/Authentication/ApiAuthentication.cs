@@ -48,10 +48,10 @@ namespace Conduit.API.Authentication
         private void SucceedRequirementIfApiKeyPresentAndValid(AuthorizationHandlerContext context, ApiKeyRequirement requirement)
         {
 
-            if (context.Resource is AuthorizationFilterContext authorizationFilterContext)
+            if ( context.Resource is AuthorizationFilterContext authorizationFilterContext )
             {
                 var apiKey = authorizationFilterContext.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
-                if (requirement.PolicyName == "Token" && apiKey != null && requirement.ApiKeys.Any(requiredApiKey => apiKey == requiredApiKey))
+                if ( requirement.PolicyName == "Token" && apiKey != null && requirement.ApiKeys.Any(requiredApiKey => apiKey == requiredApiKey) )
                 {
                     context.Succeed(requirement);
                 }

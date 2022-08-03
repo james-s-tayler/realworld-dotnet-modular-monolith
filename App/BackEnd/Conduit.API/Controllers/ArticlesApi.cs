@@ -28,7 +28,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 
 namespace Conduit.API.Controllers
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -45,7 +45,7 @@ namespace Conduit.API.Controllers
         public ArticlesApiController(IMediator mediator) : base(mediator)
         {
         }
-        
+
         /// <summary>
         /// Create an article
         /// </summary>
@@ -59,11 +59,11 @@ namespace Conduit.API.Controllers
         [ValidateModelState]
         [SwaggerOperation("CreateArticle")]
         [ProducesResponseType(statusCode: 201, type: typeof(SingleArticleResponse))]
-        public virtual async Task<IActionResult> CreateArticle([FromBody]NewArticleRequest request)
+        public virtual async Task<IActionResult> CreateArticle([FromBody] NewArticleRequest request)
         {
             var publishArticleResponse = await Mediator.Send(new PublishArticleCommand { NewArticle = request.Article.ToPublishArticleDto() });
-            
-            if (publishArticleResponse.Result != OperationResult.Success)
+
+            if ( publishArticleResponse.Result != OperationResult.Success )
                 return UnsuccessfulResponseResult(publishArticleResponse);
 
             return StatusCode(StatusCodes.Status201Created, publishArticleResponse.Response.Article.ToSingleArticleResponse());
@@ -81,11 +81,11 @@ namespace Conduit.API.Controllers
         [Route("/api/articles/{slug}")]
         [ValidateModelState]
         [SwaggerOperation("DeleteArticle")]
-        public virtual async Task<IActionResult> DeleteArticle([FromRoute (Name = "slug")][Required]string slug)
+        public virtual async Task<IActionResult> DeleteArticle([FromRoute(Name = "slug")][Required] string slug)
         {
             var deleteArticleResponse = await Mediator.Send(new DeleteArticleCommand { Slug = slug });
-            
-            if (deleteArticleResponse.Result != OperationResult.Success)
+
+            if ( deleteArticleResponse.Result != OperationResult.Success )
                 return UnsuccessfulResponseResult(deleteArticleResponse);
 
             return Ok();
@@ -104,11 +104,11 @@ namespace Conduit.API.Controllers
         [ValidateModelState]
         [SwaggerOperation("GetArticle")]
         [SwaggerResponse(statusCode: 200, type: typeof(SingleArticleResponse), description: "OK")]
-        public virtual async Task<IActionResult> GetArticle([FromRoute (Name = "slug")][Required]string slug)
+        public virtual async Task<IActionResult> GetArticle([FromRoute(Name = "slug")][Required] string slug)
         {
             var followUserResponse = await Mediator.Send(new GetArticleBySlugQuery { Slug = slug });
-            
-            if (followUserResponse.Result != OperationResult.Success)
+
+            if ( followUserResponse.Result != OperationResult.Success )
                 return UnsuccessfulResponseResult(followUserResponse);
 
             return Ok(followUserResponse.Response.Article.ToSingleArticleResponse());
@@ -132,7 +132,7 @@ namespace Conduit.API.Controllers
         [ValidateModelState]
         [SwaggerOperation("GetArticles")]
         [SwaggerResponse(statusCode: 200, type: typeof(MultipleArticlesResponse), description: "OK")]
-        public virtual async Task<IActionResult> GetArticles([FromQuery (Name = "tag")]string tag, [FromQuery (Name = "author")]string author, [FromQuery (Name = "favorited")]string favorited, [FromQuery (Name = "limit")]int? limit, [FromQuery (Name = "offset")]int? offset)
+        public virtual async Task<IActionResult> GetArticles([FromQuery(Name = "tag")] string tag, [FromQuery(Name = "author")] string author, [FromQuery(Name = "favorited")] string favorited, [FromQuery(Name = "limit")] int? limit, [FromQuery(Name = "offset")] int? offset)
         {
             var listArticlesQuery = new ListArticlesQuery
             {
@@ -140,19 +140,19 @@ namespace Conduit.API.Controllers
                 AuthorUsername = author,
                 FavoritedByUsername = favorited
             };
-            if (limit.HasValue)
+            if ( limit.HasValue )
             {
                 listArticlesQuery.Limit = limit.Value;
             }
 
-            if (offset.HasValue)
+            if ( offset.HasValue )
             {
                 listArticlesQuery.Offset = offset.Value;
             }
-            
+
             var listArticlesResponse = await Mediator.Send(listArticlesQuery);
-            
-            if (listArticlesResponse.Result != OperationResult.Success)
+
+            if ( listArticlesResponse.Result != OperationResult.Success )
                 return UnsuccessfulResponseResult(listArticlesResponse);
 
             return Ok(listArticlesResponse.Response.Articles.ToMultipleArticlesResponse());
@@ -172,21 +172,21 @@ namespace Conduit.API.Controllers
         [ValidateModelState]
         [SwaggerOperation("GetArticlesFeed")]
         [SwaggerResponse(statusCode: 200, type: typeof(MultipleArticlesResponse), description: "OK")]
-        public virtual async Task<IActionResult> GetArticlesFeed([FromQuery (Name = "limit")]int? limit, [FromQuery (Name = "offset")]int? offset)
+        public virtual async Task<IActionResult> GetArticlesFeed([FromQuery(Name = "limit")] int? limit, [FromQuery(Name = "offset")] int? offset)
         {
             var getFeedQuery = new GetFeedQuery();
-            if (limit.HasValue)
+            if ( limit.HasValue )
             {
                 getFeedQuery.Limit = limit.Value;
             }
-            if (offset.HasValue)
+            if ( offset.HasValue )
             {
                 getFeedQuery.Offset = offset.Value;
             }
-            
+
             var getFeedResponse = await Mediator.Send(getFeedQuery);
-            
-            if (getFeedResponse.Result != OperationResult.Success)
+
+            if ( getFeedResponse.Result != OperationResult.Success )
                 return UnsuccessfulResponseResult(getFeedResponse);
 
             return Ok(getFeedResponse.Response.FeedArticles.ToMultipleArticlesResponse());
@@ -207,15 +207,15 @@ namespace Conduit.API.Controllers
         [ValidateModelState]
         [SwaggerOperation("UpdateArticle")]
         [SwaggerResponse(statusCode: 200, type: typeof(SingleArticleResponse), description: "OK")]
-        public virtual async Task<IActionResult> UpdateArticle([FromRoute (Name = "slug")][Required]string slug, [FromBody]UpdateArticleRequest article)
+        public virtual async Task<IActionResult> UpdateArticle([FromRoute(Name = "slug")][Required] string slug, [FromBody] UpdateArticleRequest article)
         {
             var editArticleResponse = await Mediator.Send(new EditArticleCommand
             {
                 Slug = slug,
                 UpdatedArticle = article.ToEditArticleDto()
             });
-            
-            if (editArticleResponse.Result != OperationResult.Success)
+
+            if ( editArticleResponse.Result != OperationResult.Success )
                 return UnsuccessfulResponseResult(editArticleResponse);
 
             return Ok(editArticleResponse.Response.Article.ToSingleArticleResponse());

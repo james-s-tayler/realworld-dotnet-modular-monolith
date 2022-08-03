@@ -18,8 +18,8 @@ namespace App.Content.Domain.Operations.Commands.UnfavoriteArticle
         private readonly IArticleRepository _articleRepository;
         private readonly IUserContext _userContext;
 
-        public UnfavoriteArticleCommandHandler([NotNull] IArticleRepository articleRepository, 
-            [NotNull] IUsersService usersService, 
+        public UnfavoriteArticleCommandHandler([NotNull] IArticleRepository articleRepository,
+            [NotNull] IUsersService usersService,
             [NotNull] IUserContext userContext)
         {
             _articleRepository = articleRepository;
@@ -29,7 +29,7 @@ namespace App.Content.Domain.Operations.Commands.UnfavoriteArticle
 
         public async Task<OperationResponse<UnfavoriteArticleCommandResult>> Handle(UnfavoriteArticleCommand request, CancellationToken cancellationToken)
         {
-            if (!await _articleRepository.ExistsBySlug(request.Slug))
+            if ( !await _articleRepository.ExistsBySlug(request.Slug) )
                 return OperationResponseFactory.NotFound<UnfavoriteArticleCommand, OperationResponse<UnfavoriteArticleCommandResult>>(typeof(ArticleEntity), request.Slug);
 
             await _articleRepository.UnfavoriteArticle(request.Slug, _userContext.UserId);

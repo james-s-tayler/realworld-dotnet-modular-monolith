@@ -24,20 +24,20 @@ namespace App.Core.Testing
         public string AuthenticatedUserToken { get; private set; }
         public string AuthenticatedUserBio { get; private set; }
         public string AuthenticatedUserImage { get; private set; }
-        
-        public Fixture AutoFixture { get; } = new ();
+
+        public Fixture AutoFixture { get; } = new();
         public IMediator Mediator { get; }
         public AbstractModule Module { get; }
         public IServiceCollection Services { get; }
         public ConfigurationBuilder Configuration { get; }
         public Mock<IHostEnvironment> _hostEnvironment;
-        
+
         public IUserContext UserContext { get; }
         public Mock<IRequestClaimsPrincipalProvider> RequestClaimsPrincipalProvider { get; } = new();
         public Mock<IRequestAuthorizationProvider> RequestAuthorizationProvider { get; } = new();
 
         public IModuleDbConnection ModuleDbConnection { get; }
-        
+
         public AbstractModuleSetupFixture(AbstractModule module)
         {
             Module = module;
@@ -49,10 +49,10 @@ namespace App.Core.Testing
             {
                 {$"DatabaseConfig:{Module.GetModuleName()}:DatabaseName", GetDatabaseName()}
             };
-            
+
             AddConfiguration(configuration);
             Configuration.AddInMemoryCollection(configuration);
-            
+
             WithAuthenticatedUserContext();
 
             Services.AddLogging(builder =>
@@ -60,7 +60,7 @@ namespace App.Core.Testing
                 builder.AddSerilog();
                 builder.SetMinimumLevel(LogLevel.Debug);
             });
-            
+
             Module.InitializeModule(Configuration.Build(), _hostEnvironment.Object, Services);
             Module.ReplaceTransient(RequestClaimsPrincipalProvider.Object);
             Module.ReplaceTransient(RequestAuthorizationProvider.Object);
@@ -72,11 +72,11 @@ namespace App.Core.Testing
             UserContext = provider.GetRequiredService<IUserContext>();
             SetupPostProcess(provider);
         }
-        
+
         protected abstract void AddConfiguration(IDictionary<string, string> configuration);
 
         protected abstract void ReplaceServices(AbstractModule module);
-        
+
         protected abstract void SetupPostProcess(ServiceProvider provider);
 
         public virtual void ClearModuleDatabaseTables()
@@ -91,7 +91,7 @@ namespace App.Core.Testing
             WithAuthenticatedUserContext();
             Log.Information("WithAuthenticatedUserContext elapsed: {0}ms", stopwatch.ElapsedMilliseconds);
         }
-        
+
         public abstract void PerTestSetup();
 
         public string GetDatabaseName()
@@ -104,7 +104,7 @@ namespace App.Core.Testing
             RequestClaimsPrincipalProvider.Reset();
             RequestAuthorizationProvider.Reset();
             RequestClaimsPrincipalProvider.Setup(provider => provider.GetClaimsPrincipal()).Returns(new ClaimsPrincipal());
-            RequestAuthorizationProvider.Setup(provider => provider.GetRequestAuthorization()).Returns((string)null);
+            RequestAuthorizationProvider.Setup(provider => provider.GetRequestAuthorization()).Returns(( string )null);
         }
 
         public void WithAuthenticatedUserContext()
@@ -117,22 +117,22 @@ namespace App.Core.Testing
             AuthenticatedUserBio = AutoFixture.Create<string>();
             WithUserContextReturning(AuthenticatedUserId, AuthenticatedUserUsername, AuthenticatedUserEmail, AuthenticatedUserToken);
         }
-        
+
         public void WithUserContextReturning(int userId, string username, string email, string token)
         {
-            
+
             RequestClaimsPrincipalProvider.Reset();
             RequestAuthorizationProvider.Reset();
-            
+
             var identity = new ClaimsIdentity(new Claim[]
             {
                 new Claim("user_id", userId.ToString()),
                 new Claim("username", username),
                 new Claim("email", email)
             }, "Basic");
-      
+
             var principal = new ClaimsPrincipal(identity);
-            
+
             RequestClaimsPrincipalProvider.Setup(provider => provider.GetClaimsPrincipal()).Returns(principal);
             RequestAuthorizationProvider.Setup(provider => provider.GetRequestAuthorization()).Returns(token);
         }

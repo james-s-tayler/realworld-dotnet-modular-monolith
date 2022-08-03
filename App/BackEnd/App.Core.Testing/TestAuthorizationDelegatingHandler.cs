@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace App.Core.Testing
 {
-    public class TestAuthorizationDelegatingHandler: DelegatingHandler
+    public class TestAuthorizationDelegatingHandler : DelegatingHandler
     {
         private readonly string _token;
         private readonly string _scheme;

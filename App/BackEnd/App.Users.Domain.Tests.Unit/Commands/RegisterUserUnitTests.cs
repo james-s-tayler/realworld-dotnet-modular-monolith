@@ -31,7 +31,7 @@ namespace App.Users.Domain.Tests.Unit.Commands
                 }
             };
         }
-        
+
         [Fact]
         public async Task GivenANewUser_WhenRegisterUser_ThenNewUserReturned()
         {
@@ -39,7 +39,7 @@ namespace App.Users.Domain.Tests.Unit.Commands
 
             //act
             var result = await _module.Mediator.Send(_registerUserCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.Success);
             result.Response.Should().NotBeNull();
@@ -50,7 +50,7 @@ namespace App.Users.Domain.Tests.Unit.Commands
             registeredUser.Username.Should().Be(_registerUserCommand.NewUser.Username);
             registeredUser.Token.Should().NotBeNull();
         }
-        
+
         [Theory]
         [InlineData("")]
         [InlineData(null)]
@@ -61,12 +61,12 @@ namespace App.Users.Domain.Tests.Unit.Commands
 
             //act
             var result = await _module.Mediator.Send(_registerUserCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
             result.Response.Should().BeNull();
         }
-        
+
         [Theory]
         [InlineData("")]
         [InlineData(null)]
@@ -77,12 +77,12 @@ namespace App.Users.Domain.Tests.Unit.Commands
 
             //act
             var result = await _module.Mediator.Send(_registerUserCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
             result.Response.Should().BeNull();
         }
-        
+
         [Fact]
         public async Task GivenAPassword_WhenRegisterUser_ThenPasswordHashedWithBcrypt()
         {
@@ -90,23 +90,23 @@ namespace App.Users.Domain.Tests.Unit.Commands
 
             //act
             var registerUserResponse = await _module.Mediator.Send(_registerUserCommand);
-            
+
             //assert
             registerUserResponse.Should().NotBeNull();
             registerUserResponse.Response.Should().NotBeNull();
 
             var registeredUser = await _module.UserRepository.GetById(registerUserResponse.Response.RegisteredUser.Id);
-            
+
             var result = _module.PasswordHasher.VerifyHashedPassword(registeredUser,
                 registeredUser.Password,
                 _registerUserCommand.NewUser.Password);
-            
+
             registeredUser.Should().NotBeNull();
             registeredUser.Password.Should().NotBeNullOrEmpty();
             registeredUser.Password.Should().NotBe(_registerUserCommand.NewUser.Password);
             result.Should().Be(PasswordVerificationResult.Success);
         }
-        
+
         [Fact]
         public async Task GivenAUsernameAlreadyInUse_WhenRegisterUser_ThenFailsValidation()
         {
@@ -115,12 +115,12 @@ namespace App.Users.Domain.Tests.Unit.Commands
 
             //act
             var result = await _module.Mediator.Send(_registerUserCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
             result.ErrorMessage.Should().Contain("Username is already in use");
         }
-        
+
         [Fact]
         public async Task GivenAnEmailAlreadyInUse_WhenRegisterUser_ThenFailsValidation()
         {
@@ -129,12 +129,12 @@ namespace App.Users.Domain.Tests.Unit.Commands
 
             //act
             var result = await _module.Mediator.Send(_registerUserCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
             result.ErrorMessage.Should().Contain("Email is already in use");
         }
-        
+
         [Theory]
         [InlineData("123456789")]
         [InlineData("")]
@@ -146,7 +146,7 @@ namespace App.Users.Domain.Tests.Unit.Commands
 
             //act
             var result = await _module.Mediator.Send(_registerUserCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
         }

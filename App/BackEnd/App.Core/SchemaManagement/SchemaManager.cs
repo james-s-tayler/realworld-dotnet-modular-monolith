@@ -17,8 +17,8 @@ namespace App.Core.SchemaManagement
         private readonly IHostEnvironment _hostEnvironment;
         private readonly Assembly _moduleAssembly;
 
-        public SchemaManager(IConfiguration configuration, 
-            IHostEnvironment hostEnvironment, 
+        public SchemaManager(IConfiguration configuration,
+            IHostEnvironment hostEnvironment,
             Assembly moduleAssembly)
         {
             _configuration = configuration;
@@ -32,16 +32,16 @@ namespace App.Core.SchemaManagement
                 migrationRunnerBuilder => migrationRunnerBuilder.AddPostgres(),
                 DbConstants.Postgres);
         }
-        
+
         public void RunSqliteMigrations()
         {
             RunDatabaseMigrations<SqliteDbCreator, SqliteConnectionStringReader>(
                 migrationRunnerBuilder => migrationRunnerBuilder.AddSQLite(),
                 DbConstants.SQLite);
         }
-        
+
         private void RunDatabaseMigrations<TDbCreator, TConnectionStringReader>(
-            Func<IMigrationRunnerBuilder, IMigrationRunnerBuilder> addDatabaseFunc, string vendorTag) 
+            Func<IMigrationRunnerBuilder, IMigrationRunnerBuilder> addDatabaseFunc, string vendorTag)
             where TDbCreator : class, IDbCreator where TConnectionStringReader : class, IConnectionStringReader
         {
             var moduleName = _moduleAssembly.GetName().Name;
@@ -65,20 +65,21 @@ namespace App.Core.SchemaManagement
                         .WithGlobalConnectionString(moduleName)
                         .ScanIn(_moduleAssembly).For.Migrations();
                 })
-                .Configure<RunnerOptions>(opt => {
+                .Configure<RunnerOptions>(opt =>
+                {
                     opt.Tags = new[] { vendorTag };
                 })
                 .BuildServiceProvider(false);
-            
+
             using var scope = tempServiceProvider.CreateScope();
-            
+
             var dbCreator = scope.ServiceProvider.GetRequiredService<IDbCreator>();
             var migrationRunner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
-            
+
             dbCreator.EnsureCreateDatabase(_configuration, _hostEnvironment, moduleName);
             migrationRunner.ListMigrations();
-            
-            if (migrationRunner.HasMigrationsToApplyUp())
+
+            if ( migrationRunner.HasMigrationsToApplyUp() )
             {
                 migrationRunner.MigrateUp();
             }

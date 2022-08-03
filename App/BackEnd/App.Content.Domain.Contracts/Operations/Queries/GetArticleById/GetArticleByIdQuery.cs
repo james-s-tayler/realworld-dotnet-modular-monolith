@@ -8,7 +8,7 @@ namespace App.Content.Domain.Contracts.Operations.Queries.GetArticleById
 {
     public class GetArticleByIdQuery : ContractModel, IRequest<OperationResponse<GetArticleByIdQueryResult>>
     {
-        [Range(1,Int32.MaxValue)]
+        [Range(1, Int32.MaxValue)]
         public int ArticleId { get; set; }
-    } 
+    }
 }

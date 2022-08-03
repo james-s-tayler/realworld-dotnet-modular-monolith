@@ -16,10 +16,10 @@ namespace Conduit.API.Tests.Integration
     {
         private readonly IConduitApiClient _unauthenticatedApiClient;
         private readonly IConduitApiClient _authenticatedApiClient;
-        private readonly Fixture _autoFixture = new ();
+        private readonly Fixture _autoFixture = new();
         private readonly NewUser _newUser;
         private string _token;
-        
+
         public ContentDomainUnitTests(WebApplicationFactory<Program> applicationFactory, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
             var httpClient = applicationFactory.CreateClient();
@@ -35,16 +35,16 @@ namespace Conduit.API.Tests.Integration
 
             var response = _unauthenticatedApiClient.CreateUser(new NewUserRequest { User = _newUser }).GetAwaiter().GetResult();
             _token = response.Content!.User.Token;
-            
+
             _authenticatedApiClient = RestService.For<IConduitApiClient>(applicationFactory.CreateDefaultClient(new TestAuthorizationDelegatingHandler(_token, "Token")));
         }
-        
+
         [Fact]
         public async Task GivenAnAuthenticatedUser_WhenPublishArticle_ThenArticleReturned()
         {
             //arrange
             var newArticleRequest = _autoFixture.Create<NewArticleRequest>();
-            
+
             //act
             var response = await _authenticatedApiClient.CreateArticle(newArticleRequest);
 
@@ -56,13 +56,13 @@ namespace Conduit.API.Tests.Integration
             response.Content!.Article.Description.Should().Be(newArticleRequest.Article.Description);
             response.Content!.Article.Body.Should().Be(newArticleRequest.Article.Body);
         }
-        
+
         [Fact]
         public async Task GivenAnAuthenticatedUser_WhenPublishArticle_ThenArticleContainsProfile()
         {
             //arrange
             var newArticleRequest = _autoFixture.Create<NewArticleRequest>();
-            
+
             //act
             var response = await _authenticatedApiClient.CreateArticle(newArticleRequest);
 
@@ -71,13 +71,13 @@ namespace Conduit.API.Tests.Integration
             response.Content!.Article.Author.Username.Should().Be(_newUser.Username);
             response.Content!.Article.Author.Following.Should().BeTrue();
         }
-        
+
         [Fact]
         public async Task GivenAnUnauthenticatedUser_WhenPublishArticle_ThenNotAuthenticated()
         {
             //arrange
             var newArticleRequest = _autoFixture.Create<NewArticleRequest>();
-            
+
             //act
             var response = await _unauthenticatedApiClient.CreateArticle(newArticleRequest);
 

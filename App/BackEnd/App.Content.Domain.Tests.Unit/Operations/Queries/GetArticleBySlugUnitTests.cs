@@ -32,7 +32,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             //assert
             result.Result.Should().Be(OperationResult.NotFound);
         }
-        
+
         [Fact]
         public async Task GivenAnArticle_WhenGetArticleBySlug_ThenReturnsArticle()
         {
@@ -54,7 +54,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             result.Response.Article.CreatedAt.Should().BeBefore(testStartTime);
             result.Response.Article.UpdatedAt.Should().BeBefore(testStartTime);
         }
-        
+
         [Fact]
         public async Task GivenAnArticle_WhenGetArticleBySlug_ThenArticleContainsTags()
         {
@@ -65,9 +65,9 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             var result = await _module.Mediator.Send(getSingleArticleQuery);
 
             //assert
-            result.Response.Article.TagList.Should().BeEquivalentTo(new []{_module.ExistingArticleTag2});
+            result.Response.Article.TagList.Should().BeEquivalentTo(new[] { _module.ExistingArticleTag2 });
         }
-        
+
         [Fact]
         public async Task GivenAnArticle_WhenGetArticleBySlug_ThenArticleContainsAuthorProfile()
         {
@@ -83,7 +83,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             result.Response.Article.Author.Image.Should().Be(_module.AuthenticatedUserImage);
             result.Response.Article.Author.Following.Should().Be(true);
         }
-        
+
         [Fact]
         public async Task GivenAFavoritedArticle_WhenGetArticleBySlug_ThenArticleIsFavorited()
         {
@@ -97,7 +97,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             result.Response.Article.Favorited.Should().BeTrue();
             result.Response.Article.FavoritesCount.Should().Be(1);
         }
-        
+
         [Fact]
         public async Task GivenANonFavoritedArticle_WhenGetArticleBySlug_ThenArticleIsNotFavorited()
         {
@@ -111,7 +111,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             result.Response.Article.Favorited.Should().BeFalse();
             result.Response.Article.FavoritesCount.Should().Be(0);
         }
-        
+
         [Fact]
         public async Task GivenNoSlug_WhenGetArticle_ThenInvalidRequest()
         {

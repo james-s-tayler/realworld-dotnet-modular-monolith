@@ -18,7 +18,7 @@ namespace App.Users.Domain.Infrastructure.Mappers
                 Bio = userEntity.Bio
             };
         }
-        
+
         internal static UserEntity ToUser(this UserDTO user)
         {
             return new UserEntity
@@ -29,7 +29,7 @@ namespace App.Users.Domain.Infrastructure.Mappers
                 Bio = user.Bio
             };
         }
-        
+
         internal static ProfileDTO ToProfileDTO(this UserEntity userEntity, bool isFollowing)
         {
             return new ProfileDTO

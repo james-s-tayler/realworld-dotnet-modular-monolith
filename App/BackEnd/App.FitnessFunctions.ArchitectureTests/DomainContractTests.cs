@@ -30,7 +30,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("this is how other parts of the system interact with a given domain module")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void DomainContractsFollowNamingConvention()
         {
@@ -45,7 +45,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("the semantics should indicate what the model is for")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void DomainContractsMustSubclassContractModel()
         {
@@ -54,7 +54,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("Fody.Tracer [NoTrace] is applied to ContractModel.ToString() to reduce log noise")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void CommandResultsMustImplementINotification()
         {
@@ -64,7 +64,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("this is how events are published for other modules to consume")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void DomainOperationsResideInCorrectNamespace()
         {
@@ -73,7 +73,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("Domain operations must indicate whether they mutate state or not")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void DTOsResideInCorrectNamespace()
         {
@@ -83,7 +83,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("this is the convention")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void EnumsResideInCorrectNamespace()
         {
@@ -93,7 +93,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("this is the convention")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void DomainOperationsEndInEitherCommandOrQuery()
         {
@@ -103,7 +103,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("Domain operations must indicate whether they mutate state or not")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void CommandsResideInCorrectNamespace()
         {
@@ -117,7 +117,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("this is the convention")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void QueriesResideInCorrectNamespace()
         {
@@ -131,7 +131,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("this is the convention")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void DomainOperationsReturnOperationResponseOfOperationNameResult()
         {
@@ -145,19 +145,19 @@ namespace App.FitnessFunctions.ArchitectureTests
                         .Single();
                     var innerGenericParameter = outerGenericParameter.GenericArguments.Single();
                     var operationName = domainOperation.Name.Replace("Command", "").Replace("Query", "");
-                    
+
                     var isOperationResponse = outerGenericParameter.Type.NameEndsWith("OperationResponse`1");
                     var isOperationNameResult = innerGenericParameter.Type.FullNameMatches($"{domainOperation.FullName}Result");
                     var isResultNextToOperation = innerGenericParameter.Type.ResidesInNamespace($".*Domain.Contracts.*.{operationName}", true);
-                    
+
                     var pass = isOperationResponse && isOperationNameResult && isResultNextToOperation;
-                    
+
                     return new ConditionResult(domainOperation, pass, "does not match");
                 }, "implement IRequest<OperationResponse<${OperationName}Result>>")
                 .Because("MediatR pipeline behaviors rely on this return type")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void DomainContractsShouldOnlyDependOnCore()
         {

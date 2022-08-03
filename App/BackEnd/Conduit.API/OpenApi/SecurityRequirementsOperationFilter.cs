@@ -12,11 +12,11 @@ namespace Conduit.API.OpenApi
 
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            if (!context
+            if ( !context
                     .MethodInfo
                     .GetCustomAttributes(true)
                     .OfType<AllowAnonymousAttribute>()
-                    .Any())
+                    .Any() )
             {
                 operation.Security = new List<OpenApiSecurityRequirement>
                 {
@@ -28,7 +28,7 @@ namespace Conduit.API.OpenApi
                                 BearerFormat = _scheme,
                                 Reference = new OpenApiReference
                                 {
-                                    Type = ReferenceType.SecurityScheme, 
+                                    Type = ReferenceType.SecurityScheme,
                                     Id = _scheme
                                 }
                             },

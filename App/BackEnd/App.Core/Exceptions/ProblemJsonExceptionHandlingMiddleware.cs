@@ -15,23 +15,23 @@ namespace App.Core.Exceptions
             {
                 appError.Run(async context =>
                 {
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    context.Response.ContentType = "application/json";
-                    var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
-                    if(contextFeature != null)
-                    {
-                        var problemDetails = new ProblemDetails
+                        context.Response.StatusCode = ( int )HttpStatusCode.InternalServerError;
+                        context.Response.ContentType = "application/json";
+                        var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+                        if ( contextFeature != null )
                         {
-                            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                            Title = "Internal Server Error",
-                            Detail = contextFeature.Error.Message,
-                            Status = context.Response.StatusCode
-                        };
-                        
-                        await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails));
-                    }
-                });
+                            var problemDetails = new ProblemDetails
+                            {
+                                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                                Title = "Internal Server Error",
+                                Detail = contextFeature.Error.Message,
+                                Status = context.Response.StatusCode
+                            };
+
+                            await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails));
+                        }
+                    });
             });
-        }   
+        }
     }
 }

@@ -27,17 +27,17 @@ using Conduit.API.Models;
 using MediatR;
 
 namespace Conduit.API.Controllers
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
     [ApiController]
     public class DefaultApiController : OperationResponseController
-    { 
+    {
         public DefaultApiController(IMediator mediator) : base(mediator)
         {
         }
-        
+
         /// <summary>
         /// Get tags
         /// </summary>
@@ -54,8 +54,8 @@ namespace Conduit.API.Controllers
         public virtual async Task<IActionResult> TagsGet()
         {
             var getTagsQueryResult = await Mediator.Send(new GetTagsQuery());
-            
-            if (getTagsQueryResult.Result != OperationResult.Success)
+
+            if ( getTagsQueryResult.Result != OperationResult.Success )
                 return UnsuccessfulResponseResult(getTagsQueryResult);
 
             return Ok(new TagsResponse

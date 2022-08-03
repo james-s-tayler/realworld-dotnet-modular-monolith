@@ -10,7 +10,7 @@ namespace App.Content.Domain.Contracts.Operations.Commands.EditArticle
     {
         [Required]
         public string Slug { get; set; }
-        [Required] 
+        [Required]
         public EditArticleDTO UpdatedArticle { get; set; }
     }
 }

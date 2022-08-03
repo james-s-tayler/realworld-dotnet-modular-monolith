@@ -30,7 +30,7 @@ namespace App.Feed.Domain.Tests.Unit.EventListeners
                 ArticleId = _module.AutoFixture.Create<int>(),
                 Article = _module.AutoFixture.Create<SingleArticleDTO>()
             };
-            
+
             //act
             await _module.Mediator.Publish(publishArticleEvent);
 

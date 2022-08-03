@@ -30,14 +30,14 @@ namespace App.Content.Domain.Tests.Unit.EventListeners
             {
                 RegisteredUser = new UserDTO
                 {
-                    
+
                     Email = $"{_module.AutoFixture.Create<string>()}@{_module.AutoFixture.Create<string>()}.com",
                     Id = _module.AutoFixture.Create<int>(),
                     Username = _module.AutoFixture.Create<string>(),
                     Token = _module.AutoFixture.Create<string>()
                 }
             };
-            
+
             //act
             await _module.Mediator.Publish(registerUserEvent);
 
@@ -47,7 +47,7 @@ namespace App.Content.Domain.Tests.Unit.EventListeners
             exists.Should().BeTrue();
             existsByUsername.Should().BeTrue();
         }
-        
+
         [Fact]
         public async Task GivenAnExistingUser_WhenUpdateUserEventFired_ThenUserGetsUpdated()
         {
@@ -56,16 +56,16 @@ namespace App.Content.Domain.Tests.Unit.EventListeners
             {
                 RegisteredUser = new UserDTO
                 {
-                    
+
                     Email = $"{_module.AutoFixture.Create<string>()}@{_module.AutoFixture.Create<string>()}.com",
                     Id = _module.AutoFixture.Create<int>(),
                     Username = _module.AutoFixture.Create<string>(),
                     Token = _module.AutoFixture.Create<string>()
                 }
             };
-            
+
             await _module.Mediator.Publish(registerUserEvent);
-            
+
             var updateUserEvent = new UpdateUserCommandResult
             {
                 UpdatedUser = new UserDTO
@@ -78,7 +78,7 @@ namespace App.Content.Domain.Tests.Unit.EventListeners
                     Image = _module.AutoFixture.Create<string>()
                 }
             };
-            
+
             //act
             await _module.Mediator.Publish(updateUserEvent);
 

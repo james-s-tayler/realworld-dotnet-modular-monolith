@@ -30,17 +30,17 @@ using Conduit.API.Models.Mappers;
 using MediatR;
 
 namespace Conduit.API.Controllers
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
     [ApiController]
     public class CommentsApiController : OperationResponseController
-    { 
+    {
         public CommentsApiController(IMediator mediator) : base(mediator)
         {
         }
-        
+
         /// <summary>
         /// Create a comment for an article
         /// </summary>
@@ -57,7 +57,7 @@ namespace Conduit.API.Controllers
         [SwaggerOperation("CreateArticleComment")]
         [SwaggerResponse(statusCode: 200, type: typeof(SingleCommentResponse), description: "OK")]
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
-        public virtual async Task<IActionResult> CreateArticleComment([FromRoute (Name = "slug")][Required]string slug, [FromBody]NewCommentRequest comment)
+        public virtual async Task<IActionResult> CreateArticleComment([FromRoute(Name = "slug")][Required] string slug, [FromBody] NewCommentRequest comment)
         {
             var postCommentResponse = await Mediator.Send(new PostCommentCommand
             {
@@ -67,8 +67,8 @@ namespace Conduit.API.Controllers
                     Body = comment.Comment.Body
                 }
             });
-            
-            if (postCommentResponse.Result != OperationResult.Success)
+
+            if ( postCommentResponse.Result != OperationResult.Success )
                 return UnsuccessfulResponseResult(postCommentResponse);
 
             return StatusCode(StatusCodes.Status201Created, postCommentResponse.Response.Comment.ToSingleCommentResponse());
@@ -88,15 +88,15 @@ namespace Conduit.API.Controllers
         [ValidateModelState]
         [SwaggerOperation("DeleteArticleComment")]
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
-        public virtual async Task<IActionResult> DeleteArticleComment([FromRoute (Name = "slug")][Required]string slug, [FromRoute (Name = "id")][Required]int id)
+        public virtual async Task<IActionResult> DeleteArticleComment([FromRoute(Name = "slug")][Required] string slug, [FromRoute(Name = "id")][Required] int id)
         {
             var deleteCommentResponse = await Mediator.Send(new DeleteCommentCommand
             {
                 ArticleSlug = slug,
                 CommentId = id
             });
-            
-            if (deleteCommentResponse.Result != OperationResult.Success)
+
+            if ( deleteCommentResponse.Result != OperationResult.Success )
                 return UnsuccessfulResponseResult(deleteCommentResponse);
 
             return Ok();
@@ -117,13 +117,13 @@ namespace Conduit.API.Controllers
         [SwaggerOperation("GetArticleComments")]
         [SwaggerResponse(statusCode: 200, type: typeof(MultipleCommentsResponse), description: "OK")]
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
-        public virtual async Task<IActionResult> GetArticleComments([FromRoute (Name = "slug")][Required]string slug)
+        public virtual async Task<IActionResult> GetArticleComments([FromRoute(Name = "slug")][Required] string slug)
         {
             var getArticleCommentsQuery = new GetArticleCommentsQuery { Slug = slug };
 
             var getArticleCommentsResponse = await Mediator.Send(getArticleCommentsQuery);
-            
-            if (getArticleCommentsResponse.Result != OperationResult.Success)
+
+            if ( getArticleCommentsResponse.Result != OperationResult.Success )
                 return UnsuccessfulResponseResult(getArticleCommentsResponse);
 
             return Ok(getArticleCommentsResponse.Response.Comments.ToMultipleCommentsResponse());

@@ -18,7 +18,7 @@ namespace App.Users.Domain.Operations.Commands.FollowUser
 
             RuleFor(query => query).MustAsync(UserMustExist).WithMessage(query => $"User {query.Username} was not found.");
         }
-        
+
         private async Task<bool> UserMustExist(FollowUserCommand command, CancellationToken cancellationToken)
         {
             return await _userRepository.ExistsByUsername(command.Username);

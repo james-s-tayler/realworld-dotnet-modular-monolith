@@ -26,10 +26,10 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
         {
             //pre-assert
             _module.NonFavoritedArticleEntity.Favorited.Should().BeFalse();
-            
+
             //act
             var result = await _module.Mediator.Send(_favoriteArticleCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.Success);
             result.Response.Should().NotBeNull();
@@ -37,7 +37,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             result.Response.Article.Slug.Should().Be(_favoriteArticleCommand.Slug);
             result.Response.Article.Favorited.Should().BeTrue();
         }
-        
+
         [Fact]
         public async Task GivenSlugIsMissing_WhenFavoriteArticle_ThenInvalidRequest()
         {

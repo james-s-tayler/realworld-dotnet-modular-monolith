@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Conduit.API.Converters;
 
 namespace Conduit.API.Models
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -30,28 +30,28 @@ namespace Conduit.API.Models
         /// Gets or Sets Username
         /// </summary>
         [Required]
-        [DataMember(Name="username", EmitDefaultValue=false)]
+        [DataMember(Name = "username", EmitDefaultValue = false)]
         public string Username { get; set; }
 
         /// <summary>
         /// Gets or Sets Bio
         /// </summary>
         [Required]
-        [DataMember(Name="bio", EmitDefaultValue=false)]
+        [DataMember(Name = "bio", EmitDefaultValue = false)]
         public string Bio { get; set; }
 
         /// <summary>
         /// Gets or Sets Image
         /// </summary>
         [Required]
-        [DataMember(Name="image", EmitDefaultValue=false)]
+        [DataMember(Name = "image", EmitDefaultValue = false)]
         public string Image { get; set; }
 
         /// <summary>
         /// Gets or Sets Following
         /// </summary>
         [Required]
-        [DataMember(Name="following", EmitDefaultValue=true)]
+        [DataMember(Name = "following", EmitDefaultValue = true)]
         public bool Following { get; set; }
 
         /// <summary>
@@ -86,9 +86,9 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Profile)obj);
+            if ( obj is null ) return false;
+            if ( ReferenceEquals(this, obj) ) return true;
+            return obj.GetType() == GetType() && Equals(( Profile )obj);
         }
 
         /// <summary>
@@ -98,28 +98,28 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public bool Equals(Profile other)
         {
-            if (other is null) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if ( other is null ) return false;
+            if ( ReferenceEquals(this, other) ) return true;
 
-            return 
+            return
                 (
                     Username == other.Username ||
                     Username != null &&
                     Username.Equals(other.Username)
-                ) && 
+                ) &&
                 (
                     Bio == other.Bio ||
                     Bio != null &&
                     Bio.Equals(other.Bio)
-                ) && 
+                ) &&
                 (
                     Image == other.Image ||
                     Image != null &&
                     Image.Equals(other.Image)
-                ) && 
+                ) &&
                 (
                     Following == other.Following ||
-                    
+
                     Following.Equals(other.Following)
                 );
         }
@@ -134,20 +134,20 @@ namespace Conduit.API.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Username != null)
+                if ( Username != null )
                     hashCode = hashCode * 59 + Username.GetHashCode();
-                    if (Bio != null)
+                if ( Bio != null )
                     hashCode = hashCode * 59 + Bio.GetHashCode();
-                    if (Image != null)
+                if ( Image != null )
                     hashCode = hashCode * 59 + Image.GetHashCode();
-                    
-                    hashCode = hashCode * 59 + Following.GetHashCode();
+
+                hashCode = hashCode * 59 + Following.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(Profile left, Profile right)
         {
@@ -159,7 +159,7 @@ namespace Conduit.API.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

@@ -29,7 +29,7 @@ namespace App.Feed.Domain.Setup.Module
         {
             schemaManager.RunSqliteMigrations();
         }
-        
+
         public override Assembly GetModuleAssembly()
         {
             return typeof(FeedModule).Assembly;

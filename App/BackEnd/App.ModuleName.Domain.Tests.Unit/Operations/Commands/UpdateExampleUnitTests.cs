@@ -15,7 +15,7 @@ namespace App.ModuleName.Domain.Tests.Unit.Operations.Commands
     public class UpdateExampleUnitTests : UnitTestBase
     {
         private readonly ModuleNameModuleSetupFixture _module;
-        
+
         public UpdateExampleUnitTests(ModuleNameModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
             _module = module;
@@ -26,23 +26,23 @@ namespace App.ModuleName.Domain.Tests.Unit.Operations.Commands
         {
             //arrange
             var updateExampleCommand = new UpdateExampleCommand { ExampleInput = _module.AutoFixture.Create<ExampleDTO>() };
-            
+
             //act
             var result = await _module.Mediator.Send(updateExampleCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
         }
-        
+
         [Fact]
         public async Task GivenNoExample_WhenUpdateExample_ThenValidationError()
         {
             //arrange
             var updateExampleCommand = new UpdateExampleCommand { ExampleInput = null };
-            
+
             //act
             var result = await _module.Mediator.Send(updateExampleCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.InvalidRequest);
         }

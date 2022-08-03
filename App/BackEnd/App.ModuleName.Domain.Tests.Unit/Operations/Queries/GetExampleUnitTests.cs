@@ -13,7 +13,7 @@ namespace App.ModuleName.Domain.Tests.Unit.Operations.Queries
     public class GetExampleUnitTests : UnitTestBase
     {
         private readonly ModuleNameModuleSetupFixture _module;
-        
+
         public GetExampleUnitTests(ModuleNameModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
             _module = module;
@@ -24,10 +24,10 @@ namespace App.ModuleName.Domain.Tests.Unit.Operations.Queries
         {
             //arrange
             var getExampleQuery = new GetExampleQuery { Id = 1 };
-            
+
             //act
             var result = await _module.Mediator.Send(getExampleQuery);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.NotFound);
         }

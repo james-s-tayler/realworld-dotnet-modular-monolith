@@ -8,18 +8,18 @@ namespace App.Core.SchemaManagement.Postgres
 {
     public class PostgresDbCreator : IDbCreator
     {
-        
+
         public void EnsureCreateDatabase(IConfiguration configuration, IHostEnvironment hostEnvironment, string moduleName)
         {
             using var connection = GetMasterDbConnection(configuration, moduleName);
             var dbName = $"{configuration[$"DatabaseConfig:{moduleName}:DatabaseName"]}_{hostEnvironment.EnvironmentName}".ToLowerInvariant();
-            
-            if (!DatabaseExists(connection, dbName))
+
+            if ( !DatabaseExists(connection, dbName) )
             {
                 connection.Execute($"CREATE DATABASE {dbName}");
             }
         }
-        
+
         private NpgsqlConnection GetMasterDbConnection(IConfiguration configuration, string moduleName)
         {
             var database = "postgres";
@@ -37,9 +37,9 @@ namespace App.Core.SchemaManagement.Postgres
             var query = "SELECT * FROM pg_database WHERE datname = @name";
             var parameters = new DynamicParameters();
             parameters.Add("name", dbName);
-                
+
             var records = connection.Query(query, parameters);
-                
+
             return records.Any();
         }
     }

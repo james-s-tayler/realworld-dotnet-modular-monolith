@@ -17,7 +17,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
         private readonly IUserRepository _userRepository;
         private readonly DbConnection _connection;
 
-        public SqliteArticleRepository([NotNull] ModuleDbConnectionWrapper<ContentModule> connectionWrapper, 
+        public SqliteArticleRepository([NotNull] ModuleDbConnectionWrapper<ContentModule> connectionWrapper,
             [NotNull] ITagRepository tagRepository,
             [NotNull] IUserRepository userRepository)
         {
@@ -40,22 +40,22 @@ namespace App.Content.Domain.Infrastructure.Repositories
         private async Task EnrichArticle(ArticleEntity article, int? userId)
         {
             //un-optimized n+1 query
-            if (article != null)
+            if ( article != null )
             {
                 article.Author = await _userRepository.GetByArticleId(article.Id);
                 article.TagList = await _tagRepository.GetByArticleId(article.Id);
 
-                if (userId.HasValue)
+                if ( userId.HasValue )
                 {
                     var favoritedSql = "SELECT EXISTS(SELECT 1 FROM article_favorites WHERE article_id=@article_id AND user_id=@user_id)";
                     var favoritedArguments = new { article_id = article.Id, user_id = userId };
-                    article.Favorited = _connection.ExecuteScalar<bool>(favoritedSql, favoritedArguments);    
+                    article.Favorited = _connection.ExecuteScalar<bool>(favoritedSql, favoritedArguments);
                 }
                 else
                 {
                     article.Favorited = false;
                 }
-                
+
                 var favoritesCountSql = "SELECT COUNT(*) FROM article_favorites WHERE article_id=@article_id AND user_id=@user_id";
                 var favoritesCountArguments = new { article_id = article.Id, user_id = article.Author.UserId };
                 article.FavoritesCount = _connection.ExecuteScalar<int>(favoritesCountSql, favoritesCountArguments);
@@ -85,17 +85,17 @@ namespace App.Content.Domain.Infrastructure.Repositories
 
             return article;
         }
-        
+
         public async Task<IEnumerable<ArticleEntity>> GetAll(int? userId)
         {
             string sql = "SELECT * FROM articles";
             var articles = _connection.Query<ArticleEntity>(sql).ToList();
 
-            foreach (var article in articles)
+            foreach ( var article in articles )
             {
                 await EnrichArticle(article, userId);
             }
-            
+
             return articles;
         }
 
@@ -113,7 +113,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
                          "ORDER BY a.created_at DESC " +
                          "LIMIT @limit " + //limit and offset is not efficient in SQLite
                          "OFFSET @offset"; //limit and offset is not efficient in SQLite
-            
+
             var arguments = new
             {
                 author_username = authorUsername,
@@ -122,23 +122,23 @@ namespace App.Content.Domain.Infrastructure.Repositories
                 limit = limit,
                 offset = offset
             };
-            
+
             var articles = _connection.Query<ArticleEntity>(sql, arguments).ToList();
 
-            foreach (var article in articles)
+            foreach ( var article in articles )
             {
                 await EnrichArticle(article, userId);
             }
-            
+
             return articles;
         }
-        
+
         public Task FavoriteArticle(string slug, int userId)
         {
             var sql = "INSERT OR IGNORE INTO article_favorites (article_id, user_id) VALUES ((SELECT id FROM articles WHERE slug=@slug), @user_id)";
             var arguments = new { slug, user_id = userId };
             _connection.Execute(sql, arguments);
-            
+
             return Task.CompletedTask;
         }
 
@@ -147,7 +147,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
             var sql = "DELETE FROM article_favorites WHERE article_id=(SELECT id FROM articles WHERE slug=@slug) AND user_id=@user_id";
             var arguments = new { slug, user_id = userId };
             _connection.Execute(sql, arguments);
-            
+
             return Task.CompletedTask;
         }
 
@@ -160,23 +160,23 @@ namespace App.Content.Domain.Infrastructure.Repositories
             var arguments = new
             {
                 user_id = articleEntity.Author.UserId,
-                slug = articleEntity.GetSlug(), 
-                title = articleEntity.Title, 
-                description = articleEntity.Description, 
-                body = articleEntity.Body, 
-                created_at = now.ToString("O"), 
+                slug = articleEntity.GetSlug(),
+                title = articleEntity.Title,
+                description = articleEntity.Description,
+                body = articleEntity.Body,
+                created_at = now.ToString("O"),
                 updated_at = now.ToString("O")
             };
 
             var insertedArticle = _connection.QuerySingle<ArticleEntity>(sql, arguments);
 
-            foreach (var tag in articleEntity.TagList.Select(tag => tag.Tag))
+            foreach ( var tag in articleEntity.TagList.Select(tag => tag.Tag) )
             {
                 var getTagIdSql = "SELECT id FROM tags WHERE tag = @tag";
                 var getTagIdArguments = new { tag };
                 var tagEntity = _connection.QuerySingleOrDefault<TagEntity>(getTagIdSql, getTagIdArguments);
 
-                if (tagEntity == null)
+                if ( tagEntity == null )
                 {
                     var insertTagSql = "INSERT INTO tags (tag) VALUES (@tag) RETURNING *";
                     var insertTagArguments = new { tag };
@@ -199,8 +199,8 @@ namespace App.Content.Domain.Infrastructure.Repositories
             {
                 id = articleEntity.Id,
                 slug = articleEntity.GetSlug(),
-                title = articleEntity.Title, 
-                description = articleEntity.Description, 
+                title = articleEntity.Title,
+                description = articleEntity.Description,
                 body = articleEntity.Body,
                 updated_at = DateTime.UtcNow.ToString("O")
             };
@@ -214,11 +214,11 @@ namespace App.Content.Domain.Infrastructure.Repositories
             var selectArticleIdSql = "SELECT id FROM articles WHERE slug=@slug";
             var selectArticleIdArguments = new { slug };
             var id = _connection.ExecuteScalar<int>(selectArticleIdSql, selectArticleIdArguments);
-            
+
             var deleteArticleTagsSql = "DELETE FROM article_tags WHERE article_id = @article_id";
             var deleteArticleTagsArguments = new { article_id = id };
             _connection.Execute(deleteArticleTagsSql, deleteArticleTagsArguments);
-            
+
             var deleteArticleFavoritesSql = "DELETE FROM article_favorites WHERE article_id = @article_id AND user_id=@user_id";
             var deleteArticleFavoritesArguments = new { article_id = id, user_id = userId };
             _connection.Execute(deleteArticleFavoritesSql, deleteArticleFavoritesArguments);
@@ -226,7 +226,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
             var sql = "DELETE FROM articles WHERE id = @id";
             var arguments = new { id };
             _connection.Execute(sql, arguments);
-            
+
             return Task.CompletedTask;
         }
     }

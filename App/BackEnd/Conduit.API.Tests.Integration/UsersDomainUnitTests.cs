@@ -17,8 +17,8 @@ namespace Conduit.API.Tests.Integration
     public class UsersDomainUnitTests : IntegrationTestBase
     {
         public IConduitApiClient ApiClient { get; }
-        public Fixture AutoFixture { get; } = new ();
-        
+        public Fixture AutoFixture { get; } = new();
+
         public UsersDomainUnitTests(WebApplicationFactory<Program> applicationFactory, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
             applicationFactory.WithWebHostBuilder(builder =>
@@ -42,7 +42,7 @@ namespace Conduit.API.Tests.Integration
                     Password = AutoFixture.Create<string>()
                 }
             };
-            
+
             var response = await ApiClient.CreateUser(newUserRequest);
 
             response.StatusCode.Should().Be(HttpStatusCode.Created);

@@ -18,8 +18,8 @@ namespace App.Content.Domain.Operations.Commands.FavoriteArticle
         private readonly IArticleRepository _articleRepository;
         private readonly IUserContext _userContext;
 
-        public FavoriteArticleCommandHandler([NotNull] IArticleRepository articleRepository, 
-            [NotNull] IUsersService usersService, 
+        public FavoriteArticleCommandHandler([NotNull] IArticleRepository articleRepository,
+            [NotNull] IUsersService usersService,
             [NotNull] IUserContext userContext)
         {
             _articleRepository = articleRepository;
@@ -29,7 +29,7 @@ namespace App.Content.Domain.Operations.Commands.FavoriteArticle
 
         public async Task<OperationResponse<FavoriteArticleCommandResult>> Handle(FavoriteArticleCommand request, CancellationToken cancellationToken)
         {
-            if (!await _articleRepository.ExistsBySlug(request.Slug))
+            if ( !await _articleRepository.ExistsBySlug(request.Slug) )
                 return OperationResponseFactory.NotFound<FavoriteArticleCommand, OperationResponse<FavoriteArticleCommandResult>>(typeof(ArticleEntity), request.Slug);
 
             await _articleRepository.FavoriteArticle(request.Slug, _userContext.UserId);

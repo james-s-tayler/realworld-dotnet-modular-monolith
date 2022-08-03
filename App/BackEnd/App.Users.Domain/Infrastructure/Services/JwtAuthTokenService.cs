@@ -29,7 +29,7 @@ namespace App.Users.Domain.Infrastructure.Services
             authClaims.Add(new Claim("user_id", userEntity.Id.ToString()));
             authClaims.Add(new Claim("username", userEntity.Username));
             authClaims.Add(new Claim("email", userEntity.Email));
-            
+
             var token = new JwtSecurityToken(
                 issuer: _jwtSettings.ValidIssuer,
                 audience: _jwtSettings.ValidAudience,
@@ -37,7 +37,7 @@ namespace App.Users.Domain.Infrastructure.Services
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
             );
-            
+
             return Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
         }
     }

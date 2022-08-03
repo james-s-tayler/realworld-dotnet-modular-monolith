@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Conduit.API.Converters;
 
 namespace Conduit.API.Models
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -30,35 +30,35 @@ namespace Conduit.API.Models
         /// Gets or Sets Email
         /// </summary>
         [Required]
-        [DataMember(Name="email", EmitDefaultValue=false)]
+        [DataMember(Name = "email", EmitDefaultValue = false)]
         public string Email { get; set; }
 
         /// <summary>
         /// Gets or Sets Token
         /// </summary>
         [Required]
-        [DataMember(Name="token", EmitDefaultValue=false)]
+        [DataMember(Name = "token", EmitDefaultValue = false)]
         public string Token { get; set; }
 
         /// <summary>
         /// Gets or Sets Username
         /// </summary>
         [Required]
-        [DataMember(Name="username", EmitDefaultValue=false)]
+        [DataMember(Name = "username", EmitDefaultValue = false)]
         public string Username { get; set; }
 
         /// <summary>
         /// Gets or Sets Bio
         /// </summary>
         [Required]
-        [DataMember(Name="bio", EmitDefaultValue=false)]
+        [DataMember(Name = "bio", EmitDefaultValue = false)]
         public string Bio { get; set; }
 
         /// <summary>
         /// Gets or Sets Image
         /// </summary>
         [Required]
-        [DataMember(Name="image", EmitDefaultValue=false)]
+        [DataMember(Name = "image", EmitDefaultValue = false)]
         public string Image { get; set; }
 
         /// <summary>
@@ -94,9 +94,9 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((User)obj);
+            if ( obj is null ) return false;
+            if ( ReferenceEquals(this, obj) ) return true;
+            return obj.GetType() == GetType() && Equals(( User )obj);
         }
 
         /// <summary>
@@ -106,30 +106,30 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public bool Equals(User other)
         {
-            if (other is null) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if ( other is null ) return false;
+            if ( ReferenceEquals(this, other) ) return true;
 
-            return 
+            return
                 (
                     Email == other.Email ||
                     Email != null &&
                     Email.Equals(other.Email)
-                ) && 
+                ) &&
                 (
                     Token == other.Token ||
                     Token != null &&
                     Token.Equals(other.Token)
-                ) && 
+                ) &&
                 (
                     Username == other.Username ||
                     Username != null &&
                     Username.Equals(other.Username)
-                ) && 
+                ) &&
                 (
                     Bio == other.Bio ||
                     Bio != null &&
                     Bio.Equals(other.Bio)
-                ) && 
+                ) &&
                 (
                     Image == other.Image ||
                     Image != null &&
@@ -147,22 +147,22 @@ namespace Conduit.API.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Email != null)
+                if ( Email != null )
                     hashCode = hashCode * 59 + Email.GetHashCode();
-                    if (Token != null)
+                if ( Token != null )
                     hashCode = hashCode * 59 + Token.GetHashCode();
-                    if (Username != null)
+                if ( Username != null )
                     hashCode = hashCode * 59 + Username.GetHashCode();
-                    if (Bio != null)
+                if ( Bio != null )
                     hashCode = hashCode * 59 + Bio.GetHashCode();
-                    if (Image != null)
+                if ( Image != null )
                     hashCode = hashCode * 59 + Image.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(User left, User right)
         {
@@ -174,7 +174,7 @@ namespace Conduit.API.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

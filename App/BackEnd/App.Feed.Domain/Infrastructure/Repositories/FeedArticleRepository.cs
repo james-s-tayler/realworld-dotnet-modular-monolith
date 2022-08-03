@@ -40,9 +40,9 @@ namespace App.Feed.Domain.Infrastructure.Repositories
                 user_id = publishedArticle.UserId,
                 created_at = publishedArticle.CreatedAt.ToString("O")
             };
-            
+
             var insertedArticle = _connection.QuerySingle<ArticleEntity>(sql, arguments);
-            
+
             return Task.FromResult(insertedArticle);
         }
 
@@ -54,16 +54,16 @@ namespace App.Feed.Domain.Infrastructure.Repositories
                          "ORDER BY article.created_at DESC " +
                          "LIMIT @limit " + //limit and offset is not efficient in SQLite
                          "OFFSET @offset"; //limit and offset is not efficient in SQLite
-            
+
             var arguments = new
             {
                 user_id = userId,
                 limit = limit,
                 offset = offset
             };
-            
+
             var articles = _connection.Query<ArticleEntity>(sql, arguments).ToList();
-            
+
             return Task.FromResult(articles);
         }
     }

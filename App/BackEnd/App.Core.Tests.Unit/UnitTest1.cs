@@ -15,7 +15,7 @@ namespace App.Core.Tests.Unit
             //be nice to enforce mappers are used correctly - i.e types in a Domain.Contracts folder are only newed up from inside a Mapper!
             //be nice to enforce domain contracts follow naming conventions
             //be nice to enforce domain unit test project follows naming conventions
-            
+
             //be nice to hook up a front-end via HotWire: https://hotwired.dev/
             //be nice to try litestream: https://litestream.io/guides/s3/
             //be nice to trim the docker image size to small as possible: https://benfoster.io/blog/optimising-dotnet-docker-images/

@@ -17,12 +17,12 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
     public class GetArticleByIdUnitTests : UnitTestBase
     {
         private readonly ContentModuleSetupFixture _module;
-        
+
         public GetArticleByIdUnitTests(ContentModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
             _module = module;
         }
-        
+
         [Fact]
         public async Task GivenNoArticle_WhenGetArticle_ThenNotFound()
         {
@@ -35,7 +35,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             //assert
             result.Result.Should().Be(OperationResult.NotFound);
         }
-        
+
         [Fact]
         public async Task GivenAnArticle_WhenGetArticleById_ThenReturnsArticle()
         {
@@ -57,7 +57,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             result.Response.Article.CreatedAt.Should().BeBefore(testStartTime);
             result.Response.Article.UpdatedAt.Should().BeBefore(testStartTime);
         }
-        
+
         [Fact]
         public async Task GivenAnArticle_WhenGetArticleById_ThenArticleContainsTags()
         {
@@ -68,9 +68,9 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             var result = await _module.Mediator.Send(getSingleArticleQuery);
 
             //assert
-            result.Response.Article.TagList.Should().BeEquivalentTo(new []{_module.ExistingArticleTag2});
+            result.Response.Article.TagList.Should().BeEquivalentTo(new[] { _module.ExistingArticleTag2 });
         }
-        
+
         [Fact]
         public async Task GivenAnArticle_WhenGetArticleById_ThenArticleContainsAuthorProfile()
         {
@@ -86,7 +86,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             result.Response.Article.Author.Image.Should().Be(_module.AuthenticatedUserImage);
             result.Response.Article.Author.Following.Should().Be(true);
         }
-        
+
         [Fact]
         public async Task GivenAFavoritedArticle_WhenGetArticleById_ThenArticleIsFavorited()
         {
@@ -100,7 +100,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             result.Response.Article.Favorited.Should().BeTrue();
             result.Response.Article.FavoritesCount.Should().Be(1);
         }
-        
+
         [Fact]
         public async Task GivenANonFavoritedArticle_WhenGetArticleById_ThenArticleIsNotFavorited()
         {
@@ -114,7 +114,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             result.Response.Article.Favorited.Should().BeFalse();
             result.Response.Article.FavoritesCount.Should().Be(0);
         }
-        
+
         [Fact]
         public async Task GivenInvalidId_WhenGetArticle_ThenInvalidRequest()
         {

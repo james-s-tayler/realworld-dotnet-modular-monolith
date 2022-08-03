@@ -21,7 +21,7 @@ namespace App.Content.Domain.Tests.Unit.Setup
     {
         internal IDictionary<string, List<ArticleEntity>> UserArticles = new Dictionary<string, List<ArticleEntity>>();
         internal IDictionary<string, List<ArticleEntity>> TaggedArticles = new Dictionary<string, List<ArticleEntity>>();
-        internal List<ArticleEntity> FavoritedArticles = new ();
+        internal List<ArticleEntity> FavoritedArticles = new();
         internal ArticleEntity NonFavoritedArticleEntity { get; private set; }
         internal ArticleEntity FavoritedArticleEntity { get; private set; }
         internal ArticleEntity CommentedOnArticleEntity { get; private set; }
@@ -32,8 +32,8 @@ namespace App.Content.Domain.Tests.Unit.Setup
         internal IUserRepository UserRepository { get; private set; }
         internal IArticleRepository ArticleRepository { get; private set; }
         internal ICommentRepository CommentRepository { get; private set; }
-        internal Mock<IUsersService> SocialService { get; } = new ();
-        
+        internal Mock<IUsersService> SocialService { get; } = new();
+
         public ContentModuleSetupFixture() : base(new ContentModule())
         {
         }
@@ -72,9 +72,9 @@ namespace App.Content.Domain.Tests.Unit.Setup
         public async Task WithUserAndArticles()
         {
             var userId = await WithUserEntityAndProfile();
-            
-            await WithArticle(true, userId, new []{ ExistingArticleTag1 });
-            await WithArticle(false, userId, new []{ ExistingArticleTag2 });
+
+            await WithArticle(true, userId, new[] { ExistingArticleTag1 });
+            await WithArticle(false, userId, new[] { ExistingArticleTag2 });
             await WithArticle(true, userId, Array.Empty<string>());
         }
 
@@ -83,33 +83,34 @@ namespace App.Content.Domain.Tests.Unit.Setup
             WithUnauthenticatedUserContext();
             await WithUserEntityAndProfile(AuthenticatedUserId, AuthenticatedUserUsername, AuthenticatedUserBio, AuthenticatedUserImage, false);
         }
-        
+
         public async Task WithAuthenticatedUserEntityAndProfile()
         {
             await WithUserEntityAndProfile(AuthenticatedUserId, AuthenticatedUserUsername, AuthenticatedUserBio, AuthenticatedUserImage, true);
         }
-        
+
         public async Task<int> WithUserEntityAndProfile()
         {
             var userId = AutoFixture.Create<int>();
-            
+
             await WithUserEntityAndProfile(
-                userId, 
-                AutoFixture.Create<string>(), 
-                AutoFixture.Create<string>(), 
+                userId,
+                AutoFixture.Create<string>(),
+                AutoFixture.Create<string>(),
                 AutoFixture.Create<string>(),
                 true);
 
             return userId;
         }
-        
+
         public async Task WithUserEntityAndProfile(int userId, string username, string bio, string image, bool isFollowing)
         {
-            await UserRepository!.Create(new UserEntity {
+            await UserRepository!.Create(new UserEntity
+            {
                 UserId = userId,
                 Username = username
             });
-            
+
             var existingUserProfile = new ProfileDTO
             {
                 Username = username,
@@ -119,18 +120,18 @@ namespace App.Content.Domain.Tests.Unit.Setup
             };
 
             var getProfileQueryResult = new GetProfileQueryResult { Profile = existingUserProfile };
-            
-            if (!UserContext.IsAuthenticated)
+
+            if ( !UserContext.IsAuthenticated )
             {
                 getProfileQueryResult.Profile.Following = false;
             }
-            
+
             SocialService
-                .Setup(service => 
+                .Setup(service =>
                     service.GetProfile(It.Is<string>(s => s.Equals(username))))
                 .ReturnsAsync(OperationResponseFactory.Success(getProfileQueryResult));
 
-            if (!UserArticles.ContainsKey(username))
+            if ( !UserArticles.ContainsKey(username) )
             {
                 UserArticles.Add(username, new List<ArticleEntity>());
             }
@@ -138,14 +139,14 @@ namespace App.Content.Domain.Tests.Unit.Setup
 
         public async Task WithUnfavoritedArticle()
         {
-            NonFavoritedArticleEntity = await WithArticle(false, AuthenticatedUserId, new []{ ExistingArticleTag2 });
+            NonFavoritedArticleEntity = await WithArticle(false, AuthenticatedUserId, new[] { ExistingArticleTag2 });
         }
 
         public async Task WithFavoritedArticle()
         {
-            FavoritedArticleEntity = await WithArticle(true, AuthenticatedUserId, new []{ ExistingArticleTag1 });
+            FavoritedArticleEntity = await WithArticle(true, AuthenticatedUserId, new[] { ExistingArticleTag1 });
         }
-        
+
         public async Task WithCommentedOnArticle()
         {
             CommentedOnArticleEntity = await WithArticle(false, AuthenticatedUserId);
@@ -173,40 +174,40 @@ namespace App.Content.Domain.Tests.Unit.Setup
                 Author = new UserEntity { UserId = authorId }
             };
 
-            if (tags != null)
+            if ( tags != null )
             {
-                foreach (var tag in tags)
+                foreach ( var tag in tags )
                 {
                     article.TagList.Add(new TagEntity { Tag = tag });
                 }
             }
-            
+
             var articleId = await ArticleRepository!.Create(article);
 
-            if (UserContext.IsAuthenticated && isFavorited)
+            if ( UserContext.IsAuthenticated && isFavorited )
             {
                 await ArticleRepository.FavoriteArticle(article.GetSlug(), AuthenticatedUserId);
             }
 
             var author = await UserRepository.GetById(authorId);
             var createdArticle = await ArticleRepository.GetById(articleId, AuthenticatedUserId);
-            
+
             UserArticles[author.Username].Add(createdArticle);
-            
-            if (UserContext.IsAuthenticated && isFavorited)
+
+            if ( UserContext.IsAuthenticated && isFavorited )
             {
                 FavoritedArticles.Add(createdArticle);
             }
 
-            foreach (var tag in createdArticle.TagList)
+            foreach ( var tag in createdArticle.TagList )
             {
-                if (!TaggedArticles.ContainsKey(tag.Tag))
+                if ( !TaggedArticles.ContainsKey(tag.Tag) )
                 {
                     TaggedArticles.Add(tag.Tag, new List<ArticleEntity>());
                 }
                 TaggedArticles[tag.Tag].Add(createdArticle);
             }
-            
+
             return createdArticle;
         }
     }

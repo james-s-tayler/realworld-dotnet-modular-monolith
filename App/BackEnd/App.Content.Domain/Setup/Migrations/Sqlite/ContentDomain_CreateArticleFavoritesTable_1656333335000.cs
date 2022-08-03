@@ -20,7 +20,7 @@ namespace App.Content.Domain.Setup.Migrations.Sqlite
                 .ForeignColumn("article_id")
                 .ToTable("articles")
                 .PrimaryColumn("id");
-            
+
             Create.ForeignKey("fk_article_favorites_user_id")
                 .FromTable("article_favorites")
                 .ForeignColumn("user_id")

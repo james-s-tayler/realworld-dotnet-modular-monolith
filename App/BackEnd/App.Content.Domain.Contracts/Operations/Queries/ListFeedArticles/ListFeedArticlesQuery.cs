@@ -10,7 +10,7 @@ namespace App.Content.Domain.Contracts.Operations.Queries.ListFeedArticles
     {
         [Range(1, 100)]
         public int Limit { get; set; } = 20;
-        
+
         [Range(0, Int32.MaxValue)]
         public int Offset { get; set; } = 0;
     }

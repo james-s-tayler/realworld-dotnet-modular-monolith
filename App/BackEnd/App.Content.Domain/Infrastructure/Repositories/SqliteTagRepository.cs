@@ -32,7 +32,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
             var articleTags = _connection.Query<TagEntity>(articleTagsSql).ToList();
             return Task.FromResult(articleTags);
         }
-        
+
         public Task<List<TagEntity>> GetByArticleId(int articleId)
         {
             var articleTagsSql = "SELECT * FROM tags t " +

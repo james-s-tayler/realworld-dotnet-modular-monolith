@@ -11,7 +11,7 @@ namespace App.Users.Domain.Operations.Commands.RegisterUser
     internal class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
     {
         private readonly IUserRepository _userRepository;
-        
+
         public RegisterUserCommandValidator([NotNull] IUserRepository userRepository)
         {
             _userRepository = userRepository;
@@ -36,12 +36,12 @@ namespace App.Users.Domain.Operations.Commands.RegisterUser
                 .NotEmpty()
                 .MinimumLength(10);
         }
-        
+
         private async Task<bool> UsernameNotAlreadyInUse(string username, CancellationToken cancellation)
         {
             return !await _userRepository.ExistsByUsername(username);
         }
-        
+
         private async Task<bool> EmailNotAlreadyInUse(string email, CancellationToken cancellation)
         {
             return !await _userRepository.ExistsByEmail(email);

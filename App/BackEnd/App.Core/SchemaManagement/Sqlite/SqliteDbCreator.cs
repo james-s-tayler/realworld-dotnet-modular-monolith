@@ -13,13 +13,13 @@ namespace App.Core.SchemaManagement.Sqlite
             var dbName = $"{configuration[$"DatabaseConfig:{moduleName}:DatabaseName"]}_{hostEnvironment.EnvironmentName}".ToLowerInvariant();
             var filename = runningInDocker ? $"/sqlite/{dbName}.db" : $"{dbName}.db";
 
-            if (!File.Exists(filename))
+            if ( !File.Exists(filename) )
             {
                 Console.WriteLine($"Database {filename} does not exist - creating it...");
                 File.WriteAllBytes(filename, Array.Empty<byte>());
             }
-            
-            if (!File.Exists(filename))
+
+            if ( !File.Exists(filename) )
             {
                 throw new Exception($"Database {filename} has not been created");
             }

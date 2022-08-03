@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Conduit.API.Converters;
 
 namespace Conduit.API.Models
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -30,14 +30,14 @@ namespace Conduit.API.Models
         /// Gets or Sets Articles
         /// </summary>
         [Required]
-        [DataMember(Name="articles", EmitDefaultValue=false)]
+        [DataMember(Name = "articles", EmitDefaultValue = false)]
         public List<Article> Articles { get; set; }
 
         /// <summary>
         /// Gets or Sets ArticlesCount
         /// </summary>
         [Required]
-        [DataMember(Name="articlesCount", EmitDefaultValue=true)]
+        [DataMember(Name = "articlesCount", EmitDefaultValue = true)]
         public int ArticlesCount { get; set; }
 
         /// <summary>
@@ -70,9 +70,9 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((MultipleArticlesResponse)obj);
+            if ( obj is null ) return false;
+            if ( ReferenceEquals(this, obj) ) return true;
+            return obj.GetType() == GetType() && Equals(( MultipleArticlesResponse )obj);
         }
 
         /// <summary>
@@ -82,19 +82,19 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public bool Equals(MultipleArticlesResponse other)
         {
-            if (other is null) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if ( other is null ) return false;
+            if ( ReferenceEquals(this, other) ) return true;
 
-            return 
+            return
                 (
                     Articles == other.Articles ||
                     Articles != null &&
                     other.Articles != null &&
                     Articles.SequenceEqual(other.Articles)
-                ) && 
+                ) &&
                 (
                     ArticlesCount == other.ArticlesCount ||
-                    
+
                     ArticlesCount.Equals(other.ArticlesCount)
                 );
         }
@@ -109,16 +109,16 @@ namespace Conduit.API.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Articles != null)
+                if ( Articles != null )
                     hashCode = hashCode * 59 + Articles.GetHashCode();
-                    
-                    hashCode = hashCode * 59 + ArticlesCount.GetHashCode();
+
+                hashCode = hashCode * 59 + ArticlesCount.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(MultipleArticlesResponse left, MultipleArticlesResponse right)
         {
@@ -130,7 +130,7 @@ namespace Conduit.API.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

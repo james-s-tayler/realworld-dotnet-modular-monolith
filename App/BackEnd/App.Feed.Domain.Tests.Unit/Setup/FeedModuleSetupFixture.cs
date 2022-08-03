@@ -20,24 +20,24 @@ namespace App.Feed.Domain.Tests.Unit.Setup
     {
         internal IFollowRepository FollowRepository { get; private set; }
         internal IArticleRepository ArticleRepository { get; private set; }
-        private readonly Mock<IContentDomainClient> _contentDomainClient = new ();
+        private readonly Mock<IContentDomainClient> _contentDomainClient = new();
 
         internal List<FollowEntity> Follows { get; private set; }
         internal List<ArticleEntity> FollowedUserArticles { get; private set; }
         internal List<ArticleEntity> NonFollowedUserArticles { get; private set; }
 
-        public FeedModuleSetupFixture() : base(new FeedModule()) {}
-        
+        public FeedModuleSetupFixture() : base(new FeedModule()) { }
+
         protected override void AddConfiguration(IDictionary<string, string> configuration)
         {
-            
+
         }
-        
+
         protected override void ReplaceServices(AbstractModule module)
         {
             module.ReplaceTransient(_contentDomainClient.Object);
         }
-        
+
         protected override void SetupPostProcess(ServiceProvider provider)
         {
             FollowRepository = provider.GetService<IFollowRepository>();
@@ -59,14 +59,14 @@ namespace App.Feed.Domain.Tests.Unit.Setup
 
         public void WithUserAndArticles(int followingUserId, bool following)
         {
-            if (following)
+            if ( following )
             {
                 var follow = new FollowEntity { UserId = AuthenticatedUserId, FollowingUserId = followingUserId };
                 FollowRepository.Follow(follow);
                 Follows.Add(follow);
             }
 
-            for (var i = 0; i < 3; i++)
+            for ( var i = 0; i < 3; i++ )
             {
                 var article = new ArticleEntity
                 {
@@ -74,10 +74,10 @@ namespace App.Feed.Domain.Tests.Unit.Setup
                     UserId = followingUserId,
                     CreatedAt = DateTime.UtcNow
                 };
-                
+
                 ArticleRepository.Insert(article);
 
-                if (following)
+                if ( following )
                 {
                     FollowedUserArticles.Add(article);
                 }
@@ -93,7 +93,7 @@ namespace App.Feed.Domain.Tests.Unit.Setup
                 mockArticle.Article.CreatedAt = article.CreatedAt;
                 mockArticle.Article.Author.Following = following;
                 mockArticle.Article.Author.Username = followingUserId.ToString();
-                
+
                 _contentDomainClient.Setup(client =>
                         client.GetArticleById(It.Is<GetArticleByIdQuery>(query =>
                             query.ArticleId == article.ArticleId)))

@@ -28,7 +28,7 @@ namespace App.ModuleName.Domain.Setup.Module
         {
             schemaManager.RunSqliteMigrations();
         }
-        
+
         public override Assembly GetModuleAssembly()
         {
             return typeof(ModuleNameModule).Assembly;

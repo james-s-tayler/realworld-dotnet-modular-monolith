@@ -28,7 +28,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("only the contracts of the domain should be public")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void EntitiesShouldFollowNamingConvention()
         {
@@ -38,7 +38,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("this avoids compilation failures arising from having a property with the same name as the class")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void DomainOperationHandlersEndInEitherCommandHandlerOrQueryHandler()
         {
@@ -48,7 +48,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("Domain operations must indicate whether they mutate state or not")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void CommandHandlersResideInCorrectNamespace()
         {
@@ -62,7 +62,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("this is the convention")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void QueryHandlersResideInCorrectNamespace()
         {
@@ -76,7 +76,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("this is the convention")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void DomainModulesShouldResideInCorrectNamespace()
         {
@@ -86,7 +86,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("that's the convention")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void DomainClassesShouldNotDirectlyReferenceHttpContext()
         {
@@ -96,7 +96,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("that should be handled by abstractions in App.Core")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void DomainClassesShouldNotDirectlyReferenceClaimsPrincipal()
         {
@@ -106,7 +106,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("that should be handled by abstractions in App.Core. This is a notoriously tricky class to instantiate correctly. See: https://www.benday.com/2021/08/13/3-common-problems-with-claimsidentity-and-claimsprincipal-in-asp-net-core/")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void RepositoriesShouldNotDirectlyReferenceUserContext()
         {
@@ -116,7 +116,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("repositories should be passed all the data they are expected to persist/query. This makes testing more flexible and requires less mocking when you want to test behavior that differs between authenticated and unauthenticated users.")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void DomainClassesShouldNotThrowNotImplementedException()
         {

@@ -23,28 +23,28 @@ namespace App.Users.Domain.Infrastructure.Repositories
         public Task<bool> Exists(int id)
         {
             string sql = "SELECT EXISTS(SELECT 1 FROM users WHERE id=@id)";
-    
+
             var arguments = new
             {
                 id = id
             };
-            
+
             var exists = _connection.ExecuteScalar<bool>(sql, arguments);
-            
+
             return Task.FromResult(exists);
         }
 
         public Task<UserEntity> GetById(int id)
         {
             string sql = "SELECT * FROM users WHERE id=@id";
-    
+
             var arguments = new
             {
                 id = id
             };
-            
+
             var user = _connection.Query<UserEntity>(sql, arguments);
-            
+
             return Task.FromResult(user.SingleOrDefault());
         }
 
@@ -67,11 +67,11 @@ namespace App.Users.Domain.Infrastructure.Repositories
                 image = userEntity.Image,
                 bio = userEntity.Bio
             };
-            
+
             var insertedUser = _connection.QuerySingle<UserEntity>(sql, arguments);
-            
+
             await FollowSelf(insertedUser.Id);
-            
+
             return insertedUser.Id;
         }
 
@@ -88,7 +88,7 @@ namespace App.Users.Domain.Infrastructure.Repositories
                 image = userEntity.Image,
                 bio = userEntity.Bio
             };
-            
+
             _connection.Execute(sql, arguments);
             return Task.CompletedTask;
         }
@@ -118,7 +118,7 @@ namespace App.Users.Domain.Infrastructure.Repositories
             var sql = "SELECT * FROM users WHERE email = @email";
 
             var arguments = new { email };
-            
+
             return Task.FromResult(_connection.Query<UserEntity>(sql, arguments).SingleOrDefault());
         }
 
@@ -135,7 +135,7 @@ namespace App.Users.Domain.Infrastructure.Repositories
             var sql = "SELECT EXISTS(SELECT 1 FROM users WHERE username=@username)";
 
             var arguments = new { username };
-            
+
             return Task.FromResult(_connection.ExecuteScalar<bool>(sql, arguments));
         }
 
@@ -144,10 +144,10 @@ namespace App.Users.Domain.Infrastructure.Repositories
             var sql = "SELECT EXISTS(SELECT 1 FROM users WHERE email=@email)";
 
             var arguments = new { email };
-            
+
             return Task.FromResult(_connection.ExecuteScalar<bool>(sql, arguments));
         }
-        
+
         public Task<bool> IsFollowing(int userId, int followUserId)
         {
             var sql = "SELECT EXISTS(SELECT 1 FROM followers WHERE user_id=@user_id AND follow_user_id=@follow_user_id)";
@@ -162,7 +162,7 @@ namespace App.Users.Domain.Infrastructure.Repositories
         {
             await FollowUser(userId, userId);
         }
-        
+
         public Task FollowUser(int userId, int followUserId)
         {
             var sql = "INSERT OR IGNORE INTO followers(user_id, follow_user_id) VALUES(@user_id, @follow_user_id)";
@@ -171,7 +171,7 @@ namespace App.Users.Domain.Infrastructure.Repositories
                 user_id = userId,
                 follow_user_id = followUserId
             };
-            
+
             return Task.FromResult(_connection.Execute(sql, arguments));
         }
 

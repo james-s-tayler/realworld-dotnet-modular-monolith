@@ -8,7 +8,7 @@ using MediatR;
 
 namespace App.Core.PipelineBehaviors.Validation
 {
-    public class ContractValidationPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> 
+    public class ContractValidationPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TResponse : class
         where TRequest : IRequest<TResponse>
     {
@@ -21,14 +21,14 @@ namespace App.Core.PipelineBehaviors.Validation
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            if (!typeof(TResponse).IsOperationResponse())
+            if ( !typeof(TResponse).IsOperationResponse() )
                 throw new InvalidOperationException("Domain operations must be of type OperationResponse<T>");
 
-            if (!_inputContractValidator.IsContractAdheredTo(request))
+            if ( !_inputContractValidator.IsContractAdheredTo(request) )
             {
                 return OperationResponseFactory.InvalidRequest<TRequest, TResponse>(new List<string> { "The input contract was not adhered to" });
             }
-                
+
             return await next();
         }
     }

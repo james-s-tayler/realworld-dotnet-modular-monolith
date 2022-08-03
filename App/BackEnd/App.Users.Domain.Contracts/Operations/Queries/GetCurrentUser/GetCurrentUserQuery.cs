@@ -4,5 +4,5 @@ using MediatR;
 
 namespace App.Users.Domain.Contracts.Operations.Queries.GetCurrentUser
 {
-    public class GetCurrentUserQuery : ContractModel, IRequest<OperationResponse<GetCurrentUserQueryResult>> {}
+    public class GetCurrentUserQuery : ContractModel, IRequest<OperationResponse<GetCurrentUserQueryResult>> { }
 }

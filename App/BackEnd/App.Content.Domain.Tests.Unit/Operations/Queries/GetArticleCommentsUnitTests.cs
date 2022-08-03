@@ -38,7 +38,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             result.Response.Should().NotBeNull();
             result.Response.Comments.Should().BeEmpty();
         }
-        
+
         [Fact]
         public async Task GivenNoSlug_WhenGetComments_ThenInvalidRequest()
         {
@@ -52,7 +52,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             result.Result.Should().Be(OperationResult.InvalidRequest);
             result.Response.Should().BeNull();
         }
-        
+
         [Fact]
         public async Task GivenAnArticleWithNoComments_WhenGetComments_ThenNoComments()
         {
@@ -68,7 +68,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             result.Response.Comments.Should().NotBeNull();
             result.Response.Comments.Should().BeEmpty();
         }
-        
+
         [Fact]
         public async Task GivenAnArticleWithComments_WhenGetComments_ThenReturnsComments()
         {
@@ -88,7 +88,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             result.Response.Comments[0].CreatedAt.Should().BeBefore(testStartTime);
             result.Response.Comments[0].UpdatedAt.Should().BeBefore(testStartTime);
         }
-        
+
         [Fact]
         public async Task GivenAnArticleWithComments_WhenGetComments_ThenCommentsContainAuthorProfile()
         {
@@ -106,7 +106,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             result.Response.Comments[0].Author.Image.Should().Be(_module.AuthenticatedUserImage);
             result.Response.Comments[0].Author.Following.Should().Be(true);
         }
-        
+
         [Fact]
         public async Task GivenAnUnauthenticatedUser_WhenGetComments_ThenCommentsReturned()
         {
@@ -127,7 +127,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             result.Response.Comments[0].CreatedAt.Should().BeBefore(testStartTime);
             result.Response.Comments[0].UpdatedAt.Should().BeBefore(testStartTime);
         }
-        
+
         [Fact]
         public async Task GivenProfileNotFollowed_WhenGetComments_ThenNotFollowingCommenter()
         {
@@ -144,7 +144,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
 
             _module.SocialService.Setup(service => service.GetProfile(It.Is<string>(s => s.Equals(existingUserProfile.Username))))
                 .ReturnsAsync(OperationResponseFactory.Success(getProfileQueryResult));
-            
+
             var getArticleCommentsQuery = new GetArticleCommentsQuery { Slug = _module.CommentedOnArticleEntity.GetSlug() };
 
             //act

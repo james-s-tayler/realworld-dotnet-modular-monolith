@@ -31,7 +31,7 @@ namespace Conduit.API.Converters
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             var s = value as string;
-            if (string.IsNullOrEmpty(s))
+            if ( string.IsNullOrEmpty(s) )
             {
                 return null;
             }

@@ -9,7 +9,7 @@ namespace App.Core.SchemaManagement.Postgres
         private readonly IConfiguration _configuration;
         private readonly IHostEnvironment _hostEnvironment;
 
-        public PostgresConnectionStringReader(IConfiguration configuration, 
+        public PostgresConnectionStringReader(IConfiguration configuration,
             IHostEnvironment hostEnvironment)
         {
             _configuration = configuration;

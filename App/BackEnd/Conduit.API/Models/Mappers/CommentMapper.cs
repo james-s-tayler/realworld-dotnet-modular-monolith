@@ -12,22 +12,22 @@ namespace Conduit.API.Models.Mappers
                 Comment = commentDto.ToComment()
             };
         }
-        
+
         public static MultipleCommentsResponse ToMultipleCommentsResponse(this List<SingleCommentDTO> commentDtos)
         {
             var comments = new List<Comment>();
 
-            foreach (var commentDto in commentDtos)
+            foreach ( var commentDto in commentDtos )
             {
                 comments.Add(commentDto.ToComment());
             }
-            
+
             return new MultipleCommentsResponse
             {
                 Comments = comments
             };
         }
-        
+
         private static Comment ToComment(this SingleCommentDTO commentDto)
         {
             return new Comment

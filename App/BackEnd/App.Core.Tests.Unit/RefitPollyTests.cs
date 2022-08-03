@@ -22,7 +22,7 @@ namespace App.Core.Tests.Unit
             [Get("/{statusCode}")]
             Task<ApiResponse<string>> GetStatusCodeWithPollyContextInjected([Query] int statusCode);
         }
-        
+
         private const string Logger = nameof(Logger);
 
         [Fact(Skip = "This code isn't used, rather it's just here to remind me how to do this")]
@@ -52,7 +52,7 @@ namespace App.Core.Tests.Unit
 
             //act
             var result = await refitClient.GetStatusCodeWithPollyContextInjected(StatusCodes.Status503ServiceUnavailable);
-            
+
             //assert
             result.StatusCode.Should().Be(HttpStatusCode.ServiceUnavailable);
             var testLogger = logger as TestLogger;
@@ -65,27 +65,27 @@ namespace App.Core.Tests.Unit
             //realistically you would probably use a logger factory or ILogger<T> here
             //but just showing how it can be accomplished through DI and a DelegatingHandler
             private readonly ILogger _logger;
-            
+
             public PollyContextInjectingDelegatingHandler(ILogger logger)
             {
                 _logger = logger;
             }
-            
+
             protected override async Task<HttpResponseMessage> SendAsync(
                 HttpRequestMessage request, System.Threading.CancellationToken cancellationToken)
             {
                 var pollyContext = new Polly.Context();
                 pollyContext.Add(Logger, _logger);
                 request.SetPolicyExecutionContext(pollyContext);
-                
+
                 return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
             }
         }
-        
+
         public class TestLogger : ILogger
         {
-            public List<string> Logs { get; } = new ();
-            
+            public List<string> Logs { get; } = new();
+
             public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
             {
                 Logs.Add(formatter.Invoke(state, exception));

@@ -13,8 +13,8 @@ namespace App.Users.Domain.Operations.Queries.GetProfile
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserContext _userContext;
-        
-        public GetProfileQueryValidator([NotNull] IUserRepository userRepository, 
+
+        public GetProfileQueryValidator([NotNull] IUserRepository userRepository,
             [NotNull] IUserContext userContext)
         {
             _userContext = userContext;
@@ -22,7 +22,7 @@ namespace App.Users.Domain.Operations.Queries.GetProfile
 
             RuleFor(query => query).MustAsync(UserMustExist).WithMessage(query => $"User {query.Username} was not found.");
         }
-        
+
         private async Task<bool> UserMustExist(GetProfileQuery query, CancellationToken cancellationToken)
         {
             return await _userRepository.ExistsByUsername(query.Username);

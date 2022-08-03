@@ -17,7 +17,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
         {
             _connection = connectionWrapper.Connection;
         }
-        
+
         public Task<bool> Exists(int id)
         {
             var sql = "SELECT EXISTS(SELECT 1 FROM users WHERE user_id=@user_id)";
@@ -25,14 +25,14 @@ namespace App.Content.Domain.Infrastructure.Repositories
             var arguments = new { user_id = id };
 
             var exists = _connection.ExecuteScalar<bool>(sql, arguments);
-            
+
             return Task.FromResult(exists);
         }
 
         public Task<UserEntity> GetById(int id)
         {
             var sql = "SELECT * FROM users WHERE user_id=@user_id";
-            var arguments = new {user_id = id};
+            var arguments = new { user_id = id };
             return Task.FromResult(_connection.QuerySingle<UserEntity>(sql, arguments));
         }
 
@@ -47,12 +47,12 @@ namespace App.Content.Domain.Infrastructure.Repositories
             var sql = "INSERT INTO users (user_id, username) VALUES (@user_id, @username) RETURNING *";
             var arguments = new
             {
-                user_id = userEntity.UserId, 
+                user_id = userEntity.UserId,
                 username = userEntity.Username
             };
 
             var insertedUser = _connection.QuerySingle<UserEntity>(sql, arguments);
-            
+
             return Task.FromResult(insertedUser.UserId);
         }
 
@@ -84,7 +84,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
         public Task<UserEntity> GetByArticleId(int articleId)
         {
             var sql = "SELECT u.* FROM users u JOIN articles a ON a.user_id = u.user_id WHERE a.id=@article_id";
-            var arguments = new {article_id = articleId};
+            var arguments = new { article_id = articleId };
             return Task.FromResult(_connection.QuerySingle<UserEntity>(sql, arguments));
         }
 

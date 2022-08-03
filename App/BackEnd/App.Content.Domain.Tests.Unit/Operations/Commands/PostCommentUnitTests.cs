@@ -32,7 +32,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
 
             //act
             var result = await _module.Mediator.Send(_postCommentCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.Success);
             result.Response.Should().NotBeNull();
@@ -41,13 +41,13 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             result.Response.Comment.CreatedAt.Should().BeAfter(testStartTime);
             result.Response.Comment.UpdatedAt.Should().BeAfter(testStartTime);
         }
-        
+
         [Fact]
         public async Task GivenAnAuthenticatedUser_WhenPostComment_ThenReturnsCommenterProfile()
         {
             //act
             var result = await _module.Mediator.Send(_postCommentCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.Success);
             result.Response.Should().NotBeNull();
@@ -58,72 +58,72 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             result.Response.Comment.Author.Image.Should().Be(_module.AuthenticatedUserImage);
             result.Response.Comment.Author.Following.Should().BeTrue();
         }
-        
+
         [Fact]
         public async Task GivenAnUnauthenticatedUser_WhenPostComment_ThenNotAuthenticated()
         {
             //arrange
             _module.WithUnauthenticatedUserContext();
-            
+
             //act
             var result = await _module.Mediator.Send(_postCommentCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.NotAuthenticated);
             result.Response.Should().BeNull();
         }
-        
+
         [Fact]
         public async Task GivenNoSlug_WhenPostComment_ThenInvalidRequest()
         {
             //arrange
             _postCommentCommand.ArticleSlug = null;
-            
+
             //act
             var result = await _module.Mediator.Send(_postCommentCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.InvalidRequest);
             result.Response.Should().BeNull();
         }
-        
+
         [Fact]
         public async Task GivenNoComment_WhenPostComment_ThenInvalidRequest()
         {
             //arrange
             _postCommentCommand.NewComment = null;
-            
+
             //act
             var result = await _module.Mediator.Send(_postCommentCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.InvalidRequest);
             result.Response.Should().BeNull();
         }
-        
+
         [Fact]
         public async Task GivenNoCommentBody_WhenPostComment_ThenInvalidRequest()
         {
             //arrange
             _postCommentCommand.NewComment.Body = null;
-            
+
             //act
             var result = await _module.Mediator.Send(_postCommentCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.InvalidRequest);
             result.Response.Should().BeNull();
         }
-        
+
         [Fact]
         public async Task GivenArticleDoesntExist_WhenPostComment_ThenValidationError()
         {
             //arrange
             _postCommentCommand.ArticleSlug = _module.AutoFixture.Create<string>();
-            
+
             //act
             var result = await _module.Mediator.Send(_postCommentCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
             result.Response.Should().BeNull();

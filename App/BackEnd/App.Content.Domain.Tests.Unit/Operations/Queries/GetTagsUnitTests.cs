@@ -31,7 +31,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             //assert
             result.Result.Should().Be(OperationResult.Success);
             result.Response.Should().NotBeNull();
-            result.Response.Tags.Should().BeEquivalentTo(new []{ _module.ExistingArticleTag1, _module.ExistingArticleTag2 });
+            result.Response.Tags.Should().BeEquivalentTo(new[] { _module.ExistingArticleTag1, _module.ExistingArticleTag2 });
         }
     }
 }

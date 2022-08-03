@@ -12,5 +12,5 @@ namespace App.Feed.Domain.Contracts.Operations.Queries.GetFeed
         public int Limit { get; set; } = 20;
         [Range(0, Int32.MaxValue)]
         public int Offset { get; set; }
-    } 
+    }
 }

@@ -19,16 +19,16 @@ namespace App.Core.Exceptions
         {
             yield return exception;
 
-            if (exception is AggregateException aggrEx)
+            if ( exception is AggregateException aggrEx )
             {
-                foreach (Exception innerEx in aggrEx.InnerExceptions.SelectMany(e => e.GetAllExceptions()))
+                foreach ( Exception innerEx in aggrEx.InnerExceptions.SelectMany(e => e.GetAllExceptions()) )
                 {
                     yield return innerEx;
                 }
             }
-            else if (exception.InnerException != null)
+            else if ( exception.InnerException != null )
             {
-                foreach (Exception innerEx in exception.InnerException.GetAllExceptions())
+                foreach ( Exception innerEx in exception.InnerException.GetAllExceptions() )
                 {
                     yield return innerEx;
                 }
