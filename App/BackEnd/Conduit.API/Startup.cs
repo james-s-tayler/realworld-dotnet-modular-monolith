@@ -122,9 +122,9 @@ namespace Conduit.API
                         .AddAspNetCoreInstrumentation()                     //trace inbound http requests
                         .AddSqlClientInstrumentation(options =>
                         {
-                                options.RecordException = true;
-                                options.SetDbStatementForText = true;
-                            })
+                            options.RecordException = true;
+                            options.SetDbStatementForText = true;
+                        })
                         .AddHttpClientInstrumentation()                     //trace outbound http requests
                         .AddJaegerExporter(options =>                       //export traces to jaeger container
                             options.AgentHost = "jaeger");
@@ -152,7 +152,7 @@ namespace Conduit.API
                         Version = "1.0.0",
                     });
                     c.CustomSchemaIds(type => type.FriendlyId(true));
-              //c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{Assembly.GetEntryAssembly().GetName().Name}.xml");
+                    //c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{Assembly.GetEntryAssembly().GetName().Name}.xml");
                     c.EnableAnnotations();
 
                     c.AddSecurityDefinition(authScheme, new OpenApiSecurityScheme
@@ -165,8 +165,8 @@ namespace Conduit.API
                         BearerFormat = authScheme + " {token}" //this doesn't affect anything, it's essentially just documentation
                     });
                     c.OperationFilter<SecurityRequirementsOperationFilter>();
-              // Include DataAnnotation attributes on Controller Action parameters as OpenAPI validation rules (e.g required, pattern, ..)
-              // Use [ValidateModelState] on Actions to actually validate it in C# as well!
+                    // Include DataAnnotation attributes on Controller Action parameters as OpenAPI validation rules (e.g required, pattern, ..)
+                    // Use [ValidateModelState] on Actions to actually validate it in C# as well!
                     c.OperationFilter<GeneratePathParamsValidationFilter>();
                 });
         }
@@ -189,9 +189,9 @@ namespace Conduit.API
                     })
                     .UseSwaggerUI(c =>
                     {
-                  // set route prefix to openapi, e.g. http://localhost:8080/openapi/index.html
+                        // set route prefix to openapi, e.g. http://localhost:8080/openapi/index.html
                         c.RoutePrefix = "openapi";
-                  //TODO: Either use the SwaggerGen generated OpenAPI contract (generated from C# classes)
+                        //TODO: Either use the SwaggerGen generated OpenAPI contract (generated from C# classes)
                         c.SwaggerEndpoint("/openapi/1.0.0/openapi.json", "Conduit API");
                     });
 
@@ -206,22 +206,22 @@ namespace Conduit.API
             {
                 appError.Run(async context =>
                 {
-                        context.Response.ContentType = "application/json";
-                        var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
-                        if ( contextFeature != null )
+                    context.Response.ContentType = "application/json";
+                    var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    if ( contextFeature != null )
+                    {
+
+                        var errors = new GenericErrorModel
                         {
-
-                            var errors = new GenericErrorModel
+                            Errors = new GenericErrorModelErrors
                             {
-                                Errors = new GenericErrorModelErrors
-                                {
-                                    Body = contextFeature.Error.GetErrorMessages()
-                                }
-                            };
+                                Body = contextFeature.Error.GetErrorMessages()
+                            }
+                        };
 
-                            await context.Response.WriteAsync(JsonSerializer.Serialize(errors));
-                        }
-                    });
+                        await context.Response.WriteAsync(JsonSerializer.Serialize(errors));
+                    }
+                });
             });
             app.UseEndpoints(endpoints =>
             {

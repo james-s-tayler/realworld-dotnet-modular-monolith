@@ -18,8 +18,8 @@ namespace App.Core.DataAccess.Dapper.Sqlite
         {
             services.AddDbConnectionFactory(_ =>
             {
-          //this is done because Dapper can't map these types from sqlite without it as sqlite's type system is very basic
-          //however, it breaks being able to use different DB providers in different modules if they're both using Dapper
+                //this is done because Dapper can't map these types from sqlite without it as sqlite's type system is very basic
+                //however, it breaks being able to use different DB providers in different modules if they're both using Dapper
                 if ( !SqlMapper.HasTypeHandler(typeof(DateTimeOffset)) )
                 {
                     SqlMapper.AddTypeHandler(new SqliteDateTimeOffsetHandler());
@@ -43,7 +43,7 @@ namespace App.Core.DataAccess.Dapper.Sqlite
                 var sqliteConnection = new SqliteConnection(connectionStringReader!.GetConnectionString(module.GetModuleName()));
                 sqliteConnection.Open();
 
-          // Enable write-ahead logging - https://docs.microsoft.com/en-us/dotnet/standard/data/sqlite/async
+                // Enable write-ahead logging - https://docs.microsoft.com/en-us/dotnet/standard/data/sqlite/async
                 var walCommand = sqliteConnection.CreateCommand();
                 walCommand.CommandText = @"PRAGMA journal_mode=WAL"; //can potentially speed up tests with ;PRAGMA synchronous=OFF 
                 walCommand.ExecuteNonQuery();
@@ -67,8 +67,8 @@ namespace App.Core.DataAccess.Dapper.Sqlite
         {
             services.AddDbConnectionFactoryWithCtx<T>(_ =>
             {
-          //this is done because Dapper can't map these types from sqlite without it as sqlite's type system is very basic
-          //however, it breaks being able to use different DB providers in different modules if they're both using Dapper
+                //this is done because Dapper can't map these types from sqlite without it as sqlite's type system is very basic
+                //however, it breaks being able to use different DB providers in different modules if they're both using Dapper
                 if ( !SqlMapper.HasTypeHandler(typeof(DateTimeOffset)) )
                 {
                     SqlMapper.AddTypeHandler(new SqliteDateTimeOffsetHandler());
@@ -92,7 +92,7 @@ namespace App.Core.DataAccess.Dapper.Sqlite
                 var sqliteConnection = new SqliteConnection(connectionStringReader!.GetConnectionString(module.GetModuleName()));
                 sqliteConnection.Open();
 
-          // Enable write-ahead logging - https://docs.microsoft.com/en-us/dotnet/standard/data/sqlite/async
+                // Enable write-ahead logging - https://docs.microsoft.com/en-us/dotnet/standard/data/sqlite/async
                 var walCommand = sqliteConnection.CreateCommand();
                 walCommand.CommandText = @"PRAGMA journal_mode=WAL";
                 walCommand.ExecuteNonQuery();

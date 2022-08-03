@@ -14,17 +14,17 @@ namespace App.Core.PipelineBehaviors.Transactions
         {
             domainContractsAssembly.GetOperationContractTypes().ForEach(operationType =>
             {
-          /*
-           * need to enumerate operation contract types and register pipeline behaviors for all of them equivalent to:
-           *
-           * services
-           *   .AddTransient<
-           *      IPipelineBehavior<RegisterUserCommand, OperationResponse<RegisterUserCommandResult>>, 
-           *      OperationLoggingPipelineBehavior<RegisterUserCommand, OperationResponse<RegisterUserCommandResult>>()
-           *
-           * The standard trick we usually apply (like below) doesn't work when with multiple modules loaded into the DI container
-           * services.AddTransient(typeof(IPipelineBehavior<,>), typeof(OperationLoggingPipelineBehavior<,>));
-           */
+                /*
+                 * need to enumerate operation contract types and register pipeline behaviors for all of them equivalent to:
+                 *
+                 * services
+                 *   .AddTransient<
+                 *      IPipelineBehavior<RegisterUserCommand, OperationResponse<RegisterUserCommandResult>>, 
+                 *      OperationLoggingPipelineBehavior<RegisterUserCommand, OperationResponse<RegisterUserCommandResult>>()
+                 *
+                 * The standard trick we usually apply (like below) doesn't work when with multiple modules loaded into the DI container
+                 * services.AddTransient(typeof(IPipelineBehavior<,>), typeof(OperationLoggingPipelineBehavior<,>));
+                 */
 
                 var rawPipelineBehaviorType = typeof(IPipelineBehavior<,>);
 
@@ -43,20 +43,20 @@ namespace App.Core.PipelineBehaviors.Transactions
         {
             domainContractsAssembly.GetOperationContractTypes().ForEach(operationType =>
             {
-          /*
-           * need to enumerate operation contract types and register TransactionPipelineBehavior<TRequest, TResponse, TModule> for all of them equivalent to:
-           *
-           * services
-           *   .AddTransient<
-           *      IPipelineBehavior<RegisterUserCommand, OperationResponse<RegisterUserCommandResult>>, 
-           *      TransactionPipelineBehavior<RegisterUserCommand, OperationResponse<RegisterUserCommandResult>, UsersModule>>()
-           *
-           * have to do this because the arity differs between service type and implementation type :(
-           * this is due to needing the TModule type to ensure unique DI registrations for db connections per module
-           *
-           * The standard trick we usually apply (like below) doesn't work when the arity doesn't match
-           * services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionPipelineBehavior<,,>)); //this blows up
-           */
+                /*
+                 * need to enumerate operation contract types and register TransactionPipelineBehavior<TRequest, TResponse, TModule> for all of them equivalent to:
+                 *
+                 * services
+                 *   .AddTransient<
+                 *      IPipelineBehavior<RegisterUserCommand, OperationResponse<RegisterUserCommandResult>>, 
+                 *      TransactionPipelineBehavior<RegisterUserCommand, OperationResponse<RegisterUserCommandResult>, UsersModule>>()
+                 *
+                 * have to do this because the arity differs between service type and implementation type :(
+                 * this is due to needing the TModule type to ensure unique DI registrations for db connections per module
+                 *
+                 * The standard trick we usually apply (like below) doesn't work when the arity doesn't match
+                 * services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionPipelineBehavior<,,>)); //this blows up
+                 */
 
                 var rawPipelineBehaviorType = typeof(IPipelineBehavior<,>);
                 var rawTransactionPipelineBehaviorType = typeof(TransactionPipelineBehavior<,,>);
