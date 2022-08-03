@@ -15,7 +15,7 @@ namespace App.ModuleName.Domain.Operations.Queries.GetExample
         private readonly IUserContext _userContext;
         private readonly IExampleRepository _exampleRepository;
 
-        public GetExampleQueryHandler(IUserContext userContext, 
+        public GetExampleQueryHandler(IUserContext userContext,
             IExampleRepository exampleRepository)
         {
             _userContext = userContext;
@@ -25,7 +25,7 @@ namespace App.ModuleName.Domain.Operations.Queries.GetExample
         public async Task<OperationResponse<GetExampleQueryResult>> Handle(GetExampleQuery request, CancellationToken cancellationToken)
         {
             var example = await _exampleRepository.GetById(request.Id);
-            if (example == null)
+            if ( example == null )
                 return OperationResponseFactory.NotFound<GetExampleQuery, OperationResponse<GetExampleQueryResult>>(typeof(ExampleEntity), request.Id);
 
             return OperationResponseFactory.Success(new GetExampleQueryResult

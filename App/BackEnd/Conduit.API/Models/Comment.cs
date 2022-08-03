@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Conduit.API.Converters;
 
 namespace Conduit.API.Models
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -30,35 +30,35 @@ namespace Conduit.API.Models
         /// Gets or Sets Id
         /// </summary>
         [Required]
-        [DataMember(Name="id", EmitDefaultValue=true)]
+        [DataMember(Name = "id", EmitDefaultValue = true)]
         public int Id { get; set; }
 
         /// <summary>
         /// Gets or Sets CreatedAt
         /// </summary>
         [Required]
-        [DataMember(Name="createdAt", EmitDefaultValue=false)]
+        [DataMember(Name = "createdAt", EmitDefaultValue = false)]
         public DateTime CreatedAt { get; set; }
 
         /// <summary>
         /// Gets or Sets UpdatedAt
         /// </summary>
         [Required]
-        [DataMember(Name="updatedAt", EmitDefaultValue=false)]
+        [DataMember(Name = "updatedAt", EmitDefaultValue = false)]
         public DateTime UpdatedAt { get; set; }
 
         /// <summary>
         /// Gets or Sets Body
         /// </summary>
         [Required]
-        [DataMember(Name="body", EmitDefaultValue=false)]
+        [DataMember(Name = "body", EmitDefaultValue = false)]
         public string Body { get; set; }
 
         /// <summary>
         /// Gets or Sets Author
         /// </summary>
         [Required]
-        [DataMember(Name="author", EmitDefaultValue=false)]
+        [DataMember(Name = "author", EmitDefaultValue = false)]
         public Profile Author { get; set; }
 
         /// <summary>
@@ -94,9 +94,9 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Comment)obj);
+            if ( obj is null ) return false;
+            if ( ReferenceEquals(this, obj) ) return true;
+            return obj.GetType() == GetType() && Equals(( Comment )obj);
         }
 
         /// <summary>
@@ -106,28 +106,28 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public bool Equals(Comment other)
         {
-            if (other is null) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if ( other is null ) return false;
+            if ( ReferenceEquals(this, other) ) return true;
 
-            return 
+            return
                 (
                     Id == other.Id ||
-                    
+
                     Id.Equals(other.Id)
-                ) && 
+                ) &&
                 (
                     CreatedAt == other.CreatedAt ||
                     CreatedAt.Equals(other.CreatedAt)
-                ) && 
+                ) &&
                 (
                     UpdatedAt == other.UpdatedAt ||
                     UpdatedAt.Equals(other.UpdatedAt)
-                ) && 
+                ) &&
                 (
                     Body == other.Body ||
                     Body != null &&
                     Body.Equals(other.Body)
-                ) && 
+                ) &&
                 (
                     Author == other.Author ||
                     Author != null &&
@@ -145,20 +145,20 @@ namespace Conduit.API.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    
-                    hashCode = hashCode * 59 + Id.GetHashCode();
-                    hashCode = hashCode * 59 + CreatedAt.GetHashCode();
-                    hashCode = hashCode * 59 + UpdatedAt.GetHashCode();
-                    if (Body != null)
+
+                hashCode = hashCode * 59 + Id.GetHashCode();
+                hashCode = hashCode * 59 + CreatedAt.GetHashCode();
+                hashCode = hashCode * 59 + UpdatedAt.GetHashCode();
+                if ( Body != null )
                     hashCode = hashCode * 59 + Body.GetHashCode();
-                    if (Author != null)
+                if ( Author != null )
                     hashCode = hashCode * 59 + Author.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(Comment left, Comment right)
         {
@@ -170,7 +170,7 @@ namespace Conduit.API.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

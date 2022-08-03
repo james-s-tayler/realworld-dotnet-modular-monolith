@@ -23,12 +23,12 @@ namespace App.Core.SchemaManagement.Sqlite
         {
             var moduleDbName = _configuration[$"DatabaseConfig:{moduleName}:DatabaseName"];
 
-            if (string.IsNullOrEmpty(moduleName))
+            if ( string.IsNullOrEmpty(moduleName) )
                 throw new ArgumentNullException(nameof(moduleName));
 
-            if (string.IsNullOrEmpty(moduleDbName))
+            if ( string.IsNullOrEmpty(moduleDbName) )
                 throw new ArgumentNullException(moduleDbName);
-            
+
             var runningInDocker = _configuration.GetValue<bool>("DOTNET_RUNNING_IN_CONTAINER");
             var dbName = $"{moduleDbName}_{_hostEnvironment.EnvironmentName}".ToLowerInvariant();
             var filename = runningInDocker ? $"/sqlite/{dbName}.db" : $"{dbName}.db";
@@ -41,7 +41,7 @@ namespace App.Core.SchemaManagement.Sqlite
                 Mode = SqliteOpenMode.ReadWriteCreate,
                 Pooling = true
             };
-            
+
             return builder.ToString();
         }
 

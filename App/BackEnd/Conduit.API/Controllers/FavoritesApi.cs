@@ -21,15 +21,15 @@ using Conduit.API.Models.Mappers;
 using MediatR;
 
 namespace Conduit.API.Controllers
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
     [ApiController]
     public class FavoritesApiController : OperationResponseController
-    { 
-        public FavoritesApiController(IMediator mediator) : base(mediator) {}
-        
+    {
+        public FavoritesApiController(IMediator mediator) : base(mediator) { }
+
         /// <summary>
         /// Favorite an article
         /// </summary>
@@ -44,11 +44,11 @@ namespace Conduit.API.Controllers
         [SwaggerOperation("CreateArticleFavorite")]
         [SwaggerResponse(statusCode: 200, type: typeof(SingleArticleResponse), description: "OK")]
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
-        public virtual async Task<IActionResult> CreateArticleFavorite([FromRoute (Name = "slug")][Required]string slug)
+        public virtual async Task<IActionResult> CreateArticleFavorite([FromRoute(Name = "slug")][Required] string slug)
         {
             var favoriteArticleResponse = await Mediator.Send(new FavoriteArticleCommand { Slug = slug });
-            
-            if (favoriteArticleResponse.Result != OperationResult.Success)
+
+            if ( favoriteArticleResponse.Result != OperationResult.Success )
                 return UnsuccessfulResponseResult(favoriteArticleResponse);
 
             return Ok(favoriteArticleResponse.Response.Article.ToSingleArticleResponse());
@@ -68,11 +68,11 @@ namespace Conduit.API.Controllers
         [SwaggerOperation("DeleteArticleFavorite")]
         [SwaggerResponse(statusCode: 200, type: typeof(SingleArticleResponse), description: "OK")]
         [SwaggerResponse(statusCode: 422, type: typeof(GenericErrorModel), description: "Unexpected error")]
-        public virtual async Task<IActionResult> DeleteArticleFavorite([FromRoute (Name = "slug")][Required]string slug)
+        public virtual async Task<IActionResult> DeleteArticleFavorite([FromRoute(Name = "slug")][Required] string slug)
         {
             var unfavoriteArticleResponse = await Mediator.Send(new UnfavoriteArticleCommand { Slug = slug });
-            
-            if (unfavoriteArticleResponse.Result != OperationResult.Success)
+
+            if ( unfavoriteArticleResponse.Result != OperationResult.Success )
                 return UnsuccessfulResponseResult(unfavoriteArticleResponse);
 
             return Ok(unfavoriteArticleResponse.Response.Article.ToSingleArticleResponse());

@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Conduit.API.Converters;
 
 namespace Conduit.API.Models
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -30,7 +30,7 @@ namespace Conduit.API.Models
         /// Gets or Sets Profile
         /// </summary>
         [Required]
-        [DataMember(Name="profile", EmitDefaultValue=false)]
+        [DataMember(Name = "profile", EmitDefaultValue = false)]
         public Profile Profile { get; set; }
 
         /// <summary>
@@ -62,9 +62,9 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((ProfileResponse)obj);
+            if ( obj is null ) return false;
+            if ( ReferenceEquals(this, obj) ) return true;
+            return obj.GetType() == GetType() && Equals(( ProfileResponse )obj);
         }
 
         /// <summary>
@@ -74,10 +74,10 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public bool Equals(ProfileResponse other)
         {
-            if (other is null) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if ( other is null ) return false;
+            if ( ReferenceEquals(this, other) ) return true;
 
-            return 
+            return
                 (
                     Profile == other.Profile ||
                     Profile != null &&
@@ -95,14 +95,14 @@ namespace Conduit.API.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Profile != null)
+                if ( Profile != null )
                     hashCode = hashCode * 59 + Profile.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(ProfileResponse left, ProfileResponse right)
         {
@@ -114,7 +114,7 @@ namespace Conduit.API.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

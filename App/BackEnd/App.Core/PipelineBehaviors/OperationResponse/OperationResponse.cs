@@ -8,7 +8,7 @@ namespace App.Core.PipelineBehaviors.OperationResponse
     public class OperationResponse<T> : IOperationResponseSummary where T : class
     {
         public OperationResult Result { get; } = OperationResult.Success;
-        public List<string> Errors { get; } = new ();
+        public List<string> Errors { get; } = new();
         public Exception Exception { get; } = null;
         public T Response { get; }
 
@@ -16,20 +16,20 @@ namespace App.Core.PipelineBehaviors.OperationResponse
         {
             Response = model;
         }
-        
+
         public OperationResponse(List<string> errors, OperationResult result)
         {
             Errors = errors;
             Result = result;
         }
-        
+
         public OperationResponse([NotNull] Exception e)
         {
             Exception = e;
             Errors = e.GetErrorMessages();
             Result = OperationResult.UnhandledException;
         }
-        
+
         public string ErrorMessage => string.Join(";", Errors);
 
         public bool IsSuccess()
@@ -52,9 +52,9 @@ namespace App.Core.PipelineBehaviors.OperationResponse
     {
         public static bool IsOperationResponse(this Type type)
         {
-            if (!type.IsGenericType)
+            if ( !type.IsGenericType )
                 return false;
-            
+
             return type.Name.StartsWith($"OperationResponse`{type.GenericTypeArguments.Length}");
         }
     }

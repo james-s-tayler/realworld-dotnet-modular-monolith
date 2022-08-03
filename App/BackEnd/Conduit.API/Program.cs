@@ -23,7 +23,7 @@ namespace Conduit.API
                     .Build()
                     .Run();
             }
-            catch (Exception e)
+            catch ( Exception e )
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
@@ -34,7 +34,7 @@ namespace Conduit.API
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, 
+                    webBuilder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey,
                         "App.Users.Domain;" +
                         "App.Content.Domain;" +
                         "App.Feed.Domain");

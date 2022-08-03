@@ -29,7 +29,7 @@ namespace App.Content.Domain.Operations.Commands.DeleteComment
         {
             return await _articleRepository.ExistsBySlug(command.ArticleSlug);
         }
-        
+
         private async Task<bool> CommentMustBelongToArticle(DeleteCommentCommand command, CancellationToken cancellationToken)
         {
             return await _commentRepository.ExistsBySlugAndId(command.ArticleSlug, command.CommentId);

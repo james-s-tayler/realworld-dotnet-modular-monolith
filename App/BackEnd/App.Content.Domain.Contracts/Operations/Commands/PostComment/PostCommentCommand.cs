@@ -10,7 +10,7 @@ namespace App.Content.Domain.Contracts.Operations.Commands.PostComment
     {
         [Required]
         public string ArticleSlug { get; set; }
-        
+
         [Required]
         public PostCommentDTO NewComment { get; set; }
     }

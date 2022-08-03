@@ -27,9 +27,9 @@ namespace App.Users.Domain.Operations.Queries.GetCurrentUser
         public async Task<OperationResponse<GetCurrentUserQueryResult>> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetById(_userContext.UserId);
-            if (user == null)
+            if ( user == null )
                 return OperationResponseFactory.NotFound<GetCurrentUserQuery, OperationResponse<GetCurrentUserQueryResult>>(typeof(UserEntity), _userContext.UserId);
-            
+
             return new OperationResponse<GetCurrentUserQueryResult>(new GetCurrentUserQueryResult
             {
                 CurrentUser = user.ToUserDTO(_userContext.Token)

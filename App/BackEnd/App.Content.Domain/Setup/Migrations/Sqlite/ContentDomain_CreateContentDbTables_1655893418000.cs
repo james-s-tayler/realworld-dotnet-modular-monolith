@@ -14,7 +14,7 @@ namespace App.Content.Domain.Setup.Migrations.Sqlite
             Create.Table("users")
                 .WithColumn("user_id").AsInt32().NotNullable().PrimaryKey()
                 .WithColumn("username").AsString().NotNullable().Unique();
-            
+
             Create.Table("tags")
                 .WithColumn("id").AsInt32().NotNullable().PrimaryKey()
                 .WithColumn("tag").AsString().NotNullable().Unique();
@@ -41,13 +41,13 @@ namespace App.Content.Domain.Setup.Migrations.Sqlite
                 .WithColumn("body").AsString().NotNullable()
                 .WithColumn("created_at").AsString().NotNullable()
                 .WithColumn("updated_at").AsString().NotNullable();
-            
+
             Create.ForeignKey("fk_comments_user_id")
                 .FromTable("comments")
                 .ForeignColumn("user_id")
                 .ToTable("users")
                 .PrimaryColumn("user_id");
-            
+
             Create.Table("article_tags")
                 .WithColumn("article_id").AsInt32().NotNullable().PrimaryKey()
                 .WithColumn("tag_id").AsInt32().NotNullable().PrimaryKey();
@@ -57,7 +57,7 @@ namespace App.Content.Domain.Setup.Migrations.Sqlite
                 .ForeignColumn("article_id")
                 .ToTable("articles")
                 .PrimaryColumn("id");
-            
+
             Create.ForeignKey("fk_article_tags_tag_id")
                 .FromTable("article_tags")
                 .ForeignColumn("tag_id")

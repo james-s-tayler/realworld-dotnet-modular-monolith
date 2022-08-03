@@ -8,7 +8,7 @@ namespace Conduit.API.Tests.Integration
     {
         [Post("/api/users")]
         Task<ApiResponse<UserResponse>> CreateUser([Body] NewUserRequest request);
-        
+
         [Post("/api/articles")]
         Task<ApiResponse<SingleArticleResponse>> CreateArticle([Body] NewArticleRequest request);
     }

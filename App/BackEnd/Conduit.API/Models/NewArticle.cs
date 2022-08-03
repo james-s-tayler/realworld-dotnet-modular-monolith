@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Conduit.API.Converters;
 
 namespace Conduit.API.Models
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -30,27 +30,27 @@ namespace Conduit.API.Models
         /// Gets or Sets Title
         /// </summary>
         [Required]
-        [DataMember(Name="title", EmitDefaultValue=false)]
+        [DataMember(Name = "title", EmitDefaultValue = false)]
         public string Title { get; set; }
 
         /// <summary>
         /// Gets or Sets Description
         /// </summary>
         [Required]
-        [DataMember(Name="description", EmitDefaultValue=false)]
+        [DataMember(Name = "description", EmitDefaultValue = false)]
         public string Description { get; set; }
 
         /// <summary>
         /// Gets or Sets Body
         /// </summary>
         [Required]
-        [DataMember(Name="body", EmitDefaultValue=false)]
+        [DataMember(Name = "body", EmitDefaultValue = false)]
         public string Body { get; set; }
 
         /// <summary>
         /// Gets or Sets TagList
         /// </summary>
-        [DataMember(Name="tagList", EmitDefaultValue=false)]
+        [DataMember(Name = "tagList", EmitDefaultValue = false)]
         public List<string> TagList { get; set; }
 
         /// <summary>
@@ -85,9 +85,9 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((NewArticle)obj);
+            if ( obj is null ) return false;
+            if ( ReferenceEquals(this, obj) ) return true;
+            return obj.GetType() == GetType() && Equals(( NewArticle )obj);
         }
 
         /// <summary>
@@ -97,25 +97,25 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public bool Equals(NewArticle other)
         {
-            if (other is null) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if ( other is null ) return false;
+            if ( ReferenceEquals(this, other) ) return true;
 
-            return 
+            return
                 (
                     Title == other.Title ||
                     Title != null &&
                     Title.Equals(other.Title)
-                ) && 
+                ) &&
                 (
                     Description == other.Description ||
                     Description != null &&
                     Description.Equals(other.Description)
-                ) && 
+                ) &&
                 (
                     Body == other.Body ||
                     Body != null &&
                     Body.Equals(other.Body)
-                ) && 
+                ) &&
                 (
                     TagList == other.TagList ||
                     TagList != null &&
@@ -134,20 +134,20 @@ namespace Conduit.API.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Title != null)
+                if ( Title != null )
                     hashCode = hashCode * 59 + Title.GetHashCode();
-                    if (Description != null)
+                if ( Description != null )
                     hashCode = hashCode * 59 + Description.GetHashCode();
-                    if (Body != null)
+                if ( Body != null )
                     hashCode = hashCode * 59 + Body.GetHashCode();
-                    if (TagList != null)
+                if ( TagList != null )
                     hashCode = hashCode * 59 + TagList.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(NewArticle left, NewArticle right)
         {
@@ -159,7 +159,7 @@ namespace Conduit.API.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

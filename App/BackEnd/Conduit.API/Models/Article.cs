@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Conduit.API.Converters;
 
 namespace Conduit.API.Models
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -30,70 +30,70 @@ namespace Conduit.API.Models
         /// Gets or Sets Slug
         /// </summary>
         [Required]
-        [DataMember(Name="slug", EmitDefaultValue=false)]
+        [DataMember(Name = "slug", EmitDefaultValue = false)]
         public string Slug { get; set; }
 
         /// <summary>
         /// Gets or Sets Title
         /// </summary>
         [Required]
-        [DataMember(Name="title", EmitDefaultValue=false)]
+        [DataMember(Name = "title", EmitDefaultValue = false)]
         public string Title { get; set; }
 
         /// <summary>
         /// Gets or Sets Description
         /// </summary>
         [Required]
-        [DataMember(Name="description", EmitDefaultValue=false)]
+        [DataMember(Name = "description", EmitDefaultValue = false)]
         public string Description { get; set; }
 
         /// <summary>
         /// Gets or Sets Body
         /// </summary>
         [Required]
-        [DataMember(Name="body", EmitDefaultValue=false)]
+        [DataMember(Name = "body", EmitDefaultValue = false)]
         public string Body { get; set; }
 
         /// <summary>
         /// Gets or Sets TagList
         /// </summary>
         [Required]
-        [DataMember(Name="tagList", EmitDefaultValue=false)]
+        [DataMember(Name = "tagList", EmitDefaultValue = false)]
         public List<string> TagList { get; set; }
 
         /// <summary>
         /// Gets or Sets CreatedAt
         /// </summary>
         [Required]
-        [DataMember(Name="createdAt", EmitDefaultValue=false)]
+        [DataMember(Name = "createdAt", EmitDefaultValue = false)]
         public DateTime CreatedAt { get; set; }
 
         /// <summary>
         /// Gets or Sets UpdatedAt
         /// </summary>
         [Required]
-        [DataMember(Name="updatedAt", EmitDefaultValue=false)]
+        [DataMember(Name = "updatedAt", EmitDefaultValue = false)]
         public DateTime UpdatedAt { get; set; }
 
         /// <summary>
         /// Gets or Sets Favorited
         /// </summary>
         [Required]
-        [DataMember(Name="favorited", EmitDefaultValue=true)]
+        [DataMember(Name = "favorited", EmitDefaultValue = true)]
         public bool Favorited { get; set; }
 
         /// <summary>
         /// Gets or Sets FavoritesCount
         /// </summary>
         [Required]
-        [DataMember(Name="favoritesCount", EmitDefaultValue=true)]
+        [DataMember(Name = "favoritesCount", EmitDefaultValue = true)]
         public int FavoritesCount { get; set; }
 
         /// <summary>
         /// Gets or Sets Author
         /// </summary>
         [Required]
-        [DataMember(Name="author", EmitDefaultValue=false)]
+        [DataMember(Name = "author", EmitDefaultValue = false)]
         public Profile Author { get; set; }
 
         /// <summary>
@@ -134,9 +134,9 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Article)obj);
+            if ( obj is null ) return false;
+            if ( ReferenceEquals(this, obj) ) return true;
+            return obj.GetType() == GetType() && Equals(( Article )obj);
         }
 
         /// <summary>
@@ -146,54 +146,54 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public bool Equals(Article other)
         {
-            if (other is null) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if ( other is null ) return false;
+            if ( ReferenceEquals(this, other) ) return true;
 
-            return 
+            return
                 (
                     Slug == other.Slug ||
                     Slug != null &&
                     Slug.Equals(other.Slug)
-                ) && 
+                ) &&
                 (
                     Title == other.Title ||
                     Title != null &&
                     Title.Equals(other.Title)
-                ) && 
+                ) &&
                 (
                     Description == other.Description ||
                     Description != null &&
                     Description.Equals(other.Description)
-                ) && 
+                ) &&
                 (
                     Body == other.Body ||
                     Body != null &&
                     Body.Equals(other.Body)
-                ) && 
+                ) &&
                 (
                     TagList == other.TagList ||
                     TagList != null &&
                     other.TagList != null &&
                     TagList.SequenceEqual(other.TagList)
-                ) && 
+                ) &&
                 (
                     CreatedAt == other.CreatedAt ||
                     CreatedAt.Equals(other.CreatedAt)
-                ) && 
+                ) &&
                 (
                     UpdatedAt == other.UpdatedAt ||
                     UpdatedAt.Equals(other.UpdatedAt)
-                ) && 
+                ) &&
                 (
                     Favorited == other.Favorited ||
-                    
+
                     Favorited.Equals(other.Favorited)
-                ) && 
+                ) &&
                 (
                     FavoritesCount == other.FavoritesCount ||
-                    
+
                     FavoritesCount.Equals(other.FavoritesCount)
-                ) && 
+                ) &&
                 (
                     Author == other.Author ||
                     Author != null &&
@@ -211,30 +211,30 @@ namespace Conduit.API.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Slug != null)
+                if ( Slug != null )
                     hashCode = hashCode * 59 + Slug.GetHashCode();
-                    if (Title != null)
+                if ( Title != null )
                     hashCode = hashCode * 59 + Title.GetHashCode();
-                    if (Description != null)
+                if ( Description != null )
                     hashCode = hashCode * 59 + Description.GetHashCode();
-                    if (Body != null)
+                if ( Body != null )
                     hashCode = hashCode * 59 + Body.GetHashCode();
-                    if (TagList != null)
+                if ( TagList != null )
                     hashCode = hashCode * 59 + TagList.GetHashCode();
-                    hashCode = hashCode * 59 + CreatedAt.GetHashCode();
-                    hashCode = hashCode * 59 + UpdatedAt.GetHashCode();
-                    
-                    hashCode = hashCode * 59 + Favorited.GetHashCode();
-                    
-                    hashCode = hashCode * 59 + FavoritesCount.GetHashCode();
-                    if (Author != null)
+                hashCode = hashCode * 59 + CreatedAt.GetHashCode();
+                hashCode = hashCode * 59 + UpdatedAt.GetHashCode();
+
+                hashCode = hashCode * 59 + Favorited.GetHashCode();
+
+                hashCode = hashCode * 59 + FavoritesCount.GetHashCode();
+                if ( Author != null )
                     hashCode = hashCode * 59 + Author.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(Article left, Article right)
         {
@@ -246,7 +246,7 @@ namespace Conduit.API.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

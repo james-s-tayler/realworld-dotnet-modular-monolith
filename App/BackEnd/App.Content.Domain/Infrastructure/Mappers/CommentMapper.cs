@@ -18,7 +18,7 @@ namespace App.Content.Domain.Infrastructure.Mappers
                 Author = commenter
             };
         }
-        
+
         internal static CommentEntity ToComment(this PostCommentDTO comment, ArticleEntity article)
         {
             return new CommentEntity

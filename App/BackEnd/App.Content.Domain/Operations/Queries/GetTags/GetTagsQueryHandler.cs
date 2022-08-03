@@ -11,7 +11,7 @@ namespace App.Content.Domain.Operations.Queries.GetTags
     internal class GetTagsQueryHandler : IRequestHandler<GetTagsQuery, OperationResponse<GetTagsQueryResult>>
     {
         private readonly ITagRepository _tagRepository;
-        
+
         public GetTagsQueryHandler(ITagRepository tagRepository)
         {
             _tagRepository = tagRepository;

@@ -15,10 +15,10 @@ namespace App.Core.Exceptions
             {
                 appError.Run(async context =>
                 {
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    context.Response.StatusCode = ( int )HttpStatusCode.InternalServerError;
                     context.Response.ContentType = "application/json";
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
-                    if(contextFeature != null)
+                    if ( contextFeature != null )
                     {
                         var problemDetails = new ProblemDetails
                         {
@@ -27,11 +27,11 @@ namespace App.Core.Exceptions
                             Detail = contextFeature.Error.Message,
                             Status = context.Response.StatusCode
                         };
-                        
+
                         await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails));
                     }
                 });
             });
-        }   
+        }
     }
 }

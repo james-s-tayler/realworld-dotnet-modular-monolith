@@ -11,7 +11,7 @@ namespace App.Core.Reflection
         {
             return assembly.DefinedTypes.Where(type => type.Name.EndsWith("Query") || type.Name.EndsWith("Command")).ToList();
         }
-        
+
         public static List<TypeInfo> GetTypesAssignableTo(this Assembly assembly, Type compareType)
         {
             var typeInfoList = assembly.DefinedTypes.Where(x => x.IsClass

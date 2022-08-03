@@ -61,7 +61,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .And().DependOnAny(typeof(DbConnection))
                 .As("Repositories");
         }
-        
+
         private void SetupDomainClasses()
         {
             DomainClasses = Classes().That().ResideInAssembly("App.*.Domain", true)
@@ -78,35 +78,35 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .AreAssignableTo(typeof(AbstractModule))
                 .As("Domain Modules");
         }
-        
+
         private void SetupEntities()
         {
             Entities = Classes().That().Are(DomainClasses)
                 .And().ResideInNamespace("App.*.Domain.Entities.*", true)
                 .As("Entities");
         }
-        
+
         private void SetupOperationHandlers()
         {
             DomainOperationHandlers = Classes().That().Are(DomainClasses)
                 .And().ImplementInterface("MediatR.IRequestHandler`2")
                 .As("Domain Operation Handlers");
         }
-        
+
         private void SetupCommandHandlers()
         {
             CommandHandlers = Classes().That().Are(DomainOperationHandlers)
                 .And().HaveNameEndingWith("CommandHandler")
                 .As("Command Handlers");
         }
-        
+
         private void SetupQueryHandlers()
         {
             QueryHandlers = Classes().That().Are(DomainOperationHandlers)
                 .And().HaveNameEndingWith("QueryHandler")
                 .As("Query Handlers");
         }
-        
+
         private void SetupDomainContracts()
         {
             SetupDomainContractClasses();
@@ -114,7 +114,7 @@ namespace App.FitnessFunctions.ArchitectureTests
             SetupCommands();
             SetupQueries();
         }
-        
+
         private void SetupDomainContractClasses()
         {
             DomainContracts = Classes().That().ResideInAssembly("App.*.Domain.Contracts.*", true)
@@ -128,35 +128,35 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .And().ImplementInterface(typeof(IRequest<>))
                 .As("Domain Operations");
         }
-        
+
         private void SetupCommands()
         {
             Commands = Classes().That().Are(DomainOperations)
                 .And().HaveNameEndingWith("Command")
                 .As("Commands");
         }
-        
+
         private void SetupQueries()
         {
             Queries = Classes().That().Are(DomainOperations)
                 .And().HaveNameEndingWith("Query")
                 .As("Queries");
         }
-        
+
         public System.Reflection.Assembly[] GetSolutionAssemblies()
         {
             var projectNamespacePrefix = System.Reflection.Assembly.GetExecutingAssembly().FullName.Split(".")[0];
             var dlls = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll");
-            
+
             return dlls
                 .Select(fileName => AssemblyName.GetAssemblyName(fileName))
-                .Where(assemblyName => 
+                .Where(assemblyName =>
                     assemblyName.Name.StartsWith(projectNamespacePrefix) &&
                     !assemblyName.Name.Contains("Test"))
                 .Select(assemblyName => System.Reflection.Assembly.Load(assemblyName))
                 .ToArray();
         }
-        
+
         public void Dispose()
         {
         }

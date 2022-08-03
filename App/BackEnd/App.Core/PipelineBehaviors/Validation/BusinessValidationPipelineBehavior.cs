@@ -11,7 +11,7 @@ using MediatR;
 namespace App.Core.PipelineBehaviors.Validation
 {
     //adapted from: https://medium.com/the-cloud-builders-guild/validation-without-exceptions-using-a-mediatr-pipeline-behavior-278f124836dc
-    public class BusinessValidationPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> 
+    public class BusinessValidationPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TResponse : class
         where TRequest : IRequest<TResponse>
     {
@@ -24,15 +24,15 @@ namespace App.Core.PipelineBehaviors.Validation
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            if (!typeof(TResponse).IsOperationResponse())
+            if ( !typeof(TResponse).IsOperationResponse() )
                 throw new InvalidOperationException("Domain operations must be of type OperationResponse<T>");
-            
-            if(!HasValidators())
+
+            if ( !HasValidators() )
                 return await next();
 
             var validationResult = await DoValidation(request, cancellationToken);
 
-            if (validationResult.IsValid)
+            if ( validationResult.IsValid )
             {
                 return await next();
             }
@@ -50,9 +50,9 @@ namespace App.Core.PipelineBehaviors.Validation
 
         private bool HasValidators()
         {
-            if (_commandValidators == null || !_commandValidators.Any())
+            if ( _commandValidators == null || !_commandValidators.Any() )
                 return false; //obviously we can't validate anything with no validators
-            
+
             return true;
         }
     }

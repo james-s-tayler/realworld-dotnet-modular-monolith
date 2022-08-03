@@ -16,7 +16,7 @@ namespace App.Core.Logging
         {
             _jwtBearerEvents = new JwtBearerEvents();
         }
-        
+
         public JwtBearerEventsLogger(JwtBearerEvents jwtBearerEvents)
         {
             _jwtBearerEvents = jwtBearerEvents;
@@ -35,7 +35,7 @@ namespace App.Core.Logging
         /// <summary>
         /// Invoked if Authorization fails and results in a Forbidden response  
         /// </summary>
-        public override  Task Forbidden(ForbiddenContext context)
+        public override Task Forbidden(ForbiddenContext context)
         {
             var logger = context.HttpContext.RequestServices.GetService<ILoggerFactory>()!.CreateLogger<JwtBearerEventsLogger>();
             logger.LogTrace("Auth forbidden for scheme: {Scheme}", context.Scheme.Name);
@@ -48,8 +48,8 @@ namespace App.Core.Logging
         public override Task MessageReceived(MessageReceivedContext context)
         {
             var logger = context.HttpContext.RequestServices.GetService<ILoggerFactory>()!.CreateLogger<JwtBearerEventsLogger>();
-            
-            logger.LogTrace("Message received for scheme: {Scheme}, Token: {Token}, JwtBearerOptions: {@JwtBearerOptions}, AuthenticationResult: {@AuthenticationResult}", 
+
+            logger.LogTrace("Message received for scheme: {Scheme}, Token: {Token}, JwtBearerOptions: {@JwtBearerOptions}, AuthenticationResult: {@AuthenticationResult}",
                 context.Scheme.Name,
                 context.Token,
                 context.Options,

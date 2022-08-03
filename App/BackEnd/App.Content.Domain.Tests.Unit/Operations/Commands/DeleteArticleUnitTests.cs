@@ -25,14 +25,14 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
         public async Task GivenAnExistingArticle_WhenDeleteArticle_ThenArticleDeleted()
         {
             //pre-assert
-            
+
             //act
             var result = await _module.Mediator.Send(_deleteArticleCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.Success);
         }
-        
+
         [Fact]
         public async Task GivenSlugIsMissing_WhenFavoriteArticle_ThenInvalidRequest()
         {

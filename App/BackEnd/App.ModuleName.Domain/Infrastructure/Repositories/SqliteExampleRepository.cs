@@ -17,26 +17,26 @@ namespace App.ModuleName.Domain.Infrastructure.Repositories
         {
             _connection = connectionWrapper.Connection;
         }
-        
+
         public Task<bool> Exists(int id)
         {
             string sql = "SELECT EXISTS(SELECT 1 FROM example WHERE id=@id)";
-    
+
             var arguments = new { id };
-            
+
             var exists = _connection.ExecuteScalar<bool>(sql, arguments);
-            
+
             return Task.FromResult(exists);
         }
 
         public Task<ExampleEntity> GetById(int id)
         {
             string sql = "SELECT * FROM example WHERE id=@id";
-    
+
             var arguments = new { id };
-            
+
             var example = _connection.QuerySingleOrDefault<ExampleEntity>(sql, arguments);
-            
+
             return Task.FromResult(example);
         }
 
@@ -55,9 +55,9 @@ namespace App.ModuleName.Domain.Infrastructure.Repositories
             {
                 something = exampleEntity.Something
             };
-            
+
             var insertedUser = _connection.QuerySingle<ExampleEntity>(sql, arguments);
-            
+
             return Task.FromResult(insertedUser.Id);
         }
 
@@ -70,7 +70,7 @@ namespace App.ModuleName.Domain.Infrastructure.Repositories
                 id = exampleEntity.Id,
                 something = exampleEntity.Something
             };
-            
+
             _connection.Execute(sql, arguments);
             return Task.CompletedTask;
         }

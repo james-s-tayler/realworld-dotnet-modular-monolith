@@ -14,7 +14,7 @@ namespace App.Content.Domain.Operations.Commands.PublishArticle
         public PublishArticleCommandValidator([NotNull] IArticleRepository articleRepository)
         {
             _articleRepository = articleRepository;
-            
+
             RuleFor(command => command)
                 .MustAsync(SlugMustNotExist)
                 .WithMessage(command => $"Article with slug: {command.NewArticle.GetSlug()} already exists");
@@ -23,7 +23,7 @@ namespace App.Content.Domain.Operations.Commands.PublishArticle
         private async Task<bool> SlugMustNotExist(PublishArticleCommand command, CancellationToken cancellationToken)
         {
             var exists = await _articleRepository.ExistsBySlug(command.NewArticle.GetSlug());
-            
+
             return !exists;
         }
     }

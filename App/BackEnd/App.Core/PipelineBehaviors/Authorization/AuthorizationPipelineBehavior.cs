@@ -19,7 +19,7 @@ namespace App.Core.PipelineBehaviors.Authorization
         private readonly IUserContext _userContext;
         private readonly IEnumerable<IAuthorizer<TRequest>> _authorizers;
 
-        public AuthorizationPipelineBehavior(IEnumerable<IAuthorizer<TRequest>> authorizers, 
+        public AuthorizationPipelineBehavior(IEnumerable<IAuthorizer<TRequest>> authorizers,
             IUserContext userContext)
         {
             _authorizers = authorizers;
@@ -28,21 +28,21 @@ namespace App.Core.PipelineBehaviors.Authorization
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            if (!IsOperationResponse())
+            if ( !IsOperationResponse() )
                 throw new InvalidOperationException("Domain operations must be of type OperationResponse<T>");
 
-            if (!_userContext.IsAuthenticated)
+            if ( !_userContext.IsAuthenticated )
             {
-                if (IsAllowUnauthenticated())
+                if ( IsAllowUnauthenticated() )
                     return await next();
-                
+
                 return OperationResponseFactory.NotAuthenticated<TRequest, TResponse>();
             }
-            
-            foreach(var authorizer in _authorizers)
+
+            foreach ( var authorizer in _authorizers )
             {
                 var result = await authorizer.AuthorizeAsync(request, cancellationToken);
-                if (!result.IsAuthorized)
+                if ( !result.IsAuthorized )
                 {
                     return OperationResponseFactory.NotAuthorized<TRequest, TResponse>(result.FailureMessage);
                 }
@@ -50,7 +50,7 @@ namespace App.Core.PipelineBehaviors.Authorization
 
             return await next();
         }
-        
+
         private bool IsOperationResponse()
         {
             var responseType = typeof(TResponse);

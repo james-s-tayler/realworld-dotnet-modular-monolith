@@ -24,7 +24,7 @@ namespace App.Content.Domain.Infrastructure.Mappers
                 FavoritesCount = articleEntity.FavoritesCount
             };
         }
-        
+
         internal static ArticleEntity ToArticleEntity(this PublishArticleDTO article, UserEntity author)
         {
             return new ArticleEntity

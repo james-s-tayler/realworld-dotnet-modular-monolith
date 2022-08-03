@@ -16,6 +16,7 @@ tasks:
       - lint:docker
       - lint:shell
       - lint:commit
+      - lint:dotnet
 
   lint:actionlint:
     description: lint GitHub Actions workflows
@@ -43,6 +44,13 @@ tasks:
     run:
       container: tools
       command: sh -c '/repo/DevOps/Batect/Tools/commit_lint.sh ${GITHUB_WORKSPACE:-/repo}'
+  
+  lint:dotnet:
+    description: Runs dotnet format --verify-no-changes
+    group: Linting tasks
+    run:
+      container: app-lint
+      command: echo finished running dotnet format --verify-no-changes
 
   app:build:
     description: build the app
@@ -282,6 +290,73 @@ containers:
   app-test:
     build_directory: ./App/BackEnd
     build_target: tests
+    volumes:
+      - local: ./App/BackEnd
+        container: /App/BackEnd
+      - local: ./sqlite
+        container: /sqlite
+      - type: cache
+        name: nuget-cache
+        container: /root/.nuget/packages
+      # Repeat this cache for each project in your codebase (make sure each one has a unique name):
+      - type: cache
+        name: app-content-domain-obj
+        container: /App/BackEnd/App.Content.Domain/obj
+      - type: cache
+        name: app-content-domain-contracts-obj
+        container: /App/BackEnd/App.Content.Domain.Contracts/obj
+      - type: cache
+        name: app-content-domain-tests-unit-obj
+        container: /App/BackEnd/App.Content.Domain.Tests.Unit/obj
+      - type: cache
+        name: app-core-obj
+        container: /App/BackEnd/App.Core/obj
+      - type: cache
+        name: app-core-testing-obj
+        container: /App/BackEnd/App.Core.Testing/obj
+      - type: cache
+        name: app-core-tests-unit-obj
+        container: /App/BackEnd/App.Core.Tests.Unit/obj
+      - type: cache
+        name: app-feed-domain-obj
+        container: /App/BackEnd/App.Feed.Domain/obj
+      - type: cache
+        name: app-feed-domain-contracts-obj
+        container: /App/BackEnd/App.Feed.Domain.Contracts/obj
+      - type: cache
+        name: app-feed-domain-tests-unit-obj
+        container: /App/BackEnd/App.Feed.Domain.Tests.Unit/obj
+      - type: cache
+        name: app-fitnessfunctions-architecturetests-obj
+        container: /App/BackEnd/App.FitnessFunctions.ArchitectureTests/obj
+      - type: cache
+        name: app-modulename-domain-obj
+        container: /App/BackEnd/App.ModuleName.Domain/obj
+      - type: cache
+        name: app-modulename-domain-contracts-obj
+        container: /App/BackEnd/App.ModuleName.Domain.Contracts/obj
+      - type: cache
+        name: app-modulename-domain-tests-unit-obj
+        container: /App/BackEnd/App.ModuleName.Domain.Tests.Unit/obj
+      - type: cache
+        name: app-users-domain-obj
+        container: /App/BackEnd/App.Users.Domain/obj
+      - type: cache
+        name: app-users-domain-contracts-obj
+        container: /App/BackEnd/App.Users.Domain.Contracts/obj
+      - type: cache
+        name: app-users-domain-tests-unit-obj
+        container: /App/BackEnd/App.Users.Domain.Tests.Unit/obj
+      - type: cache
+        name: conduit-api-obj
+        container: /App/BackEnd/Conduit.API/obj
+      - type: cache
+        name: conduit-api-tests-integration-obj
+        container: /App/BackEnd/Conduit.API.Tests.Integration/obj
+        
+  app-lint:
+    build_directory: ./App/BackEnd
+    build_target: lint
     volumes:
       - local: ./App/BackEnd
         container: /App/BackEnd

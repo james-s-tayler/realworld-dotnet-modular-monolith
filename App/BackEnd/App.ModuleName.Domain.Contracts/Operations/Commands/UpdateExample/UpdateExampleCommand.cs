@@ -11,5 +11,5 @@ namespace App.ModuleName.Domain.Contracts.Operations.Commands.UpdateExample
     {
         [Required]
         public ExampleDTO ExampleInput { get; set; }
-    } 
+    }
 }

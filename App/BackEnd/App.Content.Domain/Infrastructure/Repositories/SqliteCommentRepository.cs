@@ -26,7 +26,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
             var sql = "SELECT EXISTS(SELECT 1 FROM comments comment JOIN articles article ON article.id = comment.article_id WHERE article.slug=@article_slug AND comment.id = @comment_id)";
             var arguments = new
             {
-                article_slug = articleSlug, 
+                article_slug = articleSlug,
                 comment_id = commentId
             };
             return Task.FromResult(_connection.ExecuteScalar<bool>(sql, arguments));
@@ -37,7 +37,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
             string sql = "INSERT INTO comments (user_id, article_id, body, created_at, updated_at) VALUES (@user_id, @article_id, @body, @created_at, @updated_at) RETURNING *";
 
             var now = DateTime.UtcNow.ToString("O");
-            
+
             var arguments = new
             {
                 user_id = commentAuthor.UserId,
@@ -49,7 +49,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
 
             comment = _connection.QuerySingle<CommentEntity>(sql, arguments);
             comment.Author = commentAuthor;
-            
+
             return Task.FromResult(comment);
         }
 
@@ -75,7 +75,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
                            "AND comment.id = @comment_id" +
                          ")";
 
-            var arguments = new             
+            var arguments = new
             {
                 article_slug = articleSlug,
                 comment_id = commentId
@@ -103,7 +103,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
                 },
                 splitOn: "id, user_id",
                 param: arguments);
-            
+
             return Task.FromResult(comments.ToList());
         }
     }

@@ -27,6 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{47341F65-D51
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
 		Dockerfile = Dockerfile
+		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevOps", "DevOps", "{15829510-7835-4630-BA28-B7955FC6108F}"
@@ -102,6 +103,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		..\..\.github\workflows\pull-request-lint-dockerfile.yml = ..\..\.github\workflows\pull-request-lint-dockerfile.yml
 		..\..\.github\workflows\pull-request-lint-shellcheck.yml = ..\..\.github\workflows\pull-request-lint-shellcheck.yml
 		..\..\.github\workflows\pull-request-lint-commit.yml = ..\..\.github\workflows\pull-request-lint-commit.yml
+		..\..\.github\workflows\pull-request-lint-dotnet.yml = ..\..\.github\workflows\pull-request-lint-dotnet.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{4AF5FA7B-5229-4FCF-ACEF-A67BA70C43DB}"

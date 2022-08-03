@@ -15,7 +15,7 @@ namespace App.FitnessFunctions.ArchitectureTests
         {
             _application = application;
         }
-        
+
         [Fact]
         public void SolutionAssembliesAreBeingEnumerated()
         {
@@ -29,10 +29,10 @@ namespace App.FitnessFunctions.ArchitectureTests
             var fixtureType = _application.GetType();
             var classProperties = fixtureType.GetProperties().Where(property => property.PropertyType == typeof(IObjectProvider<Class>));
 
-            foreach (var classProperty in classProperties)
+            foreach ( var classProperty in classProperties )
             {
                 var classProvider = classProperty.GetMethod.Invoke(_application, null) as GivenClassesConjunctionWithDescription;
-                
+
                 //assert
                 Assert.True(classProvider != null, $"{classProperty.Name} should not be null");
                 var classes = classProvider.GetObjects(_application.Architecture);

@@ -15,10 +15,10 @@ namespace App.Core.Logging
         {
             _userContext = userContext;
         }
-        
+
         public void Enrich([NotNull] LogEvent logEvent, [NotNull] ILogEventPropertyFactory propertyFactory)
         {
-            if (_userContext.IsAuthenticated)
+            if ( _userContext.IsAuthenticated )
             {
                 LogEventProperty userId = propertyFactory.CreateProperty("UserId", _userContext.UserId);
                 logEvent.AddPropertyIfAbsent(userId);

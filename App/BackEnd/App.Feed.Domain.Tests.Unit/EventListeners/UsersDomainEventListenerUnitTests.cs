@@ -32,7 +32,7 @@ namespace App.Feed.Domain.Tests.Unit.EventListeners
                 FollowingUserId = _module.AutoFixture.Create<int>(),
                 FollowedProfile = _module.AutoFixture.Create<ProfileDTO>()
             };
-            
+
             //act
             await _module.Mediator.Publish(followUserEvent);
 
@@ -40,7 +40,7 @@ namespace App.Feed.Domain.Tests.Unit.EventListeners
             var exists = await _module.FollowRepository.IsFollowing(followUserEvent.UserId, followUserEvent.FollowingUserId);
             exists.Should().BeTrue();
         }
-        
+
         [Fact]
         public async Task GivenUnfollowUserEvent_WhenCheckFollowRepository_ThenFollowDeleted()
         {

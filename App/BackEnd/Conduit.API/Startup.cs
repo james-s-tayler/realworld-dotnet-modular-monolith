@@ -93,12 +93,12 @@ namespace Conduit.API
                 {
                     options.InputFormatters.Insert(0, new InputFormatterStream());
                 });
-            
+
             //caching
             /*var redisHost = _configuration["Redis:Host"] ?? throw new ArgumentNullException("Redis:Host");
             var redisPort = _configuration["Redis:Port"] ?? throw new ArgumentNullException("Redis:Port");
             var redisAdmin = _configuration["Redis:AllowAdmin"] ?? throw new ArgumentNullException("Redis:AllowAdmin");
-            
+
             var redisConnectionString = $"{redisHost}:{redisPort},allowAdmin={redisAdmin}";
             var redisClientConnection = ConnectionMultiplexer.Connect(redisConnectionString);
             services.AddStackExchangeRedisCache(options =>
@@ -113,7 +113,7 @@ namespace Conduit.API
                 return connectionMultiplexer.GetDatabase(0);
             });
             services.AddSingleton<IRedisCache, RedisCache>();*/
-            
+
             //tracing
             services.AddOpenTelemetryTracing(
                 builder =>
@@ -154,7 +154,7 @@ namespace Conduit.API
                     c.CustomSchemaIds(type => type.FriendlyId(true));
                     //c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{Assembly.GetEntryAssembly().GetName().Name}.xml");
                     c.EnableAnnotations();
-                    
+
                     c.AddSecurityDefinition(authScheme, new OpenApiSecurityScheme
                     {
                         Description = "JWT Authorization header",
@@ -178,7 +178,7 @@ namespace Conduit.API
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsProduction())
+            if ( env.IsProduction() )
             {
                 app.UseHsts();
                 app.UseHttpsRedirection();
@@ -194,10 +194,10 @@ namespace Conduit.API
                         //TODO: Either use the SwaggerGen generated OpenAPI contract (generated from C# classes)
                         c.SwaggerEndpoint("/openapi/1.0.0/openapi.json", "Conduit API");
                     });
-            
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            
+
             app.UseRouting();
             app.UseSerilogRequestLogging();
             app.UseAuthentication();
@@ -208,9 +208,9 @@ namespace Conduit.API
                 {
                     context.Response.ContentType = "application/json";
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
-                    if(contextFeature != null)
+                    if ( contextFeature != null )
                     {
-                        
+
                         var errors = new GenericErrorModel
                         {
                             Errors = new GenericErrorModelErrors
@@ -229,11 +229,11 @@ namespace Conduit.API
                     .RequireAuthorization();
             });
         }
-        
+
         /*static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy(IConfiguration configuration)
         {
             var maxRetryAttempts = configuration.GetValue<int>("HttpClientConfig:MaxRetryAttempts");
-            
+
             //retry with exponential backoff
             return HttpPolicyExtensions
                 .HandleTransientHttpError()

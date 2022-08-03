@@ -38,9 +38,9 @@ namespace App.Feed.Domain.Infrastructure.Repositories
                 user_id = follow.UserId,
                 following_user_id = follow.FollowingUserId
             };
-            
+
             var insertedFollower = _connection.QuerySingle<FollowEntity>(sql, arguments);
-            
+
             return Task.FromResult(insertedFollower);
         }
 

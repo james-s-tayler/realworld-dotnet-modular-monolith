@@ -34,9 +34,9 @@ namespace Conduit.API.Filters
         {
             var pathsToModify = openapiDoc.Paths.Where(p => p.Key.StartsWith(BasePath)).ToList();
 
-            foreach (var (key, value) in pathsToModify)
+            foreach ( var (key, value) in pathsToModify )
             {
-                if (key.StartsWith(BasePath))
+                if ( key.StartsWith(BasePath) )
                 {
                     var newKey = Regex.Replace(key, $"^{BasePath}", string.Empty);
                     openapiDoc.Paths.Remove(key);

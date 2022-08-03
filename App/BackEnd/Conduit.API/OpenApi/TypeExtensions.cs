@@ -20,7 +20,7 @@ namespace Conduit.API.OpenApi
                 ? type.FullNameSansTypeParameters().Replace("+", ".")
                 : type.Name;
 
-            if (type.IsGenericType)
+            if ( type.IsGenericType )
             {
                 var genericArgumentIds = type.GetGenericArguments()
                     .Select(t => t.FriendlyId(fullyQualified))
@@ -42,10 +42,10 @@ namespace Conduit.API.OpenApi
         public static string FullNameSansTypeParameters(this Type type)
         {
             var fullName = type.FullName;
-            if (string.IsNullOrEmpty(fullName))
+            if ( string.IsNullOrEmpty(fullName) )
                 fullName = type.Name;
             var chopIndex = fullName.IndexOf("[[", StringComparison.Ordinal);
-            return (chopIndex == -1) ? fullName : fullName.Substring(0, chopIndex);
+            return ( chopIndex == -1 ) ? fullName : fullName.Substring(0, chopIndex);
         }
     }
 }

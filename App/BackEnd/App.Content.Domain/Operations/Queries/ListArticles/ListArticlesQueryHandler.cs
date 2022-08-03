@@ -22,9 +22,9 @@ namespace App.Content.Domain.Operations.Queries.ListArticles
         private readonly IUserContext _userContext;
 
         public ListArticlesQueryHandler([NotNull] IArticleRepository articleRepository,
-            [NotNull] IUsersService usersService, 
-            [NotNull] IUserRepository userRepository, 
-            [NotNull] ITagRepository tagRepository, 
+            [NotNull] IUsersService usersService,
+            [NotNull] IUserRepository userRepository,
+            [NotNull] ITagRepository tagRepository,
             [NotNull] IUserContext userContext)
         {
             _articleRepository = articleRepository;
@@ -36,19 +36,19 @@ namespace App.Content.Domain.Operations.Queries.ListArticles
 
         public async Task<OperationResponse<ListArticlesQueryResult>> Handle(ListArticlesQuery request, CancellationToken cancellationToken)
         {
-            if (await UserNotFound(request.AuthorUsername) ||
+            if ( await UserNotFound(request.AuthorUsername) ||
                 await UserNotFound(request.FavoritedByUsername) ||
-                await TagNotFound(request.Tag))
+                await TagNotFound(request.Tag) )
             {
                 return OperationResponseFactory.Success(new ListArticlesQueryResult
                 {
                     Articles = new List<SingleArticleDTO>()
-                });   
+                });
             }
-           
+
             var articles = await _articleRepository.GetByFilters(
-                request.AuthorUsername, 
-                request.FavoritedByUsername, 
+                request.AuthorUsername,
+                request.FavoritedByUsername,
                 request.Tag,
                 request.Limit,
                 request.Offset,
@@ -57,12 +57,12 @@ namespace App.Content.Domain.Operations.Queries.ListArticles
             var articleDtos = new List<SingleArticleDTO>();
 
             //rather than looping some sort of bulk-get would be more performant
-            foreach (var article in articles)
+            foreach ( var article in articles )
             {
                 var getProfileQueryResult = await _usersService.GetProfile(article.Author.Username);
                 articleDtos.Add(article.ToArticleDTO(getProfileQueryResult.Response.Profile));
             }
-            
+
             return OperationResponseFactory.Success(new ListArticlesQueryResult
             {
                 Articles = articleDtos

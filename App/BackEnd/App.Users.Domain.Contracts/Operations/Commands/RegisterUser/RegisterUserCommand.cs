@@ -10,5 +10,5 @@ namespace App.Users.Domain.Contracts.Operations.Commands.RegisterUser
     public class RegisterUserCommand : ContractModel, IRequest<OperationResponse<RegisterUserCommandResult>>
     {
         public NewUserDTO NewUser { get; set; }
-    } 
+    }
 }

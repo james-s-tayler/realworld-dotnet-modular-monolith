@@ -16,7 +16,7 @@ namespace Conduit.API.Models.Mappers
                 TagList = article.TagList.ToArray()
             };
         }
-        
+
         public static EditArticleDTO ToEditArticleDto(this UpdateArticleRequest article)
         {
             return new EditArticleDTO
@@ -26,7 +26,7 @@ namespace Conduit.API.Models.Mappers
                 Body = article.Article.Body
             };
         }
-        
+
         public static SingleArticleResponse ToSingleArticleResponse(this SingleArticleDTO articleDto)
         {
             return new SingleArticleResponse
@@ -34,23 +34,23 @@ namespace Conduit.API.Models.Mappers
                 Article = articleDto.ToArticle()
             };
         }
-        
+
         public static MultipleArticlesResponse ToMultipleArticlesResponse(this List<SingleArticleDTO> articleDtos)
         {
             var articles = new List<Article>();
 
-            foreach (var articleDto in articleDtos)
+            foreach ( var articleDto in articleDtos )
             {
                 articles.Add(articleDto.ToArticle());
             }
-            
+
             return new MultipleArticlesResponse
             {
                 Articles = articles,
                 ArticlesCount = articles.Count
             };
         }
-        
+
         private static Article ToArticle(this SingleArticleDTO articleDto)
         {
             return new Article

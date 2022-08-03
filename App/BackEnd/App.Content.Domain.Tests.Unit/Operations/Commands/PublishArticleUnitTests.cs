@@ -21,12 +21,15 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
         public PublishArticleUnitTests(ContentModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
             _module = module;
-            _publishArticleCommand = new PublishArticleCommand { NewArticle = new PublishArticleDTO
+            _publishArticleCommand = new PublishArticleCommand
             {
-                Body = _module.AutoFixture.Create<string>(),
-                Title = $"{_module.AutoFixture.Create<string>()} {_module.AutoFixture.Create<string>()}",
-                Description = _module.AutoFixture.Create<string>()
-            }};
+                NewArticle = new PublishArticleDTO
+                {
+                    Body = _module.AutoFixture.Create<string>(),
+                    Title = $"{_module.AutoFixture.Create<string>()} {_module.AutoFixture.Create<string>()}",
+                    Description = _module.AutoFixture.Create<string>()
+                }
+            };
         }
 
         [Fact]
@@ -37,7 +40,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
 
             //act
             var result = await _module.Mediator.Send(_publishArticleCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.Success);
             result.Response.Should().NotBeNull();
@@ -49,7 +52,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             result.Response.Article.CreatedAt.Should().BeAfter(testStartTime);
             result.Response.Article.UpdatedAt.Should().BeAfter(testStartTime);
         }
-        
+
         [Fact]
         public async Task GivenAnArticleWithoutTagsToPublish_WhenPublishArticle_ThenArticleContainsNoTags()
         {
@@ -59,21 +62,21 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             //assert
             result.Response.Article.TagList.Should().BeEmpty();
         }
-        
+
         [Fact]
         public async Task GivenAnArticleWithTagsToPublish_WhenPublishArticle_ThenArticleContainsTags()
         {
             //arrange
-            var tagList = new [] { _module.ExistingArticleTag1, _module.ExistingArticleTag2 };
+            var tagList = new[] { _module.ExistingArticleTag1, _module.ExistingArticleTag2 };
             _publishArticleCommand.NewArticle.TagList = tagList;
-            
+
             //act
             var result = await _module.Mediator.Send(_publishArticleCommand);
 
             //assert
             result.Response.Article.TagList.Should().BeEquivalentTo(tagList);
         }
-        
+
         [Fact]
         public async Task GivenAnArticleToPublish_WhenPublishArticle_ThenArticleContainsAuthorProfile()
         {
@@ -97,7 +100,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             result.Response.Article.Favorited.Should().BeFalse();
             result.Response.Article.FavoritesCount.Should().Be(0);
         }
-        
+
         [Fact]
         public async Task GivenAnArticleToPublishWithNoTitle_WhenPublishArticle_ThenInvalidRequest()
         {
@@ -111,7 +114,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             result.Result.Should().Be(OperationResult.InvalidRequest);
             result.Response.Should().BeNull();
         }
-        
+
         [Fact]
         public async Task GivenAnArticleToPublishWithNoDescription_WhenPublishArticle_ThenInvalidRequest()
         {
@@ -125,7 +128,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             result.Result.Should().Be(OperationResult.InvalidRequest);
             result.Response.Should().BeNull();
         }
-        
+
         [Fact]
         public async Task GivenAnArticleToPublishWithNoBody_WhenPublishArticle_ThenInvalidRequest()
         {
@@ -139,7 +142,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             result.Result.Should().Be(OperationResult.InvalidRequest);
             result.Response.Should().BeNull();
         }
-        
+
         [Fact]
         public async Task GivenNoArticleToPublish_WhenPublishArticle_ThenInvalidRequest()
         {

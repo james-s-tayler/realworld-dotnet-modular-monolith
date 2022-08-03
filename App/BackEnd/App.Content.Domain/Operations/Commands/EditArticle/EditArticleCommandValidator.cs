@@ -16,7 +16,7 @@ namespace App.Content.Domain.Operations.Commands.EditArticle
 
         private bool ContainUpdate(EditArticleCommand command)
         {
-            return command.UpdatedArticle.Title != null || 
+            return command.UpdatedArticle.Title != null ||
                    command.UpdatedArticle.Description != null ||
                    command.UpdatedArticle.Body != null;
         }

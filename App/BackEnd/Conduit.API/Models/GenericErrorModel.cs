@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Conduit.API.Converters;
 
 namespace Conduit.API.Models
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -30,7 +30,7 @@ namespace Conduit.API.Models
         /// Gets or Sets Errors
         /// </summary>
         [Required]
-        [DataMember(Name="errors", EmitDefaultValue=false)]
+        [DataMember(Name = "errors", EmitDefaultValue = false)]
         public GenericErrorModelErrors Errors { get; set; }
 
         /// <summary>
@@ -62,9 +62,9 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((GenericErrorModel)obj);
+            if ( obj is null ) return false;
+            if ( ReferenceEquals(this, obj) ) return true;
+            return obj.GetType() == GetType() && Equals(( GenericErrorModel )obj);
         }
 
         /// <summary>
@@ -74,10 +74,10 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public bool Equals(GenericErrorModel other)
         {
-            if (other is null) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if ( other is null ) return false;
+            if ( ReferenceEquals(this, other) ) return true;
 
-            return 
+            return
                 (
                     Errors == other.Errors ||
                     Errors != null &&
@@ -95,14 +95,14 @@ namespace Conduit.API.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Errors != null)
+                if ( Errors != null )
                     hashCode = hashCode * 59 + Errors.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(GenericErrorModel left, GenericErrorModel right)
         {
@@ -114,7 +114,7 @@ namespace Conduit.API.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

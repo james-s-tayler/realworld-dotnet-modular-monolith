@@ -44,7 +44,7 @@ namespace App.Users.Domain.Operations.Commands.UpdateUser
                 .WithMessage(_ => "Email is already in use")
                 .WhenAsync(ShouldValidateEmail);
         }
-        
+
         //this feels not very future proof?
         private bool ContainUpdate(UpdateUserDTO updateUser)
         {
@@ -57,34 +57,34 @@ namespace App.Users.Domain.Operations.Commands.UpdateUser
         private async Task<bool> ShouldValidateEmail(UpdateUserCommand command, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetById(_userContext.UserId);
-            
-            if (user != null && user.Email == command.UpdateUser.Email)
+
+            if ( user != null && user.Email == command.UpdateUser.Email )
                 return false;
-            
+
             return command.UpdateUser.Email != null;
         }
-        
+
         private async Task<bool> ShouldValidateUsername(UpdateUserCommand command, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetById(_userContext.UserId);
-            
-            if (user != null && user.Username == command.UpdateUser.Username)
+
+            if ( user != null && user.Username == command.UpdateUser.Username )
                 return false;
-            
+
             return command.UpdateUser.Username != null;
         }
-        
+
         //copy pasta from RegisterUser - find way to re-use validators (some sort of ValidationRequirement class?)
         private async Task<bool> UsernameNotAlreadyInUse(string username, CancellationToken cancellation)
         {
             return !await _userRepository.ExistsByUsername(username);
         }
-        
+
         private async Task<bool> EmailNotAlreadyInUse(string email, CancellationToken cancellation)
         {
             return !await _userRepository.ExistsByEmail(email);
         }
-        
+
         //copy pasta from GetCurrentUserQueryValidator
         private async Task<bool> UserMustExist(UpdateUserCommand command, CancellationToken cancellationToken)
         {

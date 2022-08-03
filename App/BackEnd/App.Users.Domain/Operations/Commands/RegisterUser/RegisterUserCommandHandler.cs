@@ -18,7 +18,7 @@ namespace App.Users.Domain.Operations.Commands.RegisterUser
         private readonly IAuthTokenService _authTokenService;
 
         public RegisterUserCommandHandler(IUserRepository userRepository,
-            IPasswordHasher<UserEntity> passwordHasher, 
+            IPasswordHasher<UserEntity> passwordHasher,
             IAuthTokenService authTokenService)
         {
             _userRepository = userRepository;
@@ -35,11 +35,11 @@ namespace App.Users.Domain.Operations.Commands.RegisterUser
             };
 
             newUser.Password = _passwordHasher.HashPassword(newUser, request.NewUser.Password);
-            
+
             var userId = await _userRepository.Create(newUser);
-            var user = await _userRepository.GetById(userId); 
+            var user = await _userRepository.GetById(userId);
             var token = await _authTokenService.GenerateAuthToken(user);
-            
+
             return new OperationResponse<RegisterUserCommandResult>(new RegisterUserCommandResult
             {
                 RegisteredUser = user.ToUserDTO(token)

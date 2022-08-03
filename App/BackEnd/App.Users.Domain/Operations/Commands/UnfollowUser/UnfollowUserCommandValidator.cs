@@ -18,7 +18,7 @@ namespace App.Users.Domain.Operations.Commands.UnfollowUser
 
             RuleFor(query => query).MustAsync(UserMustExist).WithMessage(query => $"User {query.Username} was not found.");
         }
-        
+
         private async Task<bool> UserMustExist(UnfollowUserCommand command, CancellationToken cancellationToken)
         {
             return await _userRepository.ExistsByUsername(command.Username);

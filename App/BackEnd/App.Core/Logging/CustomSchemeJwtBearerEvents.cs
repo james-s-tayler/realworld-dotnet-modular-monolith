@@ -25,19 +25,19 @@ namespace App.Core.Logging
             string token = null;
 
             // If no authorization header found, nothing to process further
-            if (string.IsNullOrEmpty(authorization))
+            if ( string.IsNullOrEmpty(authorization) )
             {
                 context.NoResult();
                 return OnMessageReceived(context);
             }
 
-            if (authorization.StartsWith($"{_scheme} ", StringComparison.OrdinalIgnoreCase))
+            if ( authorization.StartsWith($"{_scheme} ", StringComparison.OrdinalIgnoreCase) )
             {
                 token = authorization.Substring($"{_scheme} ".Length).Trim();
             }
 
             // If no token found, no further work possible
-            if (string.IsNullOrEmpty(token))
+            if ( string.IsNullOrEmpty(token) )
             {
                 context.NoResult();
                 return OnMessageReceived(context);

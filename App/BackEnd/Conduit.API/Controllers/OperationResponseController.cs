@@ -11,7 +11,7 @@ namespace Conduit.API.Controllers
     public class OperationResponseController : ControllerBase
     {
         protected IMediator Mediator { get; }
-        
+
         public OperationResponseController(IMediator mediator)
         {
             Mediator = mediator;
@@ -19,7 +19,7 @@ namespace Conduit.API.Controllers
 
         protected ObjectResult UnsuccessfulResponseResult<T>(OperationResponse<T> operationResponse) where T : class
         {
-            if (operationResponse.Result == OperationResult.Success)
+            if ( operationResponse.Result == OperationResult.Success )
                 throw new InvalidOperationException("OperationResult was Success");
 
             var errors = new GenericErrorModel
@@ -29,7 +29,7 @@ namespace Conduit.API.Controllers
                     Body = operationResponse.Errors
                 }
             };
-            switch (operationResponse.Result)
+            switch ( operationResponse.Result )
             {
                 case OperationResult.NotFound:
                     return StatusCode(StatusCodes.Status404NotFound, errors);

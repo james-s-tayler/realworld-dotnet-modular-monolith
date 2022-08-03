@@ -9,7 +9,7 @@ namespace App.Core.PipelineBehaviors.Transactions
 {
     public static class ServiceCollectionExtensions
     {
-        
+
         public static void AddPipelineBehaviorsFromAssembly(this IServiceCollection services, Assembly domainContractsAssembly, Type rawPipelineBehaviorConcreteType)
         {
             domainContractsAssembly.GetOperationContractTypes().ForEach(operationType =>
@@ -25,20 +25,20 @@ namespace App.Core.PipelineBehaviors.Transactions
                  * The standard trick we usually apply (like below) doesn't work when with multiple modules loaded into the DI container
                  * services.AddTransient(typeof(IPipelineBehavior<,>), typeof(OperationLoggingPipelineBehavior<,>));
                  */
-                
+
                 var rawPipelineBehaviorType = typeof(IPipelineBehavior<,>);
-            
+
                 var requestType = operationType;
                 var responseType = requestType.GetInterfaces().Single(i => i.Name.Contains("IRequest")).GenericTypeArguments.Single();
 
                 var pipelineBehaviorType = rawPipelineBehaviorType.MakeGenericType(requestType, responseType);
                 var concretePipelineBehaviorType = rawPipelineBehaviorConcreteType.MakeGenericType(requestType, responseType);
-            
+
                 var descriptor = new ServiceDescriptor(pipelineBehaviorType, concretePipelineBehaviorType, ServiceLifetime.Transient);
                 services.Add(descriptor);
             });
         }
-        
+
         public static void AddTransactionPipelineBehaviorsFromAssembly(this IServiceCollection services, Assembly domainContractsAssembly, Type moduleType)
         {
             domainContractsAssembly.GetOperationContractTypes().ForEach(operationType =>
@@ -57,16 +57,16 @@ namespace App.Core.PipelineBehaviors.Transactions
                  * The standard trick we usually apply (like below) doesn't work when the arity doesn't match
                  * services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionPipelineBehavior<,,>)); //this blows up
                  */
-                
+
                 var rawPipelineBehaviorType = typeof(IPipelineBehavior<,>);
                 var rawTransactionPipelineBehaviorType = typeof(TransactionPipelineBehavior<,,>);
-            
+
                 var requestType = operationType;
                 var responseType = requestType.GetInterfaces().Single(i => i.Name.Contains("IRequest")).GenericTypeArguments.Single();
 
                 var pipelineBehaviorType = rawPipelineBehaviorType.MakeGenericType(requestType, responseType);
                 var transactionBehaviorType = rawTransactionPipelineBehaviorType.MakeGenericType(requestType, responseType, moduleType);
-            
+
                 var descriptor = new ServiceDescriptor(pipelineBehaviorType, transactionBehaviorType, ServiceLifetime.Transient);
                 services.Add(descriptor);
             });

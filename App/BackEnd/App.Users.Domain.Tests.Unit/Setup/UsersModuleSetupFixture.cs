@@ -16,33 +16,33 @@ namespace App.Users.Domain.Tests.Unit.Setup
     {
         public string PlainTextPassword { get; } = "soloyolo99";
         private string HashedPassword { get; }
-        
-        internal BCryptPasswordHasher<UserEntity> PasswordHasher = new ();
+
+        internal BCryptPasswordHasher<UserEntity> PasswordHasher = new();
         internal UserEntity ExistingUserEntity { get; private set; }
         internal UserEntity ExistingUser2 { get; private set; }
-        
+
         internal UserEntity FollowedUser { get; private set; }
         internal UserEntity UnfollowedUser { get; private set; }
-        
+
         internal IUserRepository UserRepository { get; private set; }
 
         public UsersModuleSetupFixture() : base(new UsersModule())
         {
             HashedPassword = PasswordHasher.HashPassword(null, PlainTextPassword);
         }
-        
+
         protected override void AddConfiguration(IDictionary<string, string> configuration)
         {
             configuration.Add($"{nameof(JwtSettings)}:{nameof(JwtSettings.Secret)}", "secretsecretsecretsecretsecretsecret");
             configuration.Add($"{nameof(JwtSettings)}:{nameof(JwtSettings.ValidIssuer)}", "issuer");
             configuration.Add($"{nameof(JwtSettings)}:{nameof(JwtSettings.ValidAudience)}", "audience");
         }
-        
+
         protected override void ReplaceServices(AbstractModule module)
         {
             module.ReplaceTransient<IPasswordHasher<UserEntity>, BCryptPasswordHasher<UserEntity>>(PasswordHasher);
         }
-        
+
         protected override void SetupPostProcess(ServiceProvider provider)
         {
             UserRepository = provider.GetService<IUserRepository>();
@@ -60,7 +60,7 @@ namespace App.Users.Domain.Tests.Unit.Setup
             };
             UserRepository.Create(existingUser).GetAwaiter().GetResult();
             ExistingUserEntity = UserRepository.GetByUsername(existingUser.Username).GetAwaiter().GetResult();
-            
+
             //in all of the other modules we can get away with letting the base class call this before the call to PerTestSetup,
             //but that's because the other modules users table allows us to insert the randomly generated id directly into the table
             //whereas UserRepository.Create() returns the Id of the created user whose info we then need to populated into the UserContext 
@@ -74,14 +74,14 @@ namespace App.Users.Domain.Tests.Unit.Setup
             existingUser2.Password = HashedPassword;
             UserRepository.Create(existingUser2).GetAwaiter().GetResult();
             ExistingUser2 = UserRepository.GetByUsername(existingUser2.Username).GetAwaiter().GetResult();
-            
+
             var followedUser = AutoFixture.Create<UserEntity>();
             followedUser.Email = $"{AutoFixture.Create<string>()}@{AutoFixture.Create<string>()}.com";
             followedUser.Password = HashedPassword;
             var followedUserId = UserRepository.Create(followedUser).GetAwaiter().GetResult();
             FollowedUser = UserRepository.GetByUsername(followedUser.Username).GetAwaiter().GetResult();
             UserRepository.FollowUser(ExistingUserEntity.Id, followedUserId).GetAwaiter().GetResult();
-            
+
             var unfollowedUser = AutoFixture.Create<UserEntity>();
             unfollowedUser.Email = $"{AutoFixture.Create<string>()}@{AutoFixture.Create<string>()}.com";
             unfollowedUser.Password = HashedPassword;

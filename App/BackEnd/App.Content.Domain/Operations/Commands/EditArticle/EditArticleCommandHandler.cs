@@ -18,8 +18,8 @@ namespace App.Content.Domain.Operations.Commands.EditArticle
         private readonly IUsersService _usersService;
         private readonly IArticleRepository _articleRepository;
 
-        public EditArticleCommandHandler([NotNull] IArticleRepository articleRepository, 
-            [NotNull] IUsersService usersService, 
+        public EditArticleCommandHandler([NotNull] IArticleRepository articleRepository,
+            [NotNull] IUsersService usersService,
             [NotNull] IUserContext userContext)
         {
             _articleRepository = articleRepository;
@@ -30,7 +30,7 @@ namespace App.Content.Domain.Operations.Commands.EditArticle
         public async Task<OperationResponse<EditArticleCommandResult>> Handle(EditArticleCommand request, CancellationToken cancellationToken)
         {
             var article = await _articleRepository.GetBySlug(request.Slug, _userContext.UserId);
-            if(article == null)
+            if ( article == null )
                 return OperationResponseFactory.NotFound<EditArticleCommand, OperationResponse<EditArticleCommandResult>>(typeof(ArticleEntity), request.Slug);
 
             article.Title = !string.IsNullOrEmpty(request.UpdatedArticle.Title) ? request.UpdatedArticle.Title : article.Title;
@@ -39,7 +39,7 @@ namespace App.Content.Domain.Operations.Commands.EditArticle
 
             await _articleRepository.Update(article);
             article = await _articleRepository.GetById(article.Id, _userContext.UserId);
-            
+
             var getProfileQueryResult = await _usersService.GetProfile(article.Author.Username);
             var authorProfile = getProfileQueryResult.Response.Profile;
 

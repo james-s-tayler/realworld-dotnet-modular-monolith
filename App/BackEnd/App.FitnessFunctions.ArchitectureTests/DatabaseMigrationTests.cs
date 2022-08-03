@@ -30,13 +30,13 @@ namespace App.FitnessFunctions.ArchitectureTests
                     var dbMigrationPrefix = $"{moduleName}Domain_"; //e.g App.Users.Domain.Migrations => UsersDomain_
 
                     var pass = databaseMigration.NameStartsWith(dbMigrationPrefix);
-                    
+
                     return new ConditionResult(databaseMigration, pass, $"does not start with {moduleName}Domain_");
                 }, "start with {moduleName}Domain_")
                 .Because("FluentMigrator console logger needs some way to help us differentiate what database a migration was run on.")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void DatabaseMigrationsEndWithTimestamp()
         {
@@ -58,7 +58,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("SchemaManager scans the assembly for migrations containing the tag")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void DatabaseMigrationsShouldResideInCorrectNamespace()
         {

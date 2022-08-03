@@ -16,7 +16,7 @@ namespace App.Users.Domain.Operations.Commands.UnfollowUser
         private readonly IUserRepository _userRepository;
         private readonly IUserContext _userContext;
 
-        public UnfollowUserCommandHandler([NotNull] IUserRepository userRepository, 
+        public UnfollowUserCommandHandler([NotNull] IUserRepository userRepository,
             [NotNull] IUserContext userContext)
         {
             _userRepository = userRepository;

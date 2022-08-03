@@ -16,7 +16,7 @@ namespace App.Users.Domain.Tests.Unit.Commands
     {
         private readonly UsersModuleSetupFixture _module;
         private readonly LoginUserCommand _loginUserCommand;
-        
+
         public LoginUserUnitTests(UsersModuleSetupFixture module, ITestOutputHelper testOutputHelper) : base(testOutputHelper, module)
         {
             _module = module;
@@ -28,10 +28,10 @@ namespace App.Users.Domain.Tests.Unit.Commands
                     Password = _module.PlainTextPassword
                 }
             };
-            
+
             _module.WithUnauthenticatedUserContext();
         }
-        
+
         [Fact]
         public async Task GivenValidCredentials_WhenLoginUser_ThenUserIsAuthenticated()
         {
@@ -39,19 +39,19 @@ namespace App.Users.Domain.Tests.Unit.Commands
 
             //act
             var result = await _module.Mediator.Send(_loginUserCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.Success);
             result.Response.IsAuthenticated.Should().BeTrue();
             result.Response.LoggedInUser.Should().NotBeNull();
-            
+
             var loggedInUser = result.Response.LoggedInUser;
 
             loggedInUser.Email.Should().Be(_module.ExistingUserEntity.Email);
             loggedInUser.Username.Should().Be(_module.ExistingUserEntity.Username);
             loggedInUser.Token.Should().NotBeEmpty();
         }
-        
+
         [Fact]
         public async Task GivenIncorrectPassword_WhenLoginUser_ThenUserIsNotAuthenticated()
         {
@@ -60,13 +60,13 @@ namespace App.Users.Domain.Tests.Unit.Commands
 
             //act
             var result = await _module.Mediator.Send(_loginUserCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.Success);
             result.Response.IsAuthenticated.Should().BeFalse();
             result.Response.LoggedInUser.Should().BeNull();
         }
-        
+
         [Fact]
         public async Task GivenEmailNotRegistered_WhenLoginUser_ThenValidationFails()
         {
@@ -75,7 +75,7 @@ namespace App.Users.Domain.Tests.Unit.Commands
 
             //act
             var result = await _module.Mediator.Send(_loginUserCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
             result.Response.Should().BeNull();

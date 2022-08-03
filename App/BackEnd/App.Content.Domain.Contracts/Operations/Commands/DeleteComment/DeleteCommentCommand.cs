@@ -10,7 +10,7 @@ namespace App.Content.Domain.Contracts.Operations.Commands.DeleteComment
     {
         [Required]
         public string ArticleSlug { get; set; }
-        
+
         [Required]
         [Range(0, Int32.MaxValue)]
         public int CommentId { get; set; }

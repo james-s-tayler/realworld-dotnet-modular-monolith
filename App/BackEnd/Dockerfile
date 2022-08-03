@@ -1,7 +1,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0.302 AS base
 WORKDIR /app
 COPY . .
- 
+
+FROM base AS lint
+RUN dotnet format Conduit.API.sln --verify-no-changes
+
 FROM base AS tests
 RUN printf "#! /bin/sh \n \
 dotnet test Conduit.API.sln" \

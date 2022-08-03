@@ -32,7 +32,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
 
             //act
             var result = await _module.Mediator.Send(_editArticleCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.Success);
             result.Response.Should().NotBeNull();
@@ -70,7 +70,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             result.Result.Should().Be(OperationResult.InvalidRequest);
             result.Response.Should().BeNull();
         }
-        
+
         [Fact]
         public async Task GivenAnArticleUpdateWithNullContent_WhenEditArticle_ThenInvalidRequest()
         {
@@ -86,7 +86,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             result.Result.Should().Be(OperationResult.ValidationError);
             result.Response.Should().BeNull();
         }
-        
+
         [Fact]
         public async Task GivenAnArticleUpdateWithBodyOnly_WhenEditArticle_ThenArticleBodyUpdated()
         {
@@ -106,7 +106,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             result.Response.Article.Description.Should().Be(_module.FavoritedArticleEntity.Description);
             result.Response.Article.Body.Should().Be(_editArticleCommand.UpdatedArticle.Body);
         }
-        
+
         [Fact]
         public async Task GivenAnArticleUpdateWithEmptyContent_WhenEditArticle_ThenArticleUpdated()
         {

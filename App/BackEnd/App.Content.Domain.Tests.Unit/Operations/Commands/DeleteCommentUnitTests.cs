@@ -32,49 +32,49 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
         {
             //act
             var result = await _module.Mediator.Send(_deleteCommentCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.Success);
             result.Response.Should().NotBeNull();
         }
-        
+
         [Fact]
         public async Task GivenAnUnauthenticatedUser_WhenDeleteComment_ThenNotAuthenticated()
         {
             //arrange
             _module.WithUnauthenticatedUserContext();
-            
+
             //act
             var result = await _module.Mediator.Send(_deleteCommentCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.NotAuthenticated);
             result.Response.Should().BeNull();
         }
-        
+
         [Fact]
         public async Task GivenNoSlug_WhenDeleteComment_ThenInvalidRequest()
         {
             //arrange
             _deleteCommentCommand.ArticleSlug = null;
-            
+
             //act
             var result = await _module.Mediator.Send(_deleteCommentCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.InvalidRequest);
             result.Response.Should().BeNull();
         }
-        
+
         [Fact]
         public async Task GivenNoSuchCommentId_WhenDeleteComment_ThenValidationError()
         {
             //arrange
             _deleteCommentCommand.CommentId = Int32.MaxValue;
-            
+
             //act
             var result = await _module.Mediator.Send(_deleteCommentCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
             result.Response.Should().BeNull();
@@ -85,10 +85,10 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
         {
             //arrange
             _deleteCommentCommand.ArticleSlug = _module.AutoFixture.Create<string>();
-            
+
             //act
             var result = await _module.Mediator.Send(_deleteCommentCommand);
-            
+
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
             result.Response.Should().BeNull();

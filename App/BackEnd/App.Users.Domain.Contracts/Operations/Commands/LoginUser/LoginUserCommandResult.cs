@@ -9,7 +9,7 @@ namespace App.Users.Domain.Contracts.Operations.Commands.LoginUser
     {
         public UserDTO LoggedInUser { get; }
 
-        private LoginUserCommandResult() {}
+        private LoginUserCommandResult() { }
 
         private LoginUserCommandResult([NotNull] UserDTO user)
         {

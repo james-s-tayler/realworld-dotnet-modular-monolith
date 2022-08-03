@@ -15,7 +15,7 @@ namespace App.Content.Domain.Operations.Commands.DeleteArticle
         private readonly IArticleRepository _articleRepository;
         private readonly IUserContext _userContext;
 
-        public DeleteArticleCommandHandler([NotNull] IArticleRepository articleRepository, 
+        public DeleteArticleCommandHandler([NotNull] IArticleRepository articleRepository,
             [NotNull] IUserContext userContext)
         {
             _articleRepository = articleRepository;
@@ -24,9 +24,9 @@ namespace App.Content.Domain.Operations.Commands.DeleteArticle
 
         public async Task<OperationResponse<DeleteArticleCommandResult>> Handle(DeleteArticleCommand request, CancellationToken cancellationToken)
         {
-            if (!await _articleRepository.ExistsBySlug(request.Slug))
+            if ( !await _articleRepository.ExistsBySlug(request.Slug) )
                 return OperationResponseFactory.NotFound<DeleteArticleCommand, OperationResponse<DeleteArticleCommandResult>>(typeof(ArticleEntity), request.Slug);
-            
+
             await _articleRepository.Delete(_userContext.UserId, request.Slug);
 
             return OperationResponseFactory.Success(new DeleteArticleCommandResult());

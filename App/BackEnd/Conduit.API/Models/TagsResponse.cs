@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Conduit.API.Converters;
 
 namespace Conduit.API.Models
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -30,7 +30,7 @@ namespace Conduit.API.Models
         /// Gets or Sets Tags
         /// </summary>
         [Required]
-        [DataMember(Name="tags", EmitDefaultValue=false)]
+        [DataMember(Name = "tags", EmitDefaultValue = false)]
         public List<string> Tags { get; set; }
 
         /// <summary>
@@ -62,9 +62,9 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public override bool Equals(object obj)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((TagsResponse)obj);
+            if ( obj is null ) return false;
+            if ( ReferenceEquals(this, obj) ) return true;
+            return obj.GetType() == GetType() && Equals(( TagsResponse )obj);
         }
 
         /// <summary>
@@ -74,10 +74,10 @@ namespace Conduit.API.Models
         /// <returns>Boolean</returns>
         public bool Equals(TagsResponse other)
         {
-            if (other is null) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if ( other is null ) return false;
+            if ( ReferenceEquals(this, other) ) return true;
 
-            return 
+            return
                 (
                     Tags == other.Tags ||
                     Tags != null &&
@@ -96,14 +96,14 @@ namespace Conduit.API.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Tags != null)
+                if ( Tags != null )
                     hashCode = hashCode * 59 + Tags.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(TagsResponse left, TagsResponse right)
         {
@@ -115,7 +115,7 @@ namespace Conduit.API.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

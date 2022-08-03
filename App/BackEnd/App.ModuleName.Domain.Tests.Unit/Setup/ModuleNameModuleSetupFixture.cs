@@ -10,24 +10,24 @@ namespace App.ModuleName.Domain.Tests.Unit.Setup
     {
         protected override void AddConfiguration(IDictionary<string, string> configuration)
         {
-            
+
         }
-        
+
         protected override void ReplaceServices(AbstractModule module)
         {
-            
+
         }
-        
+
         protected override void SetupPostProcess(ServiceProvider provider)
         {
-            
+
         }
 
         public override void PerTestSetup()
         {
-            
+
         }
 
-        public ModuleNameModuleSetupFixture() : base(new ModuleNameModule()) {}
+        public ModuleNameModuleSetupFixture() : base(new ModuleNameModule()) { }
     }
 }

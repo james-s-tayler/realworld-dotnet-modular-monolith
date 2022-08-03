@@ -18,8 +18,8 @@ namespace App.Content.Domain.Operations.Queries.GetArticleById
         private readonly IUsersService _usersService;
         private readonly IArticleRepository _articleRepository;
 
-        public GetArticleByIdQueryHandler([NotNull] IUserContext userContext, 
-            [NotNull] IArticleRepository articleRepository, 
+        public GetArticleByIdQueryHandler([NotNull] IUserContext userContext,
+            [NotNull] IArticleRepository articleRepository,
             [NotNull] IUsersService usersService)
         {
             _userContext = userContext;
@@ -30,13 +30,13 @@ namespace App.Content.Domain.Operations.Queries.GetArticleById
         public async Task<OperationResponse<GetArticleByIdQueryResult>> Handle(GetArticleByIdQuery request, CancellationToken cancellationToken)
         {
             var article = await _articleRepository.GetById(request.ArticleId, _userContext.UserId);
-            if (article == null)
+            if ( article == null )
                 return OperationResponseFactory.NotFound<GetArticleByIdQuery, OperationResponse<GetArticleByIdQueryResult>>(typeof(ArticleEntity), request.ArticleId);
 
             //what if this operation fails???
             var getProfileQueryResult = await _usersService.GetProfile(article.Author.Username);
             var authorProfile = getProfileQueryResult.Response.Profile;
-            
+
             return OperationResponseFactory.Success(new GetArticleByIdQueryResult
             {
                 Article = article.ToArticleDTO(authorProfile)

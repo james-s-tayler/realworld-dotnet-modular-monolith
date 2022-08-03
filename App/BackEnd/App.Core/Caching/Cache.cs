@@ -16,7 +16,7 @@ namespace App.Core.Caching
         private readonly ILogger<Cache> _logger;
 
         public Cache(IDistributedCache distributedCache,
-            IConfiguration configuration, 
+            IConfiguration configuration,
             ILogger<Cache> logger)
         {
             _distributedCache = distributedCache;
@@ -31,23 +31,23 @@ namespace App.Core.Caching
             {
                 cachedValue = await Get<T>(key);
             }
-            catch (Exception e)
+            catch ( Exception e )
             {
                 _logger.LogError(e, "Cache Error -> getting - key: {0} error: {1}", key, e.Message);
                 //fallback to the provided Func and return something sensible even if it's slower
                 return await refresh.Invoke();
             }
-            
-            if (cachedValue == null)
+
+            if ( cachedValue == null )
             {
                 var cachedObject = await refresh.Invoke();
-                
+
                 _logger.LogInformation("Cache Miss -> updating - key: {CacheKey}, serializedObject: {@SerializedOjbect}", key, cachedObject);
 
                 await Set(key, cachedObject);
                 return cachedObject;
             }
-            
+
             _logger.LogInformation("Cache Hit -> retrieved - key: {CacheKey}, deserializedObject: {@DeserializedObject}", key, cachedValue);
             return cachedValue;
         }
@@ -59,13 +59,13 @@ namespace App.Core.Caching
                 .Handle<SocketException>()
                 .Or<TimeoutException>()
                 .WaitAndRetryAsync(maxRetryAttempts, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
-              
+
             var cachedValue = await retry.ExecuteAsync(async () => await _distributedCache.GetAsync(key));
 
-            if (cachedValue == null)
+            if ( cachedValue == null )
                 return default;
-            
-            var jsonToDeserialize = System.Text.Encoding.UTF8.GetString((byte[]) cachedValue);
+
+            var jsonToDeserialize = System.Text.Encoding.UTF8.GetString(( byte[] )cachedValue);
             var cachedResult = JsonSerializer.Deserialize<T>(jsonToDeserialize);
 
             return cachedResult;
@@ -75,13 +75,13 @@ namespace App.Core.Caching
         {
             byte[] objectToCache = JsonSerializer.SerializeToUtf8Bytes(value);
 
-            var expirySeconds = _configuration.GetValue<int?>($"Cache:ExpirySeconds:ByType:{value.GetType().Name}") 
+            var expirySeconds = _configuration.GetValue<int?>($"Cache:ExpirySeconds:ByType:{value.GetType().Name}")
                                  ?? _configuration.GetValue<int?>("Cache:ExpirySeconds:Default")
                                  ?? throw new ArgumentNullException("Cache:ExpirySeconds");
 
             var cacheEntryOptions = new DistributedCacheEntryOptions()
                 .SetAbsoluteExpiration(TimeSpan.FromSeconds(expirySeconds));
-            
+
             await _distributedCache.SetAsync(key, objectToCache, cacheEntryOptions);
         }
     }

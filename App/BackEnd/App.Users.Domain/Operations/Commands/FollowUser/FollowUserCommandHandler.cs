@@ -16,7 +16,7 @@ namespace App.Users.Domain.Operations.Commands.FollowUser
         private readonly IUserRepository _userRepository;
         private readonly IUserContext _userContext;
 
-        public FollowUserCommandHandler([NotNull] IUserRepository userRepository, 
+        public FollowUserCommandHandler([NotNull] IUserRepository userRepository,
             [NotNull] IUserContext userContext)
         {
             _userRepository = userRepository;

@@ -14,7 +14,7 @@ namespace App.Content.Domain.Operations.Commands.PostComment
         public PostCommentCommandValidator([NotNull] IArticleRepository articleRepository)
         {
             _articleRepository = articleRepository;
-            
+
             RuleFor(command => command)
                 .MustAsync(SlugMustExist)
                 .WithMessage(command => $"Article with slug: {command.ArticleSlug} does not exist");

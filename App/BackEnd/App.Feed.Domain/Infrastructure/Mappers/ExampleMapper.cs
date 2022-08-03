@@ -7,7 +7,7 @@ namespace App.Feed.Domain.Infrastructure.Mappers
     {
         internal static void ToExampleDTO()
         {
-            
+
         }
     }
 }

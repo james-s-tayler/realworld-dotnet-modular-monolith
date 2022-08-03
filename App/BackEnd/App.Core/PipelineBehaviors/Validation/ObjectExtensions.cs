@@ -7,7 +7,7 @@ namespace App.Core.PipelineBehaviors.Validation
             object objValue = string.Empty;
 
             var propertyInfo = o.GetType().GetProperty(propertyName);
-            if (propertyInfo != null)
+            if ( propertyInfo != null )
                 objValue = propertyInfo.GetValue(o, null);
 
             return objValue;

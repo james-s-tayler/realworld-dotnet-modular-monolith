@@ -16,7 +16,7 @@ namespace Conduit.API.Formatters
 
         protected override bool CanReadType(Type type)
         {
-            if (type == typeof(Stream))
+            if ( type == typeof(Stream) )
             {
                 return true;
             }

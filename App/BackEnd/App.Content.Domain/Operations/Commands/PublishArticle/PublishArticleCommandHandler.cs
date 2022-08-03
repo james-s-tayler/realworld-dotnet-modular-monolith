@@ -18,8 +18,8 @@ namespace App.Content.Domain.Operations.Commands.PublishArticle
         private readonly IUsersService _usersService;
         private readonly IArticleRepository _articleRepository;
 
-        public PublishArticleCommandHandler([NotNull] IArticleRepository articleRepository, 
-            [NotNull] IUsersService usersService, 
+        public PublishArticleCommandHandler([NotNull] IArticleRepository articleRepository,
+            [NotNull] IUsersService usersService,
             [NotNull] IUserContext userContext)
         {
             _articleRepository = articleRepository;
@@ -31,7 +31,7 @@ namespace App.Content.Domain.Operations.Commands.PublishArticle
         {
             var userEntity = new UserEntity { UserId = _userContext.UserId, Username = _userContext.Username };
             var articleId = await _articleRepository.Create(request.NewArticle.ToArticleEntity(userEntity));
-            
+
             var article = await _articleRepository.GetById(articleId, _userContext.UserId);
             var getProfileQueryResult = await _usersService.GetProfile(article.Author.Username);
             var authorProfile = getProfileQueryResult.Response.Profile;
