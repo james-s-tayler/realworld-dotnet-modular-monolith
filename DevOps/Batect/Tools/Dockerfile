@@ -1,4 +1,4 @@
-FROM alpine:3.16.1
+FROM alpine:3.16.2
 RUN apk update && apk upgrade
 RUN apk --no-cache add  \
     git=2.36.2-r0 \
