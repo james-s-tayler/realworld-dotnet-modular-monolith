@@ -295,6 +295,8 @@ containers:
         container: /App/BackEnd
       - local: ./sqlite
         container: /sqlite
+      - local: ./code_coverage
+        container: /code_coverage
       - type: cache
         name: nuget-cache
         container: /root/.nuget/packages

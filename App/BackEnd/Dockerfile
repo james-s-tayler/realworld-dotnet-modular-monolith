@@ -7,7 +7,8 @@ RUN dotnet format Conduit.API.sln --verify-no-changes
 
 FROM base AS tests
 RUN printf "#! /bin/sh \n \
-dotnet test Conduit.API.sln" \
+dotnet test Conduit.API.sln --filter FullyQualifiedName~App.FitnessFunctions.ArchitectureTests && \
+dotnet test Conduit.API.sln --filter FullyQualifiedName!~App.FitnessFunctions.ArchitectureTests --collect:\"XPlat Code Coverage\"" \
     > /app/run-tests.sh && chmod +x /app/run-tests.sh
 
 FROM base AS publish

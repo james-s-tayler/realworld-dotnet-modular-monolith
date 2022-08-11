@@ -163,7 +163,11 @@ namespace App.FitnessFunctions.ArchitectureTests
         {
             var coreNamespace = typeof(ConduitCore).Namespace;
             Classes().That().Are(_application.DomainContracts)
-                .Should().OnlyDependOnTypesThat().ResideInNamespace($"{coreNamespace}|.*Domain.Contracts.*|System.*|MediatR.*|Destructurama.*", true)
+                .Should().OnlyDependOnTypesThat().ResideInNamespace($"{coreNamespace}|" +
+                    ".*Domain.Contracts.*|" +
+                    "System.*|" +
+                    "MediatR.*|" +
+                    "Destructurama.*", true)
                 .Because("contracts shouldn't be responsible for any business logic")
                 .Check(_application.Architecture);
         }
