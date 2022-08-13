@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using App.Core.DataAccess;
 using App.Users.Domain.Contracts;
 using App.Users.Domain.Contracts.DTOs;
 
 namespace App.Content.Domain.Contracts.DTOs
 {
+    [ExcludeFromCodeCoverage]
     public class SingleArticleDTO : ContractModel
     {
         public string Slug { get; set; }

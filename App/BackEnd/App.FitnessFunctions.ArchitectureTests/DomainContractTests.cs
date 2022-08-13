@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using App.Core;
 using App.Core.DataAccess;
@@ -5,7 +6,6 @@ using ArchUnitNET.Domain.Dependencies;
 using ArchUnitNET.Domain.Extensions;
 using ArchUnitNET.Fluent.Conditions;
 using ArchUnitNET.xUnit;
-using JetBrains.Annotations;
 using MediatR;
 using Xunit;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
@@ -17,7 +17,7 @@ namespace App.FitnessFunctions.ArchitectureTests
     {
         private readonly ArchitectureTestSetupFixture _application;
 
-        public DomainContractTests([NotNull] ArchitectureTestSetupFixture application)
+        public DomainContractTests([JetBrains.Annotations.NotNull] ArchitectureTestSetupFixture application)
         {
             _application = application;
         }
@@ -46,6 +46,15 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Check(_application.Architecture);
         }
 
+        [Fact]
+        public void DomainContractsMustBeExcludedFromCodeCoverage()
+        {
+            Classes().That().Are(_application.DomainContracts)
+                .Should().HaveAnyAttributes(typeof(ExcludeFromCodeCoverageAttribute))
+                .Because("This makes coverage of actual business logic more accurate")
+                .Check(_application.Architecture);
+        }
+        
         [Fact]
         public void DomainContractsMustSubclassContractModel()
         {

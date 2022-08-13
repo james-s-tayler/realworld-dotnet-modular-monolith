@@ -1,11 +1,13 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using App.Core.DataAccess;
 using App.Core.PipelineBehaviors.OperationResponse;
 using MediatR;
 
 namespace App.Content.Domain.Contracts.Operations.Commands.DeleteComment
 {
+    [ExcludeFromCodeCoverage]
     public class DeleteCommentCommand : ContractModel, IRequest<OperationResponse<DeleteCommentCommandResult>>
     {
         [Required]

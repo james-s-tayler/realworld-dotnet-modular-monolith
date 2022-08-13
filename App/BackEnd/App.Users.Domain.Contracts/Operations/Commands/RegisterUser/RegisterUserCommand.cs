@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using App.Core.DataAccess;
 using App.Core.PipelineBehaviors.Authorization;
 using App.Core.PipelineBehaviors.OperationResponse;
@@ -6,6 +7,7 @@ using MediatR;
 
 namespace App.Users.Domain.Contracts.Operations.Commands.RegisterUser
 {
+    [ExcludeFromCodeCoverage]
     [AllowUnauthenticated]
     public class RegisterUserCommand : ContractModel, IRequest<OperationResponse<RegisterUserCommandResult>>
     {
