@@ -54,7 +54,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Because("This makes coverage of actual business logic more accurate")
                 .Check(_application.Architecture);
         }
-        
+
         [Fact]
         public void DomainContractsMustSubclassContractModel()
         {
