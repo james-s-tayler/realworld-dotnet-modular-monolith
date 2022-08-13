@@ -1,4 +1,4 @@
-name: batect lint:dotnet:format
+name: batect lint:dotnet:architecture
 on: [pull_request]
 jobs:
   format:
@@ -20,5 +20,5 @@ jobs:
           path: .batect/caches
           key: batect-${{ hashFiles('batect') }}
 
-      - name: batect lint:dotnet:format
-        run: ./batect lint:dotnet:format
+      - name: batect lint:dotnet:architecture
+        run: ./batect lint:dotnet:architecture
