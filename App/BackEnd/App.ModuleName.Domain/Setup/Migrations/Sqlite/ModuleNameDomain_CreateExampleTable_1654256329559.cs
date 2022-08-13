@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using App.Core.SchemaManagement;
 using FluentMigrator;
 using JetBrains.Annotations;
 
 namespace App.ModuleName.Domain.Setup.Migrations.Sqlite
 {
+    [ExcludeFromCodeCoverage]
     [Tags(DbConstants.SQLite)]
     [Migration(1654256329559)]
     [UsedImplicitly]

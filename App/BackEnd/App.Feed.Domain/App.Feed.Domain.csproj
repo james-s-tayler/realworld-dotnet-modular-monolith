@@ -13,7 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Operations\Commands" />
       <Folder Include="Operations\Queries" />
       <Folder Include="Setup\Configuration" />
     </ItemGroup>

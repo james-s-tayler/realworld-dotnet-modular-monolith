@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using App.Core.DataAccess;
 
 namespace App.Users.Domain.Contracts.DTOs
 {
+    [ExcludeFromCodeCoverage]
     public class UpdateUserDTO : ContractModel
     {
         public string Email { get; set; }

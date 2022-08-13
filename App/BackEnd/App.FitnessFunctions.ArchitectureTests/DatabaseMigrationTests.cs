@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using App.Core.SchemaManagement;
 using ArchUnitNET.Domain.Extensions;
 using ArchUnitNET.Fluent.Conditions;
@@ -16,6 +17,15 @@ namespace App.FitnessFunctions.ArchitectureTests
         public DatabaseMigrationTests(ArchitectureTestSetupFixture application)
         {
             _application = application;
+        }
+
+        [Fact]
+        public void DatabaseMigrationsMustBeExcludedFromCodeCoverage()
+        {
+            Classes().That().Are(_application.DatabaseMigrations)
+                .Should().HaveAnyAttributes(typeof(ExcludeFromCodeCoverageAttribute))
+                .Because("This makes coverage of actual business logic more accurate")
+                .Check(_application.Architecture);
         }
 
         [Fact]

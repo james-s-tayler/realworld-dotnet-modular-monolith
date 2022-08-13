@@ -25,7 +25,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Operations\Commands" />
       <Folder Include="Operations\Queries" />
     </ItemGroup>
 

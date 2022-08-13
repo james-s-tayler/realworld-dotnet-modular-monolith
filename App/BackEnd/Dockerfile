@@ -2,12 +2,17 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0.400 AS base
 WORKDIR /app
 COPY . .
 
-FROM base AS lint
+FROM base AS lint_format
 RUN dotnet format Conduit.API.sln --verify-no-changes
+
+FROM base AS lint_architecture
+RUN printf "#! /bin/sh \n \
+dotnet test Conduit.API.sln --filter FullyQualifiedName~App.FitnessFunctions.ArchitectureTests" \
+    > /app/run-tests.sh && chmod +x /app/run-tests.sh
 
 FROM base AS tests
 RUN printf "#! /bin/sh \n \
-dotnet test Conduit.API.sln" \
+dotnet test Conduit.API.sln --filter FullyQualifiedName!~App.FitnessFunctions.ArchitectureTests --collect:\"XPlat Code Coverage\"" \
     > /app/run-tests.sh && chmod +x /app/run-tests.sh
 
 FROM base AS publish
