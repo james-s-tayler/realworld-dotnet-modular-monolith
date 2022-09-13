@@ -30,7 +30,7 @@ RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
     /p:TrimMode=${MODEOF_TREESHAKING} \
     /p:PublishSingleFile=true
   
-FROM mcr.microsoft.com/dotnet/runtime-deps:6.0.8 AS final
+FROM mcr.microsoft.com/dotnet/runtime-deps:6.0.9 AS final
 WORKDIR /app
 COPY --from=publish /app/output .
 ENTRYPOINT ["./Conduit.API"]
