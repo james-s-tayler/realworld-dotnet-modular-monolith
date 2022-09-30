@@ -1,7 +1,7 @@
 include:
   - type: git
     repo: https://github.com/batect/shellcheck-bundle.git
-    ref: 0.11.0
+    ref: 0.12.0
   - type: git
     repo: https://github.com/batect/hadolint-bundle.git
     ref: 0.21.0
