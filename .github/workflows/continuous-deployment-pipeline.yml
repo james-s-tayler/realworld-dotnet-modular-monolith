@@ -32,6 +32,6 @@ jobs:
 
       - name: API tests (Postman)
         run: ./batect app:test:api
-        
+
       - name: dotnet publish
-        run: ./batect app:build  
+        run: ./batect app:build

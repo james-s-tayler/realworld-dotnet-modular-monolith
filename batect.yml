@@ -37,14 +37,14 @@ tasks:
     run:
       container: tools
       command: echo https://www.shellcheck.net/wiki
-      
+
   lint:commit:
     description: Checks the commit message of HEAD has a JIRA reference
     group: Linting tasks
     run:
       container: tools
       command: sh -c '/repo/DevOps/Batect/Tools/commit_lint.sh ${GITHUB_WORKSPACE:-/repo}'
-  
+
   lint:dotnet:format:
     description: Runs dotnet format --verify-no-changes
     group: Linting tasks
