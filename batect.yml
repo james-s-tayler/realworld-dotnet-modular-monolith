@@ -4,7 +4,7 @@ include:
     ref: 0.18.0
   - type: git
     repo: https://github.com/batect/hadolint-bundle.git
-    ref: 0.21.0
+    ref: 0.25.0
 
 tasks:
 
