@@ -10,7 +10,7 @@
       <PackageReference Include="Serilog.Sinks.XUnit" Version="3.0.5" />
       <PackageReference Include="AutoFixture" Version="4.18.0" />
       <PackageReference Include="FluentAssertions" Version="6.11.0" />
-      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
       <PackageReference Include="Moq" Version="4.18.4" />
     </ItemGroup>
 
