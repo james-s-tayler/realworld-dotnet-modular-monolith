@@ -28,7 +28,7 @@
       <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
       <PackageReference Include="Microsoft.Extensions.Primitives" Version="6.0.0" />
       <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
-      <PackageReference Include="Dapper" Version="2.0.123" />
+      <PackageReference Include="Dapper" Version="2.1.21" />
       <PackageReference Include="Dapper.Logging" Version="0.4.3" />
       <PackageReference Include="Npgsql" Version="7.0.6" />
       <PackageReference Include="Polly" Version="7.2.4" />
