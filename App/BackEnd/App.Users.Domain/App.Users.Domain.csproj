@@ -13,7 +13,7 @@
       <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
       <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.30.0" />
       <PackageReference Include="ScottBrady91.AspNetCore.Identity.BCryptPasswordHasher" Version="1.3.0" />
-      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.0" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.34.0" />
     </ItemGroup>
 
     <ItemGroup>
