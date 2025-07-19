@@ -22,14 +22,14 @@ namespace App.Users.Domain.Operations.Commands.RegisterUser
                 .MaximumLength(Constants.UsernameMaxLength);
             RuleFor(command => command.NewUser.Username)
                 .MustAsync(UsernameNotAlreadyInUse)
-                .WithMessage(_ => "Username is already in use")
+                .WithMessage(_ => "duplicate username")
                 .When(command => command.NewUser.Username != null);
             RuleFor(command => command.NewUser.Email)
                 .NotNull()
                 .NotEmpty();
             RuleFor(command => command.NewUser.Email)
                 .MustAsync(EmailNotAlreadyInUse)
-                .WithMessage(_ => "Email is already in use")
+                .WithMessage(_ => "duplicate email")
                 .When(command => command.NewUser.Email != null);
             RuleFor(command => command.NewUser.Password)
                 .NotNull()

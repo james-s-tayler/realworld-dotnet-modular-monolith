@@ -37,11 +37,11 @@ namespace App.Users.Domain.Operations.Commands.UpdateUser
                 .WithMessage($"User {_userContext.UserId} was not found.");
             RuleFor(command => command.UpdateUser.Username)
                 .MustAsync(UsernameNotAlreadyInUse)
-                .WithMessage(_ => "Username is already in use")
+                .WithMessage(_ => "duplicate username")
                 .WhenAsync(ShouldValidateUsername);
             RuleFor(command => command.UpdateUser.Email)
                 .MustAsync(EmailNotAlreadyInUse)
-                .WithMessage(_ => "Email is already in use")
+                .WithMessage(_ => "duplicate email")
                 .WhenAsync(ShouldValidateEmail);
         }
 
