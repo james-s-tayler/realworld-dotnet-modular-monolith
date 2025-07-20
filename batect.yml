@@ -58,6 +58,12 @@ tasks:
     run:
       container: app-lint-architecture
       command: /app/run-tests.sh
+      
+  infra:test:logs:
+    description: test the seq_logs container
+    group: Infra tasks
+    run:
+      container: seq_logs
 
   app:build:
     description: build the app
@@ -127,6 +133,7 @@ containers:
       - 8080:80
     environment:
       ACCEPT_EULA: Y
+      SEQ_FIRSTRUN_NOAUTHENTICATION: "True"
     volumes:
       - type: cache
         name: seq_logs
