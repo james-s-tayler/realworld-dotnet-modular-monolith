@@ -18,6 +18,10 @@ namespace App.Content.Domain.Operations.Commands.PublishArticle
             RuleFor(command => command)
                 .MustAsync(SlugMustNotExist)
                 .WithMessage(command => $"Article with slug: {command.NewArticle.GetSlug()} already exists");
+            RuleFor(command => command.NewArticle.TagList)
+                .ForEach(tag => tag.NotEmpty());
+            RuleFor(command => command.NewArticle.TagList)
+                .ForEach(tag => tag.Must(t => !t.Contains(',')));
         }
 
         private async Task<bool> SlugMustNotExist(PublishArticleCommand command, CancellationToken cancellationToken)

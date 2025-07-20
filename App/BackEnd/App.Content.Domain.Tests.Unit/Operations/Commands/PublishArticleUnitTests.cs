@@ -76,6 +76,22 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             //assert
             result.Response.Article.TagList.Should().BeEquivalentTo(tagList);
         }
+        
+        [Theory]
+        [InlineData("t,ag")]
+        [InlineData("")]
+        public async Task GivenAnArticleWithInvalidTagsToPublish_WhenPublishArticle_ThenValidationError(string tag)
+        {
+            //arrange
+            var tagList = new[] { tag };
+            _publishArticleCommand.NewArticle.TagList = tagList;
+
+            //act
+            var result = await _module.Mediator.Send(_publishArticleCommand);
+
+            //assert
+            result.Result.Should().Be(OperationResult.ValidationError);
+        }
 
         [Fact]
         public async Task GivenAnArticleToPublish_WhenPublishArticle_ThenArticleContainsAuthorProfile()
