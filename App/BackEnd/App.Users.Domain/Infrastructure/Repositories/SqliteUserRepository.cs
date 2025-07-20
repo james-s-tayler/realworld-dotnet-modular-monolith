@@ -69,9 +69,7 @@ namespace App.Users.Domain.Infrastructure.Repositories
             };
 
             var insertedUser = await _connection.QuerySingleAsync<UserEntity>(sql, arguments);
-
-            // await FollowSelf(insertedUser.Id);
-
+            
             return insertedUser.Id;
         }
 
@@ -157,11 +155,6 @@ namespace App.Users.Domain.Infrastructure.Repositories
 
             return Task.FromResult(isFollowing);
         }
-
-        /*public async Task FollowSelf(int userId)
-        {
-            await FollowUser(userId, userId);
-        }*/
 
         public Task FollowUser(int userId, int followUserId)
         {
