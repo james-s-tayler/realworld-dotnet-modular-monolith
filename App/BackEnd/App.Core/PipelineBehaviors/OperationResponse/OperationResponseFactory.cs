@@ -5,7 +5,7 @@ using MediatR;
 
 namespace App.Core.PipelineBehaviors.OperationResponse
 {
-    public class OperationResponseFactory
+    public static class OperationResponseFactory
     {
         public static OperationResponse<TResult> Success<TResult>(TResult result) where TResult : class
         {

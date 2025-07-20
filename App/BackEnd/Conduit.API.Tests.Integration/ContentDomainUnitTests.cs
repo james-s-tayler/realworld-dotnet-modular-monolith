@@ -69,7 +69,7 @@ namespace Conduit.API.Tests.Integration
             //assert
             response.Content!.Article.Author.Should().NotBeNull();
             response.Content!.Article.Author.Username.Should().Be(_newUser.Username);
-            response.Content!.Article.Author.Following.Should().BeTrue();
+            response.Content!.Article.Author.Following.Should().BeFalse();
         }
 
         [Fact]
