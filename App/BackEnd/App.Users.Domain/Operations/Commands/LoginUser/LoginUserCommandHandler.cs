@@ -32,7 +32,7 @@ namespace App.Users.Domain.Operations.Commands.LoginUser
         {
             var user = await _userRepository.GetByEmail(request.UserCredentials.Email);
             if ( user == null )
-                throw new ArgumentNullException(nameof(user));
+                return new OperationResponse<LoginUserCommandResult>(LoginUserCommandResult.FailedLoginResult());
 
             var result = _passwordHasher.VerifyHashedPassword(user, user.Password, request.UserCredentials.Password);
 

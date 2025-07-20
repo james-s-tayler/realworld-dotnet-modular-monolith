@@ -31,6 +31,9 @@ namespace App.Users.Domain.Operations.Commands.RegisterUser
                 .MustAsync(EmailNotAlreadyInUse)
                 .WithMessage(_ => "duplicate email")
                 .When(command => command.NewUser.Email != null);
+            RuleFor(command => command.NewUser.Email)
+                .EmailAddress()
+                .When(command => command.NewUser.Email != null);
             RuleFor(command => command.NewUser.Password)
                 .NotNull()
                 .NotEmpty()

@@ -13,7 +13,7 @@ namespace App.Users.Domain.Infrastructure.Mappers
                 Id = userEntity.Id,
                 Email = userEntity.Email,
                 Username = userEntity.Username,
-                Token = token,
+                Token = token.Replace("Token ", ""),
                 Image = userEntity.Image,
                 Bio = userEntity.Bio
             };

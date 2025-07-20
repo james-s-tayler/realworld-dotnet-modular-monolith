@@ -53,6 +53,7 @@ namespace App.Users.Domain.Tests.Unit.Commands
 
         [Theory]
         [InlineData("")]
+        [InlineData("soloyolo")]
         [InlineData(null)]
         public async Task GivenInvalidEmail_WhenRegisterUser_ThenFailsValidation(string email)
         {
