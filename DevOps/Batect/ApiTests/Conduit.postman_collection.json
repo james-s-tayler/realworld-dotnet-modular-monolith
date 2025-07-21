@@ -4215,8 +4215,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Response is HTTP 404', function() {",
-									"    pm.expect(pm.response.status).to.eql('Not Found')",
+									"pm.test('Response is HTTP 422', function() {",
+									"    pm.expect(pm.response.status).to.eql('Unprocessable Entity')",
 									"})"
 								],
 								"type": "text/javascript",
@@ -4547,8 +4547,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Response is HTTP 404', function() {",
-									"    pm.expect(pm.response.status).to.eql('Not Found')",
+									"pm.test('Response is HTTP 422', function() {",
+									"    pm.expect(pm.response.status).to.eql('Unprocessable Entity')",
 									"})"
 								],
 								"type": "text/javascript",
@@ -4609,8 +4609,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Response is HTTP 404', function() {",
-									"    pm.expect(pm.response.status).to.eql('Not Found')",
+									"pm.test('Response is HTTP 422', function() {",
+									"    pm.expect(pm.response.status).to.eql('Unprocessable Entity')",
 									"})"
 								],
 								"type": "text/javascript",
