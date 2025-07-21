@@ -56,8 +56,8 @@ namespace App.Content.Domain.Infrastructure.Repositories
                     article.Favorited = false;
                 }
 
-                var favoritesCountSql = "SELECT COUNT(*) FROM article_favorites WHERE article_id=@article_id AND user_id=@user_id";
-                var favoritesCountArguments = new { article_id = article.Id, user_id = article.Author.UserId };
+                var favoritesCountSql = "SELECT COUNT(*) FROM article_favorites WHERE article_id=@article_id";
+                var favoritesCountArguments = new { article_id = article.Id };
                 article.FavoritesCount = _connection.ExecuteScalar<int>(favoritesCountSql, favoritesCountArguments);
             }
         }
