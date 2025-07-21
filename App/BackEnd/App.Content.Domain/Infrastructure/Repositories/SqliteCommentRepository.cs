@@ -32,6 +32,19 @@ namespace App.Content.Domain.Infrastructure.Repositories
             return Task.FromResult(_connection.ExecuteScalar<bool>(sql, arguments));
         }
 
+
+        public async Task<bool> ExistsByUserAndId(int authenticatedUserId, int commentId)
+        {
+            var sql = "SELECT EXISTS(SELECT 1 FROM comments comment WHERE comment.id = @comment_id AND comment.user_id = @user_id)";
+            var arguments = new
+            {
+                user_id = authenticatedUserId,
+                comment_id = commentId,
+            };
+            return await _connection.ExecuteScalarAsync<bool>(sql, arguments);
+        }
+
+
         public Task<CommentEntity> PostComment(UserEntity commentAuthor, CommentEntity comment)
         {
             string sql = "INSERT INTO comments (user_id, article_id, body, created_at, updated_at) VALUES (@user_id, @article_id, @body, @created_at, @updated_at) RETURNING *";
