@@ -88,7 +88,7 @@ namespace Conduit.API.Controllers
             if ( deleteArticleResponse.Result != OperationResult.Success )
                 return UnsuccessfulResponseResult(deleteArticleResponse);
 
-            return Ok();
+            return NoContent();
         }
 
         /// <summary>
