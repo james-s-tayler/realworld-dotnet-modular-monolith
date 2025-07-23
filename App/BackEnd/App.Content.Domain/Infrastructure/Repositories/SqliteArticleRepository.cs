@@ -101,7 +101,7 @@ namespace App.Content.Domain.Infrastructure.Repositories
 
         public async Task<IEnumerable<ArticleEntity>> GetByFilters(string authorUsername, string favoritedByUsername, string tag, int limit, int offset, int? userId)
         {
-            string sql = "SELECT a.* FROM articles a " +
+            string sql = "SELECT DISTINCT a.* FROM articles a " +
                          "JOIN users author ON author.user_id = a.user_id " +
                          "LEFT JOIN article_tags at ON at.article_id = a.id " +
                          "LEFT JOIN tags t ON t.id = at.tag_id " +
