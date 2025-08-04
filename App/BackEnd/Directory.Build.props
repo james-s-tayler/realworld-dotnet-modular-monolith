@@ -1,6 +1,6 @@
 <Project>
   <ItemGroup>
-    <PackageReference Include="Fody" Version="6.8.0" PrivateAssets="all" />
+    <PackageReference Include="Fody" Version="6.9.2" PrivateAssets="all" />
     <PackageReference Include="NullGuard.Fody" Version="3.1.1" PrivateAssets="all" />
     <PackageReference Include="Tracer.Fody" Version="3.3.1" />
     <PackageReference Include="Tracer.Serilog.Fody" Version="3.3.1" />
