@@ -8,6 +8,7 @@ namespace App.Feed.Domain.Infrastructure.Repositories
     {
         Task<bool> Exists(int articleId);
         Task<ArticleEntity> Insert(ArticleEntity publishedArticle);
+        Task Delete(ArticleEntity deletedArticle);
         Task<List<ArticleEntity>> GetFeed(int userId, int limit, int offset);
     }
 }

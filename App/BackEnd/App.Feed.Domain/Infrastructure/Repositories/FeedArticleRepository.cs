@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace App.Feed.Domain.Infrastructure.Repositories
 
         public Task<ArticleEntity> Insert(ArticleEntity publishedArticle)
         {
-            var sql = "INSERT OR IGNORE INTO articles (article_id, user_id, created_at) VALUES (@article_id, @user_id, @created_at) RETURNING *";
+            var sql = "INSERT INTO articles (article_id, user_id, created_at) VALUES (@article_id, @user_id, @created_at) RETURNING *";
 
             var arguments = new
             {
@@ -45,6 +46,26 @@ namespace App.Feed.Domain.Infrastructure.Repositories
 
             return Task.FromResult(insertedArticle);
         }
+
+
+        public async Task Delete(ArticleEntity deletedArticle)
+        {
+            var sql = "DELETE FROM articles WHERE article_id=@article_id AND user_id=@user_id";
+
+            var arguments = new
+            {
+                article_id = deletedArticle.ArticleId,
+                user_id = deletedArticle.UserId
+            };
+
+            var rowsAffected = await _connection.ExecuteAsync(sql, arguments);
+
+            if ( rowsAffected == 0 )
+            {
+                throw new Exception($"Unable to delete article {deletedArticle.ArticleId} - maybe it doesn't exist?");
+            }
+        }
+
 
         public Task<List<ArticleEntity>> GetFeed(int userId, int limit, int offset)
         {

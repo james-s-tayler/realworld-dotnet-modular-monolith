@@ -33,7 +33,11 @@ namespace App.Content.Domain.Operations.Commands.DeleteArticle
             
             await _articleRepository.Delete(_userContext.UserId, request.Slug);
 
-            return OperationResponseFactory.Success(new DeleteArticleCommandResult());
+            return OperationResponseFactory.Success(new DeleteArticleCommandResult
+            {
+                ArticleId = article.Id,
+                UserId = _userContext.UserId
+            });
         }
     }
 }
