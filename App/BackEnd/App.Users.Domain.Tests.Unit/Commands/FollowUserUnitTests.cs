@@ -90,7 +90,7 @@ namespace App.Users.Domain.Tests.Unit.Commands
             var result = await _module.Mediator.Send(followUserCommand);
 
             //assert
-            result.Result.Should().Be(OperationResult.ValidationError);
+            result.Result.Should().Be(OperationResult.NotFound);
             result.Response.Should().BeNull();
         }
 
