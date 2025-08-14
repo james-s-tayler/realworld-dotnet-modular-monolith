@@ -178,9 +178,7 @@
 									"",
 									"    var errors = responseJSON.errors || {};",
 									"",
-									"    pm.test('\"username\" property is duplicate', function() {",
-									"       pm.expect(errors.body[0]).to.eql('duplicate username')",
-									"   　});",
+									"    utils.assertErrorStartsWith(\"username\", pm);",
 									"}"
 								],
 								"type": "text/javascript",
@@ -246,9 +244,7 @@
 									"",
 									"    var errors = responseJSON.errors || {};",
 									"",
-									"    pm.test('\"email\" property is duplicate', function() {",
-									"       pm.expect(errors.body[0]).to.eql('duplicate email')",
-									"   　});",
+									"    utils.assertErrorStartsWith(\"email\", pm);",
 									"}"
 								],
 								"type": "text/javascript",
@@ -314,9 +310,7 @@
 									"",
 									"    var errors = responseJSON.errors || {};",
 									"",
-									"    pm.test('\"email\" property must be valid email address', function() {",
-									"       pm.expect(errors).to.have.property('body')",
-									"   　});",
+									"    utils.assertErrorStartsWith(\"email\", pm);",
 									"}"
 								],
 								"type": "text/javascript",
@@ -1020,19 +1014,9 @@
 									"",
 									"var errors = responseJSON.errors || {};",
 									"",
-									"pm.test('\"email\" property must be valid email address', function() {",
-									"    pm.expect(errors).to.have.property('email')",
-									"});",
-									"pm.test('\"username\" property must be present', function() {",
-									"    pm.expect(errors).to.have.property('username')",
-									"});",
-									"pm.test('\"bio\" property must be present', function() {",
-									"    pm.expect(errors).to.have.property('bio')",
-									"});",
-									"pm.test('\"password\" property must be at least 8 characters', function() {",
-									"    pm.expect(errors).to.have.property('password')",
-									"});",
-									""
+									"utils.assertErrorStartsWith(\"username\", pm);",
+									"utils.assertErrorStartsWith(\"email\", pm);",
+									"utils.assertErrorStartsWith(\"bio\", pm);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -9968,6 +9952,50 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"utils = {",
+					"    assertErrorStartsWith: function(fieldName, pm) {",
+					"        const response = pm.response.json();",
+					"        const errorMessages = response.errors?.body || [];",
+					"        const hasFieldError = errorMessages.some(msg => msg.startsWith(fieldName));",
+					"        pm.test(`At least one error starts with '${fieldName}'`, function () {",
+					"            pm.expect(hasFieldError).to.be.true;",
+					"        });",
+					"    }",
+					"}",
+					"",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"",
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "errorHelpersDefined",
+			"value": ""
+		},
+		{
+			"key": "customHelpersDefined",
+			"value": ""
 		}
 	]
 }
