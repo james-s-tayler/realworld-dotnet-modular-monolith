@@ -31,7 +31,7 @@ namespace App.Feed.Domain.Infrastructure.Repositories
 
         public Task<FollowEntity> Follow(FollowEntity follow)
         {
-            var sql = "INSERT OR IGNORE INTO follows (user_id, following_user_id) VALUES (@user_id, @following_user_id) RETURNING *";
+            var sql = "INSERT INTO follows (user_id, following_user_id) VALUES (@user_id, @following_user_id) RETURNING *";
 
             var arguments = new
             {
