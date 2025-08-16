@@ -15,6 +15,12 @@ namespace App.Content.Domain.Operations.Commands.PublishArticle
         {
             _articleRepository = articleRepository;
 
+            RuleFor(command => command.NewArticle.Title)
+                .NotEmpty();
+            RuleFor(command => command.NewArticle.Description)
+                .NotEmpty();
+            RuleFor(command => command.NewArticle.Body)
+                .NotEmpty();
             RuleFor(command => command)
                 .MustAsync(SlugMustNotExist)
                 .WithMessage(command => $"Article with slug: {command.NewArticle.GetSlug()} already exists");

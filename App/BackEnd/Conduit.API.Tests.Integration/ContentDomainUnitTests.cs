@@ -71,6 +71,22 @@ namespace Conduit.API.Tests.Integration
             response.Content!.Article.Author.Username.Should().Be(_newUser.Username);
             response.Content!.Article.Author.Following.Should().BeFalse();
         }
+        
+        [Fact]
+        public async Task GivenRequiredFieldsMissing_WhenPublishArticle_ThenValidationError()
+        {
+            //arrange
+            var newArticleRequest = new NewArticleRequest
+            {
+                Article = new NewArticle()
+            };
+
+            //act
+            var response = await _authenticatedApiClient.CreateArticle(newArticleRequest);
+
+            //assert
+            response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
+        }
 
         [Fact]
         public async Task GivenAnUnauthenticatedUser_WhenPublishArticle_ThenNotAuthenticated()

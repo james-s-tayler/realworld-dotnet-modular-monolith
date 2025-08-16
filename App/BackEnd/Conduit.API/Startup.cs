@@ -173,7 +173,9 @@ namespace Conduit.API
                     c.OperationFilter<GeneratePathParamsValidationFilter>();
                 });
             
-            services.Configure<ApiBehaviorOptions>(options =>
+            // This is what I would prefer to do, but it doesn't match the spec,
+            // so just leaving it here for reference on how to do this.
+            /*services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = context =>
                 {
@@ -192,6 +194,34 @@ namespace Conduit.API
                     };
 
                     return new UnprocessableEntityObjectResult(problemDetails);
+                };
+            });*/
+            
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    var errors = new GenericErrorModel
+                    {
+                        Errors = new GenericErrorModelErrors
+                        {
+                            Body = new List<string>()
+                        }
+                    };
+                    
+                    foreach (var error in context.ModelState
+                        .Where(e => e.Value.Errors.Count > 0))
+                    {
+                        var key = error.Key;
+                        if (key.Contains("."))
+                        {
+                            var objectGraphKeys = key.Split('.');
+                            key = objectGraphKeys.Last().ToLower();
+                        }
+                        errors.Errors.Body.Add($"{key}: {string.Join(";", error.Value.Errors.Select(e => e.ErrorMessage).ToArray())}");
+                    }
+
+                    return new UnprocessableEntityObjectResult(errors);
                 };
             });
         }

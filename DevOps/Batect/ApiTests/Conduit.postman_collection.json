@@ -376,15 +376,9 @@
 									"",
 									"    var errors = responseJSON.errors || {};",
 									"",
-									"    pm.test('\"email\" property must be valid email address', function() {",
-									"       pm.expect(errors).to.have.property('User.Email')",
-									"   　});",
-									"    pm.test('\"username\" property must be present', function() {",
-									"       pm.expect(errors).to.have.property('User.Username')",
-									"    });",
-									"    pm.test('\"password\" property must be at least 8 characters', function() {",
-									"       pm.expect(errors).to.have.property('User.Password')",
-									"    });",
+									"    utils.assertErrorStartsWith(\"username\", pm);",
+									"    utils.assertErrorStartsWith(\"email\", pm);",
+									"    utils.assertErrorStartsWith(\"password\", pm);",
 									"}"
 								],
 								"type": "text/javascript",
@@ -450,15 +444,9 @@
 									"",
 									"    var errors = responseJSON.errors || {};",
 									"",
-									"    pm.test('\"email\" property must be valid email address', function() {",
-									"       pm.expect(errors).to.have.property('User.Email')",
-									"   　});",
-									"    pm.test('\"username\" property must be present', function() {",
-									"       pm.expect(errors).to.have.property('User.Username')",
-									"    });",
-									"    pm.test('\"password\" property must be at least 8 characters', function() {",
-									"       pm.expect(errors).to.have.property('User.Password')",
-									"    });",
+									"    utils.assertErrorStartsWith(\"username\", pm);",
+									"    utils.assertErrorStartsWith(\"email\", pm);",
+									"    utils.assertErrorStartsWith(\"password\", pm);",
 									"}"
 								],
 								"type": "text/javascript",
@@ -1089,9 +1077,7 @@
 									"",
 									"var errors = responseJSON.errors || {};",
 									"",
-									"pm.test('\"email\" property is duplicate', function() {",
-									"    pm.expect(errors.email).to.equal('duplicate email')",
-									"});",
+									"utils.assertErrorStartsWith(\"email\", pm);",
 									""
 								],
 								"type": "text/javascript",
@@ -1165,10 +1151,7 @@
 									"",
 									"var errors = responseJSON.errors || {};",
 									"",
-									"pm.test('\"username\" property is duplicate', function() {",
-									"    pm.expect(errors.username).to.eql('duplicate username')",
-									"});",
-									""
+									"utils.assertErrorStartsWith(\"username\", pm);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -2120,15 +2103,9 @@
 									"",
 									"var errors = responseJSON.errors || {};",
 									"",
-									"pm.test('\"title\" must not be empty', function() {",
-									"    pm.expect(errors).to.have.property('title')",
-									"});",
-									"pm.test('\"description\" must not be empty', function() {",
-									"    pm.expect(errors).to.have.property('description')",
-									"});",
-									"pm.test('\"body\" must not be empty', function() {",
-									"    pm.expect(errors).to.have.property('body')",
-									"});"
+									"utils.assertErrorStartsWith(\"title\", pm);",
+									"utils.assertErrorStartsWith(\"description\", pm);",
+									"utils.assertErrorStartsWith(\"body\", pm);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -2186,15 +2163,9 @@
 									"",
 									"var errors = responseJSON.errors || {};",
 									"",
-									"pm.test('\"title\" must not be empty', function() {",
-									"    pm.expect(errors).to.have.property('title')",
-									"});",
-									"pm.test('\"description\" must not be empty', function() {",
-									"    pm.expect(errors).to.have.property('description')",
-									"});",
-									"pm.test('\"body\" must not be empty', function() {",
-									"    pm.expect(errors).to.have.property('body')",
-									"});"
+									"utils.assertErrorStartsWith(\"title\", pm);",
+									"utils.assertErrorStartsWith(\"description\", pm);",
+									"utils.assertErrorStartsWith(\"body\", pm);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -2252,9 +2223,7 @@
 									"",
 									"var errors = responseJSON.errors || {};",
 									"",
-									"pm.test('\"tagList\" contains invalid tag', function() {",
-									"    pm.expect(errors).to.have.property('tagList')",
-									"});"
+									"utils.assertErrorStartsWith(\"taglist[0]\", pm);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -2328,9 +2297,7 @@
 									"",
 									"var errors = responseJSON.errors || {};",
 									"",
-									"pm.test('\"tagList\" contains invalid tag', function() {",
-									"    pm.expect(errors).to.have.property('tagList')",
-									"});"
+									"utils.assertErrorStartsWith(\"taglist[0]\", pm);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -2404,9 +2371,7 @@
 									"",
 									"var errors = responseJSON.errors || {};",
 									"",
-									"pm.test('\"slug\" is duplicate', function() {",
-									"    pm.expect(errors).to.have.property('slug')",
-									"});"
+									"utils.assertErrorStartsWith(\"slug\", pm);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -4667,9 +4632,7 @@
 									"",
 									"var errors = responseJSON.errors || {};",
 									"",
-									"pm.test('\"id\" is invalid', function() {",
-									"    pm.expect(errors).to.have.property('id')",
-									"});"
+									"utils.assertErrorStartsWith(\"id\", pm);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -5428,15 +5391,9 @@
 									"",
 									"var errors = responseJSON.errors || {};",
 									"",
-									"pm.test('\"title\" must not be blank', function() {",
-									"    pm.expect(errors).to.have.property('title')",
-									"});",
-									"pm.test('\"description\" must not be blank', function() {",
-									"    pm.expect(errors).to.have.property('description')",
-									"});",
-									"pm.test('\"body\" must not be blank', function() {",
-									"    pm.expect(errors).to.have.property('body')",
-									"});"
+									"utils.assertErrorStartsWith(\"title\", pm);",
+									"utils.assertErrorStartsWith(\"body\", pm);",
+									"utils.assertErrorStartsWith(\"description\", pm);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -5511,9 +5468,7 @@
 									"",
 									"var errors = responseJSON.errors || {};",
 									"",
-									"pm.test('\"slug\" is duplicate', function() {",
-									"    pm.expect(errors).to.have.property('slug')",
-									"});"
+									"utils.assertErrorStartsWith(\"slug\", pm);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -8814,13 +8769,8 @@
 									"",
 									"const errors = responseJSON.errors || {}",
 									"",
-									"pm.test('errors has \"offset\" property', function() {",
-									"    pm.expect(errors).to.have.property('offset');",
-									"});",
-									"",
-									"pm.test('errors has \"limit\" property', function() {",
-									"    pm.expect(errors).to.have.property('limit');",
-									"});"
+									"utils.assertErrorStartsWith(\"offset\", pm);",
+									"utils.assertErrorStartsWith(\"limit\", pm);"
 								],
 								"type": "text/javascript",
 								"packages": {}

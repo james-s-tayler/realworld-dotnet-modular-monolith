@@ -92,7 +92,7 @@ tasks:
       - app:db:scrub
     run:
       container: newman
-      command: run Conduit.postman_collection.json --delay-request 250 --global-var "APIURL=http://conduit-api/api" --global-var "USERNAME=soloyolo" --global-var "EMAIL=soloyolo@mail.com" --global-var "PASSWORD=password123" "$@"
+      command: run Conduit.postman_collection.json --delay-request 25 --global-var "APIURL=http://conduit-api/api" --global-var "USERNAME=soloyolo" --global-var "EMAIL=soloyolo@mail.com" --global-var "PASSWORD=password123" "$@"
       
   app:db:scrub:
     description: wipe the database

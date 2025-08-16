@@ -118,7 +118,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
         }
 
         [Fact]
-        public async Task GivenAnArticleToPublishWithNoTitle_WhenPublishArticle_ThenInvalidRequest()
+        public async Task GivenAnArticleToPublishWithNoTitle_WhenPublishArticle_ThenValidationError()
         {
             //arrange
             _publishArticleCommand.NewArticle.Title = null;
@@ -127,12 +127,12 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             var result = await _module.Mediator.Send(_publishArticleCommand);
 
             //assert
-            result.Result.Should().Be(OperationResult.InvalidRequest);
+            result.Result.Should().Be(OperationResult.ValidationError);
             result.Response.Should().BeNull();
         }
 
         [Fact]
-        public async Task GivenAnArticleToPublishWithNoDescription_WhenPublishArticle_ThenInvalidRequest()
+        public async Task GivenAnArticleToPublishWithNoDescription_WhenPublishArticle_ThenValidationError()
         {
             //arrange
             _publishArticleCommand.NewArticle.Description = null;
@@ -141,12 +141,12 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             var result = await _module.Mediator.Send(_publishArticleCommand);
 
             //assert
-            result.Result.Should().Be(OperationResult.InvalidRequest);
+            result.Result.Should().Be(OperationResult.ValidationError);
             result.Response.Should().BeNull();
         }
 
         [Fact]
-        public async Task GivenAnArticleToPublishWithNoBody_WhenPublishArticle_ThenInvalidRequest()
+        public async Task GivenAnArticleToPublishWithNoBody_WhenPublishArticle_ThenValidationError()
         {
             //arrange
             _publishArticleCommand.NewArticle.Body = null;
@@ -155,7 +155,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             var result = await _module.Mediator.Send(_publishArticleCommand);
 
             //assert
-            result.Result.Should().Be(OperationResult.InvalidRequest);
+            result.Result.Should().Be(OperationResult.ValidationError);
             result.Response.Should().BeNull();
         }
 
