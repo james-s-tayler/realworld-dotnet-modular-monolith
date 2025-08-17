@@ -5314,9 +5314,7 @@
 									"",
 									"var errors = responseJSON.errors || {};",
 									"",
-									"pm.test('\"article\" must not be empty', function() {",
-									"    pm.expect(errors).to.have.property('article')",
-									"});"
+									"utils.assertErrorStartsWith(\"article\", pm);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -8851,9 +8849,7 @@
 									"",
 									"const errors = responseJSON.errors || {}",
 									"",
-									"pm.test('errors has \"tag\" property', function() {",
-									"    pm.expect(errors).to.have.property('tag');",
-									"});"
+									"utils.assertErrorStartsWith(\"tag\", pm);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -8930,9 +8926,7 @@
 									"",
 									"const errors = responseJSON.errors || {}",
 									"",
-									"pm.test('errors has \"author\" property', function() {",
-									"    pm.expect(errors).to.have.property('author');",
-									"});"
+									"utils.assertErrorStartsWith(\"author\", pm);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -9009,9 +9003,7 @@
 									"",
 									"const errors = responseJSON.errors || {}",
 									"",
-									"pm.test('errors has \"favorited\" property', function() {",
-									"    pm.expect(errors).to.have.property('favorited');",
-									"});"
+									"utils.assertErrorStartsWith(\"favorited\", pm);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -9794,9 +9786,7 @@
 									"",
 									"var errors = responseJSON.errors || {};",
 									"",
-									"pm.test('\"username\" not already following', function() {",
-									"    pm.expect(errors).to.have.property('username')",
-									"});"
+									"utils.assertErrorStartsWith(\"username\", pm);"
 								],
 								"type": "text/javascript",
 								"packages": {}

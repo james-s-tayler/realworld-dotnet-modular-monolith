@@ -83,7 +83,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             var result = await _module.Mediator.Send(_editArticleCommand);
 
             //assert
-            result.Result.Should().Be(OperationResult.InvalidRequest);
+            result.Result.Should().Be(OperationResult.ValidationError);
             result.Response.Should().BeNull();
         }
 
@@ -99,12 +99,12 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             var result = await _module.Mediator.Send(_editArticleCommand);
 
             //assert
-            result.Result.Should().Be(OperationResult.InvalidRequest);
-            result.Response.Should().BeNull();
+            result.Result.Should().Be(OperationResult.Success);
+            result.Response.Should().NotBeNull();
         }
 
         [Fact]
-        public async Task GivenAnArticleUpdateWithEmptyContent_WhenEditArticle_ThenArticleUpdated()
+        public async Task GivenAnArticleUpdateWithEmptyContent_WhenEditArticle_ThenInvalidRequest()
         {
             //arrange
             _editArticleCommand.UpdatedArticle.Title = "";
@@ -115,7 +115,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             var result = await _module.Mediator.Send(_editArticleCommand);
 
             //assert
-            result.Result.Should().Be(OperationResult.InvalidRequest);
+            result.Result.Should().Be(OperationResult.ValidationError);
             result.Response.Should().BeNull();
         }
     }
