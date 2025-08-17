@@ -32,7 +32,7 @@ namespace App.Feed.Domain.Tests.Unit.Operations.Queries
             var result = await _module.Mediator.Send(getFeedQuery);
 
             //assert
-            result.Result.Should().Be(OperationResult.InvalidRequest);
+            result.Result.Should().Be(OperationResult.ValidationError);
         }
 
         [Theory]
@@ -63,7 +63,7 @@ namespace App.Feed.Domain.Tests.Unit.Operations.Queries
             var result = await _module.Mediator.Send(getFeedQuery);
 
             //assert
-            result.Result.Should().Be(OperationResult.InvalidRequest);
+            result.Result.Should().Be(OperationResult.ValidationError);
         }
 
         [Fact]
