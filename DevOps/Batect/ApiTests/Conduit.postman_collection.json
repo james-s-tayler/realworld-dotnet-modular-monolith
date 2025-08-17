@@ -7511,13 +7511,8 @@
 									"",
 									"const errors = responseJSON.errors || {}",
 									"",
-									"pm.test('errors has \"offset\" property', function() {",
-									"    pm.expect(errors).to.have.property('offset');",
-									"});",
-									"",
-									"pm.test('errors has \"limit\" property', function() {",
-									"    pm.expect(errors).to.have.property('limit');",
-									"});"
+									"utils.assertErrorStartsWith(\"limit\", pm);",
+									"utils.assertErrorStartsWith(\"offset\", pm);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -8680,13 +8675,9 @@
 									"",
 									"const errors = responseJSON.errors || {}",
 									"",
-									"pm.test('errors has \"offset\" property', function() {",
-									"    pm.expect(errors).to.have.property('offset');",
-									"});",
-									"",
-									"pm.test('errors has \"limit\" property', function() {",
-									"    pm.expect(errors).to.have.property('limit');",
-									"});"
+									"utils.assertErrorStartsWith(\"offset\", pm);",
+									"utils.assertErrorStartsWith(\"limit\", pm);",
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
