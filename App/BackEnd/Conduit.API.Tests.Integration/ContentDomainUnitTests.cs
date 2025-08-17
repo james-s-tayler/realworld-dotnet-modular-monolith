@@ -69,7 +69,23 @@ namespace Conduit.API.Tests.Integration
             //assert
             response.Content!.Article.Author.Should().NotBeNull();
             response.Content!.Article.Author.Username.Should().Be(_newUser.Username);
-            response.Content!.Article.Author.Following.Should().BeTrue();
+            response.Content!.Article.Author.Following.Should().BeFalse();
+        }
+
+        [Fact]
+        public async Task GivenRequiredFieldsMissing_WhenPublishArticle_ThenValidationError()
+        {
+            //arrange
+            var newArticleRequest = new NewArticleRequest
+            {
+                Article = new NewArticle()
+            };
+
+            //act
+            var response = await _authenticatedApiClient.CreateArticle(newArticleRequest);
+
+            //assert
+            response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
         }
 
         [Fact]
@@ -84,6 +100,28 @@ namespace Conduit.API.Tests.Integration
             //assert
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
             response.Content.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task GivenAnUnauthenticatedUser_WhenGetArticle_ThenArticleReturned()
+        {
+            //arrange
+            var newArticleRequest = _autoFixture.Create<NewArticleRequest>();
+            var response = await _authenticatedApiClient.CreateArticle(newArticleRequest);
+            response.Should().NotBeNull();
+            response.Content.Should().NotBeNull();
+            var slug = response.Content!.Article.Slug;
+
+            //act
+            response = await _unauthenticatedApiClient.GetArticle(slug);
+
+            //assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.Content.Should().NotBeNull();
+            response.Content!.Article.Should().NotBeNull();
+            response.Content!.Article.Title.Should().Be(newArticleRequest.Article.Title);
+            response.Content!.Article.Description.Should().Be(newArticleRequest.Article.Description);
+            response.Content!.Article.Body.Should().Be(newArticleRequest.Article.Body);
         }
     }
 }

@@ -22,19 +22,6 @@ namespace App.Users.Domain.Tests.Unit.Queries
         }
 
         [Fact]
-        public async Task GivenAnAuthenticatedUser_WhenGetOwnProfile_ThenFollowingSelf()
-        {
-            //arrange
-            var getOwnProfileRequest = new GetProfileQuery { Username = _module.AuthenticatedUserUsername };
-
-            //act
-            var getOwnProfileResult = await _module.Mediator.Send(getOwnProfileRequest);
-
-            //assert
-            AssertFollowingUser(getOwnProfileResult, _module.ExistingUserEntity, true);
-        }
-
-        [Fact]
         public async Task GivenAnAuthenticatedUser_WhenGetFollowedProfile_ThenIsFollowing()
         {
             //arrange

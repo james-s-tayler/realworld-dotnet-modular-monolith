@@ -25,6 +25,7 @@ using FluentMigrator.Runner.Initialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Npgsql;
@@ -171,6 +172,58 @@ namespace Conduit.API
                     // Use [ValidateModelState] on Actions to actually validate it in C# as well!
                     c.OperationFilter<GeneratePathParamsValidationFilter>();
                 });
+
+            // This is what I would prefer to do, but it doesn't match the spec,
+            // so just leaving it here for reference on how to do this.
+            /*services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    var errors = context.ModelState
+                        .Where(e => e.Value.Errors.Count > 0)
+                        .ToDictionary(
+                            kvp => kvp.Key,
+                            kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                        );
+
+                    var problemDetails = new ValidationProblemDetails(errors)
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Title = "Validation Failed",
+                        Type = "https://tools.ietf.org/html/rfc4918#section-11.2"
+                    };
+
+                    return new UnprocessableEntityObjectResult(problemDetails);
+                };
+            });*/
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    var errors = new GenericErrorModel
+                    {
+                        Errors = new GenericErrorModelErrors
+                        {
+                            Body = new List<string>()
+                        }
+                    };
+
+                    foreach ( var error in context.ModelState
+                        .Where(e => e.Value.Errors.Count > 0) )
+                    {
+                        var key = error.Key;
+                        if ( key.Contains(".") )
+                        {
+                            var objectGraphKeys = key.Split('.');
+                            key = objectGraphKeys.Last().ToLower();
+                        }
+                        errors.Errors.Body.Add($"{key}: {string.Join(";", error.Value.Errors.Select(e => e.ErrorMessage).ToArray())}");
+                    }
+
+                    return new UnprocessableEntityObjectResult(errors);
+                };
+            });
         }
 
         /// <summary>

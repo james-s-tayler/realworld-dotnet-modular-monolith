@@ -62,7 +62,7 @@ namespace App.Users.Domain.Tests.Unit.Commands
             var result = await _module.Mediator.Send(_loginUserCommand);
 
             //assert
-            result.Result.Should().Be(OperationResult.Success);
+            result.Result.Should().Be(OperationResult.NotAuthenticated);
             result.Response.IsAuthenticated.Should().BeFalse();
             result.Response.LoggedInUser.Should().BeNull();
         }
@@ -77,8 +77,9 @@ namespace App.Users.Domain.Tests.Unit.Commands
             var result = await _module.Mediator.Send(_loginUserCommand);
 
             //assert
-            result.Result.Should().Be(OperationResult.ValidationError);
-            result.Response.Should().BeNull();
+            result.Result.Should().Be(OperationResult.NotAuthenticated);
+            result.Response.IsAuthenticated.Should().BeFalse();
+            result.Response.LoggedInUser.Should().BeNull();
         }
     }
 }

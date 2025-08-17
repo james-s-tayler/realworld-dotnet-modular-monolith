@@ -1,7 +1,7 @@
+using System;
 using System.Linq;
 using App.Content.Domain.Contracts.DTOs;
 using App.Content.Domain.Entities;
-using App.Users.Domain.Contracts;
 using App.Users.Domain.Contracts.DTOs;
 
 namespace App.Content.Domain.Infrastructure.Mappers
@@ -18,7 +18,7 @@ namespace App.Content.Domain.Infrastructure.Mappers
                 Body = articleEntity.Body,
                 CreatedAt = articleEntity.CreatedAt,
                 UpdatedAt = articleEntity.UpdatedAt,
-                TagList = articleEntity.TagList.Select(tag => tag.Tag).ToArray(),
+                TagList = articleEntity.TagList == null ? Array.Empty<string>() : articleEntity.TagList.Select(tag => tag.Tag).ToArray(),
                 Author = author,
                 Favorited = articleEntity.Favorited,
                 FavoritesCount = articleEntity.FavoritesCount

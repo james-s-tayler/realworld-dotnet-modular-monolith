@@ -55,10 +55,8 @@ namespace App.Users.Domain.Tests.Unit.Commands
             var result = await _module.Mediator.Send(unfollowUserCommand);
 
             //assert
-            result.Result.Should().Be(OperationResult.Success);
-            result.Response.Should().NotBeNull();
-            result.Response.UnfollowedProfile.Username.Should().Be(unfollowUserCommand.Username);
-            result.Response.UnfollowedProfile.Following.Should().BeFalse();
+            result.Result.Should().Be(OperationResult.ValidationError);
+            result.Response.Should().BeNull();
         }
 
         [Fact]

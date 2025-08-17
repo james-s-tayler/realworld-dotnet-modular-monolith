@@ -32,12 +32,12 @@ namespace App.Users.Domain.Operations.Commands.LoginUser
         {
             var user = await _userRepository.GetByEmail(request.UserCredentials.Email);
             if ( user == null )
-                throw new ArgumentNullException(nameof(user));
+                return new OperationResponse<LoginUserCommandResult>(LoginUserCommandResult.FailedLoginResult(), OperationResult.NotAuthenticated);
 
             var result = _passwordHasher.VerifyHashedPassword(user, user.Password, request.UserCredentials.Password);
 
             if ( result == PasswordVerificationResult.Failed )
-                return new OperationResponse<LoginUserCommandResult>(LoginUserCommandResult.FailedLoginResult());
+                return new OperationResponse<LoginUserCommandResult>(LoginUserCommandResult.FailedLoginResult(), OperationResult.NotAuthenticated);
 
             var token = await _authTokenService.GenerateAuthToken(user);
 

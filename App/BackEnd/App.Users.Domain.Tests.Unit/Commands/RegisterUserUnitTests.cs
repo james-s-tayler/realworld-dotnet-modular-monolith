@@ -53,6 +53,7 @@ namespace App.Users.Domain.Tests.Unit.Commands
 
         [Theory]
         [InlineData("")]
+        [InlineData("soloyolo")]
         [InlineData(null)]
         public async Task GivenInvalidEmail_WhenRegisterUser_ThenFailsValidation(string email)
         {
@@ -118,7 +119,7 @@ namespace App.Users.Domain.Tests.Unit.Commands
 
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
-            result.ErrorMessage.Should().Contain("Username is already in use");
+            result.ErrorMessage.Should().Contain("duplicate username");
         }
 
         [Fact]
@@ -132,7 +133,7 @@ namespace App.Users.Domain.Tests.Unit.Commands
 
             //assert
             result.Result.Should().Be(OperationResult.ValidationError);
-            result.ErrorMessage.Should().Contain("Email is already in use");
+            result.ErrorMessage.Should().Contain("duplicate email");
         }
 
         [Theory]

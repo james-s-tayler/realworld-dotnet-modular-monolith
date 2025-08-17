@@ -34,9 +34,8 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             var result = await _module.Mediator.Send(getArticleCommentsQuery);
 
             //assert
-            result.Result.Should().Be(OperationResult.Success);
-            result.Response.Should().NotBeNull();
-            result.Response.Comments.Should().BeEmpty();
+            result.Result.Should().Be(OperationResult.NotFound);
+            result.Response.Should().BeNull();
         }
 
         [Fact]

@@ -26,6 +26,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
         {
             //pre-assert
             _module.NonFavoritedArticleEntity.Favorited.Should().BeFalse();
+            _module.NonFavoritedArticleEntity.FavoritesCount.Should().Be(0);
 
             //act
             var result = await _module.Mediator.Send(_favoriteArticleCommand);
@@ -36,6 +37,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             result.Response.Article.Should().NotBeNull();
             result.Response.Article.Slug.Should().Be(_favoriteArticleCommand.Slug);
             result.Response.Article.Favorited.Should().BeTrue();
+            result.Response.Article.FavoritesCount.Should().Be(1);
         }
 
         [Fact]

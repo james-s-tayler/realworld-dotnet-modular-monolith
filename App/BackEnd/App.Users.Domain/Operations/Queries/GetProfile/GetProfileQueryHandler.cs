@@ -2,7 +2,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Core.Context;
 using App.Core.PipelineBehaviors.OperationResponse;
-using App.Users.Domain.Contracts;
 using App.Users.Domain.Contracts.Operations.Queries.GetProfile;
 using App.Users.Domain.Entities;
 using App.Users.Domain.Infrastructure.Mappers;

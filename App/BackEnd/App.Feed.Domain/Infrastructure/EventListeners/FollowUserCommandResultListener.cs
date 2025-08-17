@@ -20,12 +20,16 @@ namespace App.Feed.Domain.Infrastructure.EventListeners
 
         public async Task Handle(FollowUserCommandResult followUserEvent, CancellationToken cancellationToken)
         {
-            var follow = new FollowEntity
+            if ( !await _followRepository.IsFollowing(followUserEvent.UserId,
+                    followUserEvent.FollowingUserId) )
             {
-                UserId = followUserEvent.UserId,
-                FollowingUserId = followUserEvent.FollowingUserId
-            };
-            _ = await _followRepository.Follow(follow);
+                var follow = new FollowEntity
+                {
+                    UserId = followUserEvent.UserId,
+                    FollowingUserId = followUserEvent.FollowingUserId
+                };
+                _ = await _followRepository.Follow(follow);
+            }
         }
     }
 }

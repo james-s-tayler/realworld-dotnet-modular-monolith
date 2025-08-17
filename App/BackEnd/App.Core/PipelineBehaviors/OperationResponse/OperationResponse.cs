@@ -17,6 +17,12 @@ namespace App.Core.PipelineBehaviors.OperationResponse
             Response = model;
         }
 
+        public OperationResponse(T model, OperationResult result)
+        {
+            Response = model;
+            Result = result;
+        }
+
         public OperationResponse(List<string> errors, OperationResult result)
         {
             Errors = errors;

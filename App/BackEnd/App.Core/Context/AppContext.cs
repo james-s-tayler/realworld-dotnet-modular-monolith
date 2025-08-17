@@ -18,7 +18,10 @@ namespace App.Core.Context
 
         public bool IsAuthenticated => _requestClaimsPrincipalProvider.GetClaimsPrincipal().Identity is { IsAuthenticated: true };
 
-        public int UserId => int.Parse(_requestClaimsPrincipalProvider.GetClaimsPrincipal().FindFirst("user_id")!.Value);
+        public int UserId =>
+            !IsAuthenticated ? 0 :
+                int.Parse(_requestClaimsPrincipalProvider.GetClaimsPrincipal().FindFirst("user_id")!.Value);
+
         public string Username => _requestClaimsPrincipalProvider.GetClaimsPrincipal().FindFirst("username")!.Value;
         public string Email => _requestClaimsPrincipalProvider.GetClaimsPrincipal().FindFirst("email")!.Value;
 

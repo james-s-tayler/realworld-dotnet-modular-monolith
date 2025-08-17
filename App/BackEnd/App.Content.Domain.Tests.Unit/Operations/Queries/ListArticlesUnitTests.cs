@@ -55,7 +55,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             var result = await _module.Mediator.Send(listArticlesQuery);
 
             //assert
-            result.Result.Should().Be(OperationResult.InvalidRequest);
+            result.Result.Should().Be(OperationResult.ValidationError);
         }
 
         [Theory]
@@ -75,7 +75,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Queries
             var result = await _module.Mediator.Send(listArticlesQuery);
 
             //assert
-            result.Result.Should().Be(OperationResult.InvalidRequest);
+            result.Result.Should().Be(OperationResult.ValidationError);
         }
 
         [Fact]

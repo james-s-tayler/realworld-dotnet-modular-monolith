@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Content.Domain.Contracts.DTOs;
 using App.Content.Domain.Contracts.Operations.Queries.GetArticleComments;
+using App.Content.Domain.Entities;
 using App.Content.Domain.Infrastructure.Mappers;
 using App.Content.Domain.Infrastructure.Repositories;
 using App.Content.Domain.Infrastructure.Services;
@@ -31,10 +32,10 @@ namespace App.Content.Domain.Operations.Queries.GetArticleComments
         {
             if ( await ArticleNotFound(request.Slug) )
             {
-                return OperationResponseFactory.Success(new GetArticleCommentsQueryResult
-                {
-                    Comments = new List<SingleCommentDTO>()
-                });
+                return OperationResponseFactory
+                    .NotFound<GetArticleCommentsQuery,
+                        OperationResponse<GetArticleCommentsQueryResult>>(typeof(ArticleEntity),
+                        request.Slug);
             }
 
             var comments = await _commentRepository.GetCommentsByArticleSlug(request.Slug);

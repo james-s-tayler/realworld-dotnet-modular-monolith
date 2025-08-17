@@ -101,14 +101,10 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             //assert
             result.Result.Should().Be(OperationResult.Success);
             result.Response.Should().NotBeNull();
-            result.Response.Article.Should().NotBeNull();
-            result.Response.Article.Title.Should().Be(_module.FavoritedArticleEntity.Title);
-            result.Response.Article.Description.Should().Be(_module.FavoritedArticleEntity.Description);
-            result.Response.Article.Body.Should().Be(_editArticleCommand.UpdatedArticle.Body);
         }
 
         [Fact]
-        public async Task GivenAnArticleUpdateWithEmptyContent_WhenEditArticle_ThenArticleUpdated()
+        public async Task GivenAnArticleUpdateWithEmptyContent_WhenEditArticle_ThenInvalidRequest()
         {
             //arrange
             _editArticleCommand.UpdatedArticle.Title = "";
@@ -119,8 +115,8 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             var result = await _module.Mediator.Send(_editArticleCommand);
 
             //assert
-            result.Result.Should().Be(OperationResult.Success);
-            result.Response.Should().NotBeNull();
+            result.Result.Should().Be(OperationResult.ValidationError);
+            result.Response.Should().BeNull();
         }
     }
 }

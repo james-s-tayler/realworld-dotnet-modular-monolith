@@ -37,7 +37,13 @@ namespace App.Core.PipelineBehaviors.Validation
                 return await next();
             }
 
-            return OperationResponseFactory.ValidationError<TRequest, TResponse>(validationResult.Errors.Select(s => s.ErrorMessage).ToList());
+            var errorMessages = new List<string>();
+            foreach ( var error in validationResult.Errors )
+            {
+                errorMessages.Add($"{error.PropertyName}: {error.ErrorMessage}");
+            }
+
+            return OperationResponseFactory.ValidationError<TRequest, TResponse>(errorMessages);
         }
 
         private async Task<ValidationResult> DoValidation(TRequest request, CancellationToken cancellationToken)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using App.Content.Domain.Contracts.DTOs;
@@ -13,7 +14,7 @@ namespace Conduit.API.Models.Mappers
                 Title = article.Title,
                 Description = article.Description,
                 Body = article.Body,
-                TagList = article.TagList.ToArray()
+                TagList = article.TagList == null ? Array.Empty<string>() : article.TagList.ToArray()
             };
         }
 
@@ -62,7 +63,7 @@ namespace Conduit.API.Models.Mappers
                 Body = articleDto.Body,
                 Favorited = articleDto.Favorited,
                 FavoritesCount = articleDto.FavoritesCount,
-                TagList = articleDto.TagList.ToList(),
+                TagList = articleDto.TagList == null ? new List<string>() : articleDto.TagList.ToList(),
                 CreatedAt = articleDto.CreatedAt,
                 UpdatedAt = articleDto.UpdatedAt
             };

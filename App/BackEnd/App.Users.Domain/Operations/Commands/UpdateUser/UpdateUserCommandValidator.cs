@@ -25,27 +25,40 @@ namespace App.Users.Domain.Operations.Commands.UpdateUser
                 .WithMessage("At least one property must be updated.");
             RuleFor(command => command.UpdateUser.Username)
                 .MaximumLength(Constants.UsernameMaxLength)
+                .WithMessage($"Must not be longer than {Constants.UsernameMaxLength} characters.")
                 .When(command => !string.IsNullOrEmpty(command.UpdateUser.Username));
+            RuleFor(command => command.UpdateUser.Username)
+                .Must(username => !string.IsNullOrWhiteSpace(username))
+                .When(command => command.UpdateUser.Username != null)
+                .WithMessage("Must not be blank");
             RuleFor(command => command.UpdateUser.Image)
                 .MaximumLength(Constants.ImageUriMaxLength)
                 .When(command => !string.IsNullOrEmpty(command.UpdateUser.Image));
             RuleFor(command => command.UpdateUser.Bio)
                 .MaximumLength(Constants.BioMaxLength)
+                .WithMessage($"Must not be longer than {Constants.BioMaxLength} characters.")
                 .When(command => !string.IsNullOrEmpty(command.UpdateUser.Bio));
+            RuleFor(command => command.UpdateUser.Bio)
+                .Must(bio => bio != string.Empty)
+                .When(command => command.UpdateUser.Bio != null)
+                .WithMessage("Must not be blank");
             RuleFor(command => command)
                 .MustAsync(UserMustExist)
                 .WithMessage($"User {_userContext.UserId} was not found.");
             RuleFor(command => command.UpdateUser.Username)
                 .MustAsync(UsernameNotAlreadyInUse)
-                .WithMessage(_ => "Username is already in use")
+                .WithMessage(_ => "duplicate username")
                 .WhenAsync(ShouldValidateUsername);
             RuleFor(command => command.UpdateUser.Email)
                 .MustAsync(EmailNotAlreadyInUse)
-                .WithMessage(_ => "Email is already in use")
+                .WithMessage(_ => "duplicate email")
+                .WhenAsync(ShouldValidateEmail);
+            RuleFor(command => command.UpdateUser.Email)
+                .EmailAddress()
                 .WhenAsync(ShouldValidateEmail);
         }
 
-        //this feels not very future proof?
+        // this feels not very future proof?
         private bool ContainUpdate(UpdateUserDTO updateUser)
         {
             return updateUser.Bio != null ||
@@ -74,7 +87,7 @@ namespace App.Users.Domain.Operations.Commands.UpdateUser
             return command.UpdateUser.Username != null;
         }
 
-        //copy pasta from RegisterUser - find way to re-use validators (some sort of ValidationRequirement class?)
+        // copy pasta from RegisterUser - find way to re-use validators (some sort of ValidationRequirement class?)
         private async Task<bool> UsernameNotAlreadyInUse(string username, CancellationToken cancellation)
         {
             return !await _userRepository.ExistsByUsername(username);
@@ -85,7 +98,7 @@ namespace App.Users.Domain.Operations.Commands.UpdateUser
             return !await _userRepository.ExistsByEmail(email);
         }
 
-        //copy pasta from GetCurrentUserQueryValidator
+        // copy pasta from GetCurrentUserQueryValidator
         private async Task<bool> UserMustExist(UpdateUserCommand command, CancellationToken cancellationToken)
         {
             return await _userRepository.Exists(_userContext.UserId);

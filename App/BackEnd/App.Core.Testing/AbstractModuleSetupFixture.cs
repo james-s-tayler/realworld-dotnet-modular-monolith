@@ -1,10 +1,15 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Reflection;
 using System.Security.Claims;
 using App.Core.Context;
 using App.Core.DataAccess;
 using App.Core.Modules;
+using App.Core.PipelineBehaviors.Validation;
 using AutoFixture;
+using FluentValidation;
+using FluentValidation.Internal;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -40,6 +45,8 @@ namespace App.Core.Testing
 
         public AbstractModuleSetupFixture(AbstractModule module)
         {
+            FluentValidationCustomization.ConfigureFluentValidation();
+
             Module = module;
             _hostEnvironment = new Mock<IHostEnvironment>();
             _hostEnvironment.Setup(environment => environment.EnvironmentName).Returns("Test");

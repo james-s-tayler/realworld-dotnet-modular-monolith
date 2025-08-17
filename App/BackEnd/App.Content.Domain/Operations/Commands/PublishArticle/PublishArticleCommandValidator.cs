@@ -15,9 +15,20 @@ namespace App.Content.Domain.Operations.Commands.PublishArticle
         {
             _articleRepository = articleRepository;
 
+            RuleFor(command => command.NewArticle.Title)
+                .NotEmpty();
+            RuleFor(command => command.NewArticle.Description)
+                .NotEmpty();
+            RuleFor(command => command.NewArticle.Body)
+                .NotEmpty();
             RuleFor(command => command)
                 .MustAsync(SlugMustNotExist)
+                .WithName("slug")
                 .WithMessage(command => $"Article with slug: {command.NewArticle.GetSlug()} already exists");
+            RuleFor(command => command.NewArticle.TagList)
+                .ForEach(tag => tag.NotEmpty());
+            RuleFor(command => command.NewArticle.TagList)
+                .ForEach(tag => tag.Must(t => !t.Contains(',')));
         }
 
         private async Task<bool> SlugMustNotExist(PublishArticleCommand command, CancellationToken cancellationToken)

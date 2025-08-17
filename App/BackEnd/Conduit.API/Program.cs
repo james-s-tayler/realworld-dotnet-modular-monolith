@@ -1,6 +1,11 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using App.Core.Logging;
+using App.Core.PipelineBehaviors.Validation;
+using FluentValidation;
+using FluentValidation.Internal;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -19,6 +24,8 @@ namespace Conduit.API
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
+            FluentValidationCustomization.ConfigureFluentValidation();
+
             try
             {
                 CreateHostBuilder(args)

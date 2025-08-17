@@ -25,7 +25,7 @@ namespace App.Users.Domain.Tests.Unit.Commands
                 UpdateUser = new UpdateUserDTO
                 {
                     Bio = _module.AutoFixture.Create<string>(),
-                    Email = _module.AutoFixture.Create<string>(),
+                    Email = $"{_module.AutoFixture.Create<string>()}@mail.com",
                     Image = _module.AutoFixture.Create<string>(),
                     Username = _module.AutoFixture.Create<string>()
                 }
@@ -92,7 +92,7 @@ namespace App.Users.Domain.Tests.Unit.Commands
         public async Task GivenUpdateUsernameWithExistingValue_WhenUpdateUser_ThenSucceeds()
         {
             //arrange
-            _updateUserCommand.UpdateUser = new UpdateUserDTO { Email = _module.ExistingUserEntity.Username };
+            _updateUserCommand.UpdateUser = new UpdateUserDTO { Username = _module.ExistingUserEntity.Username };
 
             //act
             var updateUserResult = await _module.Mediator.Send(_updateUserCommand);
@@ -110,6 +110,25 @@ namespace App.Users.Domain.Tests.Unit.Commands
         {
             //arrange
             _updateUserCommand.UpdateUser = new UpdateUserDTO();
+
+            //act
+            var updateUserResult = await _module.Mediator.Send(_updateUserCommand);
+
+            //assert
+            updateUserResult.Result.Should().Be(OperationResult.ValidationError);
+            updateUserResult.Response.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task GivenUpdateToEmptyString_WhenUpdateUser_ThenFailsValidation()
+        {
+            //arrange
+            _updateUserCommand.UpdateUser = new UpdateUserDTO
+            {
+                Bio = "",
+                Email = "",
+                Username = ""
+            };
 
             //act
             var updateUserResult = await _module.Mediator.Send(_updateUserCommand);
