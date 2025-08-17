@@ -12,20 +12,21 @@ public static class FluentValidationCustomization
     {
         ValidatorOptions.Global.PropertyNameResolver = LowerCasePropertyNameResolver;
     }
-    
+
     public static readonly Func<Type, MemberInfo, LambdaExpression, string> LowerCasePropertyNameResolver =
         (type, memberInfo, expression) =>
         {
-            if ( memberInfo != null && !string.IsNullOrEmpty(memberInfo.Name))
+            if ( memberInfo != null && !string.IsNullOrEmpty(memberInfo.Name) )
             {
                 return memberInfo.Name.ToLower();
             }
-            
-            if (expression != null) {
+
+            if ( expression != null )
+            {
                 var chain = PropertyChain.FromExpression(expression);
-                if (chain.Count > 0) return chain.ToString();
+                if ( chain.Count > 0 ) return chain.ToString();
             }
-            
+
             return null;
         };
 }

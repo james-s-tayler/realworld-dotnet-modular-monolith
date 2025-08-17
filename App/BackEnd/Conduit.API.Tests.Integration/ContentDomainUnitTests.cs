@@ -71,7 +71,7 @@ namespace Conduit.API.Tests.Integration
             response.Content!.Article.Author.Username.Should().Be(_newUser.Username);
             response.Content!.Article.Author.Following.Should().BeFalse();
         }
-        
+
         [Fact]
         public async Task GivenRequiredFieldsMissing_WhenPublishArticle_ThenValidationError()
         {
@@ -101,7 +101,7 @@ namespace Conduit.API.Tests.Integration
             response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
             response.Content.Should().BeNull();
         }
-        
+
         [Fact]
         public async Task GivenAnUnauthenticatedUser_WhenGetArticle_ThenArticleReturned()
         {
@@ -111,7 +111,7 @@ namespace Conduit.API.Tests.Integration
             response.Should().NotBeNull();
             response.Content.Should().NotBeNull();
             var slug = response.Content!.Article.Slug;
-            
+
             //act
             response = await _unauthenticatedApiClient.GetArticle(slug);
 

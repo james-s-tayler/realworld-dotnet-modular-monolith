@@ -29,7 +29,7 @@ namespace App.Users.Domain.Operations.Commands.UnfollowUser
             var followingUser = await _userRepository.GetByUsername(command.Username);
             if ( followingUser == null )
                 return false;
-            
+
             return await _userRepository.IsFollowing(_userContext.UserId, followingUser.Id);
         }
     }

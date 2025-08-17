@@ -24,12 +24,12 @@ namespace App.Content.Domain.Operations.Commands.DeleteComment
         public async Task<OperationResponse<DeleteCommentCommandResult>> Handle(DeleteCommentCommand request, CancellationToken cancellationToken)
         {
             // should be done as IAuthorizer
-            if (!await _commentRepository.ExistsByUserAndId(_userContext.UserId, request.CommentId) )
+            if ( !await _commentRepository.ExistsByUserAndId(_userContext.UserId, request.CommentId) )
             {
                 return OperationResponseFactory
                     .NotAuthorized<DeleteCommentCommand, OperationResponse<DeleteCommentCommandResult>>("comment doesn't belong to user");
             }
-            
+
             await _commentRepository.DeleteComment(request.ArticleSlug, request.CommentId);
 
             return OperationResponseFactory.Success(new DeleteCommentCommandResult());

@@ -69,7 +69,7 @@ namespace App.Users.Domain.Infrastructure.Repositories
             };
 
             var insertedUser = await _connection.QuerySingleAsync<UserEntity>(sql, arguments);
-            
+
             return insertedUser.Id;
         }
 

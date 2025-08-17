@@ -33,12 +33,12 @@ namespace App.Content.Domain.Operations.Commands.EditArticle
             if ( article == null )
                 return OperationResponseFactory.NotFound<EditArticleCommand, OperationResponse<EditArticleCommandResult>>(typeof(ArticleEntity), request.Slug);
 
-            if (article.Author.UserId != _userContext.UserId)
+            if ( article.Author.UserId != _userContext.UserId )
             {
                 return OperationResponseFactory
                     .NotAuthorized<EditArticleCommand, OperationResponse<EditArticleCommandResult>>("article doesn't belong to user");
             }
-            
+
             article.Title = !string.IsNullOrEmpty(request.UpdatedArticle.Title) ? request.UpdatedArticle.Title : article.Title;
             article.Description = !string.IsNullOrEmpty(request.UpdatedArticle.Description) ? request.UpdatedArticle.Description : article.Description;
             article.Body = !string.IsNullOrEmpty(request.UpdatedArticle.Body) ? request.UpdatedArticle.Body : article.Body;

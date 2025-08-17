@@ -28,7 +28,7 @@ namespace App.Feed.Domain.Infrastructure.EventListeners
                     UserId = followUserEvent.UserId,
                     FollowingUserId = followUserEvent.FollowingUserId
                 };
-                _ = await _followRepository.Follow(follow);   
+                _ = await _followRepository.Follow(follow);
             }
         }
     }

@@ -8,12 +8,12 @@ namespace App.Content.Domain.Operations.Commands.EditArticle
 {
     internal class EditArticleCommandValidator : AbstractValidator<EditArticleCommand>
     {
-        
+
         private readonly IArticleRepository _articleRepository;
         public EditArticleCommandValidator(IArticleRepository articleRepository)
         {
             _articleRepository = articleRepository;
-            
+
             RuleFor(command => command)
                 .Must(ContainUpdate)
                 .WithName("article")
@@ -39,7 +39,7 @@ namespace App.Content.Domain.Operations.Commands.EditArticle
                    command.UpdatedArticle.Description != null ||
                    command.UpdatedArticle.Body != null;
         }
-        
+
         private async Task<bool> SlugMustNotExist(EditArticleCommand command, CancellationToken cancellationToken)
         {
             var exists = await _articleRepository.ExistsBySlug(command.UpdatedArticle.GetSlug());

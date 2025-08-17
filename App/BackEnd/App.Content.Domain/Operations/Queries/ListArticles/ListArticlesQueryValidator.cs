@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace App.Content.Domain.Operations.Queries.ListArticles;
 
-internal class ListArticlesQueryValidator :  AbstractValidator<ListArticlesQuery>
+internal class ListArticlesQueryValidator : AbstractValidator<ListArticlesQuery>
 {
     public ListArticlesQueryValidator()
     {

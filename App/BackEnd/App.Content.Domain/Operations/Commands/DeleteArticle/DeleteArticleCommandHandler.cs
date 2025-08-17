@@ -28,9 +28,9 @@ namespace App.Content.Domain.Operations.Commands.DeleteArticle
                 return OperationResponseFactory.NotFound<DeleteArticleCommand, OperationResponse<DeleteArticleCommandResult>>(typeof(ArticleEntity), request.Slug);
 
             var article = await _articleRepository.GetBySlug(request.Slug, _userContext.UserId);
-            if (article.Author.UserId != _userContext.UserId)
+            if ( article.Author.UserId != _userContext.UserId )
                 return OperationResponseFactory.NotAuthorized<DeleteArticleCommand, OperationResponse<DeleteArticleCommandResult>>("article does not belong to the user");
-            
+
             await _articleRepository.Delete(_userContext.UserId, request.Slug);
 
             return OperationResponseFactory.Success(new DeleteArticleCommandResult

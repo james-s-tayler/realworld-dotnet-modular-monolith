@@ -42,7 +42,7 @@ namespace App.Core.PipelineBehaviors.Validation
             {
                 errorMessages.Add($"{error.PropertyName}: {error.ErrorMessage}");
             }
-            
+
             return OperationResponseFactory.ValidationError<TRequest, TResponse>(errorMessages);
         }
 

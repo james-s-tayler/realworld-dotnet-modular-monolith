@@ -137,25 +137,25 @@ namespace Conduit.API.Controllers
         [SwaggerResponse(statusCode: 200, type: typeof(MultipleArticlesResponse), description: "OK")]
         public virtual async Task<IActionResult> GetArticles([FromQuery(Name = "tag")] string tag, [FromQuery(Name = "author")] string author, [FromQuery(Name = "favorited")] string favorited, [FromQuery(Name = "limit")] int? limit, [FromQuery(Name = "offset")] int? offset)
         {
-            
+
             // did this validation here as the fluent validation object doesn't contain 'Query'
             // and in this case needed to check the condition where someone has sent tag= in the query params
-            if (Request.Query.ContainsKey("tag") && tag.IsNullOrEmpty())
+            if ( Request.Query.ContainsKey("tag") && tag.IsNullOrEmpty() )
             {
-                var response = OperationResponseFactory.InvalidRequest<ListArticlesQuery, OperationResponse<ListArticlesQueryResult>>(new List<string> {"tag:  cannot be empty"});
-                return UnsuccessfulResponseResult(response);
-            } 
-            if (Request.Query.ContainsKey("author") && author.IsNullOrEmpty())
-            {
-                var response = OperationResponseFactory.InvalidRequest<ListArticlesQuery, OperationResponse<ListArticlesQueryResult>>(new List<string> {"author: cannot be empty"});
+                var response = OperationResponseFactory.InvalidRequest<ListArticlesQuery, OperationResponse<ListArticlesQueryResult>>(new List<string> { "tag:  cannot be empty" });
                 return UnsuccessfulResponseResult(response);
             }
-            if (Request.Query.ContainsKey("favorited") && favorited.IsNullOrEmpty())
+            if ( Request.Query.ContainsKey("author") && author.IsNullOrEmpty() )
             {
-                var response = OperationResponseFactory.InvalidRequest<ListArticlesQuery, OperationResponse<ListArticlesQueryResult>>(new List<string> {"favorited: cannot be empty"});
+                var response = OperationResponseFactory.InvalidRequest<ListArticlesQuery, OperationResponse<ListArticlesQueryResult>>(new List<string> { "author: cannot be empty" });
                 return UnsuccessfulResponseResult(response);
             }
-            
+            if ( Request.Query.ContainsKey("favorited") && favorited.IsNullOrEmpty() )
+            {
+                var response = OperationResponseFactory.InvalidRequest<ListArticlesQuery, OperationResponse<ListArticlesQueryResult>>(new List<string> { "favorited: cannot be empty" });
+                return UnsuccessfulResponseResult(response);
+            }
+
             var listArticlesQuery = new ListArticlesQuery
             {
                 Tag = tag,

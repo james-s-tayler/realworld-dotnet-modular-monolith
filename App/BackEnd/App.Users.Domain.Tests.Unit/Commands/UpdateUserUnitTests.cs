@@ -118,7 +118,7 @@ namespace App.Users.Domain.Tests.Unit.Commands
             updateUserResult.Result.Should().Be(OperationResult.ValidationError);
             updateUserResult.Response.Should().BeNull();
         }
-        
+
         [Fact]
         public async Task GivenUpdateToEmptyString_WhenUpdateUser_ThenFailsValidation()
         {

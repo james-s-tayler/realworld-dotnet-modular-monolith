@@ -76,7 +76,7 @@ namespace App.Content.Domain.Tests.Unit.Operations.Commands
             //assert
             result.Response.Article.TagList.Should().BeEquivalentTo(tagList);
         }
-        
+
         [Theory]
         [InlineData("t,ag")]
         [InlineData("")]

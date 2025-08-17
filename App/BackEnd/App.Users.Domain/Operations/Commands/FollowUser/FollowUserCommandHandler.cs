@@ -30,7 +30,7 @@ namespace App.Users.Domain.Operations.Commands.FollowUser
                 return OperationResponseFactory
                     .NotFound<FollowUserCommand, OperationResponse<FollowUserCommandResult>>(typeof(UserEntity), followUserCommand.Username);
             }
-            
+
             var followUser = await _userRepository.GetByUsername(followUserCommand.Username);
             await _userRepository.FollowUser(_userContext.UserId, followUser.Id);
 

@@ -172,7 +172,7 @@ namespace Conduit.API
                     // Use [ValidateModelState] on Actions to actually validate it in C# as well!
                     c.OperationFilter<GeneratePathParamsValidationFilter>();
                 });
-            
+
             // This is what I would prefer to do, but it doesn't match the spec,
             // so just leaving it here for reference on how to do this.
             /*services.Configure<ApiBehaviorOptions>(options =>
@@ -196,7 +196,7 @@ namespace Conduit.API
                     return new UnprocessableEntityObjectResult(problemDetails);
                 };
             });*/
-            
+
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = context =>
@@ -208,12 +208,12 @@ namespace Conduit.API
                             Body = new List<string>()
                         }
                     };
-                    
-                    foreach (var error in context.ModelState
-                        .Where(e => e.Value.Errors.Count > 0))
+
+                    foreach ( var error in context.ModelState
+                        .Where(e => e.Value.Errors.Count > 0) )
                     {
                         var key = error.Key;
-                        if (key.Contains("."))
+                        if ( key.Contains(".") )
                         {
                             var objectGraphKeys = key.Split('.');
                             key = objectGraphKeys.Last().ToLower();

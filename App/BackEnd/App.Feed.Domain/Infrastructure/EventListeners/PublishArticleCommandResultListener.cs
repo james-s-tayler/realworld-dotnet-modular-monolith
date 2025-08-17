@@ -28,7 +28,7 @@ namespace App.Feed.Domain.Infrastructure.EventListeners
                 UserId = publishArticleEvent.UserId,
                 CreatedAt = publishArticleEvent.Article.CreatedAt
             };
-            
+
             _ = await _articleRepository.Insert(publishedArticle);
         }
     }

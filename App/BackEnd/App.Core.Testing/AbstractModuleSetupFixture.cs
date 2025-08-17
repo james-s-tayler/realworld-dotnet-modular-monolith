@@ -46,7 +46,7 @@ namespace App.Core.Testing
         public AbstractModuleSetupFixture(AbstractModule module)
         {
             FluentValidationCustomization.ConfigureFluentValidation();
-            
+
             Module = module;
             _hostEnvironment = new Mock<IHostEnvironment>();
             _hostEnvironment.Setup(environment => environment.EnvironmentName).Returns("Test");
