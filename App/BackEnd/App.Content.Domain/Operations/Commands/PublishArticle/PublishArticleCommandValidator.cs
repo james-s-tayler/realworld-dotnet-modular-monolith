@@ -23,6 +23,7 @@ namespace App.Content.Domain.Operations.Commands.PublishArticle
                 .NotEmpty();
             RuleFor(command => command)
                 .MustAsync(SlugMustNotExist)
+                .WithName("slug")
                 .WithMessage(command => $"Article with slug: {command.NewArticle.GetSlug()} already exists");
             RuleFor(command => command.NewArticle.TagList)
                 .ForEach(tag => tag.NotEmpty());

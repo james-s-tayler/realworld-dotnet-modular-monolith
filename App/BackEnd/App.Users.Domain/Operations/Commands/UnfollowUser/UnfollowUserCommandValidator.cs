@@ -18,7 +18,10 @@ namespace App.Users.Domain.Operations.Commands.UnfollowUser
             _userRepository = userRepository;
             _userContext = userContext;
 
-            RuleFor(query => query).MustAsync(UserMustBeFollowed).WithMessage(query => $"User {query.Username} was not found.");
+            RuleFor(query => query)
+                .MustAsync(UserMustBeFollowed)
+                .WithName("username")
+                .WithMessage(query => $"User {query.Username} was not found.");
         }
 
         private async Task<bool> UserMustBeFollowed(UnfollowUserCommand command, CancellationToken cancellationToken)
