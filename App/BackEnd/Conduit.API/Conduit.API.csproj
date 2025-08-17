@@ -21,7 +21,7 @@
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.25" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
     <PackageReference Include="JsonSubTypes" Version="2.0.1" />
     
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.25" />
@@ -36,9 +36,9 @@
     <PackageReference Include="OpenTelemetry.Instrumentation.SqlClient" Version="1.0.0-rc9.4" />
     <PackageReference Include="OpenTelemetry.Instrumentation.StackExchangeRedis" Version="1.0.0-rc9.7" />
     <PackageReference Include="Polly" Version="7.2.4" />
-    <PackageReference Include="Refit" Version="6.3.2" />
+    <PackageReference Include="Refit" Version="7.2.22" />
     <PackageReference Include="Refit.HttpClientFactory" Version="6.3.2" />
-    <PackageReference Include="StackExchange.Redis" Version="2.7.10" />
+    <PackageReference Include="StackExchange.Redis" Version="2.8.58" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
   </ItemGroup>
