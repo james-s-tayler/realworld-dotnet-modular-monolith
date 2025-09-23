@@ -52,7 +52,7 @@ namespace App.FitnessFunctions.ArchitectureTests
         {
             Classes().That().Are(_application.DatabaseMigrations)
                 .Should()
-                .HaveName(".*[0-9]{12}", true)
+                .HaveNameMatching(".*[0-9]{12}")
                 .Because("timestamps provide info on when a migration was created and help reduce merge conflicts.")
                 .Check(_application.Architecture);
         }
@@ -74,7 +74,7 @@ namespace App.FitnessFunctions.ArchitectureTests
         {
             Classes().That().Are(_application.DatabaseMigrations)
                 .Should()
-                .ResideInNamespace(".*Domain.Setup.Migrations.*", true)
+                .ResideInNamespaceMatching(".*Domain.Setup.Migrations.*")
                 .Because("this is the convention.")
                 .Check(_application.Architecture);
         }

@@ -40,7 +40,7 @@ namespace App.FitnessFunctions.ArchitectureTests
         {
             DatabaseMigrations = Classes().That()
                 .AreAssignableTo(typeof(Migration))
-                .And().AreNot(".*ProcessedByFody", true)
+                .And().AreNot(Classes().That().HaveNameMatching(".*ProcessedByFody"))
                 .As("Database Migrations");
         }
 
@@ -64,10 +64,10 @@ namespace App.FitnessFunctions.ArchitectureTests
 
         private void SetupDomainClasses()
         {
-            DomainClasses = Classes().That().ResideInAssembly("App.*.Domain", true)
+            DomainClasses = Classes().That().ResideInAssemblyMatching("App.*.Domain")
                 .And().AreNot(DomainContracts)
                 .And().AreNot(DatabaseMigrations)
-                .And().AreNot(".*ProcessedByFody", true)
+                .And().AreNot(Classes().That().HaveNameMatching(".*ProcessedByFody"))
                 .As("Domain Classes");
         }
 
@@ -82,14 +82,14 @@ namespace App.FitnessFunctions.ArchitectureTests
         private void SetupEntities()
         {
             Entities = Classes().That().Are(DomainClasses)
-                .And().ResideInNamespace("App.*.Domain.Entities.*", true)
+                .And().ResideInNamespaceMatching("App.*.Domain.Entities.*")
                 .As("Entities");
         }
 
         private void SetupOperationHandlers()
         {
             DomainOperationHandlers = Classes().That().Are(DomainClasses)
-                .And().ImplementInterface("MediatR.IRequestHandler`2")
+                .And().ImplementInterface(typeof(IRequestHandler<,>))
                 .As("Domain Operation Handlers");
         }
 
@@ -117,8 +117,8 @@ namespace App.FitnessFunctions.ArchitectureTests
 
         private void SetupDomainContractClasses()
         {
-            DomainContracts = Classes().That().ResideInAssembly("App.*.Domain.Contracts.*", true)
-                .And().AreNot(".*ProcessedByFody", true)
+            DomainContracts = Classes().That().ResideInAssemblyMatching("App.*.Domain.Contracts.*")
+                .And().AreNot(Classes().That().HaveNameMatching(".*ProcessedByFody"))
                 .As("Domain Contracts");
         }
 

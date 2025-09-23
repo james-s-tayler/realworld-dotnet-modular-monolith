@@ -78,7 +78,7 @@ namespace App.FitnessFunctions.ArchitectureTests
         public void DomainOperationsResideInCorrectNamespace()
         {
             Classes().That().Are(_application.DomainOperations)
-                .Should().ResideInNamespace(@".*Domain.Contracts.Operations.Commands.*|.*Domain.Contracts.Operations.Queries.*", true)
+                .Should().ResideInNamespaceMatching(@".*Domain.Contracts.Operations.Commands.*|.*Domain.Contracts.Operations.Queries.*")
                 .Because("Domain operations must indicate whether they mutate state or not")
                 .Check(_application.Architecture);
         }
@@ -88,7 +88,7 @@ namespace App.FitnessFunctions.ArchitectureTests
         {
             Classes().That().Are(_application.DomainContracts)
                 .And().HaveNameEndingWith("DTO")
-                .Should().ResideInNamespace(@".*Domain.Contracts.DTOs", true)
+                .Should().ResideInNamespaceMatching(@".*Domain.Contracts.DTOs")
                 .Because("this is the convention")
                 .Check(_application.Architecture);
         }
@@ -98,7 +98,7 @@ namespace App.FitnessFunctions.ArchitectureTests
         {
             Classes().That().Are(_application.DomainContracts)
                 .And().HaveNameEndingWith("Enum")
-                .Should().ResideInNamespace(@".*Domain.Contracts.Enums", true)
+                .Should().ResideInNamespaceMatching(@".*Domain.Contracts.Enums")
                 .Because("this is the convention")
                 .Check(_application.Architecture);
         }
@@ -120,7 +120,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Should().FollowCustomCondition(command =>
                 {
                     var operationName = command.Name.Replace("Command", "");
-                    var pass = command.ResidesInNamespace($".*Domain.Contracts.Operations.Commands.{operationName}", true);
+                    var pass = command.ResidesInNamespaceMatching($".*Domain.Contracts.Operations.Commands.{operationName}");
                     return new ConditionResult(command, pass, "does not match");
                 }, "reside in Domain.Contracts.Commands.{OperationName}")
                 .Because("this is the convention")
@@ -134,7 +134,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Should().FollowCustomCondition(query =>
                 {
                     var operationName = query.Name.Replace("Query", "");
-                    var pass = query.ResidesInNamespace($".*Domain.Contracts.Operations.Queries.{operationName}", true);
+                    var pass = query.ResidesInNamespaceMatching($".*Domain.Contracts.Operations.Queries.{operationName}");
                     return new ConditionResult(query, pass, "does not match");
                 }, "reside in Domain.Contracts.Queries.{OperationName}")
                 .Because("this is the convention")
@@ -157,7 +157,7 @@ namespace App.FitnessFunctions.ArchitectureTests
 
                     var isOperationResponse = outerGenericParameter.Type.NameEndsWith("OperationResponse`1");
                     var isOperationNameResult = innerGenericParameter.Type.FullNameMatches($"{domainOperation.FullName}Result");
-                    var isResultNextToOperation = innerGenericParameter.Type.ResidesInNamespace($".*Domain.Contracts.*.{operationName}", true);
+                    var isResultNextToOperation = innerGenericParameter.Type.ResidesInNamespaceMatching($".*Domain.Contracts.*.{operationName}");
 
                     var pass = isOperationResponse && isOperationNameResult && isResultNextToOperation;
 
@@ -172,11 +172,11 @@ namespace App.FitnessFunctions.ArchitectureTests
         {
             var coreNamespace = typeof(ConduitCore).Namespace;
             Classes().That().Are(_application.DomainContracts)
-                .Should().OnlyDependOnTypesThat().ResideInNamespace($"{coreNamespace}|" +
+                .Should().OnlyDependOnTypesThat().ResideInNamespaceMatching($"{coreNamespace}|" +
                     ".*Domain.Contracts.*|" +
                     "System.*|" +
                     "MediatR.*|" +
-                    "Destructurama.*", true)
+                    "Destructurama.*")
                 .Because("contracts shouldn't be responsible for any business logic")
                 .Check(_application.Architecture);
         }
