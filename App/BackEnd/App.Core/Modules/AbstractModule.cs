@@ -70,7 +70,7 @@ namespace App.Core.Modules
             services.TryAddTransient<UserContextEnricher>();
             services.TryAddTransient<IDataAnnotationsValidator, DataAnnotationsValidator>();
             services.TryAddTransient<IInputContractValidator, InputContractValidator>();
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(GetModuleAssembly()));
+            services.AddMediatR(GetModuleAssembly());
             services.AddValidatorsFromAssembly(GetModuleAssembly(), ServiceLifetime.Transient, null, true);
             services.AddAuthorizersFromAssembly(GetModuleAssembly(), ServiceLifetime.Transient);
 
