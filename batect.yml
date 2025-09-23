@@ -163,6 +163,7 @@ containers:
       - 5100:80
     environment:
       ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://0.0.0.0:80
       JWTSETTINGS__SECRET: secretsecretsecretsecretsecretsecret
       OTEL_SERVICE_NAME: Conduit.API
       SEQ_URL: http://seq_logs:5341
