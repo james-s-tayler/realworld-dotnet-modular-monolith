@@ -1,0 +1,43 @@
+name: Copilot Setup Steps
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  setup:
+    name: "Setup .NET Environment"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.3.0
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: App/BackEnd/global.json
+
+      - name: Verify .NET installation
+        run: |
+          dotnet --version
+          dotnet --info
+
+      - name: Restore .NET dependencies
+        run: |
+          cd App/BackEnd
+          dotnet restore Conduit.API.sln
+
+      - name: Build solution
+        run: |
+          cd App/BackEnd
+          dotnet build Conduit.API.sln --no-restore
+
+      - name: Verify setup works - run format check
+        run: |
+          cd App/BackEnd
+          dotnet format Conduit.API.sln --verify-no-changes
