@@ -29,6 +29,14 @@ jobs:
       with:
         ref: main
         fetch-depth: 1
+    
+    # Setup .NET SDK using version specified in global.json
+    # This ensures the workflow uses the correct .NET version for the project
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        global-json-file: App/BackEnd/global.json
+    
     - name: AutoPR
       uses: docker://ghcr.io/irgolic/autopr:latest
       env:
