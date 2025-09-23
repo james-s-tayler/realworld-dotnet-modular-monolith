@@ -26,18 +26,3 @@ jobs:
         run: |
           dotnet --version
           dotnet --info
-
-      - name: Restore .NET dependencies
-        run: |
-          cd App/BackEnd
-          dotnet restore Conduit.API.sln
-
-      - name: Build solution
-        run: |
-          cd App/BackEnd
-          dotnet build Conduit.API.sln --no-restore
-
-      - name: Verify setup works - run format check
-        run: |
-          cd App/BackEnd
-          dotnet format Conduit.API.sln --verify-no-changes
