@@ -26,7 +26,7 @@ namespace App.Core.PipelineBehaviors.Authorization
             _userContext = userContext;
         }
 
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             if ( !IsOperationResponse() )
                 throw new InvalidOperationException("Domain operations must be of type OperationResponse<T>");

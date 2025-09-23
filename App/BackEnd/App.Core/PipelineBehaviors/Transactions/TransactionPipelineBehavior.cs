@@ -19,7 +19,7 @@ namespace App.Core.PipelineBehaviors.Transactions
             _connection = connectionWrapper.Connection;
         }
 
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             var transaction = await _connection.BeginTransactionAsync(cancellationToken);
             TResponse response;
