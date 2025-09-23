@@ -118,8 +118,8 @@ namespace Conduit.API
             services.AddSingleton<IRedisCache, RedisCache>();*/
 
             //tracing
-            services.AddOpenTelemetryTracing(
-                builder =>
+            services.AddOpenTelemetry()
+                .WithTracing(builder =>
                 {
                     builder
                         .AddAspNetCoreInstrumentation()                     //trace inbound http requests
@@ -128,9 +128,14 @@ namespace Conduit.API
                             options.RecordException = true;
                             options.SetDbStatementForText = true;
                         })
-                        .AddHttpClientInstrumentation()                     //trace outbound http requests
-                        .AddJaegerExporter(options =>                       //export traces to jaeger container
+                        .AddHttpClientInstrumentation();                    //trace outbound http requests
+
+                    // Only add Jaeger exporter when running in Docker environment where Jaeger is available
+                    if ( Environment.EnvironmentName == "Docker" )
+                    {
+                        builder.AddJaegerExporter(options =>               //export traces to jaeger container
                             options.AgentHost = "jaeger");
+                    }
                 });
 
             services

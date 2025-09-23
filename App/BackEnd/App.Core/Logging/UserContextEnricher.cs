@@ -2,11 +2,9 @@ using App.Core.Context;
 using JetBrains.Annotations;
 using Serilog.Core;
 using Serilog.Events;
-using TracerAttributes;
 
 namespace App.Core.Logging
 {
-    [NoTrace]
     public class UserContextEnricher : ILogEventEnricher
     {
         private readonly IUserContext _userContext;

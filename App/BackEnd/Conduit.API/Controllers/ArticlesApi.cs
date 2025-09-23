@@ -140,17 +140,17 @@ namespace Conduit.API.Controllers
 
             // did this validation here as the fluent validation object doesn't contain 'Query'
             // and in this case needed to check the condition where someone has sent tag= in the query params
-            if ( Request.Query.ContainsKey("tag") && tag.IsNullOrEmpty() )
+            if ( Request.Query.ContainsKey("tag") && string.IsNullOrEmpty(tag) )
             {
                 var response = OperationResponseFactory.InvalidRequest<ListArticlesQuery, OperationResponse<ListArticlesQueryResult>>(new List<string> { "tag:  cannot be empty" });
                 return UnsuccessfulResponseResult(response);
             }
-            if ( Request.Query.ContainsKey("author") && author.IsNullOrEmpty() )
+            if ( Request.Query.ContainsKey("author") && string.IsNullOrEmpty(author) )
             {
                 var response = OperationResponseFactory.InvalidRequest<ListArticlesQuery, OperationResponse<ListArticlesQueryResult>>(new List<string> { "author: cannot be empty" });
                 return UnsuccessfulResponseResult(response);
             }
-            if ( Request.Query.ContainsKey("favorited") && favorited.IsNullOrEmpty() )
+            if ( Request.Query.ContainsKey("favorited") && string.IsNullOrEmpty(favorited) )
             {
                 var response = OperationResponseFactory.InvalidRequest<ListArticlesQuery, OperationResponse<ListArticlesQueryResult>>(new List<string> { "favorited: cannot be empty" });
                 return UnsuccessfulResponseResult(response);

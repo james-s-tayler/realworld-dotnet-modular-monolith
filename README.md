@@ -1,6 +1,6 @@
 # RealWorld Backend - .NET Modular Monolith
 
-This is an implementation of the [RealWorld](https://github.com/gothinkster/realworld) API. It's written in .NET 6 and is a "[modular monolith](https://www.youtube.com/watch?v=5OjqD-ow8GE&ab_channel=GOTOConferences)".
+This is an implementation of the [RealWorld](https://github.com/gothinkster/realworld) API. It's written in .NET 9 and is a "[modular monolith](https://www.youtube.com/watch?v=5OjqD-ow8GE&ab_channel=GOTOConferences)".
 
 ## Building / Running
 Everything is done via [Batect](https://batect.dev/). Just use `./batect --list-tasks` to see everything you can do. You can build the app, run the app, run the unit tests, run the postman tests, and perform various linting and database operations. 
@@ -10,7 +10,7 @@ All of these exact same `batect` tasks are run in `GitHub Actions` in order to i
 ## Tech Stack
 
  - Backend
-   - .NET 6
+   - .NET 9
    - MediatR
    - Dapper
    - Sqlite

@@ -1,9 +1,7 @@
 using JetBrains.Annotations;
-using TracerAttributes;
 
 namespace App.Core.Context
 {
-    [NoTrace]
     public class AppContext : IUserContext
     {
         private readonly IRequestClaimsPrincipalProvider _requestClaimsPrincipalProvider;
