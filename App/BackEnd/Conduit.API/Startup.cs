@@ -118,8 +118,8 @@ namespace Conduit.API
             services.AddSingleton<IRedisCache, RedisCache>();*/
 
             //tracing
-            services.AddOpenTelemetryTracing(
-                builder =>
+            services.AddOpenTelemetry()
+                .WithTracing(builder =>
                 {
                     builder
                         .AddAspNetCoreInstrumentation()                     //trace inbound http requests
