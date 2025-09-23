@@ -23,6 +23,9 @@ jobs:
         with:
           dotnet-version: '9.0.305'
 
+      - name: Verify .NET version
+        run: dotnet --version
+
       - name: Validate Batect wrapper scripts
         uses: batect/batect-wrapper-validation-action@v0.4.0
 
