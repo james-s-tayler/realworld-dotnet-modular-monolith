@@ -1,0 +1,28 @@
+name: Copilot Setup Steps
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  setup:
+    name: "Setup .NET Environment"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.3.0
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: App/BackEnd/global.json
+
+      - name: Verify .NET installation
+        run: |
+          dotnet --version
+          dotnet --info
