@@ -11,6 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.305'
+
       - name: Validate Batect wrapper scripts
         uses: batect/batect-wrapper-validation-action@v0.4.0
 
