@@ -56,7 +56,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Should().FollowCustomCondition(commandHandler =>
                 {
                     var operationName = commandHandler.Name.Replace("CommandHandler", "");
-                    var pass = commandHandler.ResidesInNamespace($".*Domain.Operations.Commands.{operationName}", true);
+                    var pass = commandHandler.ResidesInNamespaceMatching($".*Domain.Operations.Commands.{operationName}");
                     return new ConditionResult(commandHandler, pass, "does not match");
                 }, "reside in Domain.Operations.Commands.{OperationName}")
                 .Because("this is the convention")
@@ -70,7 +70,7 @@ namespace App.FitnessFunctions.ArchitectureTests
                 .Should().FollowCustomCondition(query =>
                 {
                     var operationName = query.Name.Replace("QueryHandler", "");
-                    var pass = query.ResidesInNamespace($".*Domain.Operations.Queries.{operationName}", true);
+                    var pass = query.ResidesInNamespaceMatching($".*Domain.Operations.Queries.{operationName}");
                     return new ConditionResult(query, pass, "does not match");
                 }, "reside in Domain.Operations.Queries.{OperationName}")
                 .Because("this is the convention")
@@ -82,7 +82,7 @@ namespace App.FitnessFunctions.ArchitectureTests
         {
             Classes().That().Are(_application.DomainModules)
                 .Should()
-                .ResideInNamespace(".*.Domain.Setup.Module", true)
+                .ResideInNamespaceMatching(".*.Domain.Setup.Module")
                 .Because("that's the convention")
                 .Check(_application.Architecture);
         }
@@ -122,7 +122,7 @@ namespace App.FitnessFunctions.ArchitectureTests
         {
             Classes().That().Are(_application.DomainClasses)
                 .Should()
-                .NotCallAny("NotImplementedException", true)
+                .NotCallAny(MethodMembers().That().HaveFullNameMatching("NotImplementedException"))
                 .Because("we don't lie about semantics in this family. If you say a method is available and with these semantics then you must always mean it. To not do so is more dangerous than squid game.")
                 .Check(_application.Architecture);
         }
