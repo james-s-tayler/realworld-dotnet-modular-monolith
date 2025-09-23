@@ -19,7 +19,7 @@ namespace App.Core.PipelineBehaviors.Validation
             _inputContractValidator = inputContractValidator;
         }
 
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             if ( !typeof(TResponse).IsOperationResponse() )
                 throw new InvalidOperationException("Domain operations must be of type OperationResponse<T>");
