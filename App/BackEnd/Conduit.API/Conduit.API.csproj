@@ -39,8 +39,8 @@
     <PackageReference Include="Refit" Version="7.2.22" />
     <PackageReference Include="Refit.HttpClientFactory" Version="6.3.2" />
     <PackageReference Include="StackExchange.Redis" Version="2.9.17" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.9.0" />
   </ItemGroup>
   <ItemGroup><!--<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.0" />-->
     <ProjectReference Include="..\App.Content.Domain.Contracts\App.Content.Domain.Contracts.csproj" />
