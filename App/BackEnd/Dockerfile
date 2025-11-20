@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0.307 AS base
+FROM mcr.microsoft.com/dotnet/sdk:9.0.308 AS base
 WORKDIR /app
 COPY . .
 
