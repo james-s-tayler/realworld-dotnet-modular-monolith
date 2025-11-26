@@ -5,7 +5,7 @@
     <!-- Temporarily commenting out Tracer packages due to Serilog 4.x compatibility -->
     <!-- <PackageReference Include="Tracer.Fody" Version="3.3.1" /> -->
     <!-- <PackageReference Include="Tracer.Serilog.Fody" Version="3.3.1" /> -->
-    <PackageReference Include="JetBrains.Annotations" Version="2025.2.2" />
+    <PackageReference Include="JetBrains.Annotations" Version="2025.2.4" />
   </ItemGroup>
   <PropertyGroup>
     <!-- the jetbrains annotations (which contain [NotNull]) are conditionally compiled into the code if the JETBRAINS_ANNOTATIONS symbol is defined
