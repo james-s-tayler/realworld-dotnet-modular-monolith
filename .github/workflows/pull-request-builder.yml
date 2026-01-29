@@ -16,7 +16,7 @@ jobs:
       DOCKER_BUILDKIT: 1
 
     steps:
-      - uses: actions/checkout@v6.0.1
+      - uses: actions/checkout@v6.0.2
 
       - name: Validate Batect wrapper scripts
         uses: batect/batect-wrapper-validation-action@v0.4.0
