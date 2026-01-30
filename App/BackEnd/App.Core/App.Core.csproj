@@ -8,7 +8,7 @@
     <ItemGroup>
       <PackageReference Include="Destructurama.Attributed" Version="5.2.0" />
       <PackageReference Include="FluentMigrator" Version="3.3.2" />
-      <PackageReference Include="FluentMigrator.Runner" Version="3.3.2" />
+      <PackageReference Include="FluentMigrator.Runner" Version="8.0.1" />
       <PackageReference Include="FluentValidation" Version="12.1.1" />
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
       <PackageReference Include="MediatR" Version="11.1.0" />
