@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0.310 AS base
+FROM mcr.microsoft.com/dotnet/sdk:10.0.103 AS base
 WORKDIR /app
 COPY . .
 
@@ -30,7 +30,7 @@ RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
     /p:TrimMode=${MODEOF_TREESHAKING} \
     /p:PublishSingleFile=true
   
-FROM mcr.microsoft.com/dotnet/runtime-deps:9.0.12 AS final
+FROM mcr.microsoft.com/dotnet/runtime-deps:10.0.3 AS final
 WORKDIR /app
 COPY --from=publish /app/output .
 ENTRYPOINT ["./Conduit.API"]
